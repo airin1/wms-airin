@@ -59,7 +59,7 @@
 
   </div>
   <!-- /.login-box-body -->
-  <p style="text-align: center;padding-top: 10px;">{{date('Y')}} &copy; PT. Airin</p>
+  <p style="text-align: center;padding-top: 10px;">{{date('Y')}} &copy; PT. AIRIN</p>
 </div>
 <!-- /.login-box -->
 
