@@ -5,7 +5,7 @@
       <!-- mini logo for sidebar mini 50x50 pixels -->
       <span class="logo-mini"><b>L</b>TT</span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>AIRIN</b>WMS</span>
+      <span class="logo-lg"><b>WIS</b>PT.AIRIN</span>
     </a>
 
     <!-- Header Navbar: style can be found in header.less -->
