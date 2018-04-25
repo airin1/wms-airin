@@ -249,6 +249,41 @@
         </li>
         <li class="treeview">
             <a href="#">
+              <i class="fa fa-money"></i>
+              <span>Invoice</span>
+              <span class="pull-right-container">
+                <i class="fa fa-angle-left pull-right"></i>
+              </span>
+            </a>
+            <ul class="treeview-menu">
+<!--                <li class="treeview">
+                    <a href="#"><i class="fa fa-circle-o"></i> LCL
+                      <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                      </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{route('invoice-tarif-index')}}">Data Tarif</a></li>
+                        <li><a href="{{route('invoice-release-index')}}">Data Release/Gate Out</a></li>
+                        <li><a href="{{route('invoice-index')}}">Data Invoice</a></li>
+                    </ul>
+                </li>-->
+                <li class="treeview">
+                    <a href="#"><i class="fa fa-circle-o"></i> FCL
+                      <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                      </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="{{route('invoice-tarif-nct-index')}}">Data Tarif NCT1</a></li>
+                        <li><a href="{{route('invoice-release-nct-index')}}">Data Release/Gate Out</a></li>
+                        <li><a href="{{route('invoice-nct-index')}}">Data Invoice</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li class="treeview">
+            <a href="#">
               <i class="fa fa-users"></i>
               <span>Users</span>
               <span class="pull-right-container">
