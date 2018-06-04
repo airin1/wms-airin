@@ -23,7 +23,7 @@ class PengirimanController extends Controller
 
         $this->wsdl = 'https://tpsonline.beacukai.go.id/tps/service.asmx?WSDL';
         $this->user = 'AIRN';
-        $this->password = 'AIRN12345678';
+        $this->password = 'AIRN';
         $this->kode = 'AIRN';
     }
     /**

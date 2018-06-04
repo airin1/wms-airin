@@ -967,19 +967,19 @@ class FclController extends Controller
 //            return \View('emails.report-gateout-fcl', array('containers' => $containers, 'data' => $dataGateOut));
             
             if($dataGateOut->save()){
-                $send_email = \Mail::send('emails.report-gateout-fcl', array('containers' => $containers, 'data' => $dataGateOut), function($message) use($subject, $dataGateOut) {
-                    $message->from('info@prjp.co.id', 'Primanata Jasa Persada');
-                    $message->sender('info@prjp.co.id');
-                    $message->subject($subject);
-                    $message->to($dataGateOut->email, $dataGateOut->shippingline);
-                    $message->cc('busdev@jict.co.id');
-                });
-                
-                if($send_email){
-                    return back()->with('success', 'Report has been success sent to '.$dataGateOut->email);
-                }else{
-                    return back()->with('error', 'Cannot send email, please try again later.');
-                }
+//                $send_email = \Mail::send('emails.report-gateout-fcl', array('containers' => $containers, 'data' => $dataGateOut), function($message) use($subject, $dataGateOut) {
+//                    $message->from('info@prjp.co.id', 'Primanata Jasa Persada');
+//                    $message->sender('info@prjp.co.id');
+//                    $message->subject($subject);
+//                    $message->to($dataGateOut->email, $dataGateOut->shippingline);
+//                    $message->cc('busdev@jict.co.id');
+//                });
+//                
+//                if($send_email){
+//                    return back()->with('success', 'Report has been success sent to '.$dataGateOut->email);
+//                }else{
+//                    return back()->with('error', 'Cannot send email, please try again later.');
+//                }
 
             }
 

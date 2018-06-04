@@ -300,3 +300,15 @@
     </section>
     <!-- /.sidebar -->
   </aside>
+<script>
+    $('.sidebar-menu ul li').find('a').each(function () {
+        var link = new RegExp($(this).attr('href')); //Check if some menu compares inside your the browsers link
+        if (link.test(document.location.href)) {
+            if(!$(this).parents().hasClass('active')){
+                $(this).parents('li').addClass('menu-open');
+                $(this).parents().addClass("active");
+                $(this).addClass("active"); //Add this too
+            }
+        }
+    });
+</script>

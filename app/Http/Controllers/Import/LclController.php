@@ -1667,28 +1667,34 @@ class LclController extends Controller
                         else:
                             $dataval['HEADER'] = trim($val[0]);
                             $ex_header = explode(" ", $this->removeSpace($val[0]));
+                            $count_ex_header = count($ex_header);
 //                            $dataval['EX_HEADER'] = $ex_header;
-//                            return count($ex_header);
-                            if(count($ex_header) == 8):
-                                $ex_header_nohbl = $ex_header[3];
-                                $ex_header_tglhbl = $ex_header[5];
-                                $ex_header_berat = $ex_header[6];
-                            elseif(count($ex_header) == 10):
-                                $ex_header_nohbl = $ex_header[5];
-                                $ex_header_tglhbl = $ex_header[7];
-                                $ex_header_berat = $ex_header[8];
+//                            print_r($ex_header);
+//                            if(count($ex_header) == 9):
+//                                return 'OK';
+//                            endif;
+                            if(in_array($count_ex_header, array(1,2,3))):
+                                continue;
+                            elseif($count_ex_header == 8):
+                                $ex_header_nohbl = isset($ex_header[3]) ? $ex_header[3] : null;
+                                $ex_header_tglhbl = isset($ex_header[5]) ? $ex_header[5] : null;
+                                $ex_header_berat = isset($ex_header[6]) ? $ex_header[6] : null;
+                            elseif($count_ex_header == 9):
+                                $ex_header_nohbl = isset($ex_header[4]) ? $ex_header[4] : null;
+                                $ex_header_tglhbl = isset($ex_header[6]) ? $ex_header[6] : null;
+                                $ex_header_berat = isset($ex_header[7]) ? $ex_header[7] : null;
+                            elseif($count_ex_header == 10):
+                                $ex_header_nohbl = isset($ex_header[5]) ? $ex_header[5] : null;
+                                $ex_header_tglhbl = isset($ex_header[7]) ? $ex_header[7] : null;
+                                $ex_header_berat = isset($ex_header[8]) ? $ex_header[8] : null;
+                            elseif($count_ex_header == 11):
+                                $ex_header_nohbl = isset($ex_header[6]) ? $ex_header[6] : null;
+                                $ex_header_tglhbl = isset($ex_header[8]) ? $ex_header[8] : null;
+                                $ex_header_berat = isset($ex_header[9]) ? $ex_header[9] : null;
                             else:
-                                $ex_header_nohbl = $ex_header[4];
-                                $ex_header_tglhbl = $ex_header[6];
-                                $ex_header_berat = $ex_header[7];
+//                                return $count_ex_header;
+                                return back()->with('error', 'Cannot upload TXT file, new flat file detected.')->withInput();
                             endif;
-                            
-                            $dataval['NOHBL'] = $ex_header_nohbl;
-                            $dataval['TGL_HBL'] = $ex_header_tglhbl;   
-                            $dataval['weight'] = substr($ex_header_berat, 10, 4);
-                            $dataval['meas'] = (substr($ex_header_berat, 30, 5)/1000);
-                            $dataval['qty'] = substr($ex_header_berat, 47, 2);
-                            $dataval['pack'] = substr($ex_header_berat, 75, 2);
                         endif;
 
                     endforeach;

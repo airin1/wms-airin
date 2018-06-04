@@ -95,9 +95,9 @@
             <td width='60%'>
                 <p>
                     Pembayaran dapat dilakukan melalui :<br />
-                    Rekening : PT. PRIMANATA JASA PERSADA<br />
-                    Bank Mandiri Cabang Enggano<br />
-                    a/c no : 120.000.6122639
+                    Rekening : PT. AIRIN<br />
+                    Bank ....<br />
+                    a/c no : ....
                 </p>
             </td>
             <td class="text-center">&nbsp;</td>

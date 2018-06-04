@@ -153,17 +153,17 @@
                     <div class="form-group">                       
                         <label class="col-sm-3 control-label">Kode Gudang</label>
                         <div class="col-sm-3">
-                            <input type="text" name="KODE_GUDANG" value="AIRN" class="form-control"  readonly>
+                            <input type="text" name="KODE_GUDANG" value="AIRN" class="form-control">
                         </div>
                         <label class="col-sm-2 control-label">Tujuan</label>
                         <div class="col-sm-3">
-                            <input type="text" name="GUDANG_TUJUAN" value="AIRN" class="form-control"  readonly>
+                            <input type="text" name="GUDANG_TUJUAN" value="AIRN" class="form-control">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Jenis Kegiatan</label>
                         <div class="col-sm-8">
-                            <input type="text" name="JENISKEGIATAN" value="CY/CFS" class="form-control"  readonly>
+                            <input type="text" name="JENISKEGIATAN" value="CY/CFS" class="form-control">
                         </div>
                     </div>
                     <div class="form-group" style="display: none;">
