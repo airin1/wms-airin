@@ -726,7 +726,7 @@ class SoapController extends DefaultController {
         
         // Using the added service
         \SoapWrapper::service('TpsOnline', function ($service) use ($data) {        
-            $this->response = $service->call('GetImporPermit_FASP', [$data])->GetImporPermit_FASPResponse;      
+            $this->response = $service->call('GetImporPermit_FASP', [$data])->GetImporPermit_FASPResult;      
         });
         
 //        var_dump($this->response);
