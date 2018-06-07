@@ -149,8 +149,8 @@ Route::group(['prefix' => 'tpsonline/penerimaan', 'namespace' => 'Tps'], functio
     Route::get('/sppb-pib/get-xml', [
         'as' => 'tps-sppbPib-get',
 //        'uses' => 'PenerimaanController@sppbPibGetXml'
-        'uses' => 'SoapController@GetImporPermit'
-//        'uses' => 'SoapController@GetImpor_SPPB'
+//        'uses' => 'SoapController@GetImporPermit'
+        'uses' => 'SoapController@GetImporPermit_FASP'
     ]);
     Route::post('/sppb-pib/upload-xml', [
         'as' => 'tps-sppbPib-upload',
@@ -177,7 +177,8 @@ Route::group(['prefix' => 'tpsonline/penerimaan', 'namespace' => 'Tps'], functio
     Route::get('/sppb-bc/get-xml', [
         'as' => 'tps-sppbBc-get',
 //        'uses' => 'PenerimaanController@sppbBcGetXml'
-        'uses' => 'SoapController@GetBC23Permit'
+//        'uses' => 'SoapController@GetBC23Permit'
+        'uses' => 'SoapController@GetBC23Permit_FASP'
     ]);
     
     //INFO NOMOR BC11
