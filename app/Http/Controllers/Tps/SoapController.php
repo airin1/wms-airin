@@ -23,8 +23,8 @@ class SoapController extends DefaultController {
         $this->user = 'AIRN';
         $this->password = 'AIRN';
         $this->kode = 'AIRN';
-        // ASP AIRN
-        // ARN1 & 3
+        // KODE_ASP AIRN
+        // KODE_GUDANG ARN1 & ARN3
         
     }
     
