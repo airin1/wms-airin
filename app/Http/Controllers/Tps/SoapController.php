@@ -23,6 +23,8 @@ class SoapController extends DefaultController {
         $this->user = 'AIRN';
         $this->password = 'AIRN';
         $this->kode = 'AIRN';
+        // ASP AIRN
+        // ARN1 & 3
         
     }
     
@@ -107,7 +109,7 @@ class SoapController extends DefaultController {
 //                ->cookie()                                                      // Optional: (parameters: $name,$value)
 //                ->location()                                                    // Optional: (parameter: $location)
 //                ->certificate()                                                 // Optional: (parameter: $certLocation)
-                ->cache(WSDL_CACHE_NONE)                                        // Optional: Set the WSDL cache
+//                ->cache(WSDL_CACHE_NONE)                                        // Optional: Set the WSDL cache
                 ->options(['login' => 'username', 'password' => 'password']);   // Optional: Set some extra options
         });
         
@@ -144,7 +146,7 @@ class SoapController extends DefaultController {
                 ->wsdl($this->wsdl)
                 ->trace(true)                                                                                                  
 //                ->certificate()                                                 
-                ->cache(WSDL_CACHE_NONE)                                        
+//                ->cache(WSDL_CACHE_NONE)                                        
                 ->options([
                     'stream_context' => stream_context_create([
                         'ssl' => array(
@@ -179,7 +181,7 @@ class SoapController extends DefaultController {
                 ->wsdl($this->wsdl)
                 ->trace(true)   
 //                ->certificate()                                                 
-                ->cache(WSDL_CACHE_NONE)  
+//                ->cache(WSDL_CACHE_NONE)  
                 ->options([
                     'stream_context' => stream_context_create([
                         'ssl' => array(
@@ -258,7 +260,7 @@ class SoapController extends DefaultController {
                 ->wsdl($this->wsdl)
                 ->trace(true)   
 //                ->certificate()                                                 
-                ->cache(WSDL_CACHE_NONE)  
+//                ->cache(WSDL_CACHE_NONE)  
                 ->options([
                     'stream_context' => stream_context_create([
                         'ssl' => array(
@@ -351,7 +353,7 @@ class SoapController extends DefaultController {
                 ->wsdl($this->wsdl)
                 ->trace(true)   
 //                ->certificate()                                                 
-                ->cache(WSDL_CACHE_NONE)  
+//                ->cache(WSDL_CACHE_NONE)  
                 ->options([
                     'stream_context' => stream_context_create([
                         'ssl' => array(
@@ -431,7 +433,7 @@ class SoapController extends DefaultController {
                 ->wsdl($this->wsdl)
                 ->trace(true)   
 //                ->certificate()                                                 
-                ->cache(WSDL_CACHE_NONE)  
+//                ->cache(WSDL_CACHE_NONE)  
                 ->options([
                     'stream_context' => stream_context_create([
                         'ssl' => array(
@@ -514,7 +516,7 @@ class SoapController extends DefaultController {
                 ->wsdl($this->wsdl)
                 ->trace(true)                                                                                                  
 //                ->certificate()                                                 
-                ->cache(WSDL_CACHE_NONE)                                        
+//                ->cache(WSDL_CACHE_NONE)                                        
                 ->options([
                     'stream_context' => stream_context_create([
                         'ssl' => array(
@@ -590,7 +592,7 @@ class SoapController extends DefaultController {
 //                ->certificate(url('cert/bc.pem'))  
 //                ->certificate(url('cert/tpsonlinebc.crt')) 
 //                ->certificate(url('cert/trust-ca.crt')) 
-                ->cache(WSDL_CACHE_NONE)
+//                ->cache(WSDL_CACHE_NONE)
                 ->options([
                     'stream_context' => stream_context_create([
                         'ssl' => array(
@@ -704,7 +706,7 @@ class SoapController extends DefaultController {
                 ->wsdl($this->wsdl)
                 ->trace(true)                                                                                                  
 //                ->certificate()                                                 
-                ->cache(WSDL_CACHE_NONE)                                        
+//                ->cache(WSDL_CACHE_NONE)                                        
                 ->options([
                     'stream_context' => stream_context_create([
                         'ssl' => array(
@@ -781,7 +783,7 @@ class SoapController extends DefaultController {
                 ->wsdl($this->wsdl)
                 ->trace(true)                                                                                                  
 //                ->certificate()                                                 
-                ->cache(WSDL_CACHE_NONE)                                        
+//                ->cache(WSDL_CACHE_NONE)                                        
                 ->options([
                     'stream_context' => stream_context_create([
                         'ssl' => array(
@@ -858,7 +860,7 @@ class SoapController extends DefaultController {
                 ->wsdl($this->wsdl)
                 ->trace(true)                                                                                                  
 //                ->certificate()                                                 
-                ->cache(WSDL_CACHE_NONE)                                        
+//                ->cache(WSDL_CACHE_NONE)                                        
                 ->options([
                     'stream_context' => stream_context_create([
                         'ssl' => array(
@@ -873,7 +875,7 @@ class SoapController extends DefaultController {
         $data = [
             'UserName' => $this->user, 
             'Password' => $this->password,
-            'Kd_Gudang' => $this->kode
+            'Kd_Gudang' => $this->kode //
         ];
         
         // Using the added service
@@ -936,7 +938,7 @@ class SoapController extends DefaultController {
                 ->name('TpsOnline_GetInfoNomorBC11')
                 ->wsdl($this->wsdl)
                 ->trace(true)                                                                                                                                                 
-                ->cache(WSDL_CACHE_NONE)
+//                ->cache(WSDL_CACHE_NONE)
                 ->options([
                     'stream_context' => stream_context_create([
                         'ssl' => array(
@@ -989,7 +991,7 @@ class SoapController extends DefaultController {
                 ->wsdl($this->wsdl)
                 ->trace(true)                                                                                                  
 //                ->certificate()                                                 
-                ->cache(WSDL_CACHE_NONE)                                        
+//                ->cache(WSDL_CACHE_NONE)                                        
                 ->options([
                     'stream_context' => stream_context_create([
                         'ssl' => array(
@@ -1024,7 +1026,7 @@ class SoapController extends DefaultController {
                 ->wsdl($this->wsdl)
                 ->trace(true)                                                                                                  
 //                ->certificate()                                                 
-                ->cache(WSDL_CACHE_NONE)                                        
+//                ->cache(WSDL_CACHE_NONE)                                        
                 ->options([
                     'stream_context' => stream_context_create([
                         'ssl' => array(
@@ -1059,7 +1061,7 @@ class SoapController extends DefaultController {
                 ->wsdl($this->wsdl)
                 ->trace(true)                                                                                                  
 //                ->certificate()                                                 
-                ->cache(WSDL_CACHE_NONE)                                        
+//                ->cache(WSDL_CACHE_NONE)                                        
                 ->options([
                     'stream_context' => stream_context_create([
                         'ssl' => array(
@@ -1095,7 +1097,7 @@ class SoapController extends DefaultController {
                 ->wsdl($this->wsdl)
                 ->trace(true)                                                                                                  
 //                ->certificate()                                                 
-                ->cache(WSDL_CACHE_NONE)                                        
+//                ->cache(WSDL_CACHE_NONE)                                        
                 ->options([
                     'stream_context' => stream_context_create([
                         'ssl' => array(
@@ -1131,7 +1133,7 @@ class SoapController extends DefaultController {
                 ->wsdl($this->wsdl)
                 ->trace(true)                                                                                                  
 //                ->certificate()                                                 
-                ->cache(WSDL_CACHE_NONE)                                        
+//                ->cache(WSDL_CACHE_NONE)                                        
                 ->options([
                     'stream_context' => stream_context_create([
                         'ssl' => array(
@@ -1165,7 +1167,7 @@ class SoapController extends DefaultController {
                 ->wsdl($this->wsdl)
                 ->trace(true)                                                                                                  
 //                ->certificate()                                                 
-                ->cache(WSDL_CACHE_NONE)                                        
+//                ->cache(WSDL_CACHE_NONE)                                        
                 ->options([
                     'stream_context' => stream_context_create([
                         'ssl' => array(
