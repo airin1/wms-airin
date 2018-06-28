@@ -153,6 +153,10 @@
                 </tr>
             </tbody>
         </table>
+        <br />
+        <p>Jakarta, {{date('d F Y')}}</p>
+        <br /><br /><br />
+        <p>{{ \Auth::getUser()->name }}</p>
     </div>
 </div>
     
