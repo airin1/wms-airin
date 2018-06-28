@@ -156,6 +156,10 @@ Route::group(['prefix' => 'tpsonline/penerimaan', 'namespace' => 'Tps'], functio
         'as' => 'tps-sppbPib-upload',
         'uses' => 'SoapController@GetImpor_SPPB'
     ]);
+    Route::get('/sppb-pib/print/{id}', [
+        'as' => 'tps-sppbPib-print',
+        'uses' => 'PenerimaanController@sppbPibPrint'
+    ]);
     
     //SPPB BEA CUKAI
     Route::get('/sppb-bc', [
@@ -179,6 +183,10 @@ Route::group(['prefix' => 'tpsonline/penerimaan', 'namespace' => 'Tps'], functio
 //        'uses' => 'PenerimaanController@sppbBcGetXml'
 //        'uses' => 'SoapController@GetBC23Permit'
         'uses' => 'SoapController@GetBC23Permit_FASP'
+    ]);
+    Route::get('/sppb-bc/print/{id}', [
+        'as' => 'tps-sppbBc-print',
+        'uses' => 'PenerimaanController@sppbBcPrint'
     ]);
     
     //INFO NOMOR BC11

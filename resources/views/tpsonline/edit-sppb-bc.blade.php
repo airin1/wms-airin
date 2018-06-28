@@ -217,6 +217,7 @@
         </div>
         <!-- /.box-body -->
         <div class="box-footer">
+            <button type="button" class="btn btn-warning pull-left" id="print-sppb"><i class="fa fa-print"></i> Cetak</button>
             <button type="submit" class="btn btn-success pull-right"><i class="fa fa-save"></i> Simpan</button>
             <a href="{{ route('tps-sppbBc-index') }}" class="btn btn-danger pull-right" style="margin-right: 10px;"><i class="fa fa-close"></i> Keluar</a>
         </div>
@@ -336,7 +337,14 @@
         todayHighlight: true,
         format: 'yyyy-mm-dd' 
     });
+    
+    $(document).ready(function(){
 
+        $('#print-sppb').on("click", function(){
+            window.open("{{route('tps-sppbBc-print',$sppb->TPS_SPPBXML_PK)}}","preview","width=600,height=600,menubar=no,status=no,scrollbars=yes");    
+        });
+    });
+    
 </script>
 
 @endsection

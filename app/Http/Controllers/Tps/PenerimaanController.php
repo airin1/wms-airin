@@ -765,4 +765,18 @@ class PenerimaanController extends Controller
         
         return json_encode(array('success' => true, 'message' => 'Something went wrong, please try again later.'));
     }
+    
+    public function sppbBcPrint($id)
+    {
+        $data['sppb'] = \App\Models\TpsSppbBc::find($id);
+        
+        return view('print.sppb-bc')->with($data);
+    }
+    
+    public function sppbPibPrint($id)
+    {
+        $data['sppb'] = \App\Models\TpsSppbPib::find($id);
+        
+        return view('print.sppb-pib')->with($data);
+    }
 }
