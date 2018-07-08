@@ -34,6 +34,7 @@
             $('#ESEALCODE').val(rowdata.ESEALCODE).trigger('change');
             $('#TGLKELUAR_TPK').val(rowdata.TGLKELUAR_TPK);
             $('#JAMKELUAR_TPK').val(rowdata.JAMKELUAR_TPK);
+            $('#jenis_container').val(rowdata.jenis_container).trigger('change');
             
 //            if(!rowdata.TGLMASUK && !rowdata.JAMMASUK) {
                 $('#btn-group-2').enableButtonGroup();
@@ -197,6 +198,7 @@
         //            ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>80, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
                     ->addColumn(array('key'=>true,'index'=>'TCONTAINER_PK','hidden'=>true))
                     ->addColumn(array('label'=>'No. Container','index'=>'NOCONTAINER','width'=>150))
+                    ->addColumn(array('label'=>'Jenis Container','index'=>'jenis_container','width'=>150))
                     ->addColumn(array('label'=>'No. Joborder','index'=>'NoJob','width'=>150))
                     ->addColumn(array('label'=>'Tgl. ETA','index'=>'ETA','width'=>120))
                     ->addColumn(array('label'=>'Consolidator','index'=>'NAMACONSOLIDATOR','width'=>250))
