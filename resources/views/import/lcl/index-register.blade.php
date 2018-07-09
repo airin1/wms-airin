@@ -82,7 +82,7 @@
             ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>80, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
 //            ->addColumn(array('key'=>true,'index'=>'TJOBORDER_PK','hidden'=>true))
             ->addColumn(array('key'=>true,'index'=>'TCONTAINER_PK','hidden'=>true))
-            ->addColumn(array('label'=>'No. Joborder','index'=>'NOJOBORDER','width'=>160))
+            ->addColumn(array('label'=>'No. SPK','index'=>'NOJOBORDER','width'=>160))
             ->addColumn(array('label'=>'No. Container','index'=>'NOCONTAINER','width'=>160,'hidden'=>false))
             ->addColumn(array('label'=>'No. MBL','index'=>'tcontainer.NOMBL','width'=>160))
             ->addColumn(array('label'=>'Tgl. MBL','index'=>'tcontainer.TGL_MASTER_BL','width'=>150,'align'=>'center'))
