@@ -649,6 +649,109 @@ class PenerimaanController extends Controller
         
     }
     
+    public function responPlpCreateSingleSpk(Request $request, $id)
+    {
+        $plp = \App\Models\TpsResponPlp::where('tps_responplptujuanxml_pk', $id)->first();
+        
+        if($plp){
+
+            // Create SPK
+            $data['NOJOBORDER'] = $request->no_spk;
+            $data['NO_BC11'] = $plp->NO_BC11;
+//            $data['NO_POS_BC11'] = $nopos;
+            $data['TNO_PLP'] = $plp->NO_PLP;
+            $data['GUDANG_TUJUAN'] = $plp->GUDANG_TUJUAN;
+            $data['KODE_GUDANG'] = $plp->KD_TPS;
+            $data['VESSEL'] = $plp->NM_ANGKUT;
+            $data['CALLSIGN'] = $plp->CALL_SIGN;
+            $data['VOY'] = $plp->NO_VOY_FLIGHT;
+//            $data['PARTY'] = $detail->UK_CONT;
+            $data['UID'] = \Auth::getUser()->name;
+            $data['TGLENTRY'] = date('Y-m-d');
+            $data['TGLMBL'] = '0000-00-00';
+            $data['ETA'] = (!empty($plp->TGL_TIBA)) ? date('Y-m-d', strtotime($plp->TGL_TIBA)) : '0000-00-00';
+            $data['ETD'] = '0000-00-00';
+            $data['TGL_BC11'] = (!empty($plp->TGL_BC11)) ? date('Y-m-d', strtotime($plp->TGL_BC11)) : '0000-00-00';
+            $data['TTGL_PLP'] = (!empty($plp->TGL_PLP)) ? date('Y-m-d', strtotime($plp->TGL_PLP)) : '0000-00-00';
+
+            $namalokasisandar = \App\Models\Lokasisandar::select('TLOKASISANDAR_PK','NAMALOKASISANDAR','KD_TPS_ASAL')->where('KD_TPS_ASAL',$plp->KD_TPS_ASAL)->first();
+            if($namalokasisandar){
+                $data['TLOKASISANDAR_FK'] = $namalokasisandar->TLOKASISANDAR_PK;
+                $data['NAMALOKASISANDAR'] = $namalokasisandar->NAMALOKASISANDAR;
+                $data['KD_TPS_ASAL'] = $namalokasisandar->KD_TPS_ASAL;
+
+                $data['TCONSOLIDATOR_FK'] = $namalokasisandar->TLOKASISANDAR_PK;
+                $data['NAMACONSOLIDATOR'] = $namalokasisandar->NAMALOKASISANDAR;
+            }
+
+            $insert_id = \App\Models\Jobordercy::insertGetId($data);
+            
+            if($insert_id){
+
+                $plpDetails = \App\Models\TpsResponPlpDetail::where('tps_responplptujuanxml_fk', $id)->get();
+                foreach($plpDetails as $plpDetail):
+
+                    $joborder = \App\Models\Jobordercy::findOrFail($insert_id);
+
+                    $data = array();
+
+                    $data['NO_BL_AWB'] = $plpDetail->NO_BL_AWB;
+                    $data['TGL_BL_AWB'] = $plpDetail->TGL_BL_AWB;
+                    $data['NOCONTAINER'] = $plpDetail->NO_CONT;
+                    $data['SIZE'] = $plpDetail->UK_CONT;
+                    $data['TEUS'] = $plpDetail->UK_CONT / 20;
+                    $data['TJOBORDER_FK'] = $joborder->TJOBORDER_PK;
+                    $data['NoJob'] = $joborder->NOJOBORDER;
+                    $data['NOMBL'] = $joborder->NOMBL;
+                    $data['TGLMBL'] = $joborder->TGLMBL;
+                    $data['NO_BC11'] = $joborder->NO_BC11;
+                    $data['TGL_BC11'] = $joborder->TGL_BC11;
+                    $data['NO_POS_BC11'] = $joborder->NO_POS_BC11;
+                    $data['NO_PLP'] = $joborder->TNO_PLP;
+                    $data['TGL_PLP'] = $joborder->TTGL_PLP;
+                    $data['TCONSOLIDATOR_FK'] = $joborder->TCONSOLIDATOR_FK;
+                    $data['NAMACONSOLIDATOR'] = $joborder->NAMACONSOLIDATOR;
+                    
+                    $namaconsignee = \App\Models\Perusahaan::select('TPERUSAHAAN_PK','NAMAPERUSAHAAN','NPWP')->where('NAMAPERUSAHAAN',$plpDetail->CONSIGNEE)->first();
+                    if($namaconsignee){
+                        $data['TCONSIGNEE_FK'] = $namaconsignee->TPERUSAHAAN_PK;
+                        $data['CONSIGNEE'] = $namaconsignee->NAMAPERUSAHAAN;
+                        $data['ID_CONSIGNEE'] = str_replace(array('.','-'),array('',''),$namaconsignee->NPWP);
+                    }
+                    
+//                    $data['TCONSIGNEE_FK'] = $joborder->TCONSIGNEE_FK;
+//                    $data['CONSIGNEE'] = $joborder->CONSIGNEE;
+//                    $data['ID_CONSIGNEE'] = $joborder->ID_CONSIGNEE;
+            //        $data['TLOKASISANDAR_FK'] = $joborder->TLOKASISANDAR_FK;
+                    $data['ETA'] = $joborder->ETA;
+                    $data['ETD'] = $joborder->ETD;
+                    $data['VESSEL'] = $joborder->VESSEL;
+                    $data['VOY'] = $joborder->VOY;
+            //        $data['TPELABUHAN_FK'] = $joborder->TPELABUHAN_FK;
+            //        $data['NAMAPELABUHAN'] = $joborder->NAMAPELABUHAN;
+                    $data['PEL_MUAT'] = $joborder->PEL_MUAT;
+                    $data['PEL_BONGKAR'] = $joborder->PEL_BONGKAR;
+                    $data['PEL_TRANSIT'] = $joborder->PEL_TRANSIT;
+                    $data['KD_TPS_ASAL'] = $joborder->KD_TPS_ASAL;
+                    $data['GUDANG_TUJUAN'] = $joborder->GUDANG_TUJUAN;
+                    $data['CALLSIGN'] = $joborder->CALLSIGN;
+                    $data['UID'] = \Auth::getUser()->name;
+
+                    $container_insert_id = \App\Models\Containercy::insertGetId($data);
+
+                endforeach;
+            }
+            
+            if($container_insert_id){
+                return back()->with('success', 'SPK '. $joborder->NOJOBORDER .' berhasil di buat.');
+            }
+            
+        }
+        
+        return back()->with('error', 'Tidak dapat membuat SPK.');
+        
+    }
+    
     public function responPlpCreateJoborder(Request $request, $id)
     {
         

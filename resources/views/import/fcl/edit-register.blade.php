@@ -20,7 +20,7 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label">No. SPK</label>
                         <div class="col-sm-8">
-                            <input type="text" readonly name="NOJOBORDER" class="form-control" value="{{ $joborder->NOJOBORDER }}" >
+                            <input type="text" name="NOJOBORDER" class="form-control" value="{{ $joborder->NOJOBORDER }}" >
                         </div>
                     </div>
                     <div class="form-group">
@@ -124,7 +124,7 @@
                         </div>
                         <label class="col-sm-2 control-label">Callsign</label>
                         <div class="col-sm-3">
-                            <input type="text" name="CALLSIGN" class="form-control"  readonly value="{{ $joborder->CALLSIGN }}">
+                            <input type="text" name="CALLSIGN" class="form-control" readonly value="{{ $joborder->CALLSIGN }}">
                         </div>
                     </div>             
                     <div class="form-group">
@@ -176,17 +176,17 @@
                     <div class="form-group">                       
                         <label class="col-sm-3 control-label">Kode Gudang</label>
                         <div class="col-sm-3">
-                            <input type="text" name="KODE_GUDANG" value="{{ $joborder->KODE_GUDANG }}" class="form-control"  readonly>
+                            <input type="text" name="KODE_GUDANG" value="{{ $joborder->KODE_GUDANG }}" class="form-control">
                         </div>
                         <label class="col-sm-2 control-label">Tujuan</label>
                         <div class="col-sm-3">
-                            <input type="text" name="GUDANG_TUJUAN" value="{{ $joborder->GUDANG_TUJUAN }}" class="form-control"  readonly>
+                            <input type="text" name="GUDANG_TUJUAN" value="{{ $joborder->GUDANG_TUJUAN }}" class="form-control">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Jenis Kegiatan</label>
                         <div class="col-sm-8">
-                            <input type="text" name="JENISKEGIATAN" value="{{ $joborder->JENISKEGIATAN }}" class="form-control"  readonly>
+                            <input type="text" name="JENISKEGIATAN" value="{{ $joborder->JENISKEGIATAN }}" class="form-control">
                         </div>
                     </div>
                     <div class="form-group" style="display: none;">

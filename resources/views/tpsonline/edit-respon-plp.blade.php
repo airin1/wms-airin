@@ -266,7 +266,7 @@
                         <button type="button" disabled class="btn btn-block btn-default">Cetak Respon PLP Tujuan</button>
                     </div>-->
                     <div id="btn-group-4" class="col-sm-2 pull-right" style="margin: 10px 0;display: none;">
-                        <button type="button" id="createJoborderBtn" class="btn btn-block btn-info">Create Job Order</button>
+                        <button type="button" id="createJoborderBtn" class="btn btn-block btn-info">Create SPK</button>
                     </div>
                 </div>
             </div>
@@ -274,6 +274,37 @@
         </div>
     </div>
 </div>
+
+<div id="plp-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Create SPK Form</h4>
+            </div>
+            <form class="form-horizontal" action="{{ route("tps-responPlp-create-joborder", $respon->tps_responplptujuanxml_pk) }}" method="POST" enctype="multipart/form-data">
+                <div class="modal-body"> 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input name="_token" type="hidden" value="{{ csrf_token() }}">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">NO. SPK</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" name="no_spk" />
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Create</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 @endsection
 
@@ -341,42 +372,43 @@
     
     $('#createJoborderBtn').click(function()
     {
-        if(!confirm('Apakah anda yakin akan membuat Job Order?')){return false;}
+        $('#plp-modal').modal('show');
+//        if(!confirm('Apakah anda yakin akan membuat Job Order?')){return false;}
         
-        var responPlpId = '{{$respon->tps_responplptujuanxml_pk}}';
-        var url = '{{ route("tps-responPlp-create-joborder", $respon->tps_responplptujuanxml_pk) }}';
-
-        $.ajax({
-            type: 'POST',
-            data: 
-            {
-                'id' : responPlpId,
-                '_token' : '{{ csrf_token() }}'
-            },
-            dataType : 'json',
-            url: url,
-            error: function (jqXHR, textStatus, errorThrown)
-            {
-                alert('Something went wrong, please try again later.');
-            },
-            beforeSend:function()
-            {
-
-            },
-            success:function(json)
-            {
-                console.log(json);
-
-                if(json.success) {
-                  $('#btn-toolbar').showAlertAfterElement('alert-success alert-custom', json.message, 5000);
-                } else {
-                  $('#btn-toolbar').showAlertAfterElement('alert-danger alert-custom', json.message, 5000);
-                }
-
-                //Triggers the "Close" button funcionality.
-//                $('#btn-refresh').click();
-            }
-        });
+//        var responPlpId = '{{$respon->tps_responplptujuanxml_pk}}';
+//        var url = '{{ route("tps-responPlp-create-joborder", $respon->tps_responplptujuanxml_pk) }}';
+//
+//        $.ajax({
+//            type: 'POST',
+//            data: 
+//            {
+//                'id' : responPlpId,
+//                '_token' : '{{ csrf_token() }}'
+//            },
+//            dataType : 'json',
+//            url: url,
+//            error: function (jqXHR, textStatus, errorThrown)
+//            {
+//                alert('Something went wrong, please try again later.');
+//            },
+//            beforeSend:function()
+//            {
+//
+//            },
+//            success:function(json)
+//            {
+//                console.log(json);
+//
+//                if(json.success) {
+//                  $('#btn-toolbar').showAlertAfterElement('alert-success alert-custom', json.message, 5000);
+//                } else {
+//                  $('#btn-toolbar').showAlertAfterElement('alert-danger alert-custom', json.message, 5000);
+//                }
+//
+//                //Triggers the "Close" button funcionality.
+////                $('#btn-refresh').click();
+//            }
+//        });
         
     });
 </script>
