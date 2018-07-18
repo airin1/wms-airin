@@ -72,6 +72,7 @@
 //            ->addColumn(array('label'=>'Teus','index'=>'TEUS', 'width'=>100,'align'=>'center','hidden'=>true))
             ->addColumn(array('label'=>'ETA','index'=>'ETA', 'width'=>120,'align'=>'center','hidden'=>true))
             ->addColumn(array('label'=>'TPS Asal','index'=>'KD_TPS_ASAL', 'width'=>100,'align'=>'center'))
+            ->addColumn(array('label'=>'Kode Gudang','index'=>'KODE_GUDANG', 'width'=>100,'align'=>'center'))
             ->addColumn(array('label'=>'Consolidator','index'=>'NAMACONSOLIDATOR','width'=>250,'hidden'=>true))
             ->addColumn(array('label'=>'Consignee','index'=>'CONSIGNEE', 'width'=>250))
             ->addColumn(array('label'=>'No.BC 1.1','index'=>'NO_BC11', 'width'=>150,'align'=>'center'))
