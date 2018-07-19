@@ -1695,6 +1695,13 @@ class LclController extends Controller
 //                                return $count_ex_header;
                                 return back()->with('error', 'Cannot upload TXT file, new flat file detected.')->withInput();
                             endif;
+                            
+                            $dataval['NOHBL'] = $ex_header_nohbl;
+                            $dataval['TGL_HBL'] = $ex_header_tglhbl;   
+                            $dataval['weight'] = substr($ex_header_berat, 10, 8)/10000;
+                            $dataval['meas'] = (substr($ex_header_berat, 30, 5)/1000);
+                            $dataval['qty'] = substr($ex_header_berat, 46, 3);
+                            $dataval['pack'] = substr($ex_header_berat, 75, 2);
                         endif;
 
                     endforeach;
