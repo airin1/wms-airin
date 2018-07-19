@@ -296,7 +296,7 @@
       <div class="box-tools pull-right">
         <!--<button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>-->
           <button id="upload-xls-file" type="button" class="btn btn-warning btn-sm"><i class="fa fa-plus"></i> Upload XLS File</button>
-          <button id="upload-file" type="button" class="btn btn-block btn-info btn-sm"><i class="fa fa-plus"></i> Upload TXT File</button>
+          <button id="upload-file" type="button" class="btn btn-info btn-sm"><i class="fa fa-plus"></i> Upload TXT File</button>
       </div>
     </div>
     <!-- /.box-header -->
@@ -517,6 +517,9 @@
     });
     $('#upload-file').on("click", function(){
         $('#upload-file-modal').modal('show');
+    });
+    $('#upload-xls-file').on("click", function(){
+        $('#upload-xls-file-modal').modal('show');
     });
     $("#TPELABUHAN_FK").select2({
         ajax: {
