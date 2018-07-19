@@ -157,7 +157,7 @@
                         </div>
                         <label class="col-sm-2 control-label">Tujuan</label>
                         <div class="col-sm-3">
-                            <input type="text" name="GUDANG_TUJUAN" value="AIRN" class="form-control">
+                            <input type="text" name="GUDANG_TUJUAN" value="ARN1" class="form-control">
                         </div>
                     </div>
                     <div class="form-group">
