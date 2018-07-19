@@ -865,10 +865,10 @@ class PenerimaanController extends Controller
 
             endforeach;
             
-            return json_encode(array('success' => true, 'message' => 'No. PLP '.$plp->NO_PLP.', job order berhasih dibuat.'));
+            return back()->with('success', 'SPK '. $joborder->NOSPK .' berhasil di buat.');
         }
         
-        return json_encode(array('success' => true, 'message' => 'Something went wrong, please try again later.'));
+        return back()->with('error', 'Tidak dapat membuat SPK.');
     }
     
     public function sppbBcPrint($id)
