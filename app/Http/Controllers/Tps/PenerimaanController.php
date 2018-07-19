@@ -772,7 +772,8 @@ class PenerimaanController extends Controller
                     $data = array();
                     $spk_last_id = \App\Models\Jobordercy::select('TJOBORDER_PK as id')->orderBy('TJOBORDER_PK', 'DESC')->first(); 
                     $regID = str_pad(intval((isset($spk_last_id->id) ? $spk_last_id->id : 0)+1), 4, '0', STR_PAD_LEFT);
-
+                    
+                    $data['NOSPK'] = $request->no_spk;
                     $data['NOJOBORDER'] = 'AIRNL'.$regID.'/'.date('y');
                     $data['NO_BC11'] = $plp->NO_BC11;
                     $data['NO_POS_BC11'] = $nopos;
@@ -819,7 +820,8 @@ class PenerimaanController extends Controller
                                 $joborder = \App\Models\Jobordercy::findOrFail($insert_id);
 
                                 $data = array();
-
+                                
+                                $data['NOSPK'] = $joborder->NOSPK;
                                 $data['NO_BL_AWB'] = $detailByPost->NO_BL_AWB;
                                 $data['TGL_BL_AWB'] = $detailByPost->TGL_BL_AWB;
                                 $data['NOCONTAINER'] = $detailByPost->NO_CONT;

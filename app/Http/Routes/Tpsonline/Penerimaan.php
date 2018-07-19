@@ -27,8 +27,8 @@ Route::group(['prefix' => 'tpsonline/penerimaan', 'namespace' => 'Tps'], functio
     ]);
     Route::post('/respon-plp/create-joborder/{id}', [
         'as' => 'tps-responPlp-create-joborder',
-        'uses' => 'PenerimaanController@responPlpCreateSingleSpk'
-//        'uses' => 'PenerimaanController@responPlpCreateJoborder'
+//        'uses' => 'PenerimaanController@responPlpCreateSingleSpk'
+        'uses' => 'PenerimaanController@responPlpCreateJoborder'
     ]);
     Route::post('/respon-plp/grid-data', function()
     {
