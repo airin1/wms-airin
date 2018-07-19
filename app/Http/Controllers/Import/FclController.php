@@ -333,6 +333,7 @@ class FclController extends Controller
             $data = array();
             $data['TJOBORDER_FK'] = $joborder->TJOBORDER_PK;
             $data['NoJob'] = $joborder->NOJOBORDER;
+            $data['NOSPK'] = $joborder->NOSPK;
             $data['NOMBL'] = $joborder->NOMBL;
             $data['TGLMBL'] = $joborder->TGLMBL;
             $data['NO_BC11'] = $joborder->NO_BC11;
@@ -498,6 +499,7 @@ class FclController extends Controller
             
             $data['TJOBORDER_FK'] = $joborder->TJOBORDER_PK;
             $data['NoJob'] = $joborder->NOJOBORDER;
+            $data['NOSPK'] = $joborder->NOSPK;
             $data['NOMBL'] = $joborder->NOMBL;
             $data['TGLMBL'] = $joborder->TGLMBL;
             $data['NO_BC11'] = $joborder->NO_BC11;

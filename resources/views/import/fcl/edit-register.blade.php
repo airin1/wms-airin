@@ -18,9 +18,15 @@
                 <div class="col-md-6">
                     <input name="_token" type="hidden" value="{{ csrf_token() }}">
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">No. SPK</label>
+                        <label class="col-sm-3 control-label">No. Job Order</label>
                         <div class="col-sm-8">
                             <input type="text" name="NOJOBORDER" class="form-control" value="{{ $joborder->NOJOBORDER }}" >
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">No. SPK</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="NOSPK" class="form-control" value="{{ $joborder->NOSPK }}">
                         </div>
                     </div>
                     <div class="form-group">
