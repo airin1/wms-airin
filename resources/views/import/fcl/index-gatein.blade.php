@@ -35,6 +35,7 @@
             $('#TGLKELUAR_TPK').val(rowdata.TGLKELUAR_TPK);
             $('#JAMKELUAR_TPK').val(rowdata.JAMKELUAR_TPK);
             $('#jenis_container').val(rowdata.jenis_container).trigger('change');
+            $('#TCONSOLIDATOR_FK').val(rowdata.TCONSOLIDATOR_FK).trigger('change');
             
 //            if(!rowdata.TGLMASUK && !rowdata.JAMMASUK) {
                 $('#btn-group-2').enableButtonGroup();
@@ -201,6 +202,7 @@
                     ->addColumn(array('label'=>'Jenis Container','index'=>'jenis_container','width'=>150))
                     ->addColumn(array('label'=>'No. Joborder','index'=>'NoJob','width'=>150))
                     ->addColumn(array('label'=>'Tgl. ETA','index'=>'ETA','width'=>120))
+                    ->addColumn(array('index'=>'TCONSOLIDATOR_FK','hidden'=>true))
                     ->addColumn(array('label'=>'Consolidator','index'=>'NAMACONSOLIDATOR','width'=>250))
                     ->addColumn(array('label'=>'No. BC11','index'=>'NO_BC11','width'=>120))
                     ->addColumn(array('label'=>'Tgl. BC11','index'=>'TGL_BC11','width'=>120,'hidden'=>true))
@@ -279,10 +281,21 @@
                             <input type="text" id="TGL_BC11" name="TGL_BC11" class="form-control" readonly>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="display: none;">
                         <label class="col-sm-3 control-label">Consolidator</label>
                         <div class="col-sm-8">
                             <input type="text" id="NAMACONSOLIDATOR" name="NAMACONSOLIDATOR" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Consolidator</label>
+                        <div class="col-sm-8">
+                            <select class="form-control select2" id="TCONSOLIDATOR_FK" name="TCONSOLIDATOR_FK" style="width: 100%;" tabindex="-1" aria-hidden="true" >
+                                <option value="">Choose Consolidator</option>
+                                @foreach($consolidators as $consolidator)
+                                    <option value="{{ $consolidator->id }}">{{ $consolidator->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
                 </div>

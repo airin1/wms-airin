@@ -71,6 +71,7 @@ class FclController extends Controller
         ];        
         
         $data['eseals'] = DBEseal::select('eseal_id as id','esealcode as code')->get();
+        $data['consolidators'] = DBConsolidator::select('TCONSOLIDATOR_PK as id','NAMACONSOLIDATOR as name')->get();
         
         return view('import.fcl.index-gatein')->with($data);
     }
@@ -547,6 +548,11 @@ class FclController extends Controller
         $data = $request->json()->all(); 
         unset($data['TCONTAINER_PK'], $data['_token']);
         
+        $namaconsolidator = DBConsolidator::select('NAMACONSOLIDATOR','NPWP')->where('TCONSOLIDATOR_PK',$data['TCONSOLIDATOR_FK'])->first();
+        if($namaconsolidator) {
+            $data['NAMACONSOLIDATOR'] = $namaconsolidator->NAMACONSOLIDATOR;
+            $data['ID_CONSOLIDATOR'] = str_replace(array('.','-'),array('',''),$namaconsolidator->NPWP);
+        }
         $teus = DBContainer::select('TEUS')->where('TCONTAINER_PK', $id)->first();
 
         $update = DBContainer::where('TCONTAINER_PK', $id)
