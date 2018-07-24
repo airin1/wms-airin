@@ -20,7 +20,7 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label">No. Job Order</label>
                         <div class="col-sm-8">
-                            <input type="text" name="NOJOBORDER" class="form-control" value="{{ $joborder->NOJOBORDER }}" >
+                            <input type="text" name="NOJOBORDER" class="form-control" value="{{ $joborder->NOJOBORDER }}" readonly>
                         </div>
                     </div>
                     <div class="form-group">

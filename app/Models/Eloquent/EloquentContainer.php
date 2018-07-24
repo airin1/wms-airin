@@ -36,7 +36,7 @@ class EloquentContainer {
         $data['TEUS'] = $data['SIZE'] / 20;
         $data['TJOBORDER_FK'] = $joborder->TJOBORDER_PK;
         $data['NoJob'] = $joborder->NOJOBORDER;
-//        $data['NOSPK'] = $joborder->NOSPK;
+        $data['NOSPK'] = $joborder->NOSPK;
         $data['NO_BC11'] = $joborder->TNO_BC11;
         $data['TGL_BC11'] = $joborder->TTGL_BC11;
         $data['NO_PLP'] = $joborder->TNO_PLP;
@@ -94,6 +94,35 @@ class EloquentContainer {
       
       $data['TEUS'] = $data['SIZE'] / 20;
       $data['UID'] = \Auth::getUser()->name;
+      
+      // COPY JOBORDER
+        $joborder = \App\Models\Joborder::findOrFail($joborder_id);
+        
+        $data['TEUS'] = $data['SIZE'] / 20;
+        $data['TJOBORDER_FK'] = $joborder->TJOBORDER_PK;
+        $data['NoJob'] = $joborder->NOJOBORDER;
+        $data['NOSPK'] = $joborder->NOSPK;
+        $data['NO_BC11'] = $joborder->TNO_BC11;
+        $data['TGL_BC11'] = $joborder->TTGL_BC11;
+        $data['NO_PLP'] = $joborder->TNO_PLP;
+        $data['TGL_PLP'] = $joborder->TTGL_PLP;
+        $data['TCONSOLIDATOR_FK'] = $joborder->TCONSOLIDATOR_FK;
+        $data['NAMACONSOLIDATOR'] = $joborder->NAMACONSOLIDATOR;
+        $data['TLOKASISANDAR_FK'] = $joborder->TLOKASISANDAR_FK;
+        $data['ETA'] = $joborder->ETA;
+        $data['ETD'] = $joborder->ETD;
+        $data['VESSEL'] = $joborder->VESSEL;
+        $data['VOY'] = $joborder->VOY;
+        $data['TPELABUHAN_FK'] = $joborder->TPELABUHAN_FK;
+        $data['NAMAPELABUHAN'] = $joborder->NAMAPELABUHAN;
+        $data['PEL_MUAT'] = $joborder->PEL_MUAT;
+        $data['PEL_BONGKAR'] = $joborder->PEL_BONGKAR;
+        $data['PEL_TRANSIT'] = $joborder->PEL_TRANSIT;
+        $data['NOMBL'] = $joborder->NOMBL;
+        $data['TGL_MASTER_BL'] = $joborder->TGL_MASTER_BL;
+        $data['KD_TPS_ASAL'] = $joborder->KD_TPS_ASAL;
+        $data['KD_TPS_TUJUAN'] = $joborder->GUDANG_TUJUAN;
+        $data['CALL_SIGN'] = $joborder->CALLSIGN;
       
       foreach ($data as $key => $value)
       {

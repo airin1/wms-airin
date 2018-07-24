@@ -370,6 +370,7 @@ class LclController extends Controller
             
             $data['TJOBORDER_FK'] = $joborder->TJOBORDER_PK;
             $data['NoJob'] = $joborder->NOJOBORDER;
+            $data['NOSPK'] = $joborder->NOSPK;
             $data['NO_BC11'] = $joborder->TNO_BC11;
             $data['TGL_BC11'] = $joborder->TTGL_BC11;
             $data['NO_PLP'] = $joborder->NO_PLP;
@@ -526,6 +527,7 @@ class LclController extends Controller
             $data = array();
             $data['TJOBORDER_FK'] = $joborder->TJOBORDER_PK;
             $data['NoJob'] = $joborder->NOJOBORDER;
+            $data['NOSPK'] = $joborder->NOSPK;
             $data['NO_BC11'] = $joborder->TNO_BC11;
             $data['TGL_BC11'] = $joborder->TTGL_BC11;
             $data['NO_PLP'] = $joborder->TNO_PLP;

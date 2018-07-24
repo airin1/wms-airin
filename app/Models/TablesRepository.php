@@ -148,13 +148,13 @@ class TablesRepository extends EloquentRepositoryAbstract {
             if(isset($request['startdate']) || isset($request['enddate'])){
                 
                 $Model = \DB::table('tjoborder')->join('tcontainer', 'tjoborder.TJOBORDER_PK', '=', 'tcontainer.TJOBORDER_FK')
-                        ->select('tjoborder.*','tcontainer.NOMBL as tcontainer.NOMBL','tcontainer.TGL_MASTER_BL as tcontainer.TGL_MASTER_BL','tjoborder.NAMACONSOLIDATOR as tjoborder.NAMACONSOLIDATOR','tcontainer.*')
+                        ->select('tjoborder.*','tcontainer.NOMBL as tcontainer.NOMBL','tcontainer.TGL_MASTER_BL as tcontainer.TGL_MASTER_BL','tcontainer.NOSPK as tcontainer.NOSPK','tjoborder.NAMACONSOLIDATOR as tjoborder.NAMACONSOLIDATOR','tcontainer.*')
                         ->where('tcontainer.TGLENTRY', '>=',date('Y-m-d 00:00:00',strtotime($request['startdate'])))
                         ->where('tcontainer.TGLENTRY', '<=',date('Y-m-d 23:59:59',strtotime($request['enddate'])));
                 
             }else{
                 $Model = \DB::table('tjoborder')
-                        ->select('tjoborder.*','tcontainer.NOMBL as tcontainer.NOMBL','tcontainer.TGL_MASTER_BL as tcontainer.TGL_MASTER_BL','tjoborder.NAMACONSOLIDATOR as tjoborder.NAMACONSOLIDATOR','tcontainer.*')
+                        ->select('tjoborder.*','tcontainer.NOMBL as tcontainer.NOMBL','tcontainer.TGL_MASTER_BL as tcontainer.TGL_MASTER_BL','tcontainer.NOSPK as tcontainer.NOSPK','tjoborder.NAMACONSOLIDATOR as tjoborder.NAMACONSOLIDATOR')
                         ->join('tcontainer', 'tjoborder.TJOBORDER_PK', '=', 'tcontainer.TJOBORDER_FK');
             }
             
@@ -168,13 +168,13 @@ class TablesRepository extends EloquentRepositoryAbstract {
             }elseif(isset($request['startdate']) || isset($request['enddate'])){
                 
                 $Model = \DB::table('tjobordercy')->join('tcontainercy', 'tjobordercy.TJOBORDER_PK', '=', 'tcontainercy.TJOBORDER_FK')
-                        ->select('tjobordercy.*','tcontainercy.*','tcontainercy.CONSIGNEE as tcontainercy.CONSIGNEE')
+                        ->select('tjobordercy.*','tcontainercy.*','tcontainercy.CONSIGNEE as tcontainercy.CONSIGNEE','tcontainer.NOSPK as tcontainer.NOSPK')
                         ->where('tcontainercy.TGLENTRY', '>=',date('Y-m-d 00:00:00',strtotime($request['startdate'])))
                         ->where('tcontainercy.TGLENTRY', '<=',date('Y-m-d 23:59:59',strtotime($request['enddate'])));
                 
             }else{
                 $Model = \DB::table('tjobordercy')
-                        ->select('tjobordercy.*','tcontainercy.*','tcontainercy.CONSIGNEE as tcontainercy.CONSIGNEE')
+                        ->select('tjobordercy.*','tcontainercy.*','tcontainercy.CONSIGNEE as tcontainercy.CONSIGNEE','tcontainer.NOSPK as tcontainer.NOSPK')
                         ->join('tcontainercy', 'tjobordercy.TJOBORDER_PK', '=', 'tcontainercy.TJOBORDER_FK');
             }
             
