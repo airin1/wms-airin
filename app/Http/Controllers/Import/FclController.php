@@ -1055,7 +1055,7 @@ class FclController extends Controller
                 $coaricontdetail->NO_VOY_FLIGHT = (!empty($container->VOY) ? $container->VOY : 0);
                 $coaricontdetail->CALL_SIGN = (!empty($container->CALL_SIGN) ? $container->CALL_SIGN : 0);
                 $coaricontdetail->TGL_TIBA = (!empty($container->ETA) ? date('Ymd', strtotime($container->ETA)) : '');
-                $coaricontdetail->KD_GUDANG = 'AIRN';
+                $coaricontdetail->KD_GUDANG = $container->KODE_GUDANG;
                 $coaricontdetail->NO_CONT = $container->NOCONTAINER;
                 $coaricontdetail->UK_CONT = $container->SIZE;
                 $coaricontdetail->NO_SEGEL = $container->NO_SEAL;
@@ -1064,8 +1064,8 @@ class FclController extends Controller
                 $coaricontdetail->TGL_BL_AWB = (!empty($container->TGL_BL_AWB) ? date('Ymd', strtotime($container->TGL_BL_AWB)) : '');
                 $coaricontdetail->NO_MASTER_BL_AWB = $container->NOMBL;
                 $coaricontdetail->TGL_MASTER_BL_AWB = (!empty($container->TGL_MASTER_BL) ? date('Ymd', strtotime($container->TGL_MASTER_BL)) : '');
-                $coaricontdetail->ID_CONSIGNEE = $container->ID_CONSOLIDATOR;
-                $coaricontdetail->CONSIGNEE = $container->NAMACONSOLIDATOR;
+                $coaricontdetail->ID_CONSIGNEE = $container->ID_CONSIGNEE;
+                $coaricontdetail->CONSIGNEE = $container->CONSIGNEE;
                 $coaricontdetail->BRUTO = (!empty($container->WEIGHT) ? $container->WEIGHT : 0);
                 $coaricontdetail->NO_BC11 = $container->NO_BC11;
                 $coaricontdetail->TGL_BC11 = (!empty($container->TGL_BC11) ? date('Ymd', strtotime($container->TGL_BC11)) : '');
@@ -1082,7 +1082,7 @@ class FclController extends Controller
                 $coaricontdetail->PEL_MUAT = $container->PEL_MUAT;
                 $coaricontdetail->PEL_TRANSIT = $container->PEL_TRANSIT;
                 $coaricontdetail->PEL_BONGKAR = $container->PEL_BONGKAR;
-                $coaricontdetail->GUDANG_TUJUAN = 'AIRN';
+                $coaricontdetail->GUDANG_TUJUAN = $container->GUDANG_TUJUAN;
                 $coaricontdetail->UID = \Auth::getUser()->name;
                 $coaricontdetail->NOURUT = 1;
                 $coaricontdetail->RESPONSE = '';
@@ -1160,7 +1160,7 @@ class FclController extends Controller
                 $codecocontdetail->NO_VOY_FLIGHT = (!empty($container->VOY) ? $container->VOY : 0);
                 $codecocontdetail->CALL_SIGN = (!empty($container->CALLSIGN) ? $container->CALLSIGN : 0);
                 $codecocontdetail->TGL_TIBA = (!empty($container->ETA) ? date('Ymd', strtotime($container->ETA)) : '');
-                $codecocontdetail->KD_GUDANG = 'AIRN';
+                $codecocontdetail->KD_GUDANG = $container->KODE_GUDANG;
                 $codecocontdetail->NO_CONT = $container->NOCONTAINER;
                 $codecocontdetail->UK_CONT = $container->SIZE;
                 $codecocontdetail->NO_SEGEL = $container->NOSEGEL;
@@ -1189,7 +1189,7 @@ class FclController extends Controller
                 $codecocontdetail->PEL_MUAT = $container->PEL_MUAT;
                 $codecocontdetail->PEL_TRANSIT = $container->PEL_TRANSIT;
                 $codecocontdetail->PEL_BONGKAR = $container->PEL_BONGKAR;
-                $codecocontdetail->GUDANG_TUJUAN = 'AIRN';
+                $codecocontdetail->GUDANG_TUJUAN = $container->GUDANG_TUJUAN;;
                 $codecocontdetail->UID = \Auth::getUser()->name;
                 $codecocontdetail->NOURUT = 1;
                 $codecocontdetail->RESPONSE = '';

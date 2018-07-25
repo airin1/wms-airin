@@ -661,7 +661,7 @@ class PenerimaanController extends Controller
 //            $data['NO_POS_BC11'] = $nopos;
             $data['TNO_PLP'] = $plp->NO_PLP;
             $data['GUDANG_TUJUAN'] = $plp->GUDANG_TUJUAN;
-            $data['KODE_GUDANG'] = $plp->KD_TPS;
+            $data['KODE_GUDANG'] = $plp->GUDANG_TUJUAN;
             $data['VESSEL'] = $plp->NM_ANGKUT;
             $data['CALLSIGN'] = $plp->CALL_SIGN;
             $data['VOY'] = $plp->NO_VOY_FLIGHT;
@@ -734,6 +734,7 @@ class PenerimaanController extends Controller
                     $data['PEL_TRANSIT'] = $joborder->PEL_TRANSIT;
                     $data['KD_TPS_ASAL'] = $joborder->KD_TPS_ASAL;
                     $data['GUDANG_TUJUAN'] = $joborder->GUDANG_TUJUAN;
+                    $data['KODE_GUDANG'] = $joborder->KODE_GUDANG;
                     $data['CALLSIGN'] = $joborder->CALLSIGN;
                     $data['UID'] = \Auth::getUser()->name;
 

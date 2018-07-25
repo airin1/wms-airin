@@ -1138,7 +1138,7 @@ class LclController extends Controller
                 $coaricontdetail->NO_VOY_FLIGHT = (!empty($container->VOY) ? $container->VOY : 0);
                 $coaricontdetail->CALL_SIGN = (!empty($container->CALL_SIGN) ? $container->CALL_SIGN : 0);
                 $coaricontdetail->TGL_TIBA = (!empty($container->ETA) ? date('Ymd', strtotime($container->ETA)) : '');
-                $coaricontdetail->KD_GUDANG = 'AIRN';
+                $coaricontdetail->KD_GUDANG = $container->LOKASI_GUDANG;
                 $coaricontdetail->NO_CONT = $container->NOCONTAINER;
                 $coaricontdetail->UK_CONT = $container->SIZE;
                 $coaricontdetail->NO_SEGEL = $container->NO_SEAL;
@@ -1165,7 +1165,7 @@ class LclController extends Controller
                 $coaricontdetail->PEL_MUAT = $container->PEL_MUAT;
                 $coaricontdetail->PEL_TRANSIT = $container->PEL_TRANSIT;
                 $coaricontdetail->PEL_BONGKAR = $container->PEL_BONGKAR;
-                $coaricontdetail->GUDANG_TUJUAN = 'AIRN';
+                $coaricontdetail->GUDANG_TUJUAN = $container->LOKASI_GUDANG;
                 $coaricontdetail->UID = \Auth::getUser()->name;
                 $coaricontdetail->NOURUT = 1;
                 $coaricontdetail->RESPONSE = '';
@@ -1243,7 +1243,7 @@ class LclController extends Controller
                 $codecocontdetail->NO_VOY_FLIGHT = (!empty($container->VOY) ? $container->VOY : 0);
                 $codecocontdetail->CALL_SIGN = (!empty($container->CALL_SIGN) ? $container->CALL_SIGN : 0);
                 $codecocontdetail->TGL_TIBA = (!empty($container->ETA) ? date('Ymd', strtotime($container->ETA)) : '');
-                $codecocontdetail->KD_GUDANG = 'AIRN';
+                $codecocontdetail->KD_GUDANG = $container->LOKASI_GUDANG;
                 $codecocontdetail->NO_CONT = $container->NOCONTAINER;
                 $codecocontdetail->UK_CONT = $container->SIZE;
                 $codecocontdetail->NO_SEGEL = $container->NO_SEAL;
@@ -1270,7 +1270,7 @@ class LclController extends Controller
                 $codecocontdetail->PEL_MUAT = $container->PEL_MUAT;
                 $codecocontdetail->PEL_TRANSIT = $container->PEL_TRANSIT;
                 $codecocontdetail->PEL_BONGKAR = $container->PEL_BONGKAR;
-                $codecocontdetail->GUDANG_TUJUAN = 'AIRN';
+                $codecocontdetail->GUDANG_TUJUAN = $container->LOKASI_GUDANG;
                 $codecocontdetail->UID = \Auth::getUser()->name;
                 $codecocontdetail->NOURUT = 1;
                 $codecocontdetail->RESPONSE = '';
@@ -1514,7 +1514,7 @@ class LclController extends Controller
                 $codecokmsdetail->NO_VOY_FLIGHT = $manifest->VOY;
                 $codecokmsdetail->CALL_SIGN = $manifest->CALL_SIGN;
                 $codecokmsdetail->TGL_TIBA = (!empty($manifest->ETA) ? date('Ymd', strtotime($manifest->ETA)) : '');
-                $codecokmsdetail->KD_GUDANG = 'AIRN';
+                $codecokmsdetail->KD_GUDANG = $manifest->LOKASI_GUDANG;
                 $codecokmsdetail->NO_BL_AWB = $manifest->NOHBL;
                 $codecokmsdetail->TGL_BL_AWB = (!empty($manifest->TGL_HBL) ? date('Ymd', strtotime($manifest->TGL_HBL)) : '');
                 $codecokmsdetail->NO_MASTER_BL_AWB = $manifest->NOMBL;
@@ -1539,7 +1539,7 @@ class LclController extends Controller
                 $codecokmsdetail->PEL_MUAT = $manifest->PEL_MUAT;
                 $codecokmsdetail->PEL_TRANSIT = $manifest->PEL_TRANSIT;
                 $codecokmsdetail->PEL_BONGKAR = $manifest->PEL_BONGKAR;
-                $codecokmsdetail->GUDANG_TUJUAN = 'AIRN';
+                $codecokmsdetail->GUDANG_TUJUAN = $manifest->LOKASI_GUDANG;
                 $codecokmsdetail->UID = \Auth::getUser()->name;
                 $codecokmsdetail->RESPONSE = '';
                 $codecokmsdetail->STATUS_TPS = 1;

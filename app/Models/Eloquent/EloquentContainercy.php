@@ -62,6 +62,7 @@ class EloquentContainercy {
         $data['PEL_TRANSIT'] = $joborder->PEL_TRANSIT;
         $data['KD_TPS_ASAL'] = $joborder->KD_TPS_ASAL;
         $data['GUDANG_TUJUAN'] = $joborder->GUDANG_TUJUAN;
+        $data['KODE_GUDANG'] = $joborder->KODE_GUDANG;
         $data['CALLSIGN'] = $joborder->CALLSIGN;
         $data['UID'] = \Auth::getUser()->name;
 
@@ -129,6 +130,7 @@ class EloquentContainercy {
         $data['PEL_TRANSIT'] = $joborder->PEL_TRANSIT;
         $data['KD_TPS_ASAL'] = $joborder->KD_TPS_ASAL;
         $data['GUDANG_TUJUAN'] = $joborder->GUDANG_TUJUAN;
+        $data['KODE_GUDANG'] = $joborder->KODE_GUDANG;
         $data['CALLSIGN'] = $joborder->CALLSIGN;
         $data['TEUS'] = $data['SIZE'] / 20;
         $data['UID'] = \Auth::getUser()->name;

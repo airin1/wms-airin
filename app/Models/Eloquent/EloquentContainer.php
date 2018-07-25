@@ -56,7 +56,8 @@ class EloquentContainer {
         $data['NOMBL'] = $joborder->NOMBL;
         $data['TGL_MASTER_BL'] = $joborder->TGL_MASTER_BL;
         $data['KD_TPS_ASAL'] = $joborder->KD_TPS_ASAL;
-        $data['KD_TPS_TUJUAN'] = $joborder->GUDANG_TUJUAN;
+        $data['KD_TPS_TUJUAN'] = 'AIRN';
+        $data['LOKASI_GUDANG'] = $joborder->GUDANG_TUJUAN;
         $data['CALL_SIGN'] = $joborder->CALLSIGN;
 
         try
@@ -121,7 +122,8 @@ class EloquentContainer {
         $data['NOMBL'] = $joborder->NOMBL;
         $data['TGL_MASTER_BL'] = $joborder->TGL_MASTER_BL;
         $data['KD_TPS_ASAL'] = $joborder->KD_TPS_ASAL;
-        $data['KD_TPS_TUJUAN'] = $joborder->GUDANG_TUJUAN;
+        $data['KD_TPS_TUJUAN'] = 'AIRN';
+        $data['LOKASI_GUDANG'] = $joborder->GUDANG_TUJUAN;
         $data['CALL_SIGN'] = $joborder->CALLSIGN;
       
       foreach ($data as $key => $value)
