@@ -154,7 +154,7 @@ class TablesRepository extends EloquentRepositoryAbstract {
                 
             }else{
                 $Model = \DB::table('tjoborder')
-                        ->select('tjoborder.*','tcontainer.NOMBL as tcontainer.NOMBL','tcontainer.TGL_MASTER_BL as tcontainer.TGL_MASTER_BL','tcontainer.NOSPK as tcontainer.NOSPK','tjoborder.NAMACONSOLIDATOR as tjoborder.NAMACONSOLIDATOR')
+                        ->select('tjoborder.*','tcontainer.NOMBL as tcontainer.NOMBL','tcontainer.TGL_MASTER_BL as tcontainer.TGL_MASTER_BL','tcontainer.NOSPK as tcontainer.NOSPK','tjoborder.NAMACONSOLIDATOR as tjoborder.NAMACONSOLIDATOR','tcontainer.*')
                         ->join('tcontainer', 'tjoborder.TJOBORDER_PK', '=', 'tcontainer.TJOBORDER_FK');
             }
             
