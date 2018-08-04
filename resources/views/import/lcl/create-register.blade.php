@@ -159,11 +159,11 @@
                     <div class="form-group">                       
                         <label class="col-sm-3 control-label">Kode Gudang</label>
                         <div class="col-sm-3">
-                            <input type="text" name="KODE_GUDANG" value="AIRN" class="form-control">
+                            <input type="text" name="KODE_GUDANG" value="ARN1" class="form-control" required>
                         </div>
                         <label class="col-sm-2 control-label">Tujuan</label>
                         <div class="col-sm-3">
-                            <input type="text" name="GUDANG_TUJUAN" value="ARN1" class="form-control">
+                            <input type="text" name="GUDANG_TUJUAN" value="ARN1" class="form-control" required>
                         </div>
                     </div>
                     <div class="form-group">

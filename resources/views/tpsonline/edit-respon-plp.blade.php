@@ -282,7 +282,7 @@
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
               <h4 class="modal-title">Create SPK Form</h4>
             </div>
-            <form class="form-horizontal" action="{{ route("tps-responPlp-create-joborder", $respon->tps_responplptujuanxml_pk) }}" method="POST" enctype="multipart/form-data">
+            <form class="form-horizontal" id="createJobForm" action="{{ route("tps-responPlp-create-joborder", $respon->tps_responplptujuanxml_pk) }}" method="POST" enctype="multipart/form-data">
                 <div class="modal-body"> 
                     <div class="row">
                         <div class="col-md-12">
@@ -290,7 +290,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">NO. SPK</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" name="no_spk" />
+                                    <input type="text" class="form-control" name="no_spk" required />
                                 </div>
                             </div>
                             
@@ -299,7 +299,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary">Create</button>
+                  <button type="submit" id="createJobBtn" class="btn btn-primary">Create</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->
@@ -368,6 +368,11 @@
         }else{
             alert('Please Select Container.');
         }
+    });
+    
+    $('#createJobForm').submit(function(){
+        if(!confirm('Apakah anda yakin akan membuat Job Order?')){return false;}
+        $('#createJobBtn').text('Please Wait...').attr("disabled", true);
     });
     
     $('#createJoborderBtn').click(function()
