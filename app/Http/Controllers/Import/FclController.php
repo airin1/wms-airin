@@ -721,6 +721,30 @@ class FclController extends Controller
         if($kd_dok):
             $data['KODE_DOKUMEN'] = $kd_dok->name;
         endif;
+        
+        if(empty($data['TGLRELEASE']) || $data['TGLRELEASE'] == '0000-00-00'){
+            $data['TGLRELEASE'] = NULL;
+            $data['JAMRELEASE'] = NULL;
+        }
+        
+        if($container->release_bc == 'Y'){
+            $data['status_bc'] = 'RELEASE';
+        }else{
+            if($data['KD_DOK_INOUT'] > 1){
+                $data['status_bc'] = 'HOLD';
+                $data['TGLRELEASE'] = NULL;
+                $data['JAMRELEASE'] = NULL;
+            }else{
+                if($container->flag_bc == 'Y'){
+                    $data['status_bc'] = 'HOLD';
+                    $data['TGLRELEASE'] = NULL;
+                    $data['JAMRELEASE'] = NULL;
+                }else{
+                    $data['status_bc'] = 'RELEASE';
+                }
+            }
+        }
+        
         $data['TGLFIAT'] = $data['TGLRELEASE'];
         $data['JAMFIAT'] = $data['JAMRELEASE'];
         $data['TGLSURATJALAN'] = $data['TGLRELEASE'];
@@ -1508,5 +1532,22 @@ class FclController extends Controller
 //        return $container;
         return back()->with('error', 'Something went wrong, please try again later.');
 //        return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
+    }
+    
+    public function changeStatusBc($id)
+    {
+    
+        $container = DBContainer::find($id);
+        $container->status_bc = 'RELEASE';
+        $container->release_bc = 'Y';
+        $container->release_bc_date = date('Y-m-d H:i:s');
+        $container->release_bc_uid = \Auth::getUser()->name;
+              
+        if($container->save()){
+
+            return json_encode(array('success' => true, 'message' => 'Status has been Change!'));
+        }
+        
+        return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
     }
 }

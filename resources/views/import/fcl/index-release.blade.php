@@ -19,6 +19,9 @@
             if(rowdata.VALIDASI == 'Y') {
                 $("#" + cl).find("td").css("color", "#666");
             }
+            if(rowdata.status_bc == 'HOLD') {
+                $("#" + cl).find("td").css("background-color", "#ffe500");
+            }
             if(rowdata.flag_bc == 'Y') {
                 $("#" + cl).find("td").css("color", "#FF0000");
             } 
@@ -74,6 +77,7 @@
             $('#ID_CONSIGNEE').val(rowdata.ID_CONSIGNEE);
             $('#KD_DOK_INOUT').val(rowdata.KD_DOK_INOUT).trigger('change');
             $('#bcf_consignee').val(rowdata.bcf_consignee).trigger('change');
+            $('#KD_TPS_ASAL').val(rowdata.KD_TPS_ASAL);
 
 //            if(!rowdata.TGLRELEASE && !rowdata.JAMRELEASE) {
                 $('#btn-group-2').enableButtonGroup();
@@ -226,6 +230,8 @@
                     ->setFilterToolbarOptions(array('autosearch'=>true))
                     ->setGridEvent('onSelectRow', 'onSelectRowEvent')
                     ->addColumn(array('key'=>true,'index'=>'TCONTAINER_PK','hidden'=>true))
+                    ->addColumn(array('label'=>'Status BC','index'=>'status_bc','width'=>100, 'align'=>'center'))
+                    ->addColumn(array('label'=>'Flag','index'=>'flag_bc','width'=>80, 'align'=>'center'))
                     ->addColumn(array('label'=>'No. Container','index'=>'NOCONTAINER','width'=>160,'editable' => true, 'editrules' => array('required' => true)))
                     ->addColumn(array('label'=>'No. SPK','index'=>'NoJob','width'=>160))
                     ->addColumn(array('label'=>'No. MBL','index'=>'NOMBL','width'=>160))
@@ -352,7 +358,7 @@
                             <input type="text" id="TGL_SPPB" name="TGL_SPPB" class="form-control" readonly>
                         </div>
                     </div>-->
-                    <div class="form-group">
+<!--                    <div class="form-group">
                         <label class="col-sm-3 control-label">No.SPJM</label>
                         <div class="col-sm-3">
                             <input type="text" id="NO_SPJM" name="NO_SPJM" class="form-control" readonly>
@@ -361,7 +367,7 @@
                         <div class="col-sm-3">
                             <input type="text" id="TGL_SPJM" name="TGL_SPJM" class="form-control" readonly>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Consignee</label>
                         <div class="col-sm-8">
@@ -431,12 +437,12 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group">
+<!--                    <div class="form-group">
                         <label class="col-sm-3 control-label">No. Kuitansi</label>
                         <div class="col-sm-8">
                             <input type="text" id="NO_KUITANSI" name="NO_KUITANSI" class="form-control" required>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="form-group">
                         <label class="col-sm-3 control-label">No. B/L AWB</label>
                         <div class="col-sm-8">

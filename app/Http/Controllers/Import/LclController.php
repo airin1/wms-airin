@@ -779,7 +779,7 @@ class LclController extends Controller
         $data = $request->json()->all(); 
         unset($data['TMANIFEST_PK'], $data['_token']);
         
-        $meas = DBManifest::select('MEAS')->where('TMANIFEST_PK', $id)->first();
+        $manifest = DBManifest::select('MEAS')->where('TMANIFEST_PK', $id)->first();
         
         if(empty($data['NOTALLY'])) {
             $manifestID = DBManifest::select('NOTALLY')->where('NOTALLY', NULL)->count();
@@ -792,6 +792,25 @@ class LclController extends Controller
         if($kode_dok){
             $data['KODE_DOKUMEN'] = $kode_dok->name;
         }
+        
+        if($manifest->release_bc == 'Y'){
+            $data['status_bc'] = 'RELEASE';
+        }else{
+            if($data['KD_DOK_INOUT'] > 1){
+                $data['status_bc'] = 'HOLD';
+                $data['tglrelease'] = NULL;
+                $data['jamrelease'] = NULL;
+            }else{
+                if($manifest->flag_bc == 'Y'){
+                    $data['status_bc'] = 'HOLD';
+                    $data['tglrelease'] = NULL;
+                    $data['jamrelease'] = NULL;
+                }else{
+                    $data['status_bc'] = 'RELEASE';
+                }
+            }
+        }
+        
         $data['TGLSURATJALAN'] = $data['tglrelease'];
         $data['JAMSURATJALAN'] = $data['jamrelease'];
         $data['tglfiat'] = $data['tglrelease'];
@@ -804,7 +823,7 @@ class LclController extends Controller
             ->update($data);
         
         if($update){
-            $sor = $this->updateSor('release', $meas->MEAS);
+            $sor = $this->updateSor('release', $manifest->MEAS);
 
             return json_encode(array('success' => true, 'message' => 'Release successfully updated!'));
         }
@@ -2002,6 +2021,23 @@ class LclController extends Controller
         }
         
         return back()->with('error', 'Please upload EXCEL file format.')->withInput();
+    }
+    
+    public function changeStatusBc($id)
+    {
+    
+        $manifest = DBManifest::find($id);
+        $manifest->status_bc = 'RELEASE';
+        $manifest->release_bc = 'Y';
+        $manifest->release_bc_date = date('Y-m-d H:i:s');
+        $manifest->release_bc_uid = \Auth::getUser()->name;
+        
+        if($manifest->save()){
+
+            return json_encode(array('success' => true, 'message' => 'Status has been Change!'));
+        }
+        
+        return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
     }
     
 }

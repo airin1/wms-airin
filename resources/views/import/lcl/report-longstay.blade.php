@@ -10,9 +10,70 @@
         var colweightSum = $grid.jqGrid('getCol', 'WEIGHT', false, 'sum');
         var colmeasSum = $grid.jqGrid('getCol', 'MEAS', false, 'sum');
         
-        $grid.jqGrid('footerData', 'set', { WEIGHT: precisionRound(colweightSum, 4) });
-        $grid.jqGrid('footerData', 'set', { MEAS: precisionRound(colmeasSum, 4) });
+//        $grid.jqGrid('footerData', 'set', { WEIGHT: precisionRound(colweightSum, 4) });
+//        $grid.jqGrid('footerData', 'set', { MEAS: precisionRound(colmeasSum, 4) });
+
+        var ids = jQuery("#lcllongstayGrid").jqGrid('getDataIDs'),
+            apv = '';   
+            
+        for(var i=0;i < ids.length;i++){ 
+            var cl = ids[i];
+            
+            rowdata = $('#lcllongstayGrid').getRowData(cl);
+            
+//            if(rowdata.tglmasuk && rowdata.tglrelease == ''){
+//                lt = jQuery.timeago(rowdata.tglmasuk+' '+rowdata.jammasuk);
+//            }else if(rowdata.tglmasuk == ''){
+//                lt = 'Belum GateIn';
+//            }else{
+//                lt = 'Sudah Release';
+//            }
+            
+            if(rowdata.status_bc == 'HOLD') {
+                apv = '<button style="margin:5px;" class="btn btn-danger btn-xs" data-id="'+cl+'" onclick="if (confirm(\'Are You Sure to change status HOLD to RELEASE ?\')){ changeStatus('+cl+'); }else{return false;};"><i class="fa fa-check"></i> RELEASE</button>';
+            }else{
+                apv = '';
+            }
+            
+            if(rowdata.status_bc == 'HOLD') {
+                $("#" + cl).find("td").css("background-color", "#ffe500");
+            }
+            if(rowdata.flag_bc == 'Y') {
+                $("#" + cl).find("td").css("color", "#FF0000");
+            }  
+            
+            jQuery("#lcllongstayGrid").jqGrid('setRowData',ids[i],{action:apv}); 
+        }
     
+    }
+    
+    function changeStatus($id)
+    {
+        $.ajax({
+            type: 'GET',
+            dataType : 'json',
+            url: "{{ route('lcl-change-status','') }}/"+$id,
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert('Something went wrong, please try again later.');
+            },
+            beforeSend:function()
+            {
+
+            },
+            success:function(json)
+            {
+                if(json.success) {
+                    $('#btn-toolbar').showAlertAfterElement('alert-success alert-custom', json.message, 5000);
+                    $('#fcllongstayGrid').jqGrid().trigger("reloadGrid");
+                } else {
+                    $('#btn-toolbar').showAlertAfterElement('alert-danger alert-custom', json.message, 5000);
+                }
+
+                //Triggers the "Refresh" button funcionality.
+                $('#btn-refresh').click();
+            }
+        });
     }
     
     function precisionRound(number, precision) {
@@ -82,13 +143,16 @@
             ->setGridOption('height', '320')
             ->setGridOption('rowList',array(50,100,200,500))
             ->setGridOption('useColSpanStyle', true)
-            ->setGridOption('footerrow', true)
+//            ->setGridOption('footerrow', true)
             ->setNavigatorOptions('navigator', array('viewtext'=>'view'))
             ->setNavigatorOptions('view',array('closeOnEscape'=>false))
             ->setFilterToolbarOptions(array('autosearch'=>true))
             ->setGridEvent('gridComplete', 'gridCompleteEvent')
 //            ->setGridEvent('onSelectRow', 'onSelectRowEvent')
             ->addColumn(array('key'=>true,'index'=>'TMANIFEST_PK','hidden'=>true))
+            ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>100, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
+            ->addColumn(array('label'=>'Status BC','index'=>'status_bc', 'width'=>80,'align'=>'center'))
+            ->addColumn(array('label'=>'Flag','index'=>'flag_bc', 'width'=>80,'align'=>'center'))
             ->addColumn(array('label'=>'No. Joborder','index'=>'NOJOBORDER', 'width'=>150))
             ->addColumn(array('label'=>'Nama Angkut','index'=>'VESSEL','width'=>160))
             ->addColumn(array('label'=>'Call Sign','index'=>'CALL_SIGN','width'=>100,'align'=>'center'))

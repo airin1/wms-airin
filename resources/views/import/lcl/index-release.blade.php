@@ -19,6 +19,9 @@
             if(rowdata.VALIDASI == 'Y') {
                 $("#" + cl).find("td").css("color", "#666");
             }
+            if(rowdata.status_bc == 'HOLD') {
+                $("#" + cl).find("td").css("background-color", "#ffe500");
+            }
             if(rowdata.flag_bc == 'Y') {
                 $("#" + cl).find("td").css("color", "#FF0000");
             } 
@@ -266,6 +269,8 @@
                     ->setGridEvent('gridComplete', 'gridCompleteEvent')
                     ->setGridEvent('onSelectRow', 'onSelectRowEvent')
                     ->addColumn(array('key'=>true,'index'=>'TMANIFEST_PK','hidden'=>true))
+                    ->addColumn(array('label'=>'Status BC','index'=>'status_bc','width'=>100, 'align'=>'center'))
+                    ->addColumn(array('label'=>'Flag','index'=>'flag_bc','width'=>80, 'align'=>'center'))
                     ->addColumn(array('label'=>'Validasi','index'=>'VALIDASI','width'=>80, 'align'=>'center'))
                     ->addColumn(array('label'=>'No. HBL','index'=>'NOHBL','width'=>160))
                     ->addColumn(array('label'=>'Tgl. HBL','index'=>'TGL_HBL', 'width'=>150,'hidden'=>true))
@@ -486,12 +491,12 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group">
+<!--                    <div class="form-group">
                         <label class="col-sm-3 control-label">No. Kuitansi</label>
                         <div class="col-sm-8">
                             <input type="text" id="NO_KUITANSI" name="NO_KUITANSI" class="form-control" required>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Ref. Number</label>
                         <div class="col-sm-8">
