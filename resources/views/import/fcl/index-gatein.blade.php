@@ -8,6 +8,23 @@
 </style>
 <script>
     
+    function gridCompleteEvent()
+    {
+        var ids = jQuery("#fclGateinGrid").jqGrid('getDataIDs');
+            
+        for(var i=0;i < ids.length;i++){ 
+            var cl = ids[i];
+            
+            rowdata = $('#fclGateinGrid').getRowData(cl);
+            if(rowdata.status_bc == 'HOLD') {
+                $("#" + cl).find("td").css("background-color", "#ffe500");
+            }
+            if(rowdata.flag_bc == 'Y') {
+                $("#" + cl).find("td").css("color", "#FF0000");
+            }  
+        } 
+    }
+    
     function onSelectRowEvent()
     {
         $('#btn-group-1, #btn-group-4').enableButtonGroup();
@@ -36,6 +53,7 @@
             $('#JAMKELUAR_TPK').val(rowdata.JAMKELUAR_TPK);
             $('#jenis_container').val(rowdata.jenis_container).trigger('change');
             $('#TCONSOLIDATOR_FK').val(rowdata.TCONSOLIDATOR_FK).trigger('change');
+            $("#flag_bc").val(rowdata.flag_bc).trigger("change");
             
 //            if(!rowdata.TGLMASUK && !rowdata.JAMMASUK) {
                 $('#btn-group-2').enableButtonGroup();
@@ -100,6 +118,7 @@
             $('#gatein-form')[0].reset();
             $('.select2').val(null).trigger("change");
             $('#TCONTAINER_PK').val("");
+            ('#flag_bc').val('N').trigger("change");
         });
         
         $('#btn-upload').click(function(){
@@ -194,25 +213,26 @@
                     ->setNavigatorOptions('navigator', array('viewtext'=>'view'))
                     ->setNavigatorOptions('view',array('closeOnEscape'=>false))
                     ->setFilterToolbarOptions(array('autosearch'=>true))
-//                    ->setGridEvent('gridComplete', 'gridCompleteEvent')
+                    ->setGridEvent('gridComplete', 'gridCompleteEvent')
                     ->setGridEvent('onSelectRow', 'onSelectRowEvent')
         //            ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>80, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
                     ->addColumn(array('key'=>true,'index'=>'TCONTAINER_PK','hidden'=>true))
+                    ->addColumn(array('label'=>'Flag BC','index'=>'flag_bc','width'=>80, 'align'=>'center'))
                     ->addColumn(array('label'=>'No. Container','index'=>'NOCONTAINER','width'=>150))
-                    ->addColumn(array('label'=>'Jenis Container','index'=>'jenis_container','width'=>150))
+                    ->addColumn(array('label'=>'Jenis Container','index'=>'jenis_container','width'=>150, 'align'=>'center'))
                     ->addColumn(array('label'=>'No. Joborder','index'=>'NoJob','width'=>150))
-                    ->addColumn(array('label'=>'Tgl. ETA','index'=>'ETA','width'=>120))
+                    ->addColumn(array('label'=>'Tgl. ETA','index'=>'ETA','width'=>120, 'align'=>'center'))
                     ->addColumn(array('index'=>'TCONSOLIDATOR_FK','hidden'=>true))
                     ->addColumn(array('label'=>'Consolidator','index'=>'NAMACONSOLIDATOR','width'=>250))
-                    ->addColumn(array('label'=>'No. BC11','index'=>'NO_BC11','width'=>120))
+                    ->addColumn(array('label'=>'No. BC11','index'=>'NO_BC11','width'=>120, 'align'=>'center'))
                     ->addColumn(array('label'=>'Tgl. BC11','index'=>'TGL_BC11','width'=>120,'hidden'=>true))
-                    ->addColumn(array('label'=>'No. PLP','index'=>'NO_PLP','width'=>120))
+                    ->addColumn(array('label'=>'No. PLP','index'=>'NO_PLP','width'=>120, 'align'=>'center'))
                     ->addColumn(array('label'=>'Tgl. PLP','index'=>'TGL_PLP','width'=>120,'hidden'=>true))
                     ->addColumn(array('label'=>'Size','index'=>'SIZE', 'width'=>80,'align'=>'center'))
         //            ->addColumn(array('label'=>'Teus','index'=>'TEUS', 'width'=>80,'align'=>'center'))
                     ->addColumn(array('label'=>'No. Seal','index'=>'NO_SEAL', 'width'=>120,'align'=>'right'))
-                    ->addColumn(array('label'=>'Tgl. Masuk','index'=>'TGLMASUK','width'=>120))
-                    ->addColumn(array('label'=>'Jam Masuk','index'=>'JAMMASUK','width'=>120))
+                    ->addColumn(array('label'=>'Tgl. Masuk','index'=>'TGLMASUK','width'=>120, 'align'=>'center'))
+                    ->addColumn(array('label'=>'Jam Masuk','index'=>'JAMMASUK','width'=>120, 'align'=>'center'))
                     ->addColumn(array('label'=>'Tgl. Keluar TPK','index'=>'TGLKELUAR_TPK','hidden'=>true))
                     ->addColumn(array('label'=>'Jam Keluar TPK','index'=>'JAMKELUAR_TPK','hidden'=>true))
                     ->addColumn(array('label'=>'Perkiraan Keluar','index'=>'P_TGLKELUAR','hidden'=>true))
@@ -223,7 +243,7 @@
                     ->addColumn(array('label'=>'E-Seal','index'=>'ESEALCODE','hidden'=>true))
         //            ->addColumn(array('label'=>'Layout','index'=>'layout','width'=>80,'align'=>'center','hidden'=>true))
         //            ->addColumn(array('label'=>'UID','index'=>'UID', 'width'=>150))
-                    ->addColumn(array('label'=>'Tgl. Entry','index'=>'TGLENTRY', 'width'=>150))
+                    ->addColumn(array('label'=>'Tgl. Entry','index'=>'TGLENTRY', 'width'=>150, 'align'=>'center'))
                     ->addColumn(array('label'=>'Updated','index'=>'last_update', 'width'=>150, 'search'=>false))
         //            ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>80, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
                     ->renderGrid()
@@ -433,6 +453,15 @@
                                 <option value="REFFER RF">FLAT TRACK OL</option>
                                 <option value="DRY">DRY</option>
                                 <option value="OPEN TOP">OPEN TOP</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">FLAG</label>
+                        <div class="col-sm-2">
+                            <select class="form-control select2" id="flag_bc" name="flag_bc" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
+                                <option value="N">N</option>
+                                <option value="Y">Y</option>
                             </select>
                         </div>
                     </div>
