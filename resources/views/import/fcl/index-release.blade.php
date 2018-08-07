@@ -160,6 +160,10 @@
                 alert('Consolidator masih kosong!');
                 return false;
             }
+            if($('#TGLRELEASE').val() == ''){
+                alert('Tgl Release masih kosong!');
+                return false;
+            }
             
             var url = '{{ route("fcl-delivery-release-upload") }}';
 
