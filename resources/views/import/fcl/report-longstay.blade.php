@@ -120,6 +120,7 @@
             ->setNavigatorOptions('navigator', array('viewtext'=>'view'))
             ->setNavigatorOptions('view',array('closeOnEscape'=>false))
             ->setFilterToolbarOptions(array('autosearch'=>true))
+            ->setGridEvent('gridComplete', 'gridCompleteEvent')
 //            ->setGridEvent('onSelectRow', 'onSelectRowEvent')
             ->addColumn(array('key'=>true,'index'=>'TCONTAINER_PK','hidden'=>true))
             ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>100, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
