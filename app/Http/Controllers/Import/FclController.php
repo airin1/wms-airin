@@ -807,9 +807,9 @@ class FclController extends Controller
      */
     public function destroy($id)
     {
-        DBJoborder::destroy($id);
+        DBJoborder::where('TCONTAINER_FK', $id)->delete();
         // Delete Container
-        DBContainer::where('TJOBORDER_FK', $id)->delete();
+        DBContainer::where('TCONTAINER_PK', $id)->delete();
         return back()->with('success', 'FCL Register has been deleted.'); 
     }
     
