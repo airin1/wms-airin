@@ -716,7 +716,7 @@ class FclController extends Controller
         $data = $request->json()->all(); 
         unset($data['TCONTAINER_PK'], $data['_token']);
         
-        $teus = DBContainer::select('TEUS')->where('TCONTAINER_PK', $id)->first();
+        $container = DBContainer::select('TEUS')->where('TCONTAINER_PK', $id)->first();
         $kd_dok = \App\Models\KodeDok::find($data['KD_DOK_INOUT']);
         if($kd_dok):
             $data['KODE_DOKUMEN'] = $kd_dok->name;
@@ -758,7 +758,7 @@ class FclController extends Controller
         if($update){
             $cont = DBContainer::find($id);
             if($cont->yor_update == 1){
-                $yor = $this->updateYor('release', $teus->TEUS);
+                $yor = $this->updateYor('release', $container->TEUS);
                 $cont->yor_update = 2;
                 $cont->save();
             }
