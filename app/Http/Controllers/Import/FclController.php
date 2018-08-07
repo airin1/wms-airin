@@ -716,7 +716,7 @@ class FclController extends Controller
         $data = $request->json()->all(); 
         unset($data['TCONTAINER_PK'], $data['_token']);
         
-        $container = DBContainer::select('TEUS')->where('TCONTAINER_PK', $id)->first();
+        $container = DBContainer::find($id);
         $kd_dok = \App\Models\KodeDok::find($data['KD_DOK_INOUT']);
         if($kd_dok):
             $data['KODE_DOKUMEN'] = $kd_dok->name;
