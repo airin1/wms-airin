@@ -118,7 +118,7 @@
             $('#gatein-form')[0].reset();
             $('.select2').val(null).trigger("change");
             $('#TCONTAINER_PK').val("");
-            ('#flag_bc').val('N').trigger("change");
+            $('#flag_bc').val('N').trigger("change");
         });
         
         $('#btn-upload').click(function(){
