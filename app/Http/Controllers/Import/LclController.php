@@ -390,9 +390,10 @@ class LclController extends Controller
             $data['NOMBL'] = $joborder->NOMBL;
             $data['TGL_MASTER_BL'] = $joborder->TGL_MASTER_BL;
             $data['KD_TPS_ASAL'] = $joborder->KD_TPS_ASAL;
-            $data['KD_TPS_TUJUAN'] = $joborder->GUDANG_TUJUAN;
+            $data['KD_TPS_TUJUAN'] = 'AIRN';
+            $data['LOKASI_GUDANG'] = $joborder->GUDANG_TUJUAN;
             $data['CALL_SIGN'] = $joborder->CALLSIGN;
-
+            
             $container_insert_id = DBContainer::insertGetId($data);
             
             return redirect()->route('lcl-register-edit', $container_insert_id)->with('success', 'LCL Register has been added.');
@@ -548,7 +549,8 @@ class LclController extends Controller
             $data['NOMBL'] = $joborder->NOMBL;
             $data['TGL_MASTER_BL'] = $joborder->TGL_MASTER_BL;
             $data['KD_TPS_ASAL'] = $joborder->KD_TPS_ASAL;
-            $data['KD_TPS_TUJUAN'] = $joborder->GUDANG_TUJUAN;
+            $data['KD_TPS_TUJUAN'] = 'AIRN';
+            $data['LOKASI_GUDANG'] = $joborder->GUDANG_TUJUAN;
             $data['CALL_SIGN'] = $joborder->CALLSIGN;
             
             $updateContainer = DBContainer::where('TJOBORDER_FK', $id)
@@ -576,6 +578,7 @@ class LclController extends Controller
                 $data['TGL_BC11'] = $joborder->TTGL_BC11;
                 $data['NO_PLP'] = $joborder->TNO_PLP;
                 $data['TGL_PLP'] = $joborder->TTGL_PLP;
+                $data['LOKASI_GUDANG'] = $joborder->GUDANG_TUJUAN;
                 
                 $updateManifest = DBManifest::where('TJOBORDER_FK', $id)
                     ->update($data);
@@ -1208,7 +1211,7 @@ class LclController extends Controller
                 $coaricontdetail->FLAG_REVISI = '';
                 $coaricontdetail->TGL_REVISI = '';
                 $coaricontdetail->TGL_REVISI_UPDATE = '';
-                $coaricontdetail->KD_TPS_ASAL = '';
+                $coaricontdetail->KD_TPS_ASAL = $container->KD_TPS_ASAL;
                 $coaricontdetail->FLAG_UPD = '';
                 $coaricontdetail->RESPONSE_MAL0 = '';
                 $coaricontdetail->STATUS_TPS_MAL0 = '';
@@ -1313,7 +1316,7 @@ class LclController extends Controller
                 $codecocontdetail->FLAG_REVISI = '';
                 $codecocontdetail->TGL_REVISI = '';
                 $codecocontdetail->TGL_REVISI_UPDATE = '';
-                $codecocontdetail->KD_TPS_ASAL = '';
+                $codecocontdetail->KD_TPS_ASAL = $container->KD_TPS_ASAL;
                 $codecocontdetail->RESPONSE_MAL0 = '';
                 $codecocontdetail->STATUS_TPS_MAL0 = '';
                 $codecocontdetail->TGL_ENTRY = date('Y-m-d');
