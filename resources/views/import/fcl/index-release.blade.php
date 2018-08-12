@@ -30,7 +30,7 @@
     
     function onSelectRowEvent()
     {
-        $('#btn-group-1').enableButtonGroup();
+        $('#btn-group-1,#btn-group-6').enableButtonGroup();
     }
     
     $(document).ready(function()
@@ -152,6 +152,23 @@
             $('#TCONTAINER_PK').val("");
         });
         
+        $('#btn-print-barcode').click(function() {
+
+            var $grid = $("#fclReleaseGrid"), selIds = $grid.jqGrid("getGridParam", "selarrrow"), i, n,
+                cellValues = [];
+            for (i = 0, n = selIds.length; i < n; i++) {
+                cellValues.push($grid.jqGrid("getCell", selIds[i], "TCONTAINER_PK"));
+            }
+            
+            var containerId = cellValues.join(",");
+            
+            if(!containerId) {alert('Please Select Row');return false;}               
+//            if(!confirm('Apakah anda yakin?')){return false;}    
+            
+//            console.log(manifestId);
+            window.open("{{ route('cetak-barcode', array('','','')) }}/"+containerId+"/fcl/release","preview barcode","width=305,height=600,menubar=no,status=no,scrollbars=yes");
+        });
+        
         $('#btn-upload').click(function() {
             
             if(!confirm('Apakah anda yakin?')){return false;}
@@ -224,9 +241,11 @@
                     ->setGridOption('url', URL::to('/container/grid-data-cy?module=release&_token='.csrf_token()))
                     ->setGridOption('rowNum', 20)
                     ->setGridOption('shrinkToFit', true)
+                    ->setGridOption('multiselect', true)
                     ->setGridOption('sortname','TCONTAINER_PK')
                     ->setGridOption('rownumbers', true)
-                    ->setGridOption('height', '295')
+                    ->setGridOption('rownumWidth', 50)
+                    ->setGridOption('height', '300')
                     ->setGridOption('rowList',array(20,50,100))
                     ->setGridOption('useColSpanStyle', true)
                     ->setNavigatorOptions('navigator', array('viewtext'=>'view'))
@@ -305,6 +324,9 @@
                     <div id="btn-group-4" class="btn-group">
                         <button class="btn btn-default" id="btn-print-wo"><i class="fa fa-print"></i> Cetak WO</button>
                         <button class="btn btn-default" id="btn-print-sj"><i class="fa fa-print"></i> Cetak Surat Jalan</button>
+                    </div>
+                    <div id="btn-group-6" class="btn-group">
+                        <button class="btn btn-danger" id="btn-print-barcode"><i class="fa fa-print"></i> Print Barcode</button>
                     </div>
                     <div id="btn-group-5" class="btn-group pull-right">
                         <button class="btn btn-default" id="btn-upload"><i class="fa fa-upload"></i> Upload TPS Online</button>
@@ -558,6 +580,7 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
 <script type="text/javascript">
     $('.select2').select2();
+    $('#ID_CONSIGNEE').mask("99.999.999.9-999.999");
     $('.datepicker').datepicker({
         autoclose: true,
         todayHighlight: true,
@@ -570,6 +593,8 @@
         minuteStep: 1,
         secondStep: 1
     });
+    $(".timepicker").mask("99:99:99");
+    $(".datepicker").mask("9999-99-99");
 </script>
 
 @endsection

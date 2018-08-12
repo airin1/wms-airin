@@ -30,7 +30,7 @@
     
     function onSelectRowEvent()
     {
-        $('#btn-group-1').enableButtonGroup();
+        $('#btn-group-1,#btn-group-6').enableButtonGroup();
     }
     
     $(document).ready(function()
@@ -192,6 +192,23 @@
             window.open("{{ route('lcl-delivery-fiatmuat-cetak', '') }}/"+id,"preview wo fiat muat","width=600,height=600,menubar=no,status=no,scrollbars=yes");   
         });
         
+        $('#btn-print-barcode').click(function() {
+
+            var $grid = $("#lclReleaseGrid"), selIds = $grid.jqGrid("getGridParam", "selarrrow"), i, n,
+                cellValues = [];
+            for (i = 0, n = selIds.length; i < n; i++) {
+                cellValues.push($grid.jqGrid("getCell", selIds[i], "TMANIFEST_PK"));
+            }
+            
+            var manifestId = cellValues.join(",");
+            
+            if(!manifestId) {alert('Please Select Row');return false;}               
+            if(!confirm('Apakah anda yakin?')){return false;}    
+            
+//            console.log(manifestId);
+            window.open("{{ route('cetak-barcode', array('','','')) }}/"+manifestId+"/manifest/release","preview barcode","width=305,height=600,menubar=no,status=no,scrollbars=yes");
+        });
+        
         $('#btn-upload').click(function() {
             
             if(!confirm('Apakah anda yakin?')){return false;}
@@ -260,7 +277,8 @@
                     ->setGridOption('shrinkToFit', true)
                     ->setGridOption('sortname','TMANIFEST_PK')
                     ->setGridOption('rownumbers', true)
-                    ->setGridOption('height', '250')
+                    ->setGridOption('multiselect', true)
+                    ->setGridOption('height', '300')
                     ->setGridOption('rowList',array(20,50,100))
                     ->setGridOption('useColSpanStyle', true)
                     ->setNavigatorOptions('navigator', array('viewtext'=>'view'))
@@ -349,6 +367,9 @@
                     <div id="btn-group-4" class="btn-group">
                         <button class="btn btn-default" id="btn-print-wo"><i class="fa fa-print"></i> Cetak WO</button>
                         <button class="btn btn-default" id="btn-print-sj"><i class="fa fa-print"></i> Cetak Surat Jalan</button>
+                    </div>
+                    <div id="btn-group-6" class="btn-group">
+                        <button class="btn btn-danger" id="btn-print-barcode"><i class="fa fa-print"></i> Print Barcode</button>
                     </div>
                     <div id="btn-group-5" class="btn-group pull-right">
                         <button class="btn btn-default" id="btn-upload"><i class="fa fa-upload"></i> Upload TPS Online</button>
@@ -600,6 +621,7 @@
     });
     $("#JAMSURATJALAN").mask("99:99:99");
     $("#jamrelease").mask("99:99:99");
+    $(".datepicker").mask("9999-99-99");
     $("#ID_CONSIGNEE").mask("99.999.999.9-999.999");
 </script>
 

@@ -24,8 +24,7 @@
     
     function onSelectRowEvent()
     {
-        $('#btn-group-1').enableButtonGroup();
-        $('#btn-group-4').enableButtonGroup();
+        $('#btn-group-1, #btn-group-4, #btn-group-6').enableButtonGroup();
         rowid = $('#lclBuangmtyGrid').jqGrid('getGridParam', 'selrow');
         $('#TCONTAINER_PK').val(rowid);
     }
@@ -61,6 +60,22 @@
             var id = $('#TCONTAINER_PK').val();
             var type = $(this).data('type');
             window.open("{{ route('lcl-buangmty-cetak', array('id'=>'','type'=>'')) }}/"+id+"/"+type,"preview bon muat","width=600,height=600,menubar=no,status=no,scrollbars=yes");
+        });
+        
+        $('#btn-print-barcode').click(function() {
+
+            var $grid = $("#lclBuangmtyGrid"), selIds = $grid.jqGrid("getGridParam", "selarrrow"), i, n,
+                cellValues = [];
+            for (i = 0, n = selIds.length; i < n; i++) {
+                cellValues.push($grid.jqGrid("getCell", selIds[i], "TCONTAINER_PK"));
+            }
+            
+            var containerId = cellValues.join(",");
+            
+            if(!containerId) {alert('Silahkan pilih kontainer terlebih dahulu!');return false;}               
+            if(!confirm('Apakah anda yakin akan melakukan print barcode? Anda telah memilih '+cellValues.length+' kontainer!')){return false;}    
+            
+            window.open("{{ route('cetak-barcode', array('','','')) }}/"+containerId+"/lcl/empty","preview barcode","width=305,height=600,menubar=no,status=no,scrollbars=yes");   
         });
         
         $('#btn-save').click(function() {
@@ -187,7 +202,8 @@
                     ->setGridOption('shrinkToFit', true)
                     ->setGridOption('sortname','TCONTAINER_PK')
                     ->setGridOption('rownumbers', true)
-                    ->setGridOption('height', '250')
+                    ->setGridOption('height', '300')
+                    ->setGridOption('multiselect', true)
                     ->setGridOption('rowList',array(20,50,100))
                     ->setGridOption('useColSpanStyle', true)
                     ->setNavigatorOptions('navigator', array('viewtext'=>'view'))
@@ -236,12 +252,15 @@
                         <button class="btn btn-default" id="btn-save"><i class="fa fa-save"></i> Save</button>
                         <button class="btn btn-default" id="btn-cancel"><i class="fa fa-close"></i> Cancel</button>
                     </div>              
+                    <div id="btn-group-6" class="btn-group">
+                        <button class="btn btn-danger" id="btn-print-barcode"><i class="fa fa-print"></i> Print Barcode</button>
+                    </div>
+                    <div id="btn-group-5" class="btn-group pull-right">
+                        <button class="btn btn-warning" id="btn-upload"><i class="fa fa-upload"></i> Upload TPS Online</button>
+                    </div>
                     <div id="btn-group-4" class="btn-group pull-right">
                         <button class="btn btn-default btn-print" id="btn-print-bon" data-type="bon-muat"><i class="fa fa-print"></i> Cetak BON Muat</button>
                         <button class="btn btn-default btn-print" id="btn-print-cir" data-type="surat-jalan"><i class="fa fa-print"></i> Cetak Surat Jalan (CIR)</button>
-                    </div>
-                    <div id="btn-group-5" class="btn-group pull-right">
-                        <button class="btn btn-default" id="btn-upload"><i class="fa fa-upload"></i> Upload TPS Online</button>
                     </div>
                 </div>
             </div>
@@ -373,6 +392,7 @@
         secondStep: 1
     });
     $("#JAMBUANGMTY").mask("99:99:99");
+    $(".datepicker").mask("9999-99-99");
 </script>
 
 @endsection

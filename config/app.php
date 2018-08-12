@@ -165,6 +165,7 @@ return [
         Orchestra\Parser\XmlServiceProvider::class,
         Artisaninweb\SoapWrapper\ServiceProvider::class,
         Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
+        SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class
 
     ],
 
@@ -220,7 +221,8 @@ return [
         'SoapWrapper' => Artisaninweb\SoapWrapper\Facades\SoapWrapper::class,
         'SEOMeta'   => Artesaos\SEOTools\Facades\SEOMeta::class,
         'OpenGraph' => Artesaos\SEOTools\Facades\OpenGraph::class,
-        'Twitter'   => Artesaos\SEOTools\Facades\TwitterCard::class
+        'Twitter'   => Artesaos\SEOTools\Facades\TwitterCard::class,
+        'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
     ],
 
 ];

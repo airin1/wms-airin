@@ -282,6 +282,12 @@
                 </li>
             </ul>
         </li>
+        
+        <li class="treeview">
+            <a href="{{route('barcode-index')}}">
+                <i class="fa fa-barcode"></i> QR Code (Autogate)
+            </a>
+        </li>
         <li class="treeview">
             <a href="#">
               <i class="fa fa-users"></i>

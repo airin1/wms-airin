@@ -72,6 +72,9 @@
         // Payment Routes
         require_once 'Routes/RoutesPayment.php';
         
+        // Barcode Routes
+        require_once 'Routes/RoutesBarcode.php';
+        
         // GLOBAL Routes
         Route::get('/getDataPelabuhan', [
             'as' => 'getDataPelabuhan',
@@ -96,4 +99,10 @@
 Route::get('/flat', [
     'uses' => 'DefaultController@getFlatFile',
     'as' => 'flat-file'
+]);
+
+// Auto Gate
+Route::get('/autogate/notification/{barcode}', [
+    'uses' => 'BarcodeController@autogateNotification',
+    'as' => 'autogate-notification'
 ]);
