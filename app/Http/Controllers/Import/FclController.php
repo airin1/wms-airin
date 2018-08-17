@@ -1092,7 +1092,7 @@ class FclController extends Controller
                 $coaricontdetail->TGL_MASTER_BL_AWB = (!empty($container->TGL_MASTER_BL) ? date('Ymd', strtotime($container->TGL_MASTER_BL)) : '');
                 $coaricontdetail->ID_CONSIGNEE = $container->ID_CONSIGNEE;
                 $coaricontdetail->CONSIGNEE = $container->CONSIGNEE;
-                $coaricontdetail->BRUTO = (!empty($container->WEIGHT) ? $container->WEIGHT : 0);
+                $coaricontdetail->BRUTO = (($container->WEIGHT > 0) ? $container->WEIGHT : 20000);
                 $coaricontdetail->NO_BC11 = $container->NO_BC11;
                 $coaricontdetail->TGL_BC11 = (!empty($container->TGL_BC11) ? date('Ymd', strtotime($container->TGL_BC11)) : '');
                 $coaricontdetail->NO_POS_BC11 = '';
@@ -1199,7 +1199,7 @@ class FclController extends Controller
 //                $codecocontdetail->CONSIGNEE = $container->NAMA_IMP;
                 $codecocontdetail->ID_CONSIGNEE = $container->ID_CONSIGNEE;
                 $codecocontdetail->CONSIGNEE = $container->CONSIGNEE;
-                $codecocontdetail->BRUTO = (!empty($container->WEIGHT) ? $container->WEIGHT : 0);
+                $codecocontdetail->BRUTO = (($container->WEIGHT > 0) ? $container->WEIGHT : 20000);
                 $codecocontdetail->NO_BC11 = $container->NO_BC11;
                 $codecocontdetail->TGL_BC11 = (!empty($container->TGL_BC11) ? date('Ymd', strtotime($container->TGL_BC11)) : '');
                 $codecocontdetail->NO_POS_BC11 = $container->NO_POS_BC11;
