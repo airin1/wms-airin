@@ -1222,7 +1222,7 @@ class FclController extends Controller
                 $codecocontdetail->PEL_MUAT = $container->PEL_MUAT;
                 $codecocontdetail->PEL_TRANSIT = $container->PEL_TRANSIT;
                 $codecocontdetail->PEL_BONGKAR = $container->PEL_BONGKAR;
-                $codecocontdetail->GUDANG_TUJUAN = $container->GUDANG_TUJUAN;;
+                $codecocontdetail->GUDANG_TUJUAN = $container->GUDANG_TUJUAN;
                 $codecocontdetail->UID = \Auth::getUser()->name;
                 $codecocontdetail->NOURUT = 1;
                 $codecocontdetail->RESPONSE = '';
