@@ -1241,7 +1241,7 @@ class FclController extends Controller
                 $codecocontdetail->FLAG_REVISI = '';
                 $codecocontdetail->TGL_REVISI = '';
                 $codecocontdetail->TGL_REVISI_UPDATE = '';
-                $codecocontdetail->KD_TPS_ASAL = '';
+                $codecocontdetail->KD_TPS_ASAL = $container->KD_TPS_ASAL;
                 $codecocontdetail->RESPONSE_MAL0 = '';
                 $codecocontdetail->STATUS_TPS_MAL0 = '';
                 $codecocontdetail->TGL_ENTRY = date('Y-m-d');
