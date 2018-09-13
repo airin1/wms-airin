@@ -1728,9 +1728,13 @@ class LclController extends Controller
                                 $ex_header_tglhbl = isset($ex_header[8]) ? $ex_header[8] : null;
                                 $ex_header_berat = isset($ex_header[9]) ? $ex_header[9] : null;
                             elseif($count_ex_header == 12):
-                                $ex_header_nohbl = isset($ex_header[6]) ? $ex_header[7] : null;
-                                $ex_header_tglhbl = isset($ex_header[8]) ? $ex_header[9] : null;
-                                $ex_header_berat = isset($ex_header[9]) ? $ex_header[10] : null;
+                                $ex_header_nohbl = isset($ex_header[7]) ? $ex_header[7] : null;
+                                $ex_header_tglhbl = isset($ex_header[9]) ? $ex_header[9] : null;
+                                $ex_header_berat = isset($ex_header[10]) ? $ex_header[10] : null;
+                            elseif($count_ex_header == 13):
+                                $ex_header_nohbl = isset($ex_header[8]) ? $ex_header[8] : null;
+                                $ex_header_tglhbl = isset($ex_header[10]) ? $ex_header[10] : null;
+                                $ex_header_berat = isset($ex_header[11]) ? $ex_header[11] : null;
                             else:
 //                                return $count_ex_header;
                                 return back()->with('error', 'Cannot upload TXT file, new flat file detected.')->withInput();
