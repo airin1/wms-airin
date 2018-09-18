@@ -275,6 +275,9 @@ class PenerimaanController extends Controller
         
         $data['respon'] = \App\Models\TpsResponPlp::find($id);
         
+        $data['consolidators'] = \App\Models\Consolidator::select('TCONSOLIDATOR_PK as id','NAMACONSOLIDATOR as name')->get();        
+        $data['lokasisandars'] = \App\Models\Lokasisandar::select('TLOKASISANDAR_PK as id','NAMALOKASISANDAR as name')->get();
+        
         return view('tpsonline.edit-respon-plp')->with($data);
     }
     
@@ -680,8 +683,18 @@ class PenerimaanController extends Controller
                 $data['NAMALOKASISANDAR'] = $namalokasisandar->NAMALOKASISANDAR;
                 $data['KD_TPS_ASAL'] = $namalokasisandar->KD_TPS_ASAL;
 
-                $data['TCONSOLIDATOR_FK'] = $namalokasisandar->TLOKASISANDAR_PK;
-                $data['NAMACONSOLIDATOR'] = $namalokasisandar->NAMALOKASISANDAR;
+//                $data['TCONSOLIDATOR_FK'] = $namalokasisandar->TLOKASISANDAR_PK;
+//                $data['NAMACONSOLIDATOR'] = $namalokasisandar->NAMALOKASISANDAR;
+            }
+            
+            $namaconsolidator = \App\Models\Consolidator::find($request->TCONSOLIDATOR_FK);
+            if($namaconsolidator){
+                $data['TCONSOLIDATOR_FK'] = $namaconsolidator->TLOKASISANDAR_PK;
+                $data['NAMACONSOLIDATOR'] = $namaconsolidator->NAMALOKASISANDAR;
+            }else{
+                $namaconsolidator = \App\Models\Lokasisandar::find($request->TCONSOLIDATOR_FK);
+                $data['TCONSOLIDATOR_FK'] = $namaconsolidator->TLOKASISANDAR_PK;
+                $data['NAMACONSOLIDATOR'] = $namaconsolidator->NAMALOKASISANDAR;
             }
 
             $insert_id = \App\Models\Jobordercy::insertGetId($data);
@@ -755,8 +768,8 @@ class PenerimaanController extends Controller
     
     public function responPlpCreateJoborder(Request $request, $id)
     {
-        
-        $plpId = $request->id; 
+//        return $request->all();
+        $plpId = $id; 
         $plp = \App\Models\TpsResponPlp::where('tps_responplptujuanxml_pk', $plpId)->first();
         
         if($plp){
@@ -799,17 +812,27 @@ class PenerimaanController extends Controller
                         $data['NAMALOKASISANDAR'] = $namalokasisandar->NAMALOKASISANDAR;
                         $data['KD_TPS_ASAL'] = $namalokasisandar->KD_TPS_ASAL;
 
-                        $data['TCONSOLIDATOR_FK'] = $namalokasisandar->TLOKASISANDAR_PK;
-                        $data['NAMACONSOLIDATOR'] = $namalokasisandar->NAMALOKASISANDAR;
+//                        $data['TCONSOLIDATOR_FK'] = $namalokasisandar->TLOKASISANDAR_PK;
+//                        $data['NAMACONSOLIDATOR'] = $namalokasisandar->NAMALOKASISANDAR;
                     }
-
+                    
+                    $namaconsolidator = \App\Models\Consolidator::find($request->TCONSOLIDATOR_FK);
+                    if($namaconsolidator){
+                        $data['TCONSOLIDATOR_FK'] = $namaconsolidator->TCONSOLIDATOR_PK;
+                        $data['NAMACONSOLIDATOR'] = $namaconsolidator->NAMACONSOLIDATOR;
+                    }else{
+                        $namaconsolidator = \App\Models\Lokasisandar::find($request->TCONSOLIDATOR_FK);
+                        $data['TCONSOLIDATOR_FK'] = $namaconsolidator->TLOKASISANDAR_PK;
+                        $data['NAMACONSOLIDATOR'] = $namaconsolidator->NAMALOKASISANDAR;
+                    }
+                    
                     $namaconsignee = \App\Models\Perusahaan::select('TPERUSAHAAN_PK','NAMAPERUSAHAAN','NPWP')->where('NAMAPERUSAHAAN',$detail->CONSIGNEE)->first();
                     if($namaconsignee){
                         $data['TCONSIGNEE_FK'] = $namaconsignee->TPERUSAHAAN_PK;
                         $data['CONSIGNEE'] = $namaconsignee->NAMAPERUSAHAAN;
                         $data['ID_CONSIGNEE'] = str_replace(array('.','-'),array('',''),$namaconsignee->NPWP);
                     }
-
+                    
                     $insert_id = \App\Models\Jobordercy::insertGetId($data);
                     if($insert_id){
                         $plpDetailByPos = \App\Models\TpsResponPlpDetail::where(array('tps_responplptujuanxml_fk' => $plpId, 'NO_POS_BC11' => $detail->NO_POS_BC11))->get();

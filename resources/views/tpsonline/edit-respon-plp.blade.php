@@ -289,11 +289,24 @@
                             <input name="_token" type="hidden" value="{{ csrf_token() }}">
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">NO. SPK</label>
-                                <div class="col-sm-6">
+                                <div class="col-sm-8">
                                     <input type="text" class="form-control" name="no_spk" required />
                                 </div>
                             </div>
-                            
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Consolidator</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control select2" name="TCONSOLIDATOR_FK" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
+                                        <option value="">Choose Consolidator</option>
+                                        @foreach($consolidators as $consolidator)
+                                            <option value="{{ $consolidator->id }}">{{ $consolidator->name }}</option>
+                                        @endforeach
+                                        @foreach($lokasisandars as $lokasisandar)
+                                            <option value="{{ $lokasisandar->id }}">{{ $lokasisandar->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
