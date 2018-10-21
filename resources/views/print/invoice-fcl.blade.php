@@ -257,11 +257,12 @@ table tfoot tr td:first-child {
     }
 </style>
 <a href="#" class="print-btn" type="button" onclick="window.print();">PRINT</a>
-   
+<br/><br/><br/><br/><br/>    
 <div id="details" class="clearfix">
     <div class="row invoice-info" style="border-top: 2px solid;">
         <div class="col-xs-12 margin-bottom">
-            <h3><b>NOTA DAN PERHITUNGAN PELAYANAN JASA :</b><span style="font-weight: lighter;">&nbsp;&nbsp;PENUMPUKAN DAN GERAKAN EKSTRA</span></h3>
+            <b>{{ $invoice->consignee }}</b><br />
+            {{ $invoice->alamat }}
         </div>
         <div class="col-sm-4 invoice-col">
             <table border="0" cellspacing="0" cellpadding="0">

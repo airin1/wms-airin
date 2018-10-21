@@ -120,7 +120,7 @@ Route::group(['prefix' => 'invoice', 'namespace' => 'Invoice'], function(){
         
         Route::get('/tarif/grid-data', function()
         {
-            GridEncoder::encodeRequestedData(new \App\Models\InvoiceTablesRepository('invoice_tarif_nct',Illuminate\Support\Facades\Request::all()) ,Illuminate\Support\Facades\Request::all());
+            GridEncoder::encodeRequestedData(new \App\Models\InvoiceTablesRepository('invoice_tarif_npct',Illuminate\Support\Facades\Request::all()) ,Illuminate\Support\Facades\Request::all());
         });
         
         // RELEASE INVOICE

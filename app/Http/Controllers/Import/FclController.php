@@ -1134,7 +1134,7 @@ class FclController extends Controller
                 $coaricontdetail->FLAG_REVISI = '';
                 $coaricontdetail->TGL_REVISI = '';
                 $coaricontdetail->TGL_REVISI_UPDATE = '';
-                $coaricontdetail->KD_TPS_ASAL = '';
+                $coaricontdetail->KD_TPS_ASAL = $container->KD_TPS_ASAL;
                 $coaricontdetail->FLAG_UPD = '';
                 $coaricontdetail->RESPONSE_MAL0 = '';
                 $coaricontdetail->STATUS_TPS_MAL0 = '';
@@ -1268,13 +1268,46 @@ class FclController extends Controller
     {
         $ids = explode(',', $request->id);
         
+//        array jenis container
+        $std = array(
+            'DRY',
+            'OPEN TOP',
+            'Class BB Standar 3',
+            'Class BB Standar 8',
+            'Class BB Standar 9',
+            'Class BB Standar 4,1',
+            'Class BB Standar 6',
+            'Class BB Standar 2,2'
+        );
+        $low = array();
+        $high = array(
+            "Class BB High Class 2,1",
+            "Class BB High Class 5,1",
+            "Class BB High Class 6,1",
+            "Class BB High Class 5,2"
+        );
+        $rf = array();
+        
         $container20 = DBContainer::where('size', 20)->whereIn('TCONTAINER_PK', $ids)->get();
         $container40 = DBContainer::where('size', 40)->whereIn('TCONTAINER_PK', $ids)->get();
         
         if($container20 || $container40) {
 
             $data = (count($container20) > 0 ? $container20['0'] : $container40['0']);
-            $consignee = DBPerusahaan::where('TPERUSAHAAN_PK', $data['TCONSIGNEE_FK'])->first();
+//            $consignee = DBPerusahaan::where('TPERUSAHAAN_PK', $data['TCONSIGNEE_FK'])->first();
+            
+//            Detect Jenis Container
+            $jenis_cont = $data['jenis_container'];
+
+            if(in_array($jenis_cont, $std)){
+                $type = 'Standar';
+            }else if(in_array($jenis_cont, $low)){
+                $type = 'Low';
+            }else if(in_array($jenis_cont, $high)){
+                $type = 'High';
+            }else if(in_array($jenis_cont, $rf)){
+                $type = 'Reffer';
+            }
             
             // Create Invoice Header
             $invoice_nct = new \App\Models\InvoiceNct;
@@ -1296,11 +1329,11 @@ class FclController extends Controller
             $invoice_nct->uid = \Auth::getUser()->name;	
             
             if($invoice_nct->save()) {
-                
+                 
                 // Insert Invoice Detail
                 if(count($container20) > 0) {
-
-                    $tarif20 = \App\Models\InvoiceTarifNct::where('size', 20)->get();
+                    
+                    $tarif20 = \App\Models\InvoiceTarifNct::where(array('type' => $type, 'size' => 20))->get();
                     
                     foreach ($tarif20 as $t20) :
                         
@@ -1311,7 +1344,7 @@ class FclController extends Controller
                         $invoice_penumpukan->size = 20;
                         $invoice_penumpukan->qty = count($container20);
                         
-                        if($t20->lokasi_sandar == 'NCT1') {
+                        if($t20->lokasi_sandar == 'NPCT1') {
                             
                             // GERAKAN
                             $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
@@ -1379,8 +1412,8 @@ class FclController extends Controller
                             $invoice_penumpukan->enddate = $data['TGLRELEASE'];
                             $invoice_penumpukan->lama_timbun = $hari;
                             
-                            $invoice_penumpukan->hari_masa1 = ($hari > 0) ? min(array($hari,2)) : 0;
-                            $invoice_penumpukan->hari_masa2 = ($hari > 2) ? $hari-2 : 0;
+                            $invoice_penumpukan->hari_masa1 = ($hari > 0) ? min(array($hari,10)) : 0;
+                            $invoice_penumpukan->hari_masa2 = ($hari > 10) ? $hari-10 : 0;
                             $invoice_penumpukan->hari_masa3 = 0;
                             $invoice_penumpukan->hari_masa4 = 0;
                             
@@ -1400,7 +1433,7 @@ class FclController extends Controller
                 
                 if(count($container40) > 0) {
 
-                    $tarif40 = \App\Models\InvoiceTarifNct::where('size', 40)->get();
+                    $tarif40 = \App\Models\InvoiceTarifNct::where(array('type' => $type, 'size' => 40))->get();
                     
                     foreach ($tarif40 as $t40) :
                         
@@ -1411,7 +1444,7 @@ class FclController extends Controller
                         $invoice_penumpukan->size = 40;
                         $invoice_penumpukan->qty = count($container40);
                         
-                        if($t40->lokasi_sandar == 'NCT1') {
+                        if($t40->lokasi_sandar == 'NPCT1') {
                             // GERAKAN
                             $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
                         
@@ -1476,8 +1509,8 @@ class FclController extends Controller
                             $invoice_penumpukan->enddate = $data['TGLRELEASE'];
                             $invoice_penumpukan->lama_timbun = $hari;
                             
-                            $invoice_penumpukan->hari_masa1 = ($hari > 0) ? min(array($hari,2)) : 0;
-                            $invoice_penumpukan->hari_masa2 = ($hari > 2) ? $hari-2 : 0;
+                            $invoice_penumpukan->hari_masa1 = ($hari > 0) ? min(array($hari,10)) : 0;
+                            $invoice_penumpukan->hari_masa2 = ($hari > 10) ? $hari-10 : 0;
                             $invoice_penumpukan->hari_masa3 = 0;
                             $invoice_penumpukan->hari_masa4 = 0;
                             
@@ -1497,13 +1530,13 @@ class FclController extends Controller
                 
             }
             
-            $nct_gerakan = array('Pas Truck' => 9100, 'Gate Pass Admin' => 20000, 'Cost Rec/Surcarge' => 75000);
+            $nct_gerakan = array('Pas Truck' => 9091, 'Gate Pass Admin' => 20000, 'Cost Recovery' => 75000);
             
             foreach($nct_gerakan as $key=>$value):
                 $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
                         
                 $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
-                $invoice_gerakan->lokasi_sandar = 'NCT1';
+                $invoice_gerakan->lokasi_sandar = 'NPCT1';
                 $invoice_gerakan->size = 0;
                 $invoice_gerakan->qty = count($container20)+count($container40); 
                 $invoice_gerakan->jenis_gerakan = $key;

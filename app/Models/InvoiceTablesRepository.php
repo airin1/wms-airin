@@ -23,7 +23,7 @@ class InvoiceTablesRepository extends EloquentRepositoryAbstract {
         }elseif($ModelRef == 'invoice_tarif_consolidator'){
             $Model = \DB::table($ModelRef)
                     ->join('tconsolidator', 'invoice_tarif_consolidator.consolidator_id', '=', 'tconsolidator.TCONSOLIDATOR_PK');
-        }elseif($ModelRef == 'invoice_tarif_nct'){
+        }elseif($ModelRef == 'invoice_tarif_npct'){
             $Model = InvoiceTarifNct::select('*');
         }elseif($ModelRef == 'invoice_nct'){
             $Model = InvoiceNct::select('*');

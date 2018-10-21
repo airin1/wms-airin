@@ -11,7 +11,7 @@ class InvoiceTarifNct extends Model
      *
      * @var string
      */
-    protected $table = 'invoice_tarif_nct';
+    protected $table = 'invoice_tarif_npct';
     protected $primaryKey = 'id';
 
 }
