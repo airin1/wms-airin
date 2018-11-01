@@ -1420,7 +1420,7 @@ class FclController extends Controller
                             
                             $hari_masa = 10-$hari_terminal;
                             $hari_masa1 = ($hari_masa > 0) ? $hari_masa : 0;
-                            $hari_masa2 = $hari - $hari_masa1;
+                            $hari_masa2 = (($hari-$hari_masa1) > 0) ? $hari-$hari_masa1 : 0;
                             
                             $invoice_penumpukan->startdate = $data['TGLMASUK'];
                             $invoice_penumpukan->enddate = $data['TGLRELEASE'];
