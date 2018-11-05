@@ -1270,8 +1270,9 @@ class FclController extends Controller
         
 //        array jenis container
         $std = array(
-            'DRY',
-            'OPEN TOP',
+            'DRY'
+        );
+        $low = array(
             'Class BB Standar 3',
             'Class BB Standar 8',
             'Class BB Standar 9',
@@ -1279,14 +1280,24 @@ class FclController extends Controller
             'Class BB Standar 6',
             'Class BB Standar 2,2'
         );
-        $low = array();
         $high = array(
             "Class BB High Class 2,1",
             "Class BB High Class 5,1",
             "Class BB High Class 6,1",
             "Class BB High Class 5,2"
         );
-        $rf = array();
+        $reffer = array(
+            'REFFER RF',
+            'REFFER RECOOLING'
+        );
+        
+        $ft = array(
+            'OPEN TOP',
+            'FLAT TRACK RF',
+            'FLAT TRACK OH',
+            'FLAT TRACK OW',
+            'FLAT TRACK OL'
+        );
         
         $container20 = DBContainer::where('size', 20)->whereIn('TCONTAINER_PK', $ids)->get();
         $container40 = DBContainer::where('size', 40)->whereIn('TCONTAINER_PK', $ids)->get();
@@ -1298,17 +1309,21 @@ class FclController extends Controller
             
 //            Detect Jenis Container
             $jenis_cont = $data['jenis_container'];
-
+            
             if(in_array($jenis_cont, $std)){
                 $type = 'Standar';
             }else if(in_array($jenis_cont, $low)){
                 $type = 'Low';
             }else if(in_array($jenis_cont, $high)){
                 $type = 'High';
-            }else if(in_array($jenis_cont, $rf)){
+            }else if(in_array($jenis_cont, $reffer)){
                 $type = 'Reffer';
+            }else if(in_array($jenis_cont, $ft)){
+                $type = 'Flatrack';
+            }else{
+                return back()->with('error', 'Container type '.$jenis_cont.' not detected.');
             }
-            
+
             // Create Invoice Header
             $invoice_nct = new \App\Models\InvoiceNct;
 //            $invoice_nct->container_id
@@ -1357,6 +1372,30 @@ class FclController extends Controller
                             $invoice_gerakan->tarif_dasar = $t20->lift_on;
                             $invoice_gerakan->total = $invoice_gerakan->qty * $t20->lift_on;
                             $invoice_gerakan->save();
+                            
+                            if($t20->recooling){
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t20->lokasi_sandar;
+                                $invoice_gerakan->size = 20;
+                                $invoice_gerakan->qty = count($container20); 
+                                $invoice_gerakan->jenis_gerakan = 'Recooling';
+                                $invoice_gerakan->tarif_dasar = $t20->recooling;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $t20->recooling;
+                                $invoice_gerakan->save();
+                            }
+                            
+                            if($t20->monitoring){
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t20->lokasi_sandar;
+                                $invoice_gerakan->size = 20;
+                                $invoice_gerakan->qty = count($container20); 
+                                $invoice_gerakan->jenis_gerakan = 'Monitoring';
+                                $invoice_gerakan->tarif_dasar = $t20->monitoring;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $t20->monitoring;
+                                $invoice_gerakan->save();
+                            }
 
                             // PENUMPUKAN
                             $date1 = date_create($data['ETA']);
@@ -1367,6 +1406,7 @@ class FclController extends Controller
                             $invoice_penumpukan->startdate = $data['ETA'];
                             $invoice_penumpukan->enddate = $data['TGLMASUK'];
                             $invoice_penumpukan->lama_timbun = $hari;
+                            $invoice_penumpukan->tarif_dasar = $t20->masa2;
                             
                             $invoice_penumpukan->hari_masa1 = ($hari > 0) ? 1 : 0;
                             $invoice_penumpukan->hari_masa2 = ($hari > 1) ? 1 : 0;
@@ -1386,8 +1426,7 @@ class FclController extends Controller
                             }else{
                                 $jenis = array('Lift On/Off' => $t20->lift_off,'Paket PLP' => $t20->paket_plp);
                             }
-                            
-                            
+                              
                             foreach ($jenis as $key=>$value):
                                 $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
                         
@@ -1406,6 +1445,30 @@ class FclController extends Controller
                                 $invoice_gerakan->save();
                             endforeach;
                             
+                            if($t20->recooling){
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t20->lokasi_sandar;
+                                $invoice_gerakan->size = 20;
+                                $invoice_gerakan->qty = count($container20); 
+                                $invoice_gerakan->jenis_gerakan = 'Recooling';
+                                $invoice_gerakan->tarif_dasar = $t20->recooling;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $t20->recooling;
+                                $invoice_gerakan->save();
+                            }
+                            
+                            if($t20->monitoring){
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t20->lokasi_sandar;
+                                $invoice_gerakan->size = 20;
+                                $invoice_gerakan->qty = count($container20); 
+                                $invoice_gerakan->jenis_gerakan = 'Monitoring';
+                                $invoice_gerakan->tarif_dasar = $t20->monitoring;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $t20->monitoring;
+                                $invoice_gerakan->save();
+                            }
+                            
                             // PENUMPUKAN
                             $date1 = date_create($data['TGLMASUK']);
                             $date2 = date_create($data['TGLRELEASE']);
@@ -1418,13 +1481,19 @@ class FclController extends Controller
                             $difft = date_diff($date1t, $date2t);
                             $hari_terminal = $difft->format("%a");
                             
-                            $hari_masa = 10-$hari_terminal;
-                            $hari_masa1 = ($hari_masa > 0) ? $hari_masa : 0;
-                            $hari_masa2 = (($hari-$hari_masa1) > 0) ? $hari-$hari_masa1 : 0;
+                            // Perhitungan Masa 1
+                            if($hari_terminal >= 10){
+                                $hari_masa1 = 0;
+                            }else{  
+                                $hari_masa1 = min(abs(10-$hari_terminal),$hari);
+                            }
+                            
+                            $hari_masa2 = abs($hari - $hari_masa1);
                             
                             $invoice_penumpukan->startdate = $data['TGLMASUK'];
                             $invoice_penumpukan->enddate = $data['TGLRELEASE'];
-                            $invoice_penumpukan->lama_timbun = $hari;                           
+                            $invoice_penumpukan->lama_timbun = $hari;        
+                            $invoice_penumpukan->tarif_dasar = $t20->masa1;
                             $invoice_penumpukan->hari_masa1 = $hari_masa1;
                             $invoice_penumpukan->hari_masa2 = $hari_masa2;
                             $invoice_penumpukan->hari_masa3 = 0;
@@ -1447,7 +1516,7 @@ class FclController extends Controller
                 if(count($container40) > 0) {
 
                     $tarif40 = \App\Models\InvoiceTarifNct::where(array('type' => $type, 'size' => 40))->get();
-                    
+
                     foreach ($tarif40 as $t40) :
                         
                         $invoice_penumpukan = new \App\Models\InvoiceNctPenumpukan;
@@ -1470,6 +1539,30 @@ class FclController extends Controller
                             $invoice_gerakan->total = $invoice_gerakan->qty * $t40->lift_on;
                             $invoice_gerakan->save();
 
+                            if($t40->recooling){
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t40->lokasi_sandar;
+                                $invoice_gerakan->size = 40;
+                                $invoice_gerakan->qty = count($container40); 
+                                $invoice_gerakan->jenis_gerakan = 'Recooling';
+                                $invoice_gerakan->tarif_dasar = $t40->recooling;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $t40->recooling;
+                                $invoice_gerakan->save();
+                            }
+                            
+                            if($t40->monitoring){
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t40->lokasi_sandar;
+                                $invoice_gerakan->size = 40;
+                                $invoice_gerakan->qty = count($container40); 
+                                $invoice_gerakan->jenis_gerakan = 'Monitoring';
+                                $invoice_gerakan->tarif_dasar = $t40->monitoring;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $t40->monitoring;
+                                $invoice_gerakan->save();
+                            }
+
                             // PENUMPUKAN
                             $date1 = date_create($data['ETA']);
                             $date2 = date_create(date('Y-m-d',strtotime($data['TGLMASUK']. '+1 days')));
@@ -1479,7 +1572,7 @@ class FclController extends Controller
                             $invoice_penumpukan->startdate = $data['ETA'];
                             $invoice_penumpukan->enddate = $data['TGLMASUK'];
                             $invoice_penumpukan->lama_timbun = $hari;
-                            
+                            $invoice_penumpukan->tarif_dasar = $t40->masa2;
                             $invoice_penumpukan->hari_masa1 = ($hari > 0) ? 1 : 0;
                             $invoice_penumpukan->hari_masa2 = ($hari > 1) ? 1 : 0;
                             $invoice_penumpukan->hari_masa3 = ($hari > 2) ? 1 : 0;
@@ -1516,6 +1609,30 @@ class FclController extends Controller
                                 $invoice_gerakan->save();
                             endforeach;
                             
+                            if($t40->recooling){
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t40->lokasi_sandar;
+                                $invoice_gerakan->size = 40;
+                                $invoice_gerakan->qty = count($container40); 
+                                $invoice_gerakan->jenis_gerakan = 'Recooling';
+                                $invoice_gerakan->tarif_dasar = $t40->recooling;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $t40->recooling;
+                                $invoice_gerakan->save();
+                            }
+                            
+                            if($t40->monitoring){
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t40->lokasi_sandar;
+                                $invoice_gerakan->size = 40;
+                                $invoice_gerakan->qty = count($container40); 
+                                $invoice_gerakan->jenis_gerakan = 'Monitoring';
+                                $invoice_gerakan->tarif_dasar = $t40->monitoring;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $t40->monitoring;
+                                $invoice_gerakan->save();
+                            }
+                            
                             // PENUMPUKAN
                             $date1 = date_create($data['TGLMASUK']);
                             $date2 = date_create($data['TGLRELEASE']);
@@ -1528,13 +1645,19 @@ class FclController extends Controller
                             $difft = date_diff($date1t, $date2t);
                             $hari_terminal = $difft->format("%a");
                             
-                            $hari_masa = 10-$hari_terminal;
-                            $hari_masa1 = ($hari_masa > 0) ? $hari_masa : 0;
-                            $hari_masa2 = $hari - $hari_masa1;
+                            // Perhitungan Masa 1
+                            if($hari_terminal >= 10){
+                                $hari_masa1 = 0;
+                            }else{  
+                                $hari_masa1 = min(abs(10-$hari_terminal),$hari);
+                            }
+                            
+                            $hari_masa2 = abs($hari - $hari_masa1);
                             
                             $invoice_penumpukan->startdate = $data['TGLMASUK'];
                             $invoice_penumpukan->enddate = $data['TGLRELEASE'];
                             $invoice_penumpukan->lama_timbun = $hari;
+                            $invoice_penumpukan->tarif_dasar = $t40->masa1;
                             $invoice_penumpukan->hari_masa1 = $hari_masa1;
                             $invoice_penumpukan->hari_masa2 = $hari_masa2;
                             $invoice_penumpukan->hari_masa3 = 0;

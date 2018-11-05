@@ -450,7 +450,7 @@
                                 <option value="FLAT TRACK RF">FLAT TRACK RF</option>
                                 <option value="FLAT TRACK OH">FLAT TRACK OH</option>
                                 <option value="FLAT TRACK OW">FLAT TRACK OW</option>
-                                <option value="LAT TRACK OL">FLAT TRACK OL</option>
+                                <option value="FLAT TRACK OL">FLAT TRACK OL</option>
                                 <option value="DRY">DRY</option>
                                 <option value="OPEN TOP">OPEN TOP</option>
                             </select>

@@ -343,7 +343,7 @@ table tfoot tr td:first-child {
                         <td style="text-align: center;">{{ $p->size }}</td>
                         <td>({{ date("d/m/Y", strtotime($p->startdate)).' - '.date("d/m/Y", strtotime($p->enddate)) }}) {{ $p->lama_timbun }} hari</td>
                         <td style="text-align: center;">{{ $p->qty }}</td>
-                        <td style="text-align: center;">{{ (($p->size == 20) ? number_format(27200) : number_format(54400)) }}</td>
+                        <td style="text-align: center;">{{ number_format($p->tarif_dasar) }}</td>
                         <td style="text-align: right;">{{ number_format($p->masa1) }}</td>
                         <td style="text-align: right;">{{ number_format($p->masa2) }}</td>
                         <td style="text-align: right;">{{ number_format($p->masa3) }}</td>
