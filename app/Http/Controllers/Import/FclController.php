@@ -1471,7 +1471,8 @@ class FclController extends Controller
                             
                             // PENUMPUKAN
                             $date1 = date_create($data['TGLMASUK']);
-                            $date2 = date_create($data['TGLRELEASE']);
+//                            $date2 = date_create($data['TGLRELEASE']);
+                            $date2 = date_create(date('Y-m-d',strtotime($data['TGLRELEASE']. '+1 days')));
                             $diff = date_diff($date1, $date2);
                             $hari = $diff->format("%a");
                             
@@ -1635,7 +1636,8 @@ class FclController extends Controller
                             
                             // PENUMPUKAN
                             $date1 = date_create($data['TGLMASUK']);
-                            $date2 = date_create($data['TGLRELEASE']);
+//                            $date2 = date_create($data['TGLRELEASE']);
+                            $date2 = date_create(date('Y-m-d',strtotime($data['TGLRELEASE']. '+1 days')));
                             $diff = date_diff($date1, $date2);
                             $hari = $diff->format("%a");
                             
