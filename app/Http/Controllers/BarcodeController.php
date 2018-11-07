@@ -224,7 +224,8 @@ class BarcodeController extends Controller
                                 //     return $model->NOCONTAINER.' '.$data_barcode->ref_type.' '.$data_barcode->ref_action.' Updated';
                                 // }else{
                                     $coari_id = $this->uploadTpsOnlineCoariCont($data_barcode->ref_type,$data_barcode->ref_id);
-                                    return redirect()->route('tps-coariCont-upload', $coari_id);
+                                    return $coari_id;
+//                                    return redirect()->route('tps-coariCont-upload', $coari_id);
                                 // }
                             }
   
