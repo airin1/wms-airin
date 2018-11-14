@@ -1328,6 +1328,8 @@ class FclController extends Controller
             $invoice_nct = new \App\Models\InvoiceNct;
 //            $invoice_nct->container_id
 //            $invoice_nct->no_container	
+            $invoice_nct->no_spk = $data['NOSPK'];
+            $invoice_nct->jenis_container = $jenis_cont;
             $invoice_nct->no_invoice = $request->no_invoice;	
             $invoice_nct->no_pajak = $request->no_pajak;	
             $invoice_nct->consignee = $request->consignee;	
@@ -1701,6 +1703,24 @@ class FclController extends Controller
             
             $total_penumpukan = \App\Models\InvoiceNctPenumpukan::where('invoice_nct_id', $invoice_nct->id)->sum('total');
             $total_gerakan = \App\Models\InvoiceNctGerakan::where('invoice_nct_id', $invoice_nct->id)->sum('total');
+            
+            $no_container = array();
+            $party = array();
+            if(count($container20) > 0){
+                foreach ($container20 as $c20):
+                    $no_container[] = $c20->NOCONTAINER;
+                endforeach;
+                $party[] = count($container20).' X 20';
+            }
+            if(count($container40) > 0){
+                foreach ($container40 as $c40):
+                    $no_container[] = $c40->NOCONTAINER;
+                endforeach;
+                $party[] = count($container40).' X 40';
+            }
+            
+            $update_nct->no_container = implode(', ', $no_container);
+            $update_nct->party = @serialize($party);
             
             $update_nct->administrasi = (count($container20)+count($container40)) * 100000;
             $update_nct->total_non_ppn = $total_penumpukan + $total_gerakan + $update_nct->administrasi;	

@@ -259,6 +259,7 @@ table tfoot tr td:first-child {
 <a href="#" class="print-btn" type="button" onclick="window.print();">PRINT</a>
    
 <div id="details" class="clearfix">
+    <p><b>NO. SPK : {{ $invoice->no_spk }}</b></p>
     <div class="row invoice-info" style="border-top: 2px solid;">
         <div class="col-xs-12 margin-bottom">
             <h3><b>NOTA DAN PERHITUNGAN PELAYANAN JASA :</b><span style="font-weight: lighter;">&nbsp;&nbsp;PENUMPUKAN DAN GERAKAN EKSTRA</span></h3>
@@ -266,53 +267,90 @@ table tfoot tr td:first-child {
         <div class="col-sm-4 invoice-col">
             <table border="0" cellspacing="0" cellpadding="0">
                 <tr>
-                    <td rowspan="2" style="vertical-align: top;width: 100px;"><b>Perusahaan</b></td>
-                    <td rowspan="2" style="vertical-align: top;">:&nbsp;&nbsp;&nbsp;&nbsp;{{ $invoice->consignee }}</td>
-                    <td style="width: 100px;"><b>Nomor Invoice</b></td>
-                    <td style="width: 20px;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
-                    <td>{{ $invoice->no_invoice }}</td>
-                </tr>
-                <tr>
-<!--                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>-->
-                    <td><b>Nomor Pajak</b></td>
-                    <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
-                    <td>{{ $invoice->no_pajak }}</td>
-                </tr>
-                <tr>
-                    <td><b>NPWP/NPPKP</b></td>
-                    <td>:&nbsp;&nbsp;&nbsp;&nbsp;{{ $invoice->npwp }}</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>
-                </tr>
-                <tr>
-                    <td rowspan="2" style="vertical-align: top;"><b>Alamat</b></td>
-                    <td rowspan="2" style="vertical-align: top;width: 270px;">:&nbsp;&nbsp;&nbsp;&nbsp;{{ $invoice->alamat }}</td>
-                    <td style="vertical-align: top;"><b>Nomor D.O</b></td>
-                    <td style="vertical-align: top;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
-                    <td style="vertical-align: top;">{{ $invoice->no_do }}</td>
-                </tr>
-                <tr>
-<!--                    <td>&nbsp;</td>
-                    <td>&nbsp;</td>-->
-                    <td style="vertical-align: top;"><b>Nomor B.L</b></td>
-                    <td style="vertical-align: top;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
-                    <td style="vertical-align: top;">{{ $invoice->no_bl }}</td>
-                </tr>
-                <tr>
-                    <td><b>Kapal / Voy</b></td>
-                    <td>:&nbsp;&nbsp;&nbsp;&nbsp;{{ $invoice->vessel.' / '.$invoice->voy }}</td>
-                    <td><b>ETA</b></td>
-                    <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
-                    <td>{{ date("d/m/Y", strtotime($invoice->eta)) }}</td>
-                </tr>
-                <tr>
-                    <td><b>Out Terminal</b></td>
-                    <td>:&nbsp;&nbsp;&nbsp;&nbsp;{{ date("d/m/Y", strtotime($invoice->gateout_terminal)) }}</td>
-                    <td><b>Out TPS</b></td>
-                    <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
-                    <td>{{ date("d/m/Y", strtotime($invoice->gateout_tps)) }}</td>
+                    <td style="width: 60%;vertical-align: top;">
+                        <table border="0" cellspacing="0" cellpadding="0" style="margin: 0;">
+                            <tr>
+                                <td style="vertical-align: top;width: 100px;"><b>Perusahaan</b></td>
+                                <td style="width: 20px;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                                <td style="vertical-align: top;"><b>{{ $invoice->consignee }}</b></td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: top;width: 100px;"><b>Alamat</b></td>
+                                <td style="width: 20px;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                                <td style="vertical-align: top;">{{ $invoice->alamat }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: top;width: 100px;"><b>Kapal / Voy</b></td>
+                                <td style="width: 20px;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                                <td style="vertical-align: top;">{{ $invoice->vessel.' / '.$invoice->voy }}</td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: top;width: 100px;"><b>Jenis Container</b></td>
+                                <td style="width: 20px;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                                <td style="vertical-align: top;">{{ $invoice->jenis_container }}</td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: top;width: 100px;"><b>No Container</b></td>
+                                <td style="width: 20px;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                                <td style="vertical-align: top;">{{ $invoice->no_container }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: top;width: 100px;"><b>Party</b></td>
+                                <td style="width: 20px;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                                <td style="vertical-align: top;">
+                                    <?php $party = @unserialize($invoice->party);?>
+                                    @if(is_array($party))
+                                      @foreach($party as $pry)
+                                       {{ $pry."' CONTAINER FULL" }}<br />
+                                      @endforeach
+                                    @endif
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                    <td style="vertical-align: top;">
+                        <table border="0" cellspacing="0" cellpadding="0" style="margin: 0;">
+                            <tr>
+                                <td style="vertical-align: top;width: 100px;"><b>Nomor Invoice</b></td>
+                                <td style="width: 20px;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                                <td style="vertical-align: top;"><b>{{ $invoice->no_invoice }}</b></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: top;width: 100px;"><b>Nomor DO</b></td>
+                                <td style="width: 20px;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                                <td style="vertical-align: top;">{{ $invoice->no_do }}</td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: top;width: 100px;"><b>Nomor B/L</b></td>
+                                <td style="width: 20px;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                                <td style="vertical-align: top;">{{ $invoice->no_bl }}</td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: top;width: 100px;"><b>ETA</b></td>
+                                <td style="width: 20px;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                                <td style="vertical-align: top;">{{ $invoice->eta }}</td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: top;width: 110px;"><b>Gate Out Terminal</b></td>
+                                <td style="width: 20px;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                                <td style="vertical-align: top;">{{ $invoice->gateout_terminal }}</td>
+                            </tr>
+                            <tr>
+                                <td style="vertical-align: top;width: 100px;"><b>Gate Out TPS</b></td>
+                                <td style="width: 20px;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                                <td style="vertical-align: top;">{{ $invoice->gateout_tps }}</td>
+                            </tr>
+                        </table>
+                    </td>
                 </tr>
             </table>
         </div>

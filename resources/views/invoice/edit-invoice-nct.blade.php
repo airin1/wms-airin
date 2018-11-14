@@ -15,23 +15,24 @@
     <!-- info row -->
     <div class="row invoice-info">
         <div class="col-xs-12 margin-bottom">
+            <p style="border-bottom: 2px solid;"><b>NO. SPK : {{ $invoice->no_spk }}</b></p>
             <h3><b>NOTA DAN PERHITUNGAN PELAYANAN JASA&nbsp;:&nbsp;&nbsp;</b>PENUMPUKAN DAN GERAKAN EKSTRA</h3>
         </div>
       <div class="col-sm-6 invoice-col">
           <table>
               <tr>
-                  <td style="width: 150px;"><b>Consignee</b></td>
+                  <td style="width: 150px;"><b>Perusahaan</b></td>
                   <td>:&nbsp;&nbsp;</td>
                   <td>{{ $invoice->consignee }}</td>
               </tr>
-              <tr>
+<!--              <tr>
                   <td colspan="3">&nbsp;</td>
               </tr>    
               <tr>
                   <td><b>NPWP</b></td>
                   <td>:&nbsp;&nbsp;</td>
                   <td>{{ $invoice->npwp }}</td>
-              </tr>
+              </tr>-->
               <tr>
                   <td><b>Alamat</b></td>
                   <td>:&nbsp;&nbsp;</td>
@@ -41,9 +42,34 @@
                   <td>&nbsp;</td>
               </tr>  
               <tr>
-                  <td><b>Nama Kapal / Voy</b></td>
+                  <td><b>Kapal / Voy</b></td>
                   <td>:&nbsp;&nbsp;</td>
                   <td>{{ $invoice->vessel.' / '.$invoice->voy }}</td>
+              </tr>
+              <tr>
+                  <td><b>Jenis Container</b></td>
+                  <td>:&nbsp;&nbsp;</td>
+                  <td>{{ $invoice->jenis_container }}</td>
+              </tr>
+              <tr>
+                  <td><b>No. Container</b></td>
+                  <td>:&nbsp;&nbsp;</td>
+                  <td>{{ $invoice->no_container }}</td>
+              </tr>
+                <tr>
+                  <td>&nbsp;</td>
+              </tr>  
+              <tr>
+                  <td><b>Party</b></td>
+                  <td>:&nbsp;&nbsp;</td>
+                  <td>
+                      <?php $party = @unserialize($invoice->party);?>
+                      @if(is_array($party))
+                        @foreach($party as $pry)
+                         {{ $pry."' CONTAINER FULL" }}<br />
+                        @endforeach
+                      @endif
+                  </td>
               </tr>
           </table>
       </div>
@@ -55,11 +81,11 @@
                   <td>:&nbsp;&nbsp;</td>
                   <td>{{ $invoice->no_invoice }}</td>
               </tr>
-              <tr>
+<!--              <tr>
                   <td style="width: 150px;"><b>No. Pajak</b></td>
                   <td>:&nbsp;&nbsp;</td>
                   <td>{{ $invoice->no_pajak }}</td>
-              </tr>
+              </tr>-->
               <tr>
                   <td>&nbsp;</td>
               </tr>
