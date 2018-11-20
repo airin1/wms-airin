@@ -245,4 +245,47 @@ class Controller extends BaseController
         }
     }
     
+    function romawi($angka)
+    {
+        switch ($angka) {
+            case '1':
+                $format = 'I';
+                break;
+            case '2':
+                $format = 'II';
+                break;
+            case '3':
+                $format = 'III';
+                break;
+            case '4':
+                $format = 'IV';
+                break;
+            case '5':
+                $format = 'V';
+                break;
+            case '6':
+                $format = 'VI';
+                break;
+            case '7':
+                $format = 'VII';
+                break;
+            case '8':
+                $format = 'VIII';
+                break;
+            case '9':
+                $format = 'IX';
+                break;
+            case '10':
+                $format = 'X';
+                break;
+            case '11':
+                $format = 'XI';
+                break;
+            case '12':
+                $format = 'XII';
+                break;
+        }
+        return $format;
+    }
+    
 }

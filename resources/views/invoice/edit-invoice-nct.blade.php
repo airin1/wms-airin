@@ -77,7 +77,7 @@
       <div class="col-sm-6 invoice-col">
           <table>
               <tr>
-                  <td style="width: 150px;"><b>No. Invoice</b></td>
+                  <td style="width: 150px;"><b>No. Faktur</b></td>
                   <td>:&nbsp;&nbsp;</td>
                   <td>{{ $invoice->no_invoice }}</td>
               </tr>
@@ -90,9 +90,9 @@
                   <td>&nbsp;</td>
               </tr>
               <tr>
-                  <td><b>No. DO</b></td>
+                  <td><b>Tanggal DO</b></td>
                   <td>:&nbsp;&nbsp;</td>
-                  <td>{{ $invoice->no_do }}</td>
+                  <td>{{ date("d/m/Y", strtotime($invoice->tgl_do)) }}</td>
               </tr>
               <tr>
                   <td><b>No. B/L</b></td>

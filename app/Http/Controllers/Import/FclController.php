@@ -1323,22 +1323,26 @@ class FclController extends Controller
             }else{
                 return back()->with('error', 'Container type '.$jenis_cont.' not detected.');
             }
-
+            
+            $no_faktur = $request->no_invoice.'/FKT/IMS/TPS/'.$this->romawi(date('n')).'/'.date('Y');
+            
             // Create Invoice Header
             $invoice_nct = new \App\Models\InvoiceNct;
 //            $invoice_nct->container_id
 //            $invoice_nct->no_container	
             $invoice_nct->no_spk = $data['NOSPK'];
             $invoice_nct->jenis_container = $jenis_cont;
-            $invoice_nct->no_invoice = $request->no_invoice;	
-            $invoice_nct->no_pajak = $request->no_pajak;	
+            $invoice_nct->kd_gudang = $data['GUDANG_TUJUAN'];
+            $invoice_nct->no_invoice = $no_faktur;	
+//            $invoice_nct->no_pajak = $request->no_pajak;	
             $invoice_nct->consignee = $request->consignee;	
             $invoice_nct->npwp = $request->npwp;
             $invoice_nct->alamat = $request->alamat;	
             $invoice_nct->consignee_id = $request->consignee_id;	
             $invoice_nct->vessel = $data['VESSEL'];	
             $invoice_nct->voy = $data['VOY'];	
-            $invoice_nct->no_do = $request->no_do;	
+//            $invoice_nct->no_do = $request->no_do;	
+            $invoice_nct->tgl_ = $request->tgl_do;
             $invoice_nct->no_bl = $request->no_bl;	
             $invoice_nct->eta = $data['ETA'];	
             $invoice_nct->gateout_terminal = $data['TGLMASUK'];	
@@ -1423,7 +1427,7 @@ class FclController extends Controller
                         } else {
                             
                             // GERAKAN
-                            if($data['BEHANDLE'] == 'Y') {
+                            if($request->behandle) {
                                 $jenis = array('Lift On/Off' => $t20->lift_off,'Paket PLP' => $t20->paket_plp,'Behandle' => $t20->behandle);
                             }else{
                                 $jenis = array('Lift On/Off' => $t20->lift_off,'Paket PLP' => $t20->paket_plp);
@@ -1588,7 +1592,7 @@ class FclController extends Controller
                             
                         } else {
                             // GERAKAN
-                            if($data['BEHANDLE'] == 'Y') {
+                            if($request->behandle) {
                                 $jenis = array('Lift On/Off' => $t40->lift_off,'Paket PLP' => $t40->paket_plp,'Behandle' => $t40->behandle);
                             }else{
                                 $jenis = array('Lift On/Off' => $t40->lift_off,'Paket PLP' => $t40->paket_plp);

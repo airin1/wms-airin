@@ -220,21 +220,32 @@
                             <input name="id" type="hidden" id="container_id_selected" />
                             <input name="consignee_id" type="hidden" id="consignee_id" />
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">No. Invoice</label>
+                                <label class="col-sm-3 control-label">No. Faktur</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" name="no_invoice" required />
                                 </div>
                             </div>
-                            <div class="form-group">
+<!--                            <div class="form-group">
                                 <label class="col-sm-3 control-label">No. Pajak</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" name="no_pajak" />
                                 </div>
-                            </div>
-                            <div class="form-group">
+                            </div>-->
+<!--                            <div class="form-group">
                                 <label class="col-sm-3 control-label">No. DO</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" name="no_do" required />
+                                </div>
+                            </div>-->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Tgl. DO</label>
+                                <div class="col-sm-6">
+                                    <div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" name="tgl_do" class="form-control pull-right datepicker" required>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -249,16 +260,23 @@
                                     <input type="text" class="form-control" name="consignee" id="consignee" />
                                 </div>
                             </div>
-                            <div class="form-group">
+<!--                            <div class="form-group">
                                 <label class="col-sm-3 control-label">NPWP Consignee</label>
                                 <div class="col-sm-6">
                                     <input type="text" class="form-control" name="npwp" id="npwp" />
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Alamat</label>
                                 <div class="col-sm-6">
                                     <textarea class="form-control" name="alamat" id="alamat"></textarea>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Behandle</label>
+                                <div class="col-sm-5">
+                                    <input type="checkbox" name="behandle" value="1" />
                                 </div>
                             </div>
                         </div>
@@ -278,23 +296,31 @@
 @section('custom_css')
 
 <!-- Bootstrap Switch -->
-<!--<link rel="stylesheet" href="{{ asset("/bower_components/AdminLTE/plugins/bootstrap-switch/bootstrap-switch.min.css") }}">-->
+<link rel="stylesheet" href="{{ asset("/bower_components/AdminLTE/plugins/bootstrap-switch/bootstrap-switch.min.css") }}">
 
-<!--<link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
+<!--<link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />-->
 <link rel="stylesheet" href="{{ asset("/bower_components/AdminLTE/plugins/datepicker/datepicker3.css") }}">
-<link rel="stylesheet" href="{{ asset("/bower_components/AdminLTE/plugins/timepicker/bootstrap-timepicker.min.css") }}">-->
+<!--<link rel="stylesheet" href="{{ asset("/bower_components/AdminLTE/plugins/timepicker/bootstrap-timepicker.min.css") }}">-->
 
 @endsection
 
 @section('custom_js')
 
-<!--<script src="{{ asset("/bower_components/AdminLTE/plugins/bootstrap-switch/bootstrap-switch.min.js") }}"></script>-->
+<script src="{{ asset("/bower_components/AdminLTE/plugins/datepicker/bootstrap-datepicker.js") }}"></script>
+<script src="{{ asset("/bower_components/AdminLTE/plugins/bootstrap-switch/bootstrap-switch.min.js") }}"></script>
 <script type="text/javascript">
 //    $.fn.bootstrapSwitch.defaults.size = 'mini';
-//    $.fn.bootstrapSwitch.defaults.onColor = 'danger';
-//    $.fn.bootstrapSwitch.defaults.onText = 'Yes';
-//    $.fn.bootstrapSwitch.defaults.offText = 'No';
-//    $("input[type='checkbox']").bootstrapSwitch();
+    $.fn.bootstrapSwitch.defaults.onColor = 'danger';
+    $.fn.bootstrapSwitch.defaults.onText = 'Yes';
+    $.fn.bootstrapSwitch.defaults.offText = 'No';
+    $("input[type='checkbox']").bootstrapSwitch();
+
+    $('.datepicker').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format: 'yyyy-mm-dd',
+        zIndex: 99
+    });
 
     $("#npwp").mask("99.999.999.9-999.999");
 

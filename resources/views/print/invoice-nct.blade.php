@@ -276,7 +276,7 @@ table tfoot tr td:first-child {
                             </tr>
                             <tr>
                                 <td style="vertical-align: top;width: 100px;"><b>Alamat</b></td>
-                                <td style="width: 20px;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                                <td style="width: 20px;vertical-align: top;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
                                 <td style="vertical-align: top;">{{ $invoice->alamat }}</td>
                             </tr>
                             <tr>
@@ -294,8 +294,8 @@ table tfoot tr td:first-child {
                             </tr>
                             <tr>
                                 <td style="vertical-align: top;width: 100px;"><b>No Container</b></td>
-                                <td style="width: 20px;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
-                                <td style="vertical-align: top;">{{ $invoice->no_container }}</td>
+                                <td style="width: 20px;vertical-align: top;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                                <td style="vertical-align: top;width: 50px;">{{ $invoice->no_container }}</td>
                             </tr>
                             <tr>
                                 <td colspan="3">&nbsp;</td>
@@ -317,7 +317,7 @@ table tfoot tr td:first-child {
                     <td style="vertical-align: top;">
                         <table border="0" cellspacing="0" cellpadding="0" style="margin: 0;">
                             <tr>
-                                <td style="vertical-align: top;width: 100px;"><b>Nomor Invoice</b></td>
+                                <td style="vertical-align: top;width: 110px;"><b>Nomor Faktur</b></td>
                                 <td style="width: 20px;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
                                 <td style="vertical-align: top;"><b>{{ $invoice->no_invoice }}</b></td>
                             </tr>
@@ -325,29 +325,29 @@ table tfoot tr td:first-child {
                                 <td colspan="3">&nbsp;</td>
                             </tr>
                             <tr>
-                                <td style="vertical-align: top;width: 100px;"><b>Nomor DO</b></td>
+                                <td style="vertical-align: top;width: 110px;"><b>Tanggal DO</b></td>
                                 <td style="width: 20px;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
-                                <td style="vertical-align: top;">{{ $invoice->no_do }}</td>
+                                <td style="vertical-align: top;">{{ date("d/m/Y", strtotime($invoice->tgl_do)) }}</td>
                             </tr>
                             <tr>
-                                <td style="vertical-align: top;width: 100px;"><b>Nomor B/L</b></td>
+                                <td style="vertical-align: top;width: 110px;"><b>Nomor B/L</b></td>
                                 <td style="width: 20px;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
                                 <td style="vertical-align: top;">{{ $invoice->no_bl }}</td>
                             </tr>
                             <tr>
-                                <td style="vertical-align: top;width: 100px;"><b>ETA</b></td>
+                                <td style="vertical-align: top;width: 110px;"><b>ETA</b></td>
                                 <td style="width: 20px;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
-                                <td style="vertical-align: top;">{{ $invoice->eta }}</td>
+                                <td style="vertical-align: top;">{{ date("d/m/Y", strtotime($invoice->eta)) }}</td>
                             </tr>
                             <tr>
-                                <td style="vertical-align: top;width: 110px;"><b>Gate Out Terminal</b></td>
+                                <td style="vertical-align: top;width: 110px;display: block;"><b>Gate Out Terminal</b></td>
                                 <td style="width: 20px;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
-                                <td style="vertical-align: top;">{{ $invoice->gateout_terminal }}</td>
+                                <td style="vertical-align: top;">{{ date("d/m/Y", strtotime($invoice->gateout_terminal)) }}</td>
                             </tr>
                             <tr>
-                                <td style="vertical-align: top;width: 100px;"><b>Gate Out TPS</b></td>
+                                <td style="vertical-align: top;width: 110px;"><b>Gate Out TPS</b></td>
                                 <td style="width: 20px;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
-                                <td style="vertical-align: top;">{{ $invoice->gateout_tps }}</td>
+                                <td style="vertical-align: top;">{{ date("d/m/Y", strtotime($invoice->gateout_tps)) }}</td>
                             </tr>
                         </table>
                     </td>
@@ -489,7 +489,7 @@ table tfoot tr td:first-child {
                 <tr>
                     <td><b>TPS</b></td>
                     <td><b>&nbsp;&nbsp;=&nbsp;&nbsp;</b></td>
-                    <td><b>PT. AIRIN</b></td>
+                    <td><b>PT. AIRIN ({{$invoice->kd_gudang}})</b></td>
                 </tr>
             </table>
         </div>
