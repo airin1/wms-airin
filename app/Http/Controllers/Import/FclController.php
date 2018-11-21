@@ -1342,7 +1342,7 @@ class FclController extends Controller
             $invoice_nct->vessel = $data['VESSEL'];	
             $invoice_nct->voy = $data['VOY'];	
 //            $invoice_nct->no_do = $request->no_do;	
-            $invoice_nct->tgl_ = $request->tgl_do;
+            $invoice_nct->tgl_do = $request->tgl_do;
             $invoice_nct->no_bl = $request->no_bl;	
             $invoice_nct->eta = $data['ETA'];	
             $invoice_nct->gateout_terminal = $data['TGLMASUK'];	
