@@ -213,6 +213,13 @@
     <div class="row" style="border-top: 2px solid;">
         <div class="col-xs-12 table-responsive">
             <table class="table">
+                @if($invoice->dg_surcharge)
+                <tr>
+                    <td align="right">Surcharge</td>
+                    <td>= Rp.</td>
+                    <td align="right" style="width: 100px;">{{ number_format($invoice->dg_surcharge) }}</td>
+                </tr>
+                @endif
                 <tr>
                     <td align="right">Administrasi</td>
                     <td>= Rp.</td>

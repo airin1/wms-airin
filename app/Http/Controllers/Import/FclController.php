@@ -1725,9 +1725,16 @@ class FclController extends Controller
             
             $update_nct->no_container = implode(', ', $no_container);
             $update_nct->party = @serialize($party);
+            if($type == 'Reffer'){
+                $update_nct->dg_surcharge = ($total_penumpukan + $total_gerakan)*15/100;
+            }elseif($type == 'Low' || $type == 'High'){
+                $update_nct->dg_surcharge = ($total_penumpukan + $total_gerakan)*25/100;
+            }else{
+                $update_nct->dg_surcharge = 0;
+            }
             
             $update_nct->administrasi = (count($container20)+count($container40)) * 100000;
-            $update_nct->total_non_ppn = $total_penumpukan + $total_gerakan + $update_nct->administrasi;	
+            $update_nct->total_non_ppn = $total_penumpukan + $total_gerakan + $update_nct->dg_surcharge + $update_nct->administrasi;	
             $update_nct->ppn = $update_nct->total_non_ppn * 10/100;	
             if(($update_nct->total_non_ppn+$update_nct->ppn) >= 1000000){ 
                 $materai = 6000;

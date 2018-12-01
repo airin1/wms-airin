@@ -449,6 +449,13 @@ table tfoot tr td:first-child {
     <div class="row invoice-info" style="border-top: 2px solid;">
         <div class="col-xs-12 table-responsive">
             <table class="table">
+                @if($invoice->dg_surcharge)
+                <tr>
+                    <td style="text-align: right;">Surcharge</td>
+                    <td style="width: 50px;text-align: right;">= Rp.</td>
+                    <td style="width: 100px;text-align: right;">{{ number_format($invoice->dg_surcharge) }}</td>
+                </tr>
+                @endif
                 <tr>
                     <td style="text-align: right;">Administrasi</td>
                     <td style="width: 50px;text-align: right;">= Rp.</td>
