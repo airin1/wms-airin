@@ -94,7 +94,10 @@
             'as' => 'getDataPerusahaan',
             'uses' => 'Controller@getDataPerusahaan'
         ]);
-        
+        Route::get('/getSingleDataPerusahaan', [
+            'as' => 'getSingleDataPerusahaan',
+            'uses' => 'Controller@getSingleDataPerusahaan'
+        ]);
     });
     
     Route::get('/demo', ['as' => 'demo', 'uses' => 'Tps\SoapController@demo']);

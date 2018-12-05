@@ -38,9 +38,32 @@
             
             $('#create-invoice-modal').modal('show');
             
-            $('#consignee_id').val($grid.jqGrid("getCell", selIds[0], "TCONSIGNEE_FK"));
+            var consignee_id = $grid.jqGrid("getCell", selIds[0], "TCONSIGNEE_FK");
+            var url = '{{route("getSingleDataPerusahaan")}}';
+
+            $.ajax({
+                type: 'GET',
+                data: 
+                {
+                    'id' : consignee_id
+                },
+                dataType : 'json',
+                url: url,
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    alert('Something went wrong, please try again later.');
+                },
+                success:function(json)
+                {      
+                    console.log(json);
+                    $('#alamat').val(json.ALAMAT);
+                }
+            });
+            
+            $('#consignee_id').val(consignee_id);
             $('#consignee').val($grid.jqGrid("getCell", selIds[0], "CONSIGNEE"));
             $('#npwp').val($grid.jqGrid("getCell", selIds[0], "ID_CONSIGNEE"));
+            $('#no_bl_awb').val($grid.jqGrid("getCell", selIds[0], "NO_BL_AWB"));
             $('#container_id_selected').val(containerId);
             
         });
@@ -167,8 +190,8 @@
                     ->addColumn(array('label'=>'Tgl. POS BC11','index'=>'NO_POS_BC11','width'=>150,'align'=>'center'))
                     ->addColumn(array('label'=>'No. PLP','index'=>'NO_PLP','width'=>150,'align'=>'center'))
                     ->addColumn(array('label'=>'Tgl. PLP','index'=>'TGL_PLP','width'=>150,'align'=>'center'))
-//                    ->addColumn(array('label'=>'No. SPJM','index'=>'NO_SPJM', 'width'=>150,'align'=>'center'))
-//                    ->addColumn(array('label'=>'Tgl. SPJM','index'=>'TGL_SPJM', 'width'=>150,'align'=>'center'))
+                    ->addColumn(array('label'=>'No. BL AWB','index'=>'NO_BL_AWB', 'width'=>150,'align'=>'center'))
+                    ->addColumn(array('label'=>'Tgl. BL AWB','index'=>'TGL_BL_AWB', 'width'=>150,'align'=>'center'))
                     ->addColumn(array('label'=>'No. SPPB','index'=>'NO_SPPB', 'width'=>150,'align'=>'center'))
                     ->addColumn(array('label'=>'Tgl. SPPB','index'=>'TGL_SPPB', 'width'=>150,'align'=>'center'))
                     ->addColumn(array('label'=>'Kode Dokumen','index'=>'KODE_DOKUMEN', 'width'=>150,'hidden'=>true))
@@ -222,7 +245,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">No. Faktur</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" name="no_invoice" required />
+                                    <input type="text" class="form-control" name="no_invoice" value="---" required />
                                 </div>
                             </div>
 <!--                            <div class="form-group">
@@ -251,7 +274,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">No. B/L</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" name="no_bl" required />
+                                    <input type="text" class="form-control" name="no_bl" id="no_bl_awb" required />
                                 </div>
                             </div>
                             <div class="form-group">

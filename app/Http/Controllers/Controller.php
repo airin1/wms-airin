@@ -68,6 +68,13 @@ class Controller extends BaseController
         return json_encode($data);
     }
     
+    public function getSingleDataPerusahaan(Request $request) {
+        
+        $data = \App\Models\Perusahaan::find($request->id);
+        
+        return json_encode($data);
+    }
+    
     public function insertRoleAccess($data = array())
     {
         if(count($data) > 0){

@@ -64,14 +64,16 @@
                 </table>
                 <br /><br />
                 <p>Salam hormat,</p>
-<!--                <img src="{{ asset('assets/images/primanata-logo.png') }}" alt="" style="width: 200px;" />
+                <img src="{{ asset('assets/images/logo.jpeg') }}" alt="" style="width: 200px;" />
                 <p>
-                    <h3 style="margin: 0;">Team PT. AIRIN</h3><br />
-                    Jl. Enggano No. 40 E<br />
-                    Tanjung Priok, Jakarta Utara<br />
-                    Tlp : 021-43909873<br />
-                    WA : 0821-10683570<br />
-                </p>-->
+                    <h3 style="margin: 0;">PT. Indonesian Air & Marine Supply</h3><br />
+                    Jl. Cilincing Raya no. 33<br />
+                    Tanjung Priok – Jakarta 14110<br />
+                    Indonesia<br />
+                    Tel. 021 – 430 1831<br />
+                    Fax. 021 – 350 760<br />
+                    E-mail: sekretariat@airin.co.id<br />
+                </p>
             </div>
             
         </div>
