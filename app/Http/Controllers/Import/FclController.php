@@ -1268,6 +1268,9 @@ class FclController extends Controller
     {
         $ids = explode(',', $request->id);
         
+        // Update Perusahaan
+        DBPerusahaan::where('TPERUSAHAAN_PK',$request->consignee_id)->update(['ALAMAT' => $request->alamat]);
+        
 //        array jenis container
         $std = array(
             'DRY'
