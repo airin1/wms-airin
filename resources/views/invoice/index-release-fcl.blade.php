@@ -245,7 +245,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">No. Faktur</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" name="no_invoice" value="---" required />
+                                    <input type="text" class="form-control" name="no_invoice" value="-" required />
                                 </div>
                             </div>
 <!--                            <div class="form-group">

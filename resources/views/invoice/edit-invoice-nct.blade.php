@@ -215,7 +215,7 @@
             <table class="table">
                 @if($invoice->dg_surcharge)
                 <tr>
-                    <td align="right">Surcharge</td>
+                    <td align="right">Surcharge {{$invoice->surcharge.'%'}} (AIRIN)</td>
                     <td>= Rp.</td>
                     <td align="right" style="width: 100px;">{{ number_format($invoice->dg_surcharge) }}</td>
                 </tr>
