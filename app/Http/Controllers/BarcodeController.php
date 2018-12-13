@@ -216,18 +216,18 @@ class BarcodeController extends Controller
                             
                             // Upload Coari Container TPS Online
                             // Check Coari Exist
-                            if($ref_number){
+//                            if($ref_number){
                                 return $model->NOCONTAINER.' '.$data_barcode->ref_type.' '.$data_barcode->ref_action.' Updated';
-                            }else{
+//                            }else{
                                 // $check_coari = \App\Models\TpsCoariCont::where('REF_NUMBER', $ref_number)->count();
                                 // if($check_coari > 0){
                                 //     return $model->NOCONTAINER.' '.$data_barcode->ref_type.' '.$data_barcode->ref_action.' Updated';
                                 // }else{
-                                    $coari_id = $this->uploadTpsOnlineCoariCont($data_barcode->ref_type,$data_barcode->ref_id);
-                                    return $coari_id;
+//                                    $coari_id = $this->uploadTpsOnlineCoariCont($data_barcode->ref_type,$data_barcode->ref_id);
+//                                    return $coari_id;
 //                                    return redirect()->route('tps-coariCont-upload', $coari_id);
                                 // }
-                            }
+//                            }
   
                         }else{
                             return 'Something wrong!!!';
