@@ -63,6 +63,7 @@ class Controller extends BaseController
         
         $data['items'] = \App\Models\Perusahaan::select('TPERUSAHAAN_PK as id','NAMAPERUSAHAAN as text')
                 ->orWhere('NAMAPERUSAHAAN','LIKE','%'.$query.'%')
+                ->orderBy('TPERUSAHAAN_PK', 'DESC')
                 ->get();
         
         return json_encode($data);

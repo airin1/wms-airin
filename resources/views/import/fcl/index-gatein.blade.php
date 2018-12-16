@@ -45,6 +45,9 @@
             $('#TCONTAINER_PK').val(rowid);
             $('#NO_BC11').val(rowdata.NO_BC11);
             $('#TGL_BC11').val(rowdata.TGL_BC11);
+            $('#NO_PLP').val(rowdata.NO_PLP);
+            $('#TGL_PLP').val(rowdata.TGL_PLP);
+            $('#KD_TPS_ASAL').val(rowdata.KD_TPS_ASAL);
             $("#P_TGLKELUAR").datepicker('setDate', rowdata.P_TGLKELUAR);
             $('#NO_SP2').val(rowdata.NO_SP2);
             $("#TGL_SP2").datepicker('setDate', rowdata.TGL_SP2);
@@ -207,7 +210,8 @@
                     ->setGridOption('shrinkToFit', true)
                     ->setGridOption('sortname','TCONTAINER_PK')
                     ->setGridOption('rownumbers', true)
-                    ->setGridOption('height', '250')
+                    ->setGridOption('rownumWidth', 50)
+                    ->setGridOption('height', '300')
                     ->setGridOption('rowList',array(20,50,100))
                     ->setGridOption('useColSpanStyle', true)
                     ->setNavigatorOptions('navigator', array('viewtext'=>'view'))
@@ -241,10 +245,13 @@
                     ->addColumn(array('label'=>'No. SP2','index'=>'NO_SP2','width'=>120,'hidden'=>true))
                     ->addColumn(array('label'=>'Tgl. SP2','index'=>'TGL_SP2','hidden'=>true))
                     ->addColumn(array('label'=>'E-Seal','index'=>'ESEALCODE','hidden'=>true))
-        //            ->addColumn(array('label'=>'Layout','index'=>'layout','width'=>80,'align'=>'center','hidden'=>true))
+                    ->addColumn(array('label'=>'Weight','index'=>'WEIGHT','hidden'=>true))
+//                    ->addColumn(array('label'=>'Photo Extra','index'=>'photo_gatein_extra', 'width'=>70,'hidden'=>true))
+//                    ->addColumn(array('label'=>'Segel Merah','index'=>'flag_bc','width'=>80, 'align'=>'center'))
+//                    ->addColumn(array('label'=>'Alasan Segel','index'=>'alasan_segel','width'=>150,'align'=>'center'))
         //            ->addColumn(array('label'=>'UID','index'=>'UID', 'width'=>150))
-                    ->addColumn(array('label'=>'Tgl. Entry','index'=>'TGLENTRY', 'width'=>150, 'align'=>'center'))
-                    ->addColumn(array('label'=>'Updated','index'=>'last_update', 'width'=>150, 'search'=>false))
+                    ->addColumn(array('label'=>'Tgl. Entry','index'=>'TGLENTRY', 'width'=>150,'align'=>'center'))
+//                    ->addColumn(array('label'=>'Updated','index'=>'last_update', 'width'=>150, 'search'=>false))
         //            ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>80, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
                     ->renderGrid()
                 }}
@@ -289,6 +296,16 @@
                             <input type="text" id="NOCONTAINER" name="NOCONTAINER" class="form-control" readonly>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Size</label>
+                        <div class="col-sm-3">
+                            <input type="text" id="SIZE" name="SIZE" class="form-control" readonly>
+                </div>
+                        <label class="col-sm-2 control-label">TPS Asal</label>
+                        <div class="col-sm-3">
+                            <input type="text" id="KD_TPS_ASAL" name="KD_TPS_ASAL" class="form-control" readonly>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
@@ -301,21 +318,20 @@
                             <input type="text" id="TGL_BC11" name="TGL_BC11" class="form-control" readonly>
                         </div>
                     </div>
-                    <div class="form-group" style="display: none;">
-                        <label class="col-sm-3 control-label">Consolidator</label>
-                        <div class="col-sm-8">
-                            <input type="text" id="NAMACONSOLIDATOR" name="NAMACONSOLIDATOR" class="form-control" readonly>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">No.PLP</label>
+                        <div class="col-sm-3">
+                            <input type="text" id="NO_PLP" name="NO_PLP" class="form-control" readonly>
                         </div>
+                        <label class="col-sm-2 control-label">Tgl.PLP</label>
+                        <div class="col-sm-3">
+                            <input type="text" id="TGL_PLP" name="TGL_PLP" class="form-control" readonly>
+                    </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">Consolidator</label>
+                        <label class="col-sm-3 control-label">Weight</label>
                         <div class="col-sm-8">
-                            <select class="form-control select2" id="TCONSOLIDATOR_FK" name="TCONSOLIDATOR_FK" style="width: 100%;" tabindex="-1" aria-hidden="true" >
-                                <option value="">Choose Consolidator</option>
-                                @foreach($consolidators as $consolidator)
-                                    <option value="{{ $consolidator->id }}">{{ $consolidator->name }}</option>
-                                @endforeach
-                            </select>
+                            <input type="text" id="WEIGHT" name="WEIGHT" class="form-control">
                         </div>
                     </div>
                 </div>
@@ -376,7 +392,7 @@
                         </div>
                     </div>
                     
-                    <div class="form-group" style="display: none;">
+<!--                    <div class="form-group">
                         <label class="col-sm-3 control-label">Perkiraan Tgl.Kaluar</label>
                         <div class="col-sm-8">
                             <div class="input-group date">
@@ -386,8 +402,8 @@
                                 <input type="text" id="P_TGLKELUAR" name="P_TGLKELUAR" class="form-control pull-right datepicker" required value="{{ date('Y-m-d',strtotime('+3Days')) }}">
                             </div>
                         </div>
+                    </div>-->
                     </div>
-                </div>
                 <div class="col-md-6"> 
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Petugas</label>
@@ -500,11 +516,14 @@
         minuteStep: 1,
         secondStep: 1
     });
-    $('#TGLMASUK').on("change", function (e) { 
-        var actualDate = new Date($(this).val());
-        var newDate = new Date(actualDate.getFullYear(), actualDate.getMonth(), actualDate.getDate()+3);
-        $('#P_TGLKELUAR').datepicker('setDate', newDate );
-    });
+    $(".timepicker").mask("99:99:99");
+    $(".datepicker").mask("9999-99-99");
+    
+//    $('#TGLMASUK').on("change", function (e) { 
+//        var actualDate = new Date($(this).val());
+//        var newDate = new Date(actualDate.getFullYear(), actualDate.getMonth(), actualDate.getDate()+3);
+//        $('#P_TGLKELUAR').datepicker('setDate', newDate );
+//    });
 </script>
 
 @endsection
