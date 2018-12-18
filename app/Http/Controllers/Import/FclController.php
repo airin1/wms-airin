@@ -1901,6 +1901,7 @@ class FclController extends Controller
                 $party[] = count($container45).' X 45';
             }
             
+            $update_nct->container_id = $request->id;
             $update_nct->no_container = implode(', ', $no_container);
             $update_nct->party = @serialize($party);
             

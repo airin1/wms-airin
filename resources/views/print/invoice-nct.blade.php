@@ -349,6 +349,19 @@ table tfoot tr td:first-child {
                                 <td style="width: 20px;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
                                 <td style="vertical-align: top;">{{ date("d/m/Y", strtotime($invoice->gateout_tps)) }}</td>
                             </tr>
+                            @if($invoice->renew == 'Y')
+                                <tr>
+                                  <td colspan="3">&nbsp;</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3"><b>PERPANJANGAN FAKTUR NO. {{$invoice->no_faktur_renew}}</b></td>
+                                </tr>
+                                <tr>
+                                    <td style="vertical-align: top;width: 110px;"><b>Tgl. Perpanjang</b></td>
+                                    <td style="width: 20px;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                                    <td style="vertical-align: top;">{{ date("d/m/Y", strtotime($invoice->renew_date)) }}</td>
+                                </tr>
+                            @endif
                         </table>
                     </td>
                 </tr>

@@ -117,6 +117,19 @@
                   <td>:&nbsp;&nbsp;</td>
                   <td>{{ date("d/m/Y", strtotime($invoice->gateout_tps)) }}</td>
               </tr>
+              @if($invoice->renew == 'Y')
+                <tr>
+                  <td>&nbsp;</td>
+                </tr>
+                <tr>
+                    <td colspan="3"><b>PERPANJANGAN FAKTUR NO. {{$invoice->no_faktur_renew}}</b></td>
+                </tr>
+                <tr>
+                    <td><b>Tgl. Perpanjang</b></td>
+                    <td>:&nbsp;&nbsp;</td>
+                    <td>{{ date("d/m/Y", strtotime($invoice->renew_date)) }}</td>
+                </tr>
+              @endif
           </table>
       </div>
       <!-- /.col -->
