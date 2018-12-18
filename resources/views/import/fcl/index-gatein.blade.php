@@ -326,7 +326,18 @@
                         <label class="col-sm-2 control-label">Tgl.PLP</label>
                         <div class="col-sm-3">
                             <input type="text" id="TGL_PLP" name="TGL_PLP" class="form-control" readonly>
+                        </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Consolidator</label>
+                        <div class="col-sm-8">
+                            <select class="form-control select2" name="TCONSOLIDATOR_FK" id="TCONSOLIDATOR_FK" style="width: 100%;" tabindex="-1" aria-hidden="true" >
+                                <option value="">Choose Consolidator</option>
+                                @foreach($consolidators as $consolidator)
+                                    <option value="{{ $consolidator->id }}">{{ $consolidator->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Weight</label>
