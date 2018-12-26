@@ -233,6 +233,7 @@
                     ->addColumn(array('label'=>'No. PLP','index'=>'NO_PLP','width'=>120, 'align'=>'center'))
                     ->addColumn(array('label'=>'Tgl. PLP','index'=>'TGL_PLP','width'=>120,'hidden'=>true))
                     ->addColumn(array('label'=>'Size','index'=>'SIZE', 'width'=>80,'align'=>'center'))
+                    ->addColumn(array('label'=>'TPS Asal','index'=>'KD_TPS_ASAL','hidden'=>false))
         //            ->addColumn(array('label'=>'Teus','index'=>'TEUS', 'width'=>80,'align'=>'center'))
                     ->addColumn(array('label'=>'No. Seal','index'=>'NO_SEAL', 'width'=>120,'align'=>'right'))
                     ->addColumn(array('label'=>'Tgl. Masuk','index'=>'TGLMASUK','width'=>120, 'align'=>'center'))
@@ -246,6 +247,7 @@
                     ->addColumn(array('label'=>'Tgl. SP2','index'=>'TGL_SP2','hidden'=>true))
                     ->addColumn(array('label'=>'E-Seal','index'=>'ESEALCODE','hidden'=>true))
                     ->addColumn(array('label'=>'Weight','index'=>'WEIGHT','hidden'=>true))
+            
 //                    ->addColumn(array('label'=>'Photo Extra','index'=>'photo_gatein_extra', 'width'=>70,'hidden'=>true))
 //                    ->addColumn(array('label'=>'Segel Merah','index'=>'flag_bc','width'=>80, 'align'=>'center'))
 //                    ->addColumn(array('label'=>'Alasan Segel','index'=>'alasan_segel','width'=>150,'align'=>'center'))
