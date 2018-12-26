@@ -65,9 +65,6 @@
                         <div class="col-sm-6">
                             <select class="form-control select2" id="TCONSIGNEE_FK" name="TCONSIGNEE_FK" style="width: 100%;" tabindex="-1" aria-hidden="true" >
                                 <option value="">Choose Consignee</option>
-<!--                                @foreach($perusahaans as $perusahaan)
-                                    <option value="{{ $perusahaan->id }}">{{ $perusahaan->name }}</option>
-                                @endforeach-->
                             </select>
                         </div>
                         <div class="col-sm-2">
@@ -96,9 +93,6 @@
                         <div class="col-sm-8">
                             <select class="form-control select2" id="TPELABUHAN_FK" name="TPELABUHAN_FK" style="width: 100%;" tabindex="-1" aria-hidden="true" >
                                 <option value="">Choose Port of Loading</option>
-<!--                                @foreach($pelabuhans as $pelabuhan)
-                                    <option value="{{ $pelabuhan->id }}">{{ $pelabuhan->name }}</option>
-                                @endforeach-->
                             </select>
                         </div>
                     </div>
@@ -260,9 +254,6 @@
                         <div class="col-sm-8">
                             <select class="form-control select2" id="PEL_MUAT" name="PEL_MUAT" style="width: 100%;" tabindex="-1" aria-hidden="true" >
                                 <option value="">Choose Pelabuhan Muat</option>
-<!--                                @foreach($pelabuhans as $pelabuhan)
-                                    <option value="{{ $pelabuhan->code }}">{{ $pelabuhan->code }}</option>
-                                @endforeach-->
                             </select>
                         </div>
                     </div>
@@ -272,9 +263,6 @@
                             <select class="form-control select2" id="PEL_TRANSIT" name="PEL_TRANSIT" style="width: 100%;" tabindex="-1" aria-hidden="true" >
                                 <option value="">Choose Pelabuhan Transit</option>
                                 <option value="-" selected>-</option>
-<!--                                @foreach($pelabuhans as $pelabuhan)
-                                    <option value="{{ $pelabuhan->code }}">{{ $pelabuhan->code }}</option>
-                                @endforeach-->
                             </select>
                         </div>
                     </div>
@@ -283,9 +271,6 @@
                         <div class="col-sm-8">
                             <select class="form-control select2" id="PEL_BONGKAR" name="PEL_BONGKAR" style="width: 100%;" tabindex="-1" aria-hidden="true" >
                                 <option value="">Choose Pelabuhan Bongkar</option>
-<!--                                @foreach($pelabuhans as $pelabuhan)
-                                    <option value="{{ $pelabuhan->code }}" @if($pelabuhan->code == 'IDTPP'){{'selected'}}@endif>{{ $pelabuhan->code }}</option>
-                                @endforeach-->
                             </select>
                         </div>
                     </div>

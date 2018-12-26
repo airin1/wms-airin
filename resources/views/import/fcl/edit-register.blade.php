@@ -68,9 +68,6 @@
                                 @if($joborder->TCONSIGNEE_FK)
                                     <option value="{{$joborder->TCONSIGNEE_FK}}" selected="selected">{{$joborder->CONSIGNEE}}</option>
                                 @endif
-<!--                                @foreach($perusahaans as $perusahaan)
-                                    <option value="{{ $perusahaan->id }}" @if($perusahaan->id == $joborder->TCONSIGNEE_FK){{ "selected" }}@endif>{{ $perusahaan->name }}</option><option value="{{ $perusahaan->id }}">{{ $perusahaan->name }}</option>
-                                @endforeach-->
                             </select>
                         </div>
                         <div class="col-sm-2">
@@ -102,9 +99,6 @@
                                 @if($joborder->TPELABUHAN_FK)
                                     <option value="{{$joborder->TPELABUHAN_FK}}" selected="selected">{{$joborder->NAMAPELABUHAN}}</option>
                                 @endif
-<!--                                @foreach($pelabuhans as $pelabuhan)
-                                    <option value="{{ $pelabuhan->id }}" @if($pelabuhan->id == $joborder->TPELABUHAN_FK){{ "selected" }}@endif>{{ $pelabuhan->name }}</option>
-                                @endforeach-->
                             </select>
                         </div>
                     </div>
@@ -270,9 +264,6 @@
                                 @if($joborder->PEL_MUAT)
                                     <option value="{{$joborder->PEL_MUAT}}" selected="selected">{{$joborder->PEL_MUAT}}</option>
                                 @endif
-<!--                                @foreach($pelabuhans as $pelabuhan)
-                                    <option value="{{ $pelabuhan->code }}" @if($pelabuhan->code == $joborder->PEL_MUAT){{ "selected" }}@endif>{{ $pelabuhan->code }}</option>
-                                @endforeach-->
                             </select>
                         </div>
                     </div>
@@ -284,9 +275,6 @@
                                 @if($joborder->PEL_TRANSIT)
                                     <option value="{{$joborder->PEL_TRANSIT}}" selected="selected">{{$joborder->PEL_TRANSIT}}</option>
                                 @endif
-<!--                                @foreach($pelabuhans as $pelabuhan)
-                                    <option value="{{ $pelabuhan->code }}" @if($pelabuhan->code == $joborder->PEL_TRANSIT){{ "selected" }}@endif>{{ $pelabuhan->code }}</option>
-                                @endforeach-->
                             </select>
                         </div>
                     </div>
@@ -298,9 +286,6 @@
                                 @if($joborder->PEL_BONGKAR)
                                     <option value="{{$joborder->PEL_BONGKAR}}" selected="selected">{{$joborder->PEL_BONGKAR}}</option>
                                 @endif
-<!--                                @foreach($pelabuhans as $pelabuhan)
-                                    <option value="{{ $pelabuhan->code }}" @if($pelabuhan->code == $joborder->PEL_BONGKAR){{'selected'}}@endif>{{ $pelabuhan->code }}</option>
-                                @endforeach-->
                             </select>
                         </div>
                     </div>
