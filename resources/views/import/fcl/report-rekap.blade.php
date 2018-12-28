@@ -55,6 +55,23 @@
             $('#container_id_selected').val(containerId);
             
         });
+        
+        $('#btn-create-report').on('click', function(){
+            var $grid = $("#fclContainerReportGrid"), selIds = $grid.jqGrid("getGridParam", "selarrrow"), i, n,
+                cellValues = [];
+            for (i = 0, n = selIds.length; i < n; i++) {
+                cellValues.push($grid.jqGrid("getCell", selIds[i], "TCONTAINER_PK"));
+            }
+            
+            var containerId = cellValues.join(",");
+            if(!containerId) {alert('Please Select Row');return false;}
+            
+//            console.log(containerId);
+//            $('#create-realisasi-plp-modal').modal('show');
+
+            window.open("{{ route('fcl-report-realisasi-plp','') }}/"+containerId,"preview FCL Realisasi PLP","width=1024,height=600,menubar=no,status=no,scrollbars=yes");
+        });
+        
     });
     
 </script>
@@ -104,13 +121,14 @@
             ->enableFilterToolbar()
             ->setGridOption('mtype', 'POST')
             ->setGridOption('url', URL::to('/container/grid-data-cy?report=1&_token='.csrf_token()))
-            ->setGridOption('rowNum', 20)
+            ->setGridOption('rowNum', 50)
             ->setGridOption('shrinkToFit', true)
             ->setGridOption('sortname','TCONTAINER_PK')
             ->setGridOption('rownumbers', true)
             ->setGridOption('height', '400')
+            ->setGridOption('rownumWidth', 50)
             ->setGridOption('multiselect', true)
-            ->setGridOption('rowList',array(20,50,100))
+            ->setGridOption('rowList',array(50,100,200))
             ->setGridOption('useColSpanStyle', true)
             ->setNavigatorOptions('navigator', array('viewtext'=>'view'))
             ->setNavigatorOptions('view',array('closeOnEscape'=>false))
@@ -120,8 +138,10 @@
             ->addColumn(array('key'=>true,'index'=>'TCONTAINER_PK','hidden'=>true))
 //            ->addColumn(array('label'=>'Status','index'=>'VALIDASI','width'=>80, 'align'=>'center'))
             ->addColumn(array('label'=>'No. Joborder','index'=>'NoJob', 'width'=>150))
+            ->addColumn(array('label'=>'No. SPK','index'=>'NOSPK', 'width'=>150))
             ->addColumn(array('label'=>'Nama Angkut','index'=>'VESSEL','width'=>160))  
             ->addColumn(array('label'=>'No. Container','index'=>'NOCONTAINER', 'width'=>150,'align'=>'center'))
+            ->addColumn(array('label'=>'Jenis Container','index'=>'jenis_container','width'=>160,'align'=>'center'))
             ->addColumn(array('label'=>'Shipping Line','index'=>'SHIPPINGLINE','width'=>150,'align'=>'center'))
             ->addColumn(array('label'=>'VOY','index'=>'VOY','width'=>100,'align'=>'center','hidden'=>false))
             ->addColumn(array('label'=>'Call Sign','index'=>'CALLSIGN','width'=>100,'align'=>'center','hidden'=>false))
@@ -185,6 +205,7 @@
         }}
     </div>
     <div class="box-footer with-border">
+        <button type="button" class="btn btn-danger" id="btn-create-report"><i class="fa fa-wrench"></i> Create Report</button>
         <button type="button" class="btn btn-info pull-right" id="btn-report"><i class="fa fa-paperclip"></i> Send Report</button>
     </div>
 </div>
@@ -357,6 +378,44 @@
                                             <i class="fa fa-calendar"></i>
                                         </div>
                                         <input type="text" name="tgl_laporan" class="form-control pull-right datepicker" value="{{date('Y-m-d')}}" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Send Report</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div id="create-realisasi-plp-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Print Realisasi PLP</h4>
+            </div>
+            <form id="create-invoice-form" class="form-horizontal" action="{{ route("fcl-report-rekap-sendemail") }}" method="POST" enctype="multipart/form-data">
+                <div class="modal-body"> 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input name="_token" type="hidden" value="{{ csrf_token() }}" />
+                            <input name="id" type="hidden" id="container_id_selected" />
+                            <input name="shippingline_id" type="hidden" id="shippingline_id" />
+                            
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Tgl. Masuk</label>
+                                <div class="col-sm-8">
+                                    <div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" name="tgl_masuk_start" class="form-control pull-right datepicker" required>
                                     </div>
                                 </div>
                             </div>

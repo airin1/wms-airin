@@ -1959,4 +1959,60 @@ class FclController extends Controller
         
         return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
     }
+    
+    public function reportRealisasiPlp($container_id)
+    {
+        $container = DBContainer::whereIn('TCONTAINER_PK', explode(',',$container_id))->get();
+
+        $tanggal = array();
+        $kapal = array();
+        $eta = array();
+        foreach ($container as $cont):
+            if(!in_array($cont->TGLMASUK, $tanggal)):
+                $tanggal[] = $cont->TGLMASUK;
+            endif;
+            if(!in_array(date('d F Y', strtotime($cont->ETA)), $eta)):
+                $eta[] = date('d F Y', strtotime($cont->ETA));
+            endif;
+            $exkapal = $cont->VESSEL.' V. '.$cont->VOY;
+            if(!in_array($exkapal, $kapal)):
+                $kapal[] = $exkapal;
+            endif;
+        endforeach;
+        
+        usort($tanggal, function($a, $b) {
+            $dateTimestamp1 = strtotime($a);
+            $dateTimestamp2 = strtotime($b);
+
+            return $dateTimestamp1 < $dateTimestamp2 ? -1: 1;
+        });
+        
+        $min_date = $tanggal[0];
+        $max_date = $tanggal[count($tanggal) - 1];
+            
+        if($max_date && $min_date != $max_date):
+            $tgl = date('d F Y', strtotime($min_date)).' s/d '.date('d F Y', strtotime($max_date));
+        else:
+            $tgl = date('d F Y', strtotime($min_date));
+        endif;
+        
+        $header = array(
+            'tpk' => ($container[0]->KD_TPS_ASAL == 'NCT1') ? 'NPCT1' : $container[0]->KD_TPS_ASAL,
+            'lokasi' => ($container[0]->GUDANG_TUJUAN == 'ARN1') ? 'BARAT' : 'UTARA',
+            'jenis' => $container[0]->jenis_container,
+            'consignee' => $container[0]->CONSIGNEE,
+            'tanggal' => $tgl,
+            'kapal' => implode(', ', $kapal),
+            'eta' => implode(', ', $eta),
+            'spk' => $container[0]->NOSPK,
+        );
+        
+        $data['header'] = $header;
+        $data['containers'] = $container;
+        
+        return view('print.realisasi-plp')->with($data);
+        $pdf = \PDF::loadView('print.invoice', $data)->setPaper('a4');
+        
+        return $pdf->stream($data['invoice']->no_invoice.'-'.date('dmy').'.pdf');
+    }
 }

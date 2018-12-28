@@ -68,5 +68,11 @@ Route::group(['prefix' => 'fcl', 'namespace' => 'Import'], function(){
         'as' => 'fcl-change-status',
         'uses' => 'FclController@changeStatusBc'
     ]);
+    
+    Route::get('/report/rekap/realisasi-plp/{container_id}', [
+        'as' => 'fcl-report-realisasi-plp',
+        'uses' => 'FclController@reportRealisasiPlp'
+    ]);
+    
 });
 
