@@ -205,7 +205,7 @@
         }}
     </div>
     <div class="box-footer with-border">
-        <button type="button" class="btn btn-danger" id="btn-create-report"><i class="fa fa-wrench"></i> Create Report</button>
+        <button type="button" class="btn btn-danger" id="btn-create-report"><i class="fa fa-wrench"></i> Realisasi PLP</button>
         <button type="button" class="btn btn-info pull-right" id="btn-report"><i class="fa fa-paperclip"></i> Send Report</button>
     </div>
 </div>

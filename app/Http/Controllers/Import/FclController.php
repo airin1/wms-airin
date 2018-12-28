@@ -1967,6 +1967,8 @@ class FclController extends Controller
         $tanggal = array();
         $kapal = array();
         $eta = array();
+        $box20 = 0;$box40 = 0;$box45 = 0;
+        
         foreach ($container as $cont):
             if(!in_array($cont->TGLMASUK, $tanggal)):
                 $tanggal[] = $cont->TGLMASUK;
@@ -1978,6 +1980,14 @@ class FclController extends Controller
             if(!in_array($exkapal, $kapal)):
                 $kapal[] = $exkapal;
             endif;
+            
+            $box20 = ($cont->SIZE == 20) ? $box20+1 : $box20;
+            $box40 = ($cont->SIZE == 40) ? $box40+1 : $box40;
+            $box45 = ($cont->SIZE == 45) ? $box45+1 : $box45;
+            
+            $no_surat = \App\Models\TpsResponPlp::where('NO_PLP', $cont->NO_PLP)->value('NO_SURAT');
+            array_add($cont, 'NO_SURAT', $no_surat);
+            
         endforeach;
         
         usort($tanggal, function($a, $b) {
@@ -2007,7 +2017,15 @@ class FclController extends Controller
             'spk' => $container[0]->NOSPK,
         );
         
+        $footer = array(
+            'box20' => $box20,
+            'box40' => $box40,
+            'box45' => $box45,
+            'jumlah' => $box20+$box40+$box45
+        );
+        
         $data['header'] = $header;
+        $data['footer'] = $footer;
         $data['containers'] = $container;
         
         return view('print.realisasi-plp')->with($data);

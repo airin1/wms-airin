@@ -307,7 +307,7 @@ table tfoot tr td:first-child {
             <td style="text-align: center;">{{($container->SIZE == 20) ? 1:''}}</td>
             <td style="text-align: center;">{{($container->SIZE == 40) ? 1:''}}</td>
             <td style="text-align: center;">{{($container->SIZE == 45) ? 1:''}}</td>
-            <td></td>
+            <td>{{$container->NO_SURAT}}</td>
             <td style="text-align: center;">{{$container->NOPOL}}</td>
             <td style="text-align: center;">{{$container->KD_TPS_ASAL}}</td>
             <td style="text-align: center;">{{$container->JAMMASUK}}</td>
@@ -315,6 +315,33 @@ table tfoot tr td:first-child {
         </tr>
         <?php $i++;?>
         @endforeach
+        <tr>
+            <td colspan="4" style="text-align: center;border-top: 1px solid;"><b>JUMLAH (BOX)</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box40']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box45']}}</b></td>
+            <td colspan="5" style="border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
+        </tr>       
+    </table>
+    
+    <table border="0" cellspacing="0" cellpadding="0" style="width: 100%;margin-bottom: 0;">
+        <tr>
+            <td style="font-size: 11px;">Mengetahui,</td>
+            <td style="text-align: right;font-size: 11px;">Jakarta, {{date('d F Y')}}</td>
+        </tr>
+        <tr>
+            <td style="font-size: 11px;" colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td style="font-size: 11px;" colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td style="font-size: 11px;" colspan="2">&nbsp;</td>
+        </tr>
+        <tr>
+            <td style="font-size: 11px;"><b style="text-decoration: underline;">SIGIT MARET HARYADI</b><br/>Manager TPS</td>
+            <td style="text-align: right;font-size: 11px;"><b style="text-decoration: underline;">YANUAR ANDRES SUSILO</b><br />Pj. Ass. Man. Lapangan TPS</td>
+        </tr>
     </table>
 </div>
 
