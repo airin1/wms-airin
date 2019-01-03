@@ -1310,8 +1310,15 @@ class FclController extends Controller
         $container45 = DBContainer::where('size', 45)->whereIn('TCONTAINER_PK', $ids)->get();
         
         if($container20 || $container40 || $container45) {
-
-            $data = (count($container20) > 0 ? $container20['0'] : $container40['0']);
+            
+            if(count($container20) > 0){
+                $data = $container20['0'];
+            }elseif(count($container40) > 0){
+                $data = $container40['0'];
+            }else{
+                $data = $container45['0'];
+            }
+//            $data = (count($container20) > 0 ? $container20['0'] : $container40['0']);
 //            $consignee = DBPerusahaan::where('TPERUSAHAAN_PK', $data['TCONSIGNEE_FK'])->first();
             
 //            Detect Jenis Container
