@@ -17,9 +17,9 @@ class InvoiceTablesRepository extends EloquentRepositoryAbstract {
 //            $Model = \DB::table($ModelRef);
 //        }
         
-        if($ModelRef == 'invoice_import'){
+        if($ModelRef == 'invoice_lcl'){
             $Model = \DB::table($ModelRef)
-                    ->join('tmanifest', 'invoice_import.manifest_id', '=', 'tmanifest.TMANIFEST_PK');
+                    ->join('tcontainer', 'invoice_lcl.container_id', '=', 'tcontainer.TCONTAINER_PK');
         }elseif($ModelRef == 'invoice_tarif_consolidator'){
             $Model = \DB::table($ModelRef)
                     ->join('tconsolidator', 'invoice_tarif_consolidator.consolidator_id', '=', 'tconsolidator.TCONSOLIDATOR_PK');

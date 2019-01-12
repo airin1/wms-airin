@@ -61,6 +61,11 @@ class TablesRepository extends EloquentRepositoryAbstract {
                             ->whereNotNull('TGLSTRIPPING')
                             ->whereNotNull('JAMSTRIPPING');
                     break;
+                    case 'release-invoice':
+                        $Model = \DB::table('tcontainer')
+                            ->whereNotNull('TGLMASUK')
+                            ->whereNotNull('JAMMASUK');
+                    break;
                 }
                 
             }else{

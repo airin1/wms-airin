@@ -1515,6 +1515,59 @@ class LclController extends Controller
         
     }
     
+    public function createInvoiceContainer(Request $request)
+    {
+        $container_id = $request->id;
+        $container = DBContainer::find($container_id);
+        
+        if($container){
+            $tarif = \App\Models\InvoiceTarif::where(array('consolidator_id' => $container->TCONSOLIDATOR_FK))->first();
+            switch ($container->SIZE){
+                case 20:
+                    $rdm = $tarif->rdm_20*$container->SIZE;
+                    $lift_full = $tarif->lift_full_20;
+                    $lift_mty = $tarif->lift_mty_20;
+                    $storage_mty = 0;
+                    break;
+                case 40:
+                    $rdm = $tarif->rdm_40*$container->SIZE;
+                    $lift_full = $tarif->lift_full_40;
+                    $lift_mty = $tarif->lift_mty_40;
+                    $storage_mty = 0;
+                    break;
+            }
+            $subtotal = $rdm+$lift_full+$lift_mty+$storage_mty;
+            $no_faktur = $request->no_invoice.'/FKT/IMS/LCL/'.$this->romawi(date('n')).'/'.date('Y');
+            
+            $invoice = new \App\Models\Invoice;
+            $invoice->container_id = $container_id;
+            $invoice->consolidator_id = $container->TCONSOLIDATOR_FK;
+            $invoice->no_invoice = $no_faktur;
+            $invoice->no_mbl = $container->NOMBL;
+            $invoice->no_spk = $container->NOSPK;
+            $invoice->forwarder = $request->forwarder;
+            $invoice->tgl_cetak = $request->tgl_cetak;
+            $invoice->rdm = $rdm;
+            $invoice->lift_full = $lift_full;
+            $invoice->lift_mty = $lift_mty;
+            $invoice->storage_mty = $storage_mty;
+            $invoice->jumlah_hbl = $container->jumlah_bl;
+            $invoice->subtotal = $subtotal;
+            $invoice->ppn = ceil((10 * $subtotal) / 100);
+            $invoice->adm = $container->jumlah_bl*$tarif->adm;
+            $invoice->materai = ($subtotal >= 1000000) ? 6000 : 3000;
+            $invoice->total = $invoice->subtotal+$invoice->ppn+$invoice->adm+$invoice->materai;
+            $invoice->uid = \Auth::getUser()->name;
+            
+            if($invoice->save()){
+                return back()->with('success', 'No. Container '.$container->NOCONTAINER.', invoice berhasih dibuat.');
+            }
+            
+        }
+        
+        return back()->with('error', 'Something went wrong, please try again later.');
+    }
+    
     public function releaseUpload(Request $request)
     {
         $manifest_id = $request->id; 

@@ -14,6 +14,14 @@
             <div class="row">
                 <div class="col-md-6">
                     <input name="_token" type="hidden" value="{{ csrf_token() }}">
+                    
+                    <div class="form-group" style="display: none;">
+                      <label for="behandle" class="col-sm-3 control-label">Nama Tarif</label>
+                      <div class="col-sm-8">
+                          <input type="text" name="name" class="form-control" id="name">
+                      </div>
+                    </div>
+                    
                     <div class="form-group">
                       <label for="roles" class="col-sm-3 control-label">Consolidator</label>
                       <div class="col-sm-8">
@@ -26,52 +34,54 @@
                         </div>
                     </div>
                     
-                    <div class="form-group">
+                    <div class="form-group" style="display: none;">
                       <label for="type" class="col-sm-3 control-label">Type</label>
                       <div class="col-sm-8">
                             <select class="form-control select2 select2-hidden-accessible" name="type" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
                                 <option value="">Choose Type</option>
                                 <option value="BB">BB</option>
-                                <option value="DRY">DRY</option>
+                                <option value="DRY" selected>DRY</option>
                             </select>
                         </div>
                     </div>
                     <div class="form-group">
-                      <label for="rdm" class="col-sm-3 control-label">RDM</label>
-                      <div class="col-sm-8">
-                          <input type="number" name="rdm" class="form-control" id="rdm" required>
+                      <label for="rdm" class="col-sm-3 control-label">RDM (20')</label>
+                      <div class="col-sm-3">
+                          <input type="number" name="rdm_20" class="form-control" id="rdm_20" required>
+                      </div>
+                    <label for="rdm" class="col-sm-2 control-label">(40')</label>
+                      <div class="col-sm-3">
+                          <input type="number" name="rdm_40" class="form-control" id="rdm_40" required>
                       </div>
                     </div>
                     <div class="form-group">
-                      <label for="storage" class="col-sm-3 control-label">Storage</label>
-                      <div class="col-sm-8">
-                          <input type="number" name="storage" class="form-control" id="storage" required>
+                      <label for="rdm" class="col-sm-3 control-label">Lift Full (20')</label>
+                      <div class="col-sm-3">
+                          <input type="number" name="lift_full_20" class="form-control" id="lift_full_20" required>
+                      </div>
+                    <label for="rdm" class="col-sm-2 control-label">(40')</label>
+                      <div class="col-sm-3">
+                          <input type="number" name="lift_full_40" class="form-control" id="lift_full_40" required>
                       </div>
                     </div>
                     <div class="form-group">
-                      <label for="storage_masa1" class="col-sm-3 control-label">Storage Masa I</label>
-                      <div class="col-sm-8">
-                          <input type="number" name="storage_masa1" class="form-control" id="storage_masa1" required>
+                      <label for="rdm" class="col-sm-3 control-label">Lift MTY (20')</label>
+                      <div class="col-sm-3">
+                          <input type="number" name="lift_mty_20" class="form-control" id="lift_mty_20" required>
+                      </div>
+                    <label for="rdm" class="col-sm-2 control-label">(40')</label>
+                      <div class="col-sm-3">
+                          <input type="number" name="lift_mty_40" class="form-control" id="lift_mty_40" required>
                       </div>
                     </div>
                     <div class="form-group">
-                      <label for="storage_masa2" class="col-sm-3 control-label">Storage Masa II</label>
-                      <div class="col-sm-8">
-                          <input type="number" name="storage_masa2" class="form-control" id="storage_masa2" required>
+                      <label for="rdm" class="col-sm-3 control-label">Storage MTY (20')</label>
+                      <div class="col-sm-3">
+                          <input type="number" name="storage_mty_20" class="form-control" id="storage_mty_20" required>
                       </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="storage_masa3" class="col-sm-3 control-label">Storage Masa III</label>
-                      <div class="col-sm-8">
-                          <input type="number" name="storage_masa3" class="form-control" id="storage_masa3" required>
-                      </div>
-                    </div>
-                </div>
-                <div class="col-md-6"> 
-                    <div class="form-group">
-                      <label for="behandle" class="col-sm-3 control-label">Behandle</label>
-                      <div class="col-sm-8">
-                          <input type="number" name="behandle" class="form-control" id="behandle" required>
+                    <label for="rdm" class="col-sm-2 control-label">(40')</label>
+                      <div class="col-sm-3">
+                          <input type="number" name="storage_mty_40" class="form-control" id="storage_mty_40" required>
                       </div>
                     </div>
                     <div class="form-group">
@@ -80,30 +90,9 @@
                           <input type="number" name="adm" class="form-control" id="adm" required>
                       </div>
                     </div>
-                    <div class="form-group">
-                      <label for="surcharge_price" class="col-sm-3 control-label">Surcharge</label>
-                      <div class="col-sm-8">
-                          <input type="number" name="surcharge_price" class="form-control" id="surcharge_price" required>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="surcharge" class="col-sm-3 control-label">> 2.5Ton</label>
-                      <div class="col-sm-8">
-                          <input type="checkbox" name="surcharge" id="surcharge" value="1" />
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="cbm" class="col-sm-3 control-label">X CBM</label>
-                      <div class="col-sm-8">
-                          <input type="checkbox" name="cbm" id="cbm" value="1" />
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label for="pembulatan" class="col-sm-3 control-label">Pembulatan 0.5</label>
-                      <div class="col-sm-8">
-                          <input type="checkbox" name="pembulatan" id="pembulatan" value="1" />
-                      </div>
-                    </div>
+                </div>
+                <div class="col-md-6"> 
+                    
                     
                 </div>
             </div>

@@ -52,7 +52,7 @@ class InvoiceController extends Controller
         
 //        $data['perusahaans'] = DBPerusahaan::select('TPERUSAHAAN_PK as id', 'NAMAPERUSAHAAN as name')->get();
         
-        return view('invoice.index-release')->with($data);
+        return view('invoice.index-release-lcl')->with($data);
     }
     
     public function invoiceEdit($id)
@@ -75,11 +75,12 @@ class InvoiceController extends Controller
             ]
         ];
         
-        $data['invoice'] = \DB::table('invoice_import')->find($id);
-        $data['manifest'] = \App\Models\Manifest::find($data['invoice']->manifest_id);
-        $data['tarif'] = \App\Models\InvoiceTarif::where(array('consolidator_id' => $data['manifest']->TCONSOLIDATOR_FK, 'type' => $data['manifest']->INVOICE))->first();
+        $data['invoice'] = \DB::table('invoice_lcl')->find($id);
+        $data['container'] = \App\Models\Container::find($data['invoice']->container_id);
+        $data['consolidator'] = \App\Models\Consolidator::find($data['invoice']->consolidator_id);
+        $data['tarif'] = \App\Models\InvoiceTarif::where(array('consolidator_id' => $data['container']->TCONSOLIDATOR_FK))->first();
 //        $data['tarif'] = \App\Models\ConsolidatorTarif::where('TCONSOLIDATOR_FK', $data['manifest']->TCONSOLIDATOR_FK)->first();
-        $total = $data['invoice']->sub_total + $data['invoice']->ppn;
+        $total = $data['invoice']->subtotal + $data['invoice']->ppn + $data['invoice']->adm + $data['invoice']->materai;
         $data['terbilang'] = ucwords($this->terbilang($total))." Rupiah";
         
         return view('invoice.edit-invoice')->with($data);

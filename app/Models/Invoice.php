@@ -11,7 +11,7 @@ class Invoice extends Model
      *
      * @var string
      */
-    protected $table = 'invoice_import';
+    protected $table = 'invoice_lcl';
     protected $primaryKey = 'id';
 
 }
