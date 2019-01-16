@@ -1555,7 +1555,7 @@ class LclController extends Controller
             $invoice->subtotal = $subtotal;
             $invoice->ppn = ceil((10 * $subtotal) / 100);
             $invoice->adm = $container->jumlah_bl*$tarif->adm;
-            $invoice->materai = ($subtotal >= 1000000) ? 6000 : 3000;
+            $invoice->materai = ($subtotal >= 300000) ? 6000 : 3000;
             $invoice->total = $invoice->subtotal+$invoice->ppn+$invoice->adm+$invoice->materai;
             $invoice->uid = \Auth::getUser()->name;
             
