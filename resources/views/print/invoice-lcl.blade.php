@@ -262,7 +262,14 @@ table tfoot tr td:first-child {
 <a href="#" class="print-btn" type="button" onclick="window.print();">PRINT</a>
 
 <div id="details" class="clearfix">
-        <div class="row invoice-info">
+    <div class="row invoice-info">
+        <div class="col-sm-6 invoice-col">
+            <p style="max-width: 300px;font-size: 12px;">
+                Kepada Yth :<br /><br />
+                <b>{{$consolidator->NAMACONSOLIDATOR}}</b><br />
+                {{$consolidator->ALAMAT}}
+            </p>
+      </div>
         <div class="col-xs-12 text-center margin-bottom">
             <h3 style="text-decoration: underline;">FAKTUR</h3>
             <p style="font-size: 12px;">No : {{$invoice->no_invoice}}<br />{{$invoice->no_spk}}</p>
@@ -381,31 +388,39 @@ table tfoot tr td:first-child {
             </tr>
           </tbody>
         </table>
+          <p style="font-size: 12px;"><b>
+              Terbilang : <br />
+              {{$terbilang}}
+              </b>
+          </p>
       </div>
       <!-- /.col -->
     </div>
     <!-- /.row -->
 
  
-<!--    <table border="0" cellspacing="0" cellpadding="0">
+    <table border="0" cellspacing="0" cellpadding="0">
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>Jakarta, {{ ($invoice->tgl_cetak != "") ? date("d F Y", strtotime($invoice->tgl_cetak)) : date("d F Y") }}<br /><b>PT. AIRIN</b></td>
+        </tr>
         <tr><td height="30" style="font-size: 30px;line-height: 0;">&nbsp;</td></tr>
         <tr>
-            <td>Catatan :</td>
-            <td class="text-center">Jakarta, {{ ($invoice->tgl_cetak != "") ? date("d F Y", strtotime($invoice->tgl_cetak)) : date("d F Y") }}</td>
-        </tr>
-        <tr>
-            <td width='60%'>
-                <ol>
-                    <li>Jika terdapat kekeliruan/keberatan harap diajukan dalam waktu 7 hari setelah kwitansi diterima, lewat batas waktu tersebut kami tidak melayani.</li>
-                    <li>Pengambilan/koreksi faktur pajak standard hatap diajukan paling lambat 14 hari setelah kwitansi diterima, lewat batas waktu tersebut kami tidak melayani.</li>
-                </ol>
+            <td width='50%'>
+                <p style="font-size: 10px;">
+                    Pengajuan keberatan : <br />
+                    Jika terdapat kekeliruan, agar dapat diajukan dalam batas waktu 4 x 24 Jam (4 Hari). Lewat batas waktu tersebut tidak dilayani.</li>
+                </p>
             </td>
-            <td class="text-center">&nbsp;</td>
+            <td width='20%'>&nbsp;</td>
+            <td>&nbsp;</td>
         </tr>
         <tr>
             <td>&nbsp;</td>
-            <td class="text-center">ADE SRI</td>
+            <td>&nbsp;</td>
+            <td><b>SIGIT MARET HARYADI</b><br />Manager TPS</td>
         </tr>
-    </table>-->
+    </table>
     </div>
 @stop
