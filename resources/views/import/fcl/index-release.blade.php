@@ -53,6 +53,8 @@
             rowid = $('#fclReleaseGrid').jqGrid('getGridParam', 'selrow');
             rowdata = $('#fclReleaseGrid').getRowData(rowid);
 
+            if(!rowid) {alert('Please Select Row');return false;} 
+            
             populateFormFields(rowdata, '');
             $('#TCONTAINER_PK').val(rowid);
             $('#NOJOBORDER').val(rowdata.NoJob);
@@ -160,13 +162,13 @@
                 cellValues.push($grid.jqGrid("getCell", selIds[i], "TCONTAINER_PK"));
             }
             
-            var containerId = cellValues.join(",");
+            var manifestId = cellValues.join(",");
             
-            if(!containerId) {alert('Please Select Row');return false;}               
+            if(!manifestId) {alert('Please Select Row');return false;}               
 //            if(!confirm('Apakah anda yakin?')){return false;}    
             
 //            console.log(manifestId);
-            window.open("{{ route('cetak-barcode', array('','','')) }}/"+containerId+"/fcl/release","preview barcode","width=305,height=600,menubar=no,status=no,scrollbars=yes");
+            window.open("{{ route('cetak-barcode', array('','','')) }}/"+manifestId+"/fcl/release","preview barcode","width=305,height=600,menubar=no,status=no,scrollbars=yes");
         });
         
         $('#btn-upload').click(function() {
@@ -329,7 +331,7 @@
                         <button class="btn btn-danger" id="btn-print-barcode"><i class="fa fa-print"></i> Print Barcode</button>
                     </div>
                     <div id="btn-group-5" class="btn-group pull-right">
-                        <button class="btn btn-default" id="btn-upload"><i class="fa fa-upload"></i> Upload TPS Online</button>
+                        <button class="btn btn-warning" id="btn-upload"><i class="fa fa-upload"></i> Upload TPS Online</button>
                     </div>
                 </div>
             </div>

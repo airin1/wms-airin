@@ -5,13 +5,26 @@
     .datepicker.dropdown-menu {
         z-index: 100 !important;
     }
+    .ui-jqgrid tr.jqgrow td {
+        word-wrap: break-word; /* IE 5.5+ and CSS3 */
+        white-space: pre-wrap; /* CSS3 */
+        white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
+        white-space: -pre-wrap; /* Opera 4-6 */
+        white-space: -o-pre-wrap; /* Opera 7 */
+        overflow: hidden;
+        height: auto;
+        vertical-align: middle;
+        padding-top: 3px;
+        padding-bottom: 3px
+    }
 </style>
 <script>
     
     function gridCompleteEvent()
     {
         var ids = jQuery("#lclInoutReportGrid").jqGrid('getDataIDs'),
-            lt = '';   
+            lt = '',
+            vi = '';   
             
         for(var i=0;i < ids.length;i++){ 
             var cl = ids[i];
@@ -25,8 +38,68 @@
             }else{
                 lt = 'Sudah Release';
             }
-            jQuery("#lclInoutReportGrid").jqGrid('setRowData',ids[i],{lamaTimbun:lt}); 
+            
+            if(rowdata.photo_release_in != '' || rowdata.photo_release_out != '' || rowdata.photo_release != '' || rowdata.photo_stripping != ''){
+                vi = '<button style="margin:5px;" class="btn btn-default btn-xs approve-manifest-btn" data-id="'+cl+'" onclick="viewPhoto('+cl+')"><i class="fa fa-photo"></i> View Photo</button>';
+            }else{
+                vi = '<button style="margin:5px;" class="btn btn-default btn-xs approve-manifest-btn" disabled><i class="fa fa-photo"></i> Not Found</button>';
+            }
+            
+            
+            jQuery("#lclInoutReportGrid").jqGrid('setRowData',ids[i],{action:vi,lamaTimbun:lt}); 
         } 
+    }
+    
+    function viewPhoto(manifestID)
+    {
+//        alert(manifestID);
+        
+        $.ajax({
+            type: 'GET',
+            dataType : 'json',
+            url: '{{route("lcl-report-inout-view-photo","")}}/'+manifestID,
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert('Something went wrong, please try again later.');
+            },
+            beforeSend:function()
+            {
+                $('#gateinout-photo').html('');
+                $('#stripping-photo').html('');
+                $('#release-photo').html('');
+            },
+            success:function(json)
+            {
+                var html_gate = '';
+                if(json.data.photo_release_in){
+                    html_gate += '<img src="{{url("uploads/photos/autogate")}}/'+json.data.photo_release_in+'" style="width: 200px;padding:5px;" />';
+                }
+                if(json.data.photo_release_out){
+                    html_gate += '<img src="{{url("uploads/photos/autogate")}}/'+json.data.photo_release_out+'" style="width: 200px;padding:5px;" />';
+                }
+                $('#gateinout-photo').html(html_gate);
+                if(json.data.photo_stripping){
+                    var photos_stripping = $.parseJSON(json.data.photo_stripping);
+                    var html_stripping = '';
+                    $.each(photos_stripping, function(i, item) {
+                        /// do stuff
+                        html_stripping += '<img src="{{url("uploads/photos/manifest")}}/'+item+'" style="width: 200px;padding:5px;" />';
+                    });
+                    $('#stripping-photo').html(html_stripping);
+                }
+                if(json.data.photo_release){
+                    var photos_release = $.parseJSON(json.data.photo_release);
+                    var html_release = '';
+                    $.each(photos_release, function(i, item) {
+                        /// do stuff
+                        html_release += '<img src="{{url("uploads/photos/manifest")}}/'+item+'" style="width: 200px;padding:5px;" />';
+                    });
+                    $('#release-photo').html(html_release);
+                }
+            }
+        });
+        
+        $('#view-photo-modal').modal('show');
     }
     
 </script>
@@ -85,7 +158,8 @@
             ->setGridOption('shrinkToFit', true)
             ->setGridOption('sortname','TMANIFEST_PK')
             ->setGridOption('rownumbers', true)
-            ->setGridOption('height', '320')
+            ->setGridOption('rownumWidth', 50)
+            ->setGridOption('height', '350')
             ->setGridOption('rowList',array(20,50,100))
             ->setGridOption('useColSpanStyle', true)
             ->setNavigatorOptions('navigator', array('viewtext'=>'view'))
@@ -94,6 +168,7 @@
 //            ->setGridEvent('onSelectRow', 'onSelectRowEvent')
             ->setGridEvent('gridComplete', 'gridCompleteEvent')
             ->addColumn(array('key'=>true,'index'=>'TMANIFEST_PK','hidden'=>true))
+            ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>120, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
 //            ->addColumn(array('label'=>'Status','index'=>'VALIDASI','width'=>80, 'align'=>'center'))
             ->addColumn(array('label'=>'No. Joborder','index'=>'NOJOBORDER', 'width'=>150))
             ->addColumn(array('label'=>'Nama Angkut','index'=>'VESSEL','width'=>160))
@@ -129,6 +204,10 @@
             ->addColumn(array('label'=>'Tgl. SPPB','index'=>'TGL_SPPB', 'width'=>150))
             ->addColumn(array('label'=>'No. SPJM','index'=>'NO_SPJM', 'width'=>150))
             ->addColumn(array('label'=>'Tgl. SPJM','index'=>'TGL_SPJM', 'width'=>150))
+            ->addColumn(array('label'=>'Photo Release In','index'=>'photo_release_in', 'width'=>70,'hidden'=>true))
+            ->addColumn(array('label'=>'Photo Release Out','index'=>'photo_release_out', 'width'=>70,'hidden'=>true))
+            ->addColumn(array('label'=>'Photo Release','index'=>'photo_release', 'width'=>70,'hidden'=>true))
+            ->addColumn(array('label'=>'Photo Stripping','index'=>'photo_stripping', 'width'=>70,'hidden'=>true))
 //            ->addColumn(array('label'=>'No. POL','index'=>'NOPOL', 'width'=>120,'align'=>'center'))
 //            ->addColumn(array('label'=>'Kode Dokumen','index'=>'KODE_DOKUMEN', 'width'=>150))
 //            ->addColumn(array('label'=>'Shipper','index'=>'SHIPPER','width'=>160))
@@ -247,6 +326,29 @@
         </div>
     </div>
 </div>
+
+<div id="view-photo-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Photo</h4>
+            </div>
+            <div class="modal-body"> 
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>RELEASE IN / OUT</h3>
+                        <div id="gateinout-photo"></div>
+                        <h3>STRIPPING</h3>
+                        <div id="stripping-photo"></div>
+                        <h3>RELEASE</h3>
+                        <div id="release-photo"></div>
+                    </div>
+                </div>
+            </div>    
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 @endsection
 

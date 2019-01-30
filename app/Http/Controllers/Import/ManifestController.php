@@ -59,7 +59,7 @@ class ManifestController extends Controller
     public function store(Request $request)
     {
         $data = $request->json()->all(); 
-        unset($data['id'], $data['_token']);
+        unset($data['id'], $data['delete_photo'], $data['_token']);
         
         $container = DBContainer::find($data['TCONTAINER_FK']);  
 //        $packing = DBPacking::find($data['TPACKING_FK']);
@@ -225,7 +225,8 @@ class ManifestController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->json()->all(); 
-        unset($data['id'], $data['_token']);
+        $delete_photo = $data['delete_photo'];
+        unset($data['id'], $data['delete_photo'], $data['_token']);
         
         $container = DBContainer::find($data['TCONTAINER_FK']); 
         $packing = DBPacking::find($data['TPACKING_FK']);
@@ -250,6 +251,14 @@ class ManifestController extends Controller
         
         $data['tglmasuk'] = $container->TGLMASUK;
         $data['jammasuk'] = $container->JAMMASUK;
+        
+        if(empty($data['perubahan_hbl']) || $data['perubahan_hbl'] == 'N'){
+            $data['alasan_perubahan'] = '';
+        }
+        
+        if($delete_photo == 'Y'){
+            $data['photo_stripping'] = '';
+        }
         
         $update = DBManifest::where('TMANIFEST_PK', $id)
             ->update($data);
@@ -307,7 +316,7 @@ class ManifestController extends Controller
     public function approve($id)
     {
         
-        $meas = DBManifest::select('MEAS')->where('TMANIFEST_PK', $id)->first();
+        $manifest = DBManifest::find($id);
 
         $update = DBManifest::where('TMANIFEST_PK', $id)
             ->update(array('VALIDASI'=>'Y'));
@@ -315,7 +324,8 @@ class ManifestController extends Controller
         if($update){
             $manifest = DBManifest::find($id);
             if($manifest->sor_update == 0){
-                $sor = $this->updateSor('approve', $meas->MEAS);
+//                $sor = $this->updateSor('approve', $meas->MEAS);
+                $this->updateSorByMeas();
                 $manifest->sor_update = 1;
                 $manifest->save();
             }
@@ -337,7 +347,8 @@ class ManifestController extends Controller
             $manifest = DBManifest::where('TCONTAINER_FK', $container_id)->get();
             foreach ($manifest as $mfs):
                 if($mfs->sor_update == 0){
-                    $sor = $this->updateSor('approve', $mfs->MEAS);
+//                    $sor = $this->updateSor('approve', $mfs->MEAS);
+                    $this->updateSorByMeas();
                     DBManifest::where('TMANIFEST_PK', $mfs->TMANIFEST_PK)->update(array('sor_update'=>1));
                 }
             endforeach;
@@ -468,6 +479,36 @@ class ManifestController extends Controller
         }
               
         return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
+    }
+    
+    public function uploadPhoto(Request $request, $ref)
+    {
+        $picture = array();
+        if ($request->hasFile('photos')) {
+            $files = $request->file('photos');
+            $destinationPath = base_path() . '/public/uploads/photos/manifest';
+            $i = 1;
+            foreach($files as $file){
+//                $filename = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+                
+                $filename = date('dmyHis').'_'.str_slug($request->no_hbl).'_'.$i.'.'.$extension;
+                $picture[] = $filename;
+                $file->move($destinationPath, $filename);
+                $i++;
+            }
+            // update to Database
+            $manifest = DBManifest::find($request->id_hbl);
+            $manifest->$ref = json_encode($picture);
+            if($manifest->save()){
+                return back()->with('success', 'Photo for Manifest '. $request->no_hbl .' has been uploaded.');
+            }else{
+                return back()->with('error', 'Photo uploaded, but not save in Database.');
+            }
+            
+        } else {
+            return back()->with('error', 'Something wrong!!! Can\'t upload photo, please try again.');
+        }
     }
     
 }

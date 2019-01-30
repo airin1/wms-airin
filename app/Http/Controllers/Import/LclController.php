@@ -600,7 +600,17 @@ class LclController extends Controller
     public function gateinUpdate(Request $request, $id)
     {
         $data = $request->json()->all(); 
-        unset($data['TCONTAINER_PK'], $data['_token']);
+        $delete_photo = $data['delete_photo'];
+        unset($data['TCONTAINER_PK'], $data['delete_photo'], $data['_token']);
+        
+        if(empty($data['TGLMASUK']) || $data['TGLMASUK'] == '0000-00-00'){
+            $data['TGLMASUK'] = NULL;
+            $data['JAMMASUK'] = NULL;
+        }
+        
+        if($delete_photo == 'Y'){
+            $data['photo_gatein_extra'] = '';
+        }
         
         $update = DBContainer::where('TCONTAINER_PK', $id)
             ->update($data);
@@ -671,6 +681,13 @@ class LclController extends Controller
         $working_hours = $interval->format("%H:%i");
         $dataupdate['working_hours'] = $working_hours;
         
+        if(empty($data['STARTSTRIPPING']) || $data['ENDSTRIPPING'] == '0000-00-00'){
+            $dataupdate['STARTSTRIPPING'] = NULL;
+            $dataupdate['ENDSTRIPPING'] = NULL;
+            $dataupdate['TGLSTRIPPING'] = NULL;
+            $dataupdate['JAMSTRIPPING'] = NULL;
+        }
+        
         $update = DBContainer::where('TCONTAINER_PK', $id)
             ->update($dataupdate);
         
@@ -695,6 +712,70 @@ class LclController extends Controller
         
         return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
         
+    }
+    
+    public function strippingApprove($id)
+    {
+        $dataupdate = array();
+               
+        $dataupdate['STARTSTRIPPING'] = date('Y-m-d H:i:s');
+        $dataupdate['ENDSTRIPPING'] = date('Y-m-d H:i:s', strtotime('+1 hour'));
+        $dataupdate['TGLSTRIPPING'] = date('Y-m-d');
+        $dataupdate['JAMSTRIPPING'] = date('H:i:s', strtotime('+1 hour'));
+        $dataupdate['UIDSTRIPPING'] = \Auth::getUser()->name;
+        $dataupdate['mulai_tunda'] = '00:00';
+        $dataupdate['selesai_tunda'] = '00:00';
+        
+        // Calculate Working Hours
+//        $date_start_stripping = strtotime($dataupdate['STARTSTRIPPING']);
+//        $date_end_stripping = strtotime($dataupdate['ENDSTRIPPING']);
+//        $stripping = abs($date_start_stripping - $date_end_stripping);
+        
+        $s_time1 = new \DateTime($dataupdate['STARTSTRIPPING']);
+        $s_time2 = new \DateTime($dataupdate['ENDSTRIPPING']);
+
+        $s_interval =  $s_time2->diff($s_time1);
+        
+//        $s_hours = $stripping / ( 60 * 60 );
+        
+//        $date_start_tunda = strtotime($dataupdate['mulai_tunda']);
+//        $date_end_tunda = strtotime($dataupdate['selesai_tunda']);
+//        $tunda = abs($date_start_tunda - $date_end_tunda);
+        
+        $t_time1 = new \DateTime($dataupdate['mulai_tunda']);
+        $t_time2 = new \DateTime($dataupdate['selesai_tunda']);
+
+        $t_interval =  $t_time2->diff($t_time1);
+        
+        $time1 = new \DateTime($s_interval->format("%H:%i:%s"));
+        $time2 = new \DateTime($t_interval->format("%H:%i:%s"));
+        
+        $interval = $time2->diff($time1);
+        
+        $working_hours = $interval->format("%H:%i");
+        $dataupdate['working_hours'] = $working_hours;
+        
+        $update = DBContainer::where('TCONTAINER_PK', $id)
+            ->update($dataupdate);
+        
+        if($update){
+            
+            $dataManifest['tglstripping'] = $dataupdate['TGLSTRIPPING'];
+            $dataManifest['jamstripping'] = $dataupdate['JAMSTRIPPING'];  
+            $dataManifest['STARTSTRIPPING'] = $dataupdate['STARTSTRIPPING'];
+            $dataManifest['ENDSTRIPPING'] = $dataupdate['ENDSTRIPPING'];
+            
+            $updateManifest = DBManifest::where('TCONTAINER_FK', $id)
+                    ->update($dataManifest);
+            
+            if($updateManifest){
+                return json_encode(array('success' => true, 'message' => 'Stripping successfully updated!'));
+            }
+            
+            return json_encode(array('success' => true, 'message' => 'Container successfully updated, but Manifest not updated!'));
+        }
+        
+        return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
     }
     
     public function buangmtyUpdate(Request $request, $id)
@@ -780,9 +861,10 @@ class LclController extends Controller
     public function releaseUpdate(Request $request, $id)
     {
         $data = $request->json()->all(); 
-        unset($data['TMANIFEST_PK'], $data['_token']);
+        $delete_photo = $data['delete_photo'];
+        unset($data['TMANIFEST_PK'], $data['delete_photo'], $data['_token']);
         
-        $manifest = DBManifest::select('MEAS')->where('TMANIFEST_PK', $id)->first();
+        $manifest = DBManifest::find($id);
         
         if(empty($data['NOTALLY'])) {
             $manifestID = DBManifest::select('NOTALLY')->where('NOTALLY', NULL)->count();
@@ -794,6 +876,11 @@ class LclController extends Controller
         $kode_dok = \App\Models\KodeDok::find($data['KD_DOK_INOUT']);
         if($kode_dok){
             $data['KODE_DOKUMEN'] = $kode_dok->name;
+        }
+        
+        if(empty($data['tglrelease']) || $data['tglrelease'] == '0000-00-00'){
+            $data['tglrelease'] = NULL;
+            $data['jamrelease'] = NULL;
         }
         
         if($manifest->release_bc == 'Y'){
@@ -822,11 +909,15 @@ class LclController extends Controller
         $data['UIDSURATJALAN'] = $data['UIDRELEASE'];
         $data['NOPOL'] = $data['NOPOL_RELEASE'];
         
+        if($delete_photo == 'Y'){
+            $data['photo_release'] = '';
+        }
+        
         $update = DBManifest::where('TMANIFEST_PK', $id)
             ->update($data);
         
         if($update){
-            $sor = $this->updateSor('release', $manifest->MEAS);
+//            $sor = $this->updateSor('release', $meas->MEAS);
 
             return json_encode(array('success' => true, 'message' => 'Release successfully updated!'));
         }
@@ -992,9 +1083,17 @@ class LclController extends Controller
                                 ->whereNull('tglrelease')
                                 ->sum('MEAS');
         $data['meas'] = $meas_count;
+        $this->updateSorByMeas();
         $data['sor'] = \App\Models\SorYor::where('type', 'sor')->first();
         
         return view('import.lcl.report-inout')->with($data);
+    }
+    
+    public function reportInoutViewPhoto($manifestID)
+    {
+        $manifest = DBManifest::find($manifestID);
+        
+        return json_encode(array('success' => true, 'data' => $manifest));
     }
     
     public function reportContainer(Request $request)
@@ -1070,6 +1169,13 @@ class LclController extends Controller
         $data['year'] = $year;
         
         return view('import.lcl.report-container')->with($data);
+    }
+    
+    public function reportContainerViewPhoto($containerID)
+    {
+        $container = DBContainer::find($containerID);
+        
+        return json_encode(array('success' => true, 'data' => $container));
     }
     
     public function reportHarian()
@@ -1330,6 +1436,9 @@ class LclController extends Controller
                 $codecocontdetail->JAM_ENTRY = date('H:i:s');
                 
                 if($codecocontdetail->save()){
+                    
+                    $container->REF_NUMBER_OUT = $reff_number;
+                    $container->save();
                     
                     return json_encode(array('insert_id' => $codecocont->TPSCODECOCONTXML_PK, 'ref_number' => $reff_number, 'success' => true, 'message' => 'No. Container '.$container->NOCONTAINER.' berhasil di simpan. Reff Number : '.$reff_number));
                 }
@@ -1657,6 +1766,35 @@ class LclController extends Controller
               
         return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
 
+    }
+    
+    public function releaseGetDataSppb(Request $request)
+    {
+        $manifest_id = $request->id;   
+        $kd_dok = $request->kd_dok;
+        $manifest = DBManifest::find($manifest_id);
+   
+        $sppb = '';
+        
+        if($kd_dok == 1){
+            $sppb = \App\Models\TpsSppbPib::where(array('NO_BL_AWB' => $manifest->NOHBL))->first();
+        }else{
+            $sppb = \App\Models\TpsSppbBc::where(array('NO_BL_AWB' => $manifest->NOHBL))->first();
+        }
+        
+        if($sppb){
+            $arraysppb = explode('/', $sppb->NO_SPPB);
+            $datasppb = array(
+                'NO_SPPB' => $arraysppb[0],
+                'TGL_SPPB' => date('Y-m-d', strtotime($sppb->TGL_SPPB)),
+                'NPWP' => $sppb->NPWP_IMP
+            );
+            return json_encode(array('success' => true, 'message' => 'Get Data SPPB has been success.', 'data' => $datasppb));
+        }else{
+            return json_encode(array('success' => false, 'message' => 'Data SPPB Tidak ditemukan.'));
+        }
+        
+        return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
     }
     
     public function uploadTxtFile(Request $request)
@@ -2110,6 +2248,36 @@ class LclController extends Controller
         return back()->with('error', 'Please upload EXCEL file format.')->withInput();
     }
     
+    public function gateinUploadPhoto(Request $request)
+    {
+        $picture = array();
+        if ($request->hasFile('photos')) {
+            $files = $request->file('photos');
+            $destinationPath = base_path() . '/public/uploads/photos/container/lcl/'.$request->no_cont;
+            $i = 1;
+            foreach($files as $file){
+//                $filename = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+                
+                $filename = date('dmyHis').'_'.str_slug($request->no_cont).'_'.$i.'.'.$extension;
+                $picture[] = $filename;
+                $file->move($destinationPath, $filename);
+                $i++;
+            }
+            // update to Database
+            $container = DBContainer::find($request->id_cont);
+            $container->photo_gatein_extra = json_encode($picture);
+            if($container->save()){
+                return back()->with('success', 'Photo for Container '. $request->no_cont .' has been uploaded.');
+            }else{
+                return back()->with('error', 'Photo uploaded, but not save in Database.');
+            }
+            
+        } else {
+            return back()->with('error', 'Something wrong!!! Can\'t upload photo, please try again.');
+        }
+    }
+    
     public function changeStatusBc($id)
     {
     
@@ -2125,6 +2293,102 @@ class LclController extends Controller
         }
         
         return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
+    }
+    
+    public function changeStatusFlag($id)
+    {
+        $manifest = DBManifest::find($id);
+        $manifest->flag_bc = 'N';
+        
+        if($manifest->save()){
+
+            return json_encode(array('success' => true, 'message' => 'Status has been Change!'));
+}
+        
+        return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
+    }
+    
+    public function lockFlag(Request $request)
+    {
+        $manifest_id = $request->id;
+        $alasan = $request->alasan_segel;
+//        $lainnya = $request->alasan_lainnya;
+        
+//        return $request->all();
+        
+        $picture = array();
+        if ($request->hasFile('photos_flag')) {
+            $files = $request->file('photos_flag');
+            $destinationPath = base_path() . '/public/uploads/photos/flag/lcl';
+            $i = 1;
+            foreach($files as $file){
+//                $filename = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+                
+                $filename = date('dmyHis').'_'.str_slug($request->no_flag_bc).'_'.$i.'.'.$extension;
+                $picture[] = $filename;
+                $file->move($destinationPath, $filename);
+                $i++;
+            } 
+        }
+        
+        $manifest = DBManifest::find($manifest_id);
+        $manifest->flag_bc = 'Y';
+        $manifest->no_flag_bc = $request->no_flag_bc;
+        $manifest->description_flag_bc = $request->description_flag_bc;
+//        if($alasan == 'Lainnya' && !empty($lainnya)){
+//            $manifest->alasan_segel = $lainnya;
+//        }else{
+            $manifest->alasan_segel = $alasan;
+//        }
+        $manifest->photo_lock = json_encode($picture);
+            
+        if($manifest->save()){
+            return back()->with('success', 'Flag has been locked.')->withInput();
+        }
+        
+        return back()->with('error', 'Something wrong, please try again.')->withInput();
+    }
+    
+    public function unlockFlag(Request $request)
+    {
+        $manifest_id = $request->id;
+        $alasan = $request->alasan_lepas_segel;
+        
+        $picture = array();
+        if ($request->hasFile('photos_unflag')) {
+            $files = $request->file('photos_unflag');
+            $destinationPath = base_path() . '/public/uploads/photos/unflag/lcl';
+            $i = 1;
+            foreach($files as $file){
+//                $filename = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+                
+                $filename = date('dmyHis').'_'.str_slug($request->no_unflag_bc).'_'.$i.'.'.$extension;
+                $picture[] = $filename;
+                $file->move($destinationPath, $filename);
+                $i++;
+            } 
+        }
+        
+        $manifest = DBManifest::find($manifest_id);
+        $manifest->flag_bc = 'N';
+        $manifest->no_unflag_bc = $request->no_unflag_bc;
+        $manifest->description_unflag_bc = $request->description_unflag_bc;
+        $manifest->alasan_lepas_segel = $alasan;
+        $manifest->photo_unlock = json_encode($picture);
+        
+        if($manifest->save()){
+            return back()->with('success', 'Flag has been unlocked.')->withInput();
+        }
+        
+        return back()->with('error', 'Something wrong, please try again.')->withInput();
+    }
+    
+    public function viewFlagInfo($manifest_id)
+    {
+        $manifest = DBManifest::find($manifest_id);
+        return json_encode(array('success' => true, 'data' => $manifest));
     }
     
 }

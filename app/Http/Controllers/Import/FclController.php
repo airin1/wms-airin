@@ -546,14 +546,25 @@ class FclController extends Controller
     public function gateinUpdate(Request $request, $id)
     {
         $data = $request->json()->all(); 
-        unset($data['TCONTAINER_PK'], $data['_token']);
+        $delete_photo = $data['delete_photo'];
+        unset($data['TCONTAINER_PK'], $data['delete_photo'], $data['_token']);
+        
+        if(empty($data['TGLMASUK']) || $data['TGLMASUK'] == '0000-00-00'){
+            $data['TGLMASUK'] = NULL;
+            $data['JAMMASUK'] = NULL;
+        }
+        
+        if($delete_photo == 'Y'){
+            $data['photo_gatein_extra'] = '';
+        }
         
         $namaconsolidator = DBConsolidator::select('NAMACONSOLIDATOR','NPWP')->where('TCONSOLIDATOR_PK',$data['TCONSOLIDATOR_FK'])->first();
         if($namaconsolidator) {
             $data['NAMACONSOLIDATOR'] = $namaconsolidator->NAMACONSOLIDATOR;
             $data['ID_CONSOLIDATOR'] = str_replace(array('.','-'),array('',''),$namaconsolidator->NPWP);
         }
-        $teus = DBContainer::select('TEUS')->where('TCONTAINER_PK', $id)->first();
+
+//        $teus = DBContainer::select('TEUS')->where('TCONTAINER_PK', $id)->first();
 
         $update = DBContainer::where('TCONTAINER_PK', $id)
             ->update($data);
@@ -561,7 +572,8 @@ class FclController extends Controller
         if($update){
             $cont = DBContainer::find($id);
             if($cont->yor_update == 0){
-                $yor = $this->updateYor('gatein', $teus->TEUS);
+//                $yor = $this->updateYor('gatein', $teus->TEUS);
+                $this->updateYorByTeus();
                 $cont->yor_update = 1;
                 $cont->save();
             }
@@ -758,7 +770,8 @@ class FclController extends Controller
         if($update){
             $cont = DBContainer::find($id);
             if($cont->yor_update == 1){
-                $yor = $this->updateYor('release', $container->TEUS);
+//                $yor = $this->updateYor('release', $container->TEUS);
+                $this->updateYorByTeus();
                 $cont->yor_update = 2;
                 $cont->save();
             }
@@ -792,6 +805,14 @@ class FclController extends Controller
         if($insert->save()){
             
             $updateOB = \App\Models\TpsOb::where('TPSOBXML_PK', $id)->update(['STATUS_DISPATCHE' => 'S']);
+            
+            // Update Container
+            $container = DBContainer::where(array('NOCONTAINER' => $data['NO_CONT'], 'NO_PLP' => $data['NO_PLP']))->first(); 
+            if($container){
+                $container->NOPOL = $data['NOPOL'];
+                $container->ESEALCODE = $data['ESEALCODE'];
+                $container->save();
+            }
             
             return json_encode(array('success' => true, 'message' => 'Container successfully updated.'));
         }
@@ -978,9 +999,17 @@ class FclController extends Controller
         $data['month'] = $month;
         $data['year'] = $year;
         
+        $this->updateYorByTeus();
         $data['yor'] = \App\Models\SorYor::where('type', 'yor')->first();
         
         return view('import.fcl.report-rekap')->with($data);
+    }
+    
+    public function reportRekapViewPhoto($containerID)
+    {
+        $container = DBContainer::find($containerID);
+        
+        return json_encode(array('success' => true, 'data' => $container));
     }
     
     public function reportRekapSend(Request $request)
@@ -1949,24 +1978,7 @@ class FclController extends Controller
         return back()->with('error', 'Something went wrong, please try again later.');
 //        return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
     }
-    
-    public function changeStatusBc($id)
-    {
-    
-        $container = DBContainer::find($id);
-        $container->status_bc = 'RELEASE';
-        $container->release_bc = 'Y';
-        $container->release_bc_date = date('Y-m-d H:i:s');
-        $container->release_bc_uid = \Auth::getUser()->name;
-              
-        if($container->save()){
-
-            return json_encode(array('success' => true, 'message' => 'Status has been Change!'));
-        }
-        
-        return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
-    }
-    
+  
     public function reportRealisasiPlp($container_id)
     {
         $container = DBContainer::whereIn('TCONTAINER_PK', explode(',',$container_id))->get();
@@ -2039,5 +2051,175 @@ class FclController extends Controller
         $pdf = \PDF::loadView('print.invoice', $data)->setPaper('a4');
         
         return $pdf->stream($data['invoice']->no_invoice.'-'.date('dmy').'.pdf');
+    }
+    
+    public function releaseGetDataSppb(Request $request)
+    {
+        $container_id = $request->id;  
+        $kd_dok = $request->kd_dok;
+        $container = DBContainer::find($container_id);
+        
+        $sppb = '';
+        
+        if($kd_dok == 1){
+            $sppb = \App\Models\TpsSppbPib::where(array('NO_BL_AWB' => $container->NO_BL_AWB))->first();
+        }else{
+            $sppb = \App\Models\TpsSppbBc::where(array('NO_BL_AWB' => $container->NO_BL_AWB))->first();
+        }
+        
+        if($sppb){
+            $arraysppb = explode('/', $sppb->NO_SPPB);
+            $datasppb = array(
+                'NO_SPPB' => $arraysppb[0],
+                'TGL_SPPB' => date('Y-m-d', strtotime($sppb->TGL_SPPB)),
+                'NPWP' => $sppb->NPWP_IMP
+            );
+            return json_encode(array('success' => true, 'message' => 'Get Data SPPB has been success.', 'data' => $datasppb));
+        }else{
+            return json_encode(array('success' => false, 'message' => 'Data SPPB Tidak ditemukan.'));
+        }
+        
+        return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
+    }
+    
+    public function gateinUploadPhoto(Request $request)
+    {
+        $picture = array();
+        if ($request->hasFile('photos')) {
+            $files = $request->file('photos');
+            $destinationPath = base_path() . '/public/uploads/photos/container/fcl/'.$request->no_cont;
+            $i = 1;
+            foreach($files as $file){
+//                $filename = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+                
+                $filename = date('dmyHis').'_'.str_slug($request->no_cont).'_'.$i.'.'.$extension;
+                $picture[] = $filename;
+                $file->move($destinationPath, $filename);
+                $i++;
+            }
+            // update to Database
+            $container = DBContainer::find($request->id_cont);
+            $container->photo_gatein_extra = json_encode($picture);
+            if($container->save()){
+                return back()->with('success', 'Photo for Container '. $request->no_cont .' has been uploaded.');
+            }else{
+                return back()->with('error', 'Photo uploaded, but not save in Database.');
+            }
+            
+        } else {
+            return back()->with('error', 'Something wrong!!! Can\'t upload photo, please try again.');
+        }
+    }
+    
+    public function changeStatusBc($id)
+    { 
+        $container = DBContainer::find($id);
+        $container->status_bc = 'RELEASE';
+        $container->release_bc = 'Y';
+        $container->release_bc_date = date('Y-m-d H:i:s');
+              
+        if($container->save()){
+
+            return json_encode(array('success' => true, 'message' => 'Status has been Change!'));
+        }
+        
+        return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
+    }
+    
+    public function changeStatusFlag($id)
+    {
+        $container = DBContainer::find($id);
+        $container->flag_bc = 'N';
+              
+        if($container->save()){
+
+            return json_encode(array('success' => true, 'message' => 'Status has been Change!'));
+        }
+        
+        return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
+    }
+    
+    public function lockFlag(Request $request)
+    {
+        $container_id = $request->id;
+        $alasan = $request->alasan_segel;
+//        $lainnya = $request->alasan_lainnya;
+        
+//        return $request->all();
+        
+        $picture = array();
+        if ($request->hasFile('photos_flag')) {
+            $files = $request->file('photos_flag');
+            $destinationPath = base_path() . '/public/uploads/photos/flag/fcl';
+            $i = 1;
+            foreach($files as $file){
+//                $filename = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+                
+                $filename = date('dmyHis').'_'.str_slug($request->no_flag_bc).'_'.$i.'.'.$extension;
+                $picture[] = $filename;
+                $file->move($destinationPath, $filename);
+                $i++;
+            } 
+        }
+        
+        $container = DBContainer::find($container_id);
+        $container->flag_bc = 'Y';
+        $container->no_flag_bc = $request->no_flag_bc;
+        $container->description_flag_bc = $request->description_flag_bc;
+//        if($alasan == 'Lainnya' && !empty($lainnya)){
+//            $container->alasan_segel = $lainnya;
+//        }else{
+            $container->alasan_segel = $alasan;
+//        }
+        $container->photo_lock = json_encode($picture);
+            
+        if($container->save()){
+            return back()->with('success', 'Flag has been locked.')->withInput();
+        }
+        
+        return back()->with('error', 'Something wrong, please try again.')->withInput();
+    }
+    
+    public function unlockFlag(Request $request)
+    {
+        $container_id = $request->id;
+        $alasan = $request->alasan_lepas_segel;
+        
+        $picture = array();
+        if ($request->hasFile('photos_unflag')) {
+            $files = $request->file('photos_unflag');
+            $destinationPath = base_path() . '/public/uploads/photos/unflag/fcl';
+            $i = 1;
+            foreach($files as $file){
+//                $filename = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+                
+                $filename = date('dmyHis').'_'.str_slug($request->no_unflag_bc).'_'.$i.'.'.$extension;
+                $picture[] = $filename;
+                $file->move($destinationPath, $filename);
+                $i++;
+            } 
+        }
+        
+        $container = DBContainer::find($container_id);
+        $container->flag_bc = 'N';
+        $container->no_unflag_bc = $request->no_unflag_bc;
+        $container->description_unflag_bc = $request->description_unflag_bc;
+        $container->alasan_lepas_segel = $alasan;
+        $container->photo_unlock = json_encode($picture);
+        
+        if($container->save()){
+            return back()->with('success', 'Flag has been unlocked.')->withInput();
+        }
+        
+        return back()->with('error', 'Something wrong, please try again.')->withInput();
+    }
+    
+    public function viewFlagInfo($container_id)
+    {
+        $container = DBContainer::find($container_id);
+        return json_encode(array('success' => true, 'data' => $container));
     }
 }

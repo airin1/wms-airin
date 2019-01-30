@@ -16,7 +16,8 @@
     function gridCompleteEvent()
     {
         var ids = jQuery("#fclContainerReportGrid").jqGrid('getDataIDs'),
-            lt = '';   
+            lt = '',
+            vi = '';   
             
         for(var i=0;i < ids.length;i++){ 
             var cl = ids[i];
@@ -30,8 +31,57 @@
             }else{
                 lt = 'Sudah Release';
             }
-            jQuery("#fclContainerReportGrid").jqGrid('setRowData',ids[i],{lamaTimbun:lt}); 
+            
+            if(rowdata.photo_get_in != '' || rowdata.photo_get_out != '' || rowdata.photo_gatein_extra != ''){
+                vi = '<button style="margin:5px;" class="btn btn-default btn-xs approve-manifest-btn" data-id="'+cl+'" onclick="viewPhoto('+cl+')"><i class="fa fa-photo"></i> View Photo</button>';
+            }else{
+                vi = '<button style="margin:5px;" class="btn btn-default btn-xs approve-manifest-btn" disabled><i class="fa fa-photo"></i> Not Found</button>';
+            }
+            
+            jQuery("#fclContainerReportGrid").jqGrid('setRowData',ids[i],{action:vi,lamaTimbun:lt}); 
         } 
+    }
+    
+    function viewPhoto(containerID)
+    {       
+        $.ajax({
+            type: 'GET',
+            dataType : 'json',
+            url: '{{route("fcl-report-rekap-view-photo","")}}/'+containerID,
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert('Something went wrong, please try again later.');
+            },
+            beforeSend:function()
+            {
+                $('#gateinout-photo').html('');
+                $('#container-photo').html('');
+            },
+            success:function(json)
+            {
+                var html_gate = '';
+                if(json.data.photo_get_in){
+                    html_gate += '<img src="{{url("uploads/photos/autogate")}}/'+json.data.photo_get_in+'" style="width: 200px;padding:5px;" />';
+                }
+                if(json.data.photo_get_out){
+                    html_gate += '<img src="{{url("uploads/photos/autogate")}}/'+json.data.photo_get_out+'" style="width: 200px;padding:5px;" />';
+                }
+                $('#gateinout-photo').html(html_gate);
+                
+                if(json.data.photo_gatein_extra){
+                    var photos_container = $.parseJSON(json.data.photo_gatein_extra);
+                    var html_container = '';
+                    $.each(photos_container, function(i, item) {
+                        /// do stuff
+                        html_container += '<img src="{{url("uploads/photos/container/fcl")}}/'+json.data.NOCONTAINER+'/'+item+'" style="width: 200px;padding:5px;" />';
+
+                    });
+                    $('#container-photo').html(html_container);
+                }
+            }
+        });
+        
+        $('#view-photo-modal').modal('show');
     }
     
     $(document).ready(function(){
@@ -137,6 +187,7 @@
             ->setGridEvent('gridComplete', 'gridCompleteEvent')
             ->addColumn(array('key'=>true,'index'=>'TCONTAINER_PK','hidden'=>true))
 //            ->addColumn(array('label'=>'Status','index'=>'VALIDASI','width'=>80, 'align'=>'center'))
+            ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>120, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
             ->addColumn(array('label'=>'No. Joborder','index'=>'NoJob', 'width'=>150))
             ->addColumn(array('label'=>'No. SPK','index'=>'NOSPK', 'width'=>150))
             ->addColumn(array('label'=>'Nama Angkut','index'=>'VESSEL','width'=>160))  
@@ -200,6 +251,9 @@
 //            ->addColumn(array('label'=>'Jam. Entry','index'=>'jamentry', 'width'=>70,'hidden'=>true))
 //            ->addColumn(array('label'=>'Updated','index'=>'last_update', 'width'=>150, 'search'=>false))
             ->addColumn(array('label'=>'Lama Timbun (Hari)','index'=>'timeSinceUpdate', 'width'=>150, 'search'=>false, 'align'=>'center'))
+            ->addColumn(array('label'=>'Photo Gate In','index'=>'photo_get_in', 'width'=>70,'hidden'=>true))
+            ->addColumn(array('label'=>'Photo Gate Out','index'=>'photo_get_out', 'width'=>70,'hidden'=>true))
+            ->addColumn(array('label'=>'Photo Extra','index'=>'photo_gatein_extra', 'width'=>70,'hidden'=>true))
 //            ->addColumn(array('label'=>'Lama Timbun','index'=>'lamaTimbun', 'width'=>150, 'search'=>false, 'align'=>'center'))
             ->renderGrid()
         }}

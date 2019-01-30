@@ -6,6 +6,68 @@
         z-index: 100 !important;
     }
 </style>
+<script>
+    function gridCompleteEvent(){
+        var ids = jQuery("#lclContainerReportGrid").jqGrid('getDataIDs'),
+            vi = '';   
+            
+        for(var i=0;i < ids.length;i++){ 
+            var cl = ids[i];
+            
+            rowdata = $('#lclContainerReportGrid').getRowData(cl);
+            
+            if(rowdata.photo_get_in != '' || rowdata.photo_get_out != '' || rowdata.photo_gatein_extra != ''){
+                vi = '<button style="margin:5px;" class="btn btn-default btn-xs approve-manifest-btn" data-id="'+cl+'" onclick="viewPhoto('+cl+')"><i class="fa fa-photo"></i> View Photo</button>';
+            }else{
+                vi = '<button style="margin:5px;" class="btn btn-default btn-xs approve-manifest-btn" disabled><i class="fa fa-photo"></i> Not Found</button>';
+            }
+            
+            jQuery("#lclContainerReportGrid").jqGrid('setRowData',ids[i],{action:vi}); 
+        } 
+    }
+    
+    function viewPhoto(containerID)
+    {       
+        $.ajax({
+            type: 'GET',
+            dataType : 'json',
+            url: '{{route("lcl-report-container-view-photo","")}}/'+containerID,
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert('Something went wrong, please try again later.');
+            },
+            beforeSend:function()
+            {
+                $('#gateinout-photo').html('');
+                $('#container-photo').html('');
+            },
+            success:function(json)
+            {
+                var html_gate = '';
+                if(json.data.photo_get_in){
+                    html_gate += '<img src="{{url("uploads/photos/autogate")}}/'+json.data.photo_get_in+'" style="width: 200px;padding:5px;" />';
+                }
+                if(json.data.photo_get_out){
+                    html_gate += '<img src="{{url("uploads/photos/autogate")}}/'+json.data.photo_get_out+'" style="width: 200px;padding:5px;" />';
+                }
+                $('#gateinout-photo').html(html_gate);
+                
+                if(json.data.photo_gatein_extra){
+                    var photos_container = $.parseJSON(json.data.photo_gatein_extra);
+                    var html_container = '';
+                    $.each(photos_container, function(i, item) {
+                        /// do stuff
+                        html_container += '<img src="{{url("uploads/photos/container/lcl")}}/'+json.data.NOCONTAINER+'/'+item+'" style="width: 200px;padding:5px;" />';
+
+                    });
+                    $('#container-photo').html(html_container);
+                }
+            }
+        });
+        
+        $('#view-photo-modal').modal('show');
+    }
+</script>
 <div class="box">
     <div class="box-header with-border">
         <h3 class="box-title">Report Container LCL</h3>
@@ -64,8 +126,10 @@
             ->setNavigatorOptions('navigator', array('viewtext'=>'view'))
             ->setNavigatorOptions('view',array('closeOnEscape'=>false))
             ->setFilterToolbarOptions(array('autosearch'=>true))
+            ->setGridEvent('gridComplete', 'gridCompleteEvent')
 //            ->setGridEvent('onSelectRow', 'onSelectRowEvent')
             ->addColumn(array('key'=>true,'index'=>'TCONTAINER_PK','hidden'=>true))
+            ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>120, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
 //            ->addColumn(array('label'=>'Status','index'=>'VALIDASI','width'=>80, 'align'=>'center'))
             ->addColumn(array('label'=>'No. Joborder','index'=>'NoJob', 'width'=>150))
             ->addColumn(array('label'=>'Nama Angkut','index'=>'VESSEL','width'=>160))
@@ -91,36 +155,16 @@
             ->addColumn(array('label'=>'No.POS BC11','index'=>'NO_POS_BC11', 'width'=>150,'align'=>'center'))
             ->addColumn(array('label'=>'Tgl. Gate In','index'=>'TGLMASUK', 'width'=>120,'align'=>'center'))
             ->addColumn(array('label'=>'Jam. Gate In','index'=>'JAMMASUK', 'width'=>100,'align'=>'center'))
+            ->addColumn(array('label'=>'No. POL In','index'=>'NOPOL', 'width'=>120,'align'=>'center'))
             ->addColumn(array('label'=>'Tgl. Stripping','index'=>'TGLSTRIPPING', 'width'=>120,'align'=>'center'))
             ->addColumn(array('label'=>'Jam. Stripping','index'=>'JAMSTRIPPING', 'width'=>100,'align'=>'center'))
             ->addColumn(array('label'=>'Tgl. Buang MTY','index'=>'TGLBUANGMTY', 'width'=>120,'align'=>'center'))
             ->addColumn(array('label'=>'Jam. Buang MTY','index'=>'JAMBUANGMTY', 'width'=>100,'align'=>'center'))
             ->addColumn(array('label'=>'Tujuan MTY','index'=>'NAMADEPOMTY', 'width'=>200,'align'=>'left'))
-//            ->addColumn(array('label'=>'Tgl. Release','index'=>'tglrelease', 'width'=>120,'align'=>'center'))
-//            ->addColumn(array('label'=>'Jam. Release','index'=>'jamrelease', 'width'=>100,'align'=>'center'))
-//            ->addColumn(array('label'=>'Kode Dokumen','index'=>'KODE_DOKUMEN', 'width'=>150))
-//            ->addColumn(array('label'=>'No. SPPB','index'=>'NO_SPPB', 'width'=>150))
-//            ->addColumn(array('label'=>'Tgl. SPPB','index'=>'TGL_SPPB', 'width'=>150))
-//            ->addColumn(array('label'=>'No. SPJM','index'=>'NO_SPJM', 'width'=>150))
-//            ->addColumn(array('label'=>'Tgl. SPJM','index'=>'TGL_SPJM', 'width'=>150))
-//            ->addColumn(array('label'=>'No. POL','index'=>'NOPOL', 'width'=>120,'align'=>'center'))
-//            ->addColumn(array('label'=>'Kode Dokumen','index'=>'KODE_DOKUMEN', 'width'=>150))
-//            ->addColumn(array('label'=>'Shipper','index'=>'SHIPPER','width'=>160))
-//            ->addColumn(array('label'=>'Consignee','index'=>'CONSIGNEE','width'=>160))
-//            ->addColumn(array('label'=>'Notify Party','index'=>'NOTIFYPARTY','width'=>160))            
-//            ->addColumn(array('label'=>'NPWP Consignee','index'=>'NPWP_CONSIGNEE', 'width'=>150))
-//            ->addColumn(array('label'=>'Marking','index'=>'MARKING', 'width'=>150)) 
-//            ->addColumn(array('label'=>'Desc of Goods','index'=>'DESCOFGOODS', 'width'=>150))              
-//            ->addColumn(array('label'=>'Tgl.Behandle','index'=>'tglbehandle', 'width'=>150)) 
-//            ->addColumn(array('label'=>'Surcharge (DG)','index'=>'DG_SURCHARGE', 'width'=>150))
-//            ->addColumn(array('label'=>'Surcharge (Weight)','index'=>'WEIGHT_SURCHARGE', 'width'=>150)) 
-//            ->addColumn(array('label'=>'Tgl. Surat Jalan','index'=>'TGLSURATJALAN', 'width'=>120))
-//            ->addColumn(array('label'=>'Jam. Surat Jalan','index'=>'JAMSURATJALAN', 'width'=>70))
-//            ->addColumn(array('label'=>'Tgl. Fiat Muat','index'=>'tglfiat', 'width'=>120))
-//            ->addColumn(array('label'=>'Jam. Fiat Muat','index'=>'jamfiat', 'width'=>70))
-//            ->addColumn(array('label'=>'Tgl. Entry','index'=>'tglentry', 'width'=>120))
-//            ->addColumn(array('label'=>'Jam. Entry','index'=>'jamentry', 'width'=>70,'hidden'=>true))
-//            ->addColumn(array('label'=>'Updated','index'=>'last_update', 'width'=>150, 'search'=>false))
+            ->addColumn(array('label'=>'No. POL MTY','index'=>'NOPOL_MTY', 'width'=>120,'align'=>'center'))
+            ->addColumn(array('label'=>'Photo Gate In','index'=>'photo_get_in', 'width'=>70,'hidden'=>true))
+            ->addColumn(array('label'=>'Photo Gate Out','index'=>'photo_get_out', 'width'=>70,'hidden'=>true))
+            ->addColumn(array('label'=>'Photo Extra','index'=>'photo_gatein_extra', 'width'=>70,'hidden'=>true))
             ->renderGrid()
         }}
     </div>
@@ -151,6 +195,8 @@
                     <select class="form-control select2" id="by" name="year" style="width: 100%;" tabindex="-1" aria-hidden="true">
                         <option value="2016" @if($year == '2016') {{ 'selected' }} @endif>2016</option>
                         <option value="2017" @if($year == '2017') {{ 'selected' }} @endif>2017</option>                      
+                        <option value="2018" @if($year == '2018') {{ 'selected' }} @endif>2018</option>
+                        <option value="2019" @if($year == '2019') {{ 'selected' }} @endif>2019</option>
                     </select>
                 </div>
                 <div class="col-md-2">
@@ -241,6 +287,27 @@
         </div>
     </div>
 </div>
+
+<div id="view-photo-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Photo</h4>
+            </div>
+            <div class="modal-body"> 
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>IN / OUT</h3>
+                        <div id="gateinout-photo"></div>
+                        <h3>CONTAINER</h3>
+                        <div id="container-photo"></div>
+                    </div>
+                </div>
+            </div>    
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 @endsection
 

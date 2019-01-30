@@ -11,7 +11,7 @@
 
 <div class="box box-default">
     <div class="box-header with-border">
-      <h3 class="box-title">LCL Registrer Information</h3>
+      <h3 class="box-title">LCL Register Information</h3>
       <div class="box-tools pull-right">
         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
       </div>
@@ -180,7 +180,7 @@
     
     $(document).ready(function()
     {
-        $('#btn-toolbar').disabledButtonGroup();
+        $('#btn-toolbar, #btn-photo').disabledButtonGroup();
         $('#btn-group-4').enableButtonGroup();
         $('#btn-group-3').enableButtonGroup();
         $('#btn-group-1').enableButtonGroup();
@@ -200,7 +200,7 @@
             $('#id').val("");
             
             //Disables all buttons within the toolbar
-            $('#btn-toolbar').disabledButtonGroup();
+            $('#btn-toolbar, #btn-photo').disabledButtonGroup();
             $('#btn-group-4').enableButtonGroup();
             $('#btn-group-3').enableButtonGroup();
             $('#btn-group-1').enableButtonGroup();
@@ -255,15 +255,29 @@
         
 //        console.log(rowdata);
         $('#btn-toolbar').disabledButtonGroup();
-        $('#btn-group-1').enableButtonGroup();
+        $('#btn-group-1, #btn-photo').enableButtonGroup();
         $('#btn-group-3').enableButtonGroup();
+        
+        $('#upload-title').html('Upload Photo for '+rowdata.NOHBL);
+        $('#no_hbl').val(rowdata.NOHBL);
+        $('#id_hbl').val(rowdata.TMANIFEST_PK);
+        $('#load_photos').html('');
+        $('#delete_photo').val('N');
+        if(rowdata.photo_stripping){
+            var photos = $.parseJSON(rowdata.photo_stripping);
+            var html = '';
+            $.each(photos, function(i, item) {
+                /// do stuff
+                html += '<img src="{{url("uploads/photos/manifest")}}/'+item+'" style="width: 200px;padding:5px;" />';
+            });
+            $('#load_photos').html(html);
+        }
       });
 
       //Bind onClick event to the "Delete" button.
       $('#btn-delete').click(function()
       {
         if(!confirm('Apakah anda yakin ingin menghapus data ini?')){return false;}
-        
         //Gets the selected row id
         rowid = $('#lclManifestGrid').jqGrid('getGridParam', 'selrow');
         rowdata = $('#lclManifestGrid').getRowData(rowid);
@@ -493,6 +507,9 @@
                         ->addColumn(array('label'=>'Flag','index'=>'flag_bc','width'=>80, 'align'=>'center'))
                         ->addColumn(array('label'=>'Tgl. Entry','index'=>'tglentry', 'width'=>120))
                         ->addColumn(array('label'=>'Jam. Entry','index'=>'jamentry', 'width'=>70,'hidden'=>true))
+                        ->addColumn(array('label'=>'Tgl. Stripping','index'=>'tglstripping', 'width'=>70,'hidden'=>true))
+                        ->addColumn(array('label'=>'Jam. Stripping','index'=>'jamstripping', 'width'=>70,'hidden'=>true))
+                        ->addColumn(array('label'=>'Photo Stripping','index'=>'photo_stripping', 'width'=>70,'hidden'=>true))
                         ->addColumn(array('label'=>'Updated','index'=>'last_update', 'width'=>150, 'search'=>false,'hidden'=>true))
                         ->renderGrid()
                     }}
@@ -528,6 +545,7 @@
                         <input name="_token" type="hidden" value="{{ csrf_token() }}">
                         <input name="TCONTAINER_FK" id="TCONTAINER_FK" type="hidden" value="{{ $container->TCONTAINER_PK }}">
                         <input name="id" id="id" type="hidden">
+                        <input name="delete_photo" id="delete_photo" value="N" type="hidden">
                         <div class="form-group">
                             <label class="col-sm-3 control-label">No. HBL</label>
                             <div class="col-sm-8">
@@ -550,9 +568,6 @@
                             <div class="col-sm-8">
                                 <select class="form-control select2" id="TSHIPPER_FK" name="TSHIPPER_FK" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
                                     <option value="">Choose Shipper</option>
-<!--                                    @foreach($perusahaans as $perusahaan)
-                                        <option value="{{ $perusahaan->id }}">{{ $perusahaan->name }}</option>
-                                    @endforeach-->
                                 </select>
                             </div>
                         </div>
@@ -561,9 +576,6 @@
                             <div class="col-sm-6">
                                 <select class="form-control select2" id="TCONSIGNEE_FK" name="TCONSIGNEE_FK" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
                                     <option value="">Choose Consignee</option>
-<!--                                    @foreach($perusahaans as $perusahaan)
-                                        <option value="{{ $perusahaan->id }}">{{ $perusahaan->name }}</option>
-                                    @endforeach-->
                                 </select>
                             </div>
                             <div class="col-sm-2">
@@ -575,9 +587,6 @@
                             <div class="col-sm-8">
                                 <select class="form-control select2" id="TNOTIFYPARTY_FK" name="TNOTIFYPARTY_FK" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
                                     <option value="Same of Consignee">Same of Consignee</option>
-<!--                                    @foreach($perusahaans as $perusahaan)
-                                        <option value="{{ $perusahaan->id }}">{{ $perusahaan->name }}</option>
-                                    @endforeach-->
                                 </select>
                             </div>
                         </div>
@@ -585,6 +594,18 @@
                           <label class="col-sm-3 control-label">Marking</label>
                           <div class="col-sm-8">
                               <textarea class="form-control" id="MARKING"  name="MARKING" rows="3"></textarea>
+                          </div>
+                        </div>
+                        <div class="form-group" id="btn-photo">
+                          <label class="col-sm-3 control-label">Photo</label>
+                          <div class="col-sm-8">
+                              <button type="button" class="btn btn-warning" id="upload-photo-btn">Upload Photo</button>
+                              <button type="button" class="btn btn-danger" id="delete-photo-btn">Delete Photo</button>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="col-sm-12">
+                              <div id="load_photos" style="text-align: center;"></div>
                           </div>
                         </div>
 
@@ -744,6 +765,39 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<div id="photo-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="upload-title"></h4>
+            </div>
+            <form class="form-horizontal" id="upload-photo-form" action="{{ route('lcl-manifest-upload-photo','photo_stripping') }}" method="POST" enctype="multipart/form-data">
+                <div class="modal-body"> 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input name="_token" type="hidden" value="{{ csrf_token() }}">
+                            <input type="hidden" id="id_hbl" name="id_hbl" required>   
+                            <input type="hidden" id="no_hbl" name="no_hbl" required>    
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Photo</label>
+                                <div class="col-sm-8">
+                                    <input type="file" name="photos[]" class="form-control" multiple="true" required>
+                                </div>
+                            </div>
+
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 @endsection
 
@@ -775,6 +829,19 @@
         e.preventDefault();
         $("#consignee-modal").modal('show');
         return false;
+    });
+    
+    $("#upload-photo-btn").on("click", function(e){
+        e.preventDefault();
+        $("#photo-modal").modal('show');
+        return false;
+    });
+    
+    $("#delete-photo-btn").on("click", function(e){
+        if(!confirm('Apakah anda yakin akan menghapus photo?')){return false;}
+        
+        $('#load_photos').html('');
+        $('#delete_photo').val('Y');
     });
     
     $("#create-consignee-form").on("submit", function(){

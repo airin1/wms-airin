@@ -115,3 +115,11 @@ Route::get('/autogate/notification/{barcode}', [
     'uses' => 'BarcodeController@autogateNotification',
     'as' => 'autogate-notification'
 ]);
+
+Route::group(['namespace' => 'Payment'], function(){
+    // BNI Notification
+    Route::post('payment/bni/notification', [
+        'as' => 'payment-bni-notification',
+        'uses' => 'PaymentController@bniNotification'
+    ]);
+});
