@@ -36,7 +36,7 @@
     $(document).ready(function()
     {
         $('#release-form').disabledFormGroup();
-        $('#btn-toolbar').disabledButtonGroup();
+        $('#btn-toolbar,#btn-sppb, #btn-photo').disabledButtonGroup();
         $('#btn-group-3').enableButtonGroup();
         
         $("#KD_DOK_INOUT").on("change", function(){
@@ -48,11 +48,69 @@
             }
         });
         
+        $('#get-sppb-btn').click(function(){
+            
+            if(!confirm('Apakah anda yakin?')){return false;}
+            
+            var kd_dok = $("#KD_DOK_INOUT").val();
+            if(kd_dok == ''){
+                alert('Kode Dokumen masih kosong!!!');
+                return false;
+            }
+            
+            $this = $(this);
+            $this.html('<i class="fa fa-spin fa-spinner"></i> Please wait...');
+            $this.attr('disabled','disabled');
+
+            var url = '{{ route("lcl-delivery-release-getdatasppb") }}';
+
+            $.ajax({
+                type: 'POST',
+                data: 
+                {
+                    'id' : $('#TMANIFEST_PK').val(),
+                    'kd_dok' : kd_dok,
+                    '_token' : '{{ csrf_token() }}'
+                },
+                dataType : 'json',
+                url: url,
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    alert('Something went wrong, please try again later.');
+                },
+                beforeSend:function()
+                {
+
+                },
+                success:function(json)
+                {
+                    console.log(json);
+
+                    if(json.success) {
+                        $('#btn-toolbar').showAlertAfterElement('alert-success alert-custom', json.message, 5000);
+                        
+                        var datasppb = json.data; 
+                        $('#NO_SPPB').val(datasppb.NO_SPPB);
+                        $('#TGL_SPPB').val(datasppb.TGL_SPPB);
+                        $('#ID_CONSIGNEE').val(datasppb.NPWP);
+                    } else {
+                      $('#btn-toolbar').showAlertAfterElement('alert-danger alert-custom', json.message, 5000);
+                    }
+                    
+                    $this.html('<i class="fa fa-download"></i> Get Data');
+                    $this.removeAttr('disabled');
+
+                }
+            });
+        });
+        
         $('#btn-edit').click(function() {
             //Gets the selected row id.
             rowid = $('#lclReleaseGrid').jqGrid('getGridParam', 'selrow');
             rowdata = $('#lclReleaseGrid').getRowData(rowid);
 
+            if(!rowid) {alert('Please Select Row');return false;} 
+            
             populateFormFields(rowdata, '');
             $('#TMANIFEST_PK').val(rowid);
             $('#NO_BC11').val(rowdata.NO_BC11);
@@ -71,10 +129,26 @@
             $('#KD_DOK_INOUT').val(rowdata.KD_DOK_INOUT).trigger('change');
             $('#bcf_consignee').val(rowdata.bcf_consignee).trigger('change');
                         
+            $('#upload-title').html('Upload Photo for '+rowdata.NOHBL);
+            $('#no_hbl').val(rowdata.NOHBL);
+            $('#id_hbl').val(rowdata.TMANIFEST_PK);
+            $('#load_photos').html('');
+            $('#delete_photo').val('N');
+            
+            if(rowdata.photo_release){
+                var html = '';
+                var photos = $.parseJSON(rowdata.photo_release);
+                $.each(photos, function(i, item) {
+                    /// do stuff
+                    html += '<img src="{{url("uploads/photos/manifest")}}/'+item+'" style="width: 200px;padding:5px;" />';
+                });
+                $('#load_photos').html(html);
+            }
+            
 //            if(!rowdata.tglrelease && !rowdata.jamrelease) {
 //                $('#btn-group-4').disabledButtonGroup();
 //                $('#btn-group-5').disabledButtonGroup();
-                $('#btn-group-2').enableButtonGroup();
+                $('#btn-group-2,#btn-sppb,#btn-photo').enableButtonGroup();
                 $('#release-form').enableFormGroup();
 //            }else{
                 $('#btn-group-4').enableButtonGroup();
@@ -86,7 +160,7 @@
             if(rowdata.flag_bc == 'Y'){
                 $('#btn-group-4').disabledButtonGroup();
                 $('#btn-group-5').disabledButtonGroup();
-                $('#btn-group-2').disabledButtonGroup();
+                $('#btn-group-2,#btn-sppb,#btn-photo').disabledButtonGroup();
                 $('#release-form').disabledFormGroup();
             }
 
@@ -277,6 +351,7 @@
                     ->setGridOption('shrinkToFit', true)
                     ->setGridOption('sortname','TMANIFEST_PK')
                     ->setGridOption('rownumbers', true)
+                    ->setGridOption('rownumWidth', 50)
                     ->setGridOption('multiselect', true)
                     ->setGridOption('height', '300')
                     ->setGridOption('rowList',array(20,50,100))
@@ -348,6 +423,7 @@
                     ->addColumn(array('label'=>'Jam. Entry','index'=>'jamentry', 'width'=>70,'hidden'=>true))
                     ->addColumn(array('label'=>'Tgl. Release','index'=>'tglrelease', 'width'=>120))
                     ->addColumn(array('label'=>'Jam. Release','index'=>'jamrelease', 'width'=>70,'hidden'=>true))
+                    ->addColumn(array('label'=>'Photo Release','index'=>'photo_release', 'width'=>70,'hidden'=>true))
                     ->addColumn(array('label'=>'Lokasi Tujuan','index'=>'LOKASI_TUJUAN', 'width'=>70,'hidden'=>true))
                     ->addColumn(array('label'=>'Updated','index'=>'last_update', 'width'=>150, 'search'=>false,'hidden'=>true))
                     ->renderGrid()
@@ -372,7 +448,7 @@
                         <button class="btn btn-danger" id="btn-print-barcode"><i class="fa fa-print"></i> Print Barcode</button>
                     </div>
                     <div id="btn-group-5" class="btn-group pull-right">
-                        <button class="btn btn-default" id="btn-upload"><i class="fa fa-upload"></i> Upload TPS Online</button>
+                        <button class="btn btn-warning" id="btn-upload"><i class="fa fa-upload"></i> Upload TPS Online</button>
                     </div>
                 </div>
             </div>
@@ -384,6 +460,7 @@
                     
                     <input name="_token" type="hidden" value="{{ csrf_token() }}">
                     <input id="TMANIFEST_PK" name="TMANIFEST_PK" type="hidden">
+                    <input name="delete_photo" id="delete_photo" value="N" type="hidden">
                     <div class="form-group">
                         <label class="col-sm-3 control-label">No. HBL</label>
                         <div class="col-sm-8">
@@ -584,12 +661,56 @@
                             <input type="text" id="NOPOL_RELEASE" name="NOPOL_RELEASE" class="form-control" required>
                         </div>
                     </div>
+                    <div class="form-group hide-kddoc" id="btn-photo">
+                        <label class="col-sm-3 control-label">Photo</label>
+                        <div class="col-sm-8">
+                            <button type="button" class="btn btn-warning" id="upload-photo-btn">Upload Photo</button>
+                            <button type="button" class="btn btn-danger" id="delete-photo-btn">Delete Photo</button>
+                        </div>
+                    </div>
+                    <div class="form-group hide-kddoc">
+                        <div class="col-sm-12">
+                            <div id="load_photos" style="text-align: center;"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>  
     </div>
 </div>
+<div id="photo-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="upload-title"></h4>
+            </div>
+            <form class="form-horizontal" id="upload-photo-form" action="{{ route('lcl-manifest-upload-photo','photo_release') }}" method="POST" enctype="multipart/form-data">
+                <div class="modal-body"> 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input name="_token" type="hidden" value="{{ csrf_token() }}">
+                            <input type="hidden" id="id_hbl" name="id_hbl" required>   
+                            <input type="hidden" id="no_hbl" name="no_hbl" required>    
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Photo</label>
+                                <div class="col-sm-8">
+                                    <input type="file" name="photos[]" class="form-control" multiple="true" required>
+                                </div>
+                            </div>
 
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 @endsection
 
 @section('custom_css')
@@ -607,6 +728,20 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
 <script type="text/javascript">
     $('.select2').select2();
+    
+    $("#upload-photo-btn").on("click", function(e){
+        e.preventDefault();
+        $("#photo-modal").modal('show');
+        return false;
+    });
+    
+    $("#delete-photo-btn").on("click", function(e){
+        if(!confirm('Apakah anda yakin akan menghapus photo?')){return false;}
+        
+        $('#load_photos').html('');
+        $('#delete_photo').val('Y');
+    });
+    
     $('.datepicker').datepicker({
         autoclose: true,
         todayHighlight: false,
