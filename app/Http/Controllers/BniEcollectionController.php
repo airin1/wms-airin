@@ -8,24 +8,17 @@ use App\Http\Controllers\Controller;
 
 class BniEcollectionController extends Controller
 {
-    protected $client_id;
-    protected $secret_key;
-    protected $url;
-    protected $TIME_DIFF_LIMIT;
-
-    public function __construct() {
-        
-        $this->client_id = '585';
-        $this->secret_key = 'e68cc6c6a3f5fa59be436534757439e';
-        $this->TIME_DIFF_LIMIT = 480;
-    }
+    private static $client_id = '586';
+//    private static $secret_key = 'e68cc6c6a3f5fa59be4365347574d39e';
+    private static $secret_key = '1c4e8bfa759a9a30c6168732304bf360';   
+    private static $TIME_DIFF_LIMIT = 480;
     
     public static function encrypt(array $json_data) {
-            return self::doubleEncrypt(strrev(time()) . '.' . json_encode($json_data), $this->client_id, $this->secret_key);
+            return self::doubleEncrypt(strrev(time()) . '.' . json_encode($json_data), static::$client_id, static::$secret_key);
     }
 
     public static function decrypt($hased_string) {
-            $parsed_string = self::doubleDecrypt($hased_string, $this->client_id, $this->secret_key);
+            $parsed_string = self::doubleDecrypt($hased_string, static::$client_id, static::$secret_key);
             list($timestamp, $data) = array_pad(explode('.', $parsed_string, 2), 2, null);
             if (self::tsDiff(strrev($timestamp)) === true) {
                     return json_decode($data, true);
@@ -34,7 +27,7 @@ class BniEcollectionController extends Controller
     }
 
     private static function tsDiff($ts) {
-            return abs($ts - time()) <= $this->TIME_DIFF_LIMIT;
+            return abs($ts - time()) <= static::$TIME_DIFF_LIMIT;
     }
 
     private static function doubleEncrypt($string, $cid, $secret) {

@@ -13,7 +13,7 @@
 </style>
 <script>
     
-    var grid = $("#lclInvoicesGrid"), headerRow, rowHight, resizeSpanHeight;
+    var grid = $("#paymentBniGrid"), headerRow, rowHight, resizeSpanHeight;
 
     // get the header row which contains
     headerRow = grid.closest("div.ui-jqgrid-view")
@@ -35,42 +35,41 @@
     
     function gridCompleteEvent()
     {
-        var ids = jQuery("#lclInvoicesGrid").jqGrid('getDataIDs'),
-            edt = '',
-            del = ''; 
+        var ids = jQuery("#paymentBniGrid").jqGrid('getDataIDs'),
+            edt = '';
         for(var i=0;i < ids.length;i++){ 
             var cl = ids[i];
             
-            edt = '<a href="{{ route("invoice-edit",'') }}/'+cl+'"><i class="fa fa-pencil"></i></a> ';
-            del = '<a href="{{ route("invoice-delete",'') }}/'+cl+'" onclick="if (confirm(\'Are You Sure ?\')){return true; }else{return false; };"><i class="fa fa-close"></i></a>';
-            jQuery("#lclInvoicesGrid").jqGrid('setRowData',ids[i],{action:edt+' '+del}); 
+            edt = '<a href="{{ route("payment-bni-edit",'') }}/'+cl+'"><i class="fa fa-pencil"></i></a> ';
+            jQuery("#paymentBniGrid").jqGrid('setRowData',ids[i],{action:edt}); 
         } 
     }
     
 </script>
 <div class="box">
-    <div class="box-header with-border">
+    <div class="box-header with-border" style="padding: 13px;">
         <h3 class="box-title">BNI E-Collection Payment Lists</h3>
-        <div class="box-tools">
-            <button class="btn btn-block btn-info btn-sm" id="cetak-rekap"><i class="fa fa-plus"></i> Create Manual</button>
+        <div class="box-tools pull-right">
+            <button class="btn btn-success" id="create-billing-btn"><i class="fa fa-plus"></i>&nbsp; Create Billing</button>
+            <button class="btn btn-info" id="inquiry-btn"><i class="fa fa-info"></i>&nbsp; Inquiry</button>
         </div>
     </div>
     <div class="box-body table-responsive">
         {{
-            GridRender::setGridId("lclInvoicesGrid")
+            GridRender::setGridId("paymentBniGrid")
             ->enableFilterToolbar()
             ->setGridOption('mtype', 'POST')
-            ->setGridOption('url', URL::to('/invoice/grid-data?_token='.csrf_token()))
-            ->setFileProperty('title', 'LCL Invoices') //Laravel Excel File Property
+            ->setGridOption('url', URL::to('/payment/grid-data?_token='.csrf_token()))
+            ->setFileProperty('title', 'BNI E-Collection') //Laravel Excel File Property
             ->setFileProperty('creator', 'Reza') //Laravel Excel File Property
             ->setSheetProperty('fitToPage', true) //Laravel Excel Sheet Property
             ->setSheetProperty('fitToHeight', true)
             ->setGridOption('rowNum', 20)
             ->setGridOption('shrinkToFit', true)
-            ->setGridOption('sortname','updated_at')
+            ->setGridOption('sortname','created_at')
             ->setGridOption('rownumbers', true)
             ->setGridOption('height', '400')
-            ->setGridOption('rowList',array(20,50,100))
+            ->setGridOption('rowList',array(50,100,200))
             ->setGridOption('useColSpanStyle', true)
             ->setNavigatorOptions('navigator', array('viewtext'=>'view'))
             ->setNavigatorOptions('view',array('closeOnEscape'=>false))
@@ -78,35 +77,128 @@
             ->setGridEvent('gridComplete', 'gridCompleteEvent')
             ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>80, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
             ->addColumn(array('key'=>true,'index'=>'id','hidden'=>true))
-            ->addColumn(array('label'=>'No. Invoice','index'=>'no_invoice','width'=>200))
-            ->addColumn(array('label'=>'Type','index'=>'INVOICE','width'=>80,'align'=>'center'))
-            ->addColumn(array('label'=>'Consolidator','index'=>'NAMACONSOLIDATOR','width'=>250))
-            ->addColumn(array('label'=>'Vessel','index'=>'VESSEL', 'width'=>150))
-            ->addColumn(array('label'=>'Voy','index'=>'VOY','width'=>80,'align'=>'center'))
-            ->addColumn(array('label'=>'No. Container','index'=>'NOCONTAINER','width'=>160))
-            ->addColumn(array('label'=>'Size','index'=>'SIZE', 'width'=>80,'align'=>'center'))
-            ->addColumn(array('label'=>'Tanggal<br />Masuk','index'=>'tglmasuk', 'width'=>120, 'align'=>'center'))
-            ->addColumn(array('label'=>'Tanggal<br />Keluar','index'=>'tglrelease', 'width'=>120, 'align'=>'center'))
-            ->addColumn(array('label'=>'No. B/L','index'=>'NOHBL','width'=>160))          
-            ->addColumn(array('label'=>'Consignee','index'=>'CONSIGNEE', 'width'=>250,))
-            ->addColumn(array('label'=>'CBM<br r/>eq','index'=>'cbm', 'width'=>60,'align'=>'center'))
-            ->addColumn(array('label'=>'Hari','index'=>'hari','width'=>60,'align'=>'center'))
-            ->addColumn(array('label'=>'Bhndl','index'=>'behandle', 'width'=>60,'align'=>'center'))
-            ->addColumn(array('label'=>'Storage','index'=>'storage','width'=>120,'align'=>'right', 'formatter'=>'currency', 'formatoptions'=>array('decimalSeparator'=>',', 'thousandsSeparator'=> '.', 'decimalPlaces'=> '2')))
-            ->addColumn(array('label'=>'RDM','index'=>'rdm','width'=>100,'align'=>'right', 'formatter'=>'currency', 'formatoptions'=>array('decimalSeparator'=>',', 'thousandsSeparator'=> '.', 'decimalPlaces'=> '2')))
-            ->addColumn(array('label'=>'Behandle','index'=>'harga_behandle', 'width'=>120,'align'=>'right', 'formatter'=>'currency', 'formatoptions'=>array('decimalSeparator'=>',', 'thousandsSeparator'=> '.', 'decimalPlaces'=> '2')))
-            ->addColumn(array('label'=>'Adm/Doc','index'=>'adm','width'=>100,'align'=>'right', 'formatter'=>'currency', 'formatoptions'=>array('decimalSeparator'=>',', 'thousandsSeparator'=> '.', 'decimalPlaces'=> '2')))
-            ->addColumn(array('label'=>'Surcharge','index'=>'weight_surcharge', 'width'=>120,'align'=>'right', 'formatter'=>'currency', 'formatoptions'=>array('decimalSeparator'=>',', 'thousandsSeparator'=> '.', 'decimalPlaces'=> '2')))
-            ->addColumn(array('label'=>'Sub Total','index'=>'sub_total', 'width'=>120,'align'=>'right', 'formatter'=>'currency', 'formatoptions'=>array('decimalSeparator'=>',', 'thousandsSeparator'=> '.', 'decimalPlaces'=> '2')))
-//            ->addColumn(array('label'=>'PPN','index'=>'ppn', 'width'=>120,'align'=>'right', 'formatter'=>'currency', 'formatoptions'=>array('decimalSeparator'=>',', 'thousandsSeparator'=> '.', 'decimalPlaces'=> '2')))
-            ->addColumn(array('label'=>'UID','index'=>'UID', 'width'=>150))
-            ->addColumn(array('label'=>'Tanggal<br/>Entry','index'=>'created_at', 'width'=>160,'align'=>'center'))
-//            ->addColumn(array('label'=>'Updated','index'=>'last_update', 'width'=>150, 'search'=>false))
-//            ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>80, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
+            ->addColumn(array('label'=>'Transaction ID','index'=>'trx_id','width'=>150,'align'=>'center'))
+            ->addColumn(array('label'=>'Customer Name','index'=>'customer_name','width'=>200,'align'=>'center'))
+            ->addColumn(array('label'=>'VA Number','index'=>'virtual_account','width'=>200,'align'=>'center'))
+            ->addColumn(array('label'=>'Transaction<br />Amount','index'=>'trx_amount','width'=>150,'align'=>'right', 'formatter'=>'currency', 'formatoptions'=>array('decimalSeparator'=>',', 'thousandsSeparator'=> '.', 'decimalPlaces'=> '2')))
+            ->addColumn(array('label'=>'Created','index'=>'datetime_created','width'=>150,'align'=>'center'))
+            ->addColumn(array('label'=>'Expired','index'=>'datetime_expired','width'=>150,'align'=>'center'))
+            ->addColumn(array('label'=>'Last Update','index'=>'datetime_last_updated','width'=>150,'align'=>'center'))
+            ->addColumn(array('label'=>'Payment Date','index'=>'datetime_payment','width'=>150,'align'=>'center'))                             
+            ->addColumn(array('label'=>'Payment<br />Ref Number','index'=>'payment_ntb','width'=>150,'align'=>'center'))
+            ->addColumn(array('label'=>'Payment Amount','index'=>'payment_amount','width'=>150,'align'=>'right', 'formatter'=>'currency', 'formatoptions'=>array('decimalSeparator'=>',', 'thousandsSeparator'=> '.', 'decimalPlaces'=> '2')))
+            ->addColumn(array('label'=>'VA Status<br />1=active<br />2=inactive','index'=>'va_status','width'=>100,'align'=>'center'))
+            ->addColumn(array('label'=>'Description','index'=>'description','width'=>200,'align'=>'left'))
+            ->addColumn(array('label'=>'UID','index'=>'uid','width'=>150,'align'=>'center'))
+        
             ->renderGrid()
         }}
     </div>
 </div>
+
+<div id="create-billing-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Create Billing</h4>
+            </div>
+            <form class="form-horizontal" action="{{ route('payment-bni-create-billing') }}" method="POST">
+                <div class="modal-body"> 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input name="_token" type="hidden" value="{{ csrf_token() }}">
+                            
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Transaction ID</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="trx_id" placeholder="Trx ID or Invoice ID" class="form-control pull-right" required />
+                                </div>
+                            </div> 
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Transaction Amount</label>
+                                <div class="col-sm-8">
+                                    <input type="number" name="trx_amount" id="trx_amount" class="form-control pull-right" required />
+                                </div>
+                            </div> 
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Customer Name</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="customer_name" class="form-control pull-right" required />
+                                </div>
+                            </div> 
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Customer Email</label>
+                                <div class="col-sm-8">
+                                    <input type="email" name="customer_email" class="form-control pull-right" />
+                                </div>
+                            </div> 
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Customer Phone</label>
+                                <div class="col-sm-8">
+                                    <input type="tel" name="customer_phone" class="form-control pull-right" />
+                                </div>
+                            </div> 
+                            
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Expired Date</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control select2" name="expired" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
+                                        <option value="1" selected>+1 Day</option>
+                                        <option value="2">+2 Day</option>
+                                        <option value="3">+3 Day</option>
+                                    </select>
+                                </div>
+                            </div>   
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Description</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" name="description" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div id="inquiry-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Inquiry Billing</h4>
+            </div>
+            <form class="form-horizontal" action="{{ route('payment-bni-inquiry') }}" method="POST">
+                <div class="modal-body"> 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input name="_token" type="hidden" value="{{ csrf_token() }}">
+                            
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Transaction ID</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="trx_id" placeholder="Trx ID or Invoice ID" class="form-control pull-right" required />
+                                </div>
+                            </div> 
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 @endsection
 
@@ -116,6 +208,13 @@
 @endsection
 
 @section('custom_js')
-
-
+<script>
+//    $('#trx_amount').mask("#,##0.00");
+    $('#create-billing-btn').on('click', function(){
+        $('#create-billing-modal').modal('show');
+    });
+    $('#inquiry-btn').on('click', function(){
+        $('#inquiry-modal').modal('show');
+    });
+</script>
 @endsection

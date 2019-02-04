@@ -74,6 +74,11 @@
           </ul>
         </li>
         <li class="treeview">
+            <a href="{{route('payment-bni-index')}}">
+                <i class="fa fa-money"></i> BNI E-Collection
+            </a>
+        </li>
+        <li class="treeview">
           <a href="#">
             <i class="fa fa-th"></i> <span>Import LCL</span>
             <span class="pull-right-container">
