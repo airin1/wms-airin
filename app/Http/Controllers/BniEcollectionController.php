@@ -8,9 +8,8 @@ use App\Http\Controllers\Controller;
 
 class BniEcollectionController extends Controller
 {
-    private static $client_id = '001';
-    private static $secret_key = 'e68cc6c6a3f5fa59be4365347574d39e';
-//    private static $secret_key = '1c4e8bfa759a9a30c6168732304bf360';   
+    private static $client_id = '617';
+    private static $secret_key = 'd8de25f3e0bc6b70f352ced2bf1a1619';  
     private static $TIME_DIFF_LIMIT = 480;
     
     public static function encrypt(array $json_data) {
