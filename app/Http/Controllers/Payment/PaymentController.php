@@ -251,7 +251,7 @@ class PaymentController extends Controller
 	$header[] = "Connection: keep-alive";
 	$header[] = "Accept-Language: en-US,en;q=0.8,id;q=0.6";
 
-	$ch = curl_init();
+	$ch = \curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
 	curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
