@@ -94,6 +94,11 @@
             
             if(!confirm('Apakah anda yakin?')){return false;}
             
+            if($('#NOPOL').val() == ''){
+                alert('No. POL masih kosong!');
+                return false;
+            }
+            
             var url = $('#gatein-form').attr('action')+'/edit/'+$('#TCONTAINER_PK').val();
 
             $.ajax({
@@ -399,7 +404,7 @@
                         </div>
                     </div>
                     
-                    <div class="form-group" style="display: none;" >
+                    <div class="form-group">
                         <label class="col-sm-3 control-label">Tgl.Kaluar TPK</label>
                         <div class="col-sm-8">
                             <div class="input-group date">
@@ -411,7 +416,7 @@
                         </div>
                     </div>
                     
-                    <div class="bootstrap-timepicker" style="display: none;">
+                    <div class="bootstrap-timepicker">
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Jam Kaluar TPK</label>
                             <div class="col-sm-8">
