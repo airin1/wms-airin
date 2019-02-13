@@ -2090,7 +2090,7 @@ class LclController extends Controller
             
             $jobid = $request->jobid;
             
-            \Excel::selectSheetsByIndex(2, 3, 5)->load($request->file('filexls'), function($reader) {
+            \Excel::selectSheets(['Detil', 'Barang', 'Kontainer'])->load($request->file('filexls'), function($reader) {
                 
                 $reader->each(function($sheet) {
                     if($sheet->getTitle() == 'Detil'){
