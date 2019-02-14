@@ -21,7 +21,8 @@ class NpctController extends Controller
         
         parent::__construct();
 
-        $this->wsdl = 'https://api.npct1.co.id/services/index.php/line2dev?wsdl';
+//        $this->wsdl = 'https://api.npct1.co.id/services/index.php/line2dev?wsdl';
+        $this->wsdl = 'https://api.npct1.co.id/services/index.php/Line2?wsdl';
         $this->user = 'lini2';
         $this->password = 'lini2@2018';
         $this->kode = 'AIRN';
@@ -95,13 +96,37 @@ class NpctController extends Controller
             'exceptions'=>true,
             'trace'=>1,
             'cache_wsdl'=>WSDL_CACHE_NONE,
+            "soap_version" => SOAP_1_1,
+            'style'=> SOAP_DOCUMENT,
+            'use'=> SOAP_LITERAL, 
             'stream_context' => stream_context_create($arrContextOptions)
         );
         
         $client = new \SoapClient($this->wsdl, $options); 
-        // Call wsdl function 
-        $result = $client->yor();
-        var_dump($result);
+        
+        $params = array(
+            'username' => $this->user, 
+            'Password' => $this->password,
+            'warehouse_code' => $data->warehouse_code,
+            'yor' => 10000,
+            'capacity' => 20000
+        );
+        
+        try {
+            
+            $versionResponse = $client->yor();
+//            var_dump($client);
+            print_r($versionResponse);
+//            var_dump($client->__getFunctions());
+//            $result = $client->__soapCall("yor",$params);        
+//            var_dump($result);
+        } catch (SoapFault $exception) {
+            echo $exception;      
+        } 
+        
+//        var_dump($client->__getFunctions());
+        
+        
     }
     
     public function yorUpload($id)
@@ -123,7 +148,8 @@ class NpctController extends Controller
                             'verify_peer_name' => false,
                             'allow_self_signed' => true
                         )
-                    ])
+                    ]),
+                    'soap_version' => SOAP_1_1
                 ]);                                                    
         });
         
