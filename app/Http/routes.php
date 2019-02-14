@@ -81,6 +81,9 @@
         // Barcode Routes
         require_once 'Routes/RoutesBarcode.php';
         
+        // NPCT1 Routes
+        require_once 'Routes/RoutesNpct.php';
+        
         // GLOBAL Routes
         Route::get('/getDataPelabuhan', [
             'as' => 'getDataPelabuhan',
