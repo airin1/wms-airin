@@ -139,7 +139,7 @@ class NpctController extends Controller
         \SoapWrapper::service('yorRequest', function ($service) use ($reqData) {    
 //            var_dump($service->getFunctions());
 //            var_dump($service->call('yor', [$reqData])->yorResponse);
-            $this->response = $service->call('yor', [$reqData])->yorResponse;      
+            $this->response = $service->call('yor', $reqData)->yorResponse;      
         });
         
         $update = \App\Models\NpctYor::where('id', $id)->update(['status' => 1, 'response' => $this->response]);       
