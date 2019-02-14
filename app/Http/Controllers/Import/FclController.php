@@ -762,7 +762,7 @@ class FclController extends Controller
         $data['TGLSURATJALAN'] = $data['TGLRELEASE'];
         $data['JAMSURATJALAN'] = $data['JAMRELEASE'];
         $data['NAMAEMKL'] = '';
-        $data['NOPOL'] = $data['NOPOL_OUT'];
+//        $data['NOPOL'] = $data['NOPOL_OUT'];
         
         $update = DBContainer::where('TCONTAINER_PK', $id)
             ->update($data);

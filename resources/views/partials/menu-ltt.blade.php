@@ -253,6 +253,19 @@
           </ul>
         </li>
         <li class="treeview">
+          <a href="#">
+            <i class="fa fa-upload"></i>
+            <span>NPCT1</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{{ route('yor-index') }}">YOR</a></li>
+            <li><a href="{{ route('movement-index') }}">Movement</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
             <a href="#">
               <i class="fa fa-money"></i>
               <span>Invoice</span>
