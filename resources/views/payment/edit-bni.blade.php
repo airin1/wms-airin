@@ -57,7 +57,7 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Description</label>
                         <div class="col-sm-8">
-                            <textarea class="form-control" name="description" rows="3">{{$payment->desctiption}}</textarea>
+                            <textarea class="form-control" name="description" rows="3">{{$payment->description}}</textarea>
                         </div>
                     </div>
                     
