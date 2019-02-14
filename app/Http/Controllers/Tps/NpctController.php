@@ -57,7 +57,7 @@ class NpctController extends Controller
             ]
         ];        
         
-        return view('tpsonline.index-coari-cont')->with($data);
+        return view('npct.index-movement')->with($data);
     }
     
     public function yorCreateReport(Request $request)
@@ -85,7 +85,7 @@ class NpctController extends Controller
         return back()->withInput();
     }
     
-    public function yorUpload($id)
+    public function yorUpload1($id)
     {
         $data = \App\Models\NpctYor::find($id);
         
@@ -104,7 +104,7 @@ class NpctController extends Controller
         var_dump($result);
     }
     
-    public function yorUpload1($id)
+    public function yorUpload($id)
     {
         if(!$id){ return false; }
         
@@ -137,16 +137,16 @@ class NpctController extends Controller
         
         // Using the added service
         \SoapWrapper::service('yorRequest', function ($service) use ($reqData) {    
-            var_dump($service->getFunctions());
-            var_dump($service->call('yor', [$reqData])->yorResponse);
-//            $this->response = $service->call('yor', [$reqData])->yorResponse;      
+//            var_dump($service->getFunctions());
+//            var_dump($service->call('yor', [$reqData])->yorResponse);
+            $this->response = $service->call('yor', [$reqData])->yorResponse;      
         });
         
         $update = \App\Models\NpctYor::where('id', $id)->update(['status' => 1, 'response' => $this->response]);       
         
-//        if ($update){
-//            return back()->with('success', 'Laporan YOR berhasil dikirim.');
-//        }
+        if ($update){
+            return back()->with('success', 'Laporan YOR berhasil dikirim.');
+        }
         
         var_dump($this->response);
     }
