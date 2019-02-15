@@ -99,6 +99,11 @@
                 return false;
             }
             
+            if($('#jenis_container').val() == ''){
+                alert('Jenis Container masih kosong!');
+                return false;
+            }
+            
             var url = $('#gatein-form').attr('action')+'/edit/'+$('#TCONTAINER_PK').val();
 
             $.ajax({

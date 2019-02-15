@@ -21,7 +21,8 @@ class NpctController extends Controller
         
         parent::__construct();
 
-        $this->wsdl = 'https://api.npct1.co.id/services/index.php/line2dev?wsdl';
+//        $this->wsdl = 'https://api.npct1.co.id/services/index.php/line2dev?wsdl';
+        $this->wsdl = 'https://api.npct1.co.id/services/index.php/Line2?wsdl';
         $this->user = 'lini2';
         $this->password = 'lini2@2018';
         $this->kode = 'AIRN';
@@ -57,7 +58,7 @@ class NpctController extends Controller
             ]
         ];        
         
-        return view('tpsonline.index-coari-cont')->with($data);
+        return view('npct.index-movement')->with($data);
     }
     
     public function yorCreateReport(Request $request)
@@ -85,7 +86,7 @@ class NpctController extends Controller
         return back()->withInput();
     }
     
-    public function yorUpload($id)
+    public function yorUpload1($id)
     {
         $data = \App\Models\NpctYor::find($id);
         
@@ -95,16 +96,40 @@ class NpctController extends Controller
             'exceptions'=>true,
             'trace'=>1,
             'cache_wsdl'=>WSDL_CACHE_NONE,
+            "soap_version" => SOAP_1_1,
+            'style'=> SOAP_DOCUMENT,
+            'use'=> SOAP_LITERAL, 
             'stream_context' => stream_context_create($arrContextOptions)
         );
         
         $client = new \SoapClient($this->wsdl, $options); 
-        // Call wsdl function 
-        $result = $client->yor();
-        var_dump($result);
+        
+        $params = array(
+            'username' => $this->user, 
+            'Password' => $this->password,
+            'warehouse_code' => $data->warehouse_code,
+            'yor' => 10000,
+            'capacity' => 20000
+        );
+        
+        try {
+            
+            $versionResponse = $client->yor();
+//            var_dump($client);
+            print_r($versionResponse);
+//            var_dump($client->__getFunctions());
+//            $result = $client->__soapCall("yor",$params);        
+//            var_dump($result);
+        } catch (SoapFault $exception) {
+            echo $exception;      
+        } 
+        
+//        var_dump($client->__getFunctions());
+        
+        
     }
     
-    public function yorUpload1($id)
+    public function yorUpload($id)
     {
         if(!$id){ return false; }
         
@@ -123,7 +148,8 @@ class NpctController extends Controller
                             'verify_peer_name' => false,
                             'allow_self_signed' => true
                         )
-                    ])
+                    ]),
+                    'soap_version' => SOAP_1_1
                 ]);                                                    
         });
         
@@ -137,16 +163,16 @@ class NpctController extends Controller
         
         // Using the added service
         \SoapWrapper::service('yorRequest', function ($service) use ($reqData) {    
-            var_dump($service->getFunctions());
-            var_dump($service->call('yor', [$reqData])->yorResponse);
-//            $this->response = $service->call('yor', [$reqData])->yorResponse;      
+//            var_dump($service->getFunctions());
+//            var_dump($service->call('yor', [$reqData])->yorResponse);
+            $this->response = $service->call('yor', $reqData)->yorResponse;      
         });
         
         $update = \App\Models\NpctYor::where('id', $id)->update(['status' => 1, 'response' => $this->response]);       
         
-//        if ($update){
-//            return back()->with('success', 'Laporan YOR berhasil dikirim.');
-//        }
+        if ($update){
+            return back()->with('success', 'Laporan YOR berhasil dikirim.');
+        }
         
         var_dump($this->response);
     }
