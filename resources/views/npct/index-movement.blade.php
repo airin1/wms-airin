@@ -24,7 +24,33 @@
     $(document).ready(function()
     { 
         function uploadMovement(action, movementId){
-            alert(action);
+            $.ajax({
+                type: 'POST',
+                data: {
+                    movement_id : movementId,
+                    action : action,
+                    _token : '{{ csrf_token() }}'
+                },
+                dataType : 'json',
+                url: '{{route("movement-upload")}}',
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    alert('Something went wrong, please try again later.');
+                },
+                beforeSend:function()
+                {
+
+                },
+                success:function(json)
+                {
+                    console.log(json);
+                    if(json.success) {
+                      $('#alert').showAlertAfterElement('alert-success alert-custom', json.message, 5000);
+                    } else {
+                      $('#alert').showAlertAfterElement('alert-danger alert-custom', json.message, 5000);
+                    }
+                }
+            });
         }
         
         $('#create-report-btn').on("click", function(){
@@ -78,6 +104,7 @@
     
 </script>
 <div class="box">
+    <div id="alert" style="display: block;"></div>
     <div class="box-header with-border">
         <h3 class="box-title">Laporan Data Movement</h3>
         <div class="box-tools">

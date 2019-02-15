@@ -73,9 +73,6 @@
                     } else {
                       $('#alert').showAlertAfterElement('alert-danger alert-custom', json.message, 5000);
                     }
-
-                    //Triggers the "Close" button funcionality.
-                    $('#btn-refresh').click();
                 }
             });
             

@@ -128,6 +128,73 @@ class NpctController extends Controller
         
     }
     
+    public function movementUpload(Request $request)
+    {
+        $movement_id = $request->movement_id;
+        $action = $request->action;
+        $move_id = explode(',', $movement_id);
+        
+        $movements = \App\Models\NpctMovement::whereIn('id',$move_id)->get();
+        
+        $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><movement></movement>');       
+        
+        foreach ($movements as $move):
+        
+            $data = $xml->addchild('loop');
+            $data->addchild('action', $action);
+            $data->addchild('request_no', $move->request_no);
+            $data->addchild('request_date', $move->request_date);
+            $data->addchild('warehouse_code', $move->warehouse_code);
+            $data->addchild('container_no', $move->container_no);
+            $data->addchild('message_type', $move->message_type);
+            $data->addchild('action_time', $move->action_time);
+            
+        endforeach;
+        
+//        $response = \Response::make($xml->asXML(), 200);
+        
+//        return $response;
+        
+        \SoapWrapper::add(function ($service) {
+            $service
+                ->name('movementRequest')
+                ->wsdl($this->wsdl)
+                ->trace(true)                                                                                                                                                 
+                ->cache(WSDL_CACHE_NONE)                                        
+                ->options([
+                    'stream_context' => stream_context_create([
+                        'ssl' => array(
+                            'verify_peer' => false,
+                            'verify_peer_name' => false,
+                            'allow_self_signed' => true
+                        )
+                    ]),
+                    'soap_version' => SOAP_1_1
+                ]);                                                    
+        });
+        
+        $reqData = [
+            'username' => $this->user, 
+            'Password' => $this->password,
+            'data' => $xml->asXML()
+        ];
+        
+        // Using the added service
+        \SoapWrapper::service('movementRequest', function ($service) use ($reqData) {    
+//            var_dump($service->getFunctions());
+//            var_dump($service->call('yor', [$reqData])->yorResponse);
+            $this->response = $service->call('movement', $reqData)->yorResponse;      
+        });
+        
+        $update = \App\Models\NpctMovement::whereIn('id', $move_id)->update(['action' => $action,'response' => $this->response]);       
+        
+        if ($update){
+            return back()->with('success', 'Laporan Movement berhasil dikirim.');
+        }
+        
+        var_dump($this->response);
+    }
+    
     public function yorCreateReport(Request $request)
     {
         $validator = \Validator::make($request->all(), [
@@ -151,49 +218,6 @@ class NpctController extends Controller
         }
         
         return back()->withInput();
-    }
-    
-    public function yorUpload1($id)
-    {
-        $data = \App\Models\NpctYor::find($id);
-        
-        $arrContextOptions = array("ssl"=>array( "verify_peer"=>false, "verify_peer_name"=>false,'allow_self_signed' => true));
-        
-        $options = array(
-            'exceptions'=>true,
-            'trace'=>1,
-            'cache_wsdl'=>WSDL_CACHE_NONE,
-            "soap_version" => SOAP_1_1,
-            'style'=> SOAP_DOCUMENT,
-            'use'=> SOAP_LITERAL, 
-            'stream_context' => stream_context_create($arrContextOptions)
-        );
-        
-        $client = new \SoapClient($this->wsdl, $options); 
-        
-        $params = array(
-            'username' => $this->user, 
-            'Password' => $this->password,
-            'warehouse_code' => $data->warehouse_code,
-            'yor' => 10000,
-            'capacity' => 20000
-        );
-        
-        try {
-            
-            $versionResponse = $client->yor();
-//            var_dump($client);
-            print_r($versionResponse);
-//            var_dump($client->__getFunctions());
-//            $result = $client->__soapCall("yor",$params);        
-//            var_dump($result);
-        } catch (SoapFault $exception) {
-            echo $exception;      
-        } 
-        
-//        var_dump($client->__getFunctions());
-        
-        
     }
     
     public function yorUpload($id)
@@ -243,5 +267,48 @@ class NpctController extends Controller
         
         var_dump($this->response);
     }
+    
+//    public function yorUpload1($id)
+//    {
+//        $data = \App\Models\NpctYor::find($id);
+//        
+//        $arrContextOptions = array("ssl"=>array( "verify_peer"=>false, "verify_peer_name"=>false,'allow_self_signed' => true));
+//        
+//        $options = array(
+//            'exceptions'=>true,
+//            'trace'=>1,
+//            'cache_wsdl'=>WSDL_CACHE_NONE,
+//            "soap_version" => SOAP_1_1,
+//            'style'=> SOAP_DOCUMENT,
+//            'use'=> SOAP_LITERAL, 
+//            'stream_context' => stream_context_create($arrContextOptions)
+//        );
+//        
+//        $client = new \SoapClient($this->wsdl, $options); 
+//        
+//        $params = array(
+//            'username' => $this->user, 
+//            'Password' => $this->password,
+//            'warehouse_code' => $data->warehouse_code,
+//            'yor' => 10000,
+//            'capacity' => 20000
+//        );
+//        
+//        try {
+//            
+//            $versionResponse = $client->yor();
+////            var_dump($client);
+//            print_r($versionResponse);
+////            var_dump($client->__getFunctions());
+////            $result = $client->__soapCall("yor",$params);        
+////            var_dump($result);
+//        } catch (SoapFault $exception) {
+//            echo $exception;      
+//        } 
+//        
+////        var_dump($client->__getFunctions());
+//        
+//        
+//    }
     
 }
