@@ -61,6 +61,73 @@ class NpctController extends Controller
         return view('npct.index-movement')->with($data);
     }
     
+    public function MovementContainerIndex()
+    {
+        $data['page_title'] = "Data Container Release";
+        $data['page_description'] = "";
+        $data['breadcrumbs'] = [
+            [
+                'action' => '',
+                'title' => 'Data Container Release'
+            ]
+        ];        
+        
+        return view('npct.index-movement-container')->with($data);
+    }
+    
+    public function MovementContainerCreate(Request $request)
+    {
+        $cont_id = explode(',', $request->container_id);
+        $containers = \App\Models\Containercy::whereIn('TCONTAINER_PK',$cont_id)->get();
+        
+        foreach ($containers as $container):
+            // OUT1
+            $data[] = array(
+                'request_no' => $container->NO_PLP,
+                'request_date' => date('Ymd', strtotime($container->TGL_PLP)),
+                'warehouse_code' => $container->GUDANG_TUJUAN,
+                'container_id' => $container->TCONTAINER_PK,
+                'container_no' => $container->NOCONTAINER,
+                'message_type' => 'OUT1',
+                'action_time' => date('YmdHis', strtotime($container->TGLKELUAR_TPK.' '.$container->JAMKELUAR_TPK)),
+                'uid' => \Auth::getUser()->name
+            );
+            // IN2
+            $data[] = array(
+                'request_no' => $container->NO_PLP,
+                'request_date' => date('Ymd', strtotime($container->TGL_PLP)),
+                'warehouse_code' => $container->GUDANG_TUJUAN,
+                'container_id' => $container->TCONTAINER_PK,
+                'container_no' => $container->NOCONTAINER,
+                'message_type' => 'IN2',
+                'action_time' => date('YmdHis', strtotime($container->TGLMASUK.' '.$container->JAMMASUK)),
+                'uid' => \Auth::getUser()->name
+            );
+            // OUT2
+            $data[] = array(
+                'request_no' => $container->NO_PLP,
+                'request_date' => date('Ymd', strtotime($container->TGL_PLP)),
+                'warehouse_code' => $container->GUDANG_TUJUAN,
+                'container_id' => $container->TCONTAINER_PK,
+                'container_no' => $container->NOCONTAINER,
+                'message_type' => 'OUT2',
+                'action_time' => date('YmdHis', strtotime($container->TGLRELEASE.' '.$container->JAMRELEASE)),
+                'uid' => \Auth::getUser()->name
+            );
+            
+            \App\Models\NpctMovement::insert($data);   
+            
+            $data = array();
+        endforeach;
+        
+//        return $data;
+        
+        return json_encode(array('success' => true, 'message' => 'Movement has been created.'));
+        
+        return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
+        
+    }
+    
     public function yorCreateReport(Request $request)
     {
         $validator = \Validator::make($request->all(), [
@@ -75,7 +142,7 @@ class NpctController extends Controller
         
         $data = $request->except(['_token']); 
         $data['status'] = 0;
-        $data['uid'] = \Auth::getUser()->name;;
+        $data['uid'] = \Auth::getUser()->name;
         
         $insert_id = \App\Models\NpctYor::insertGetId($data);
         

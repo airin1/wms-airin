@@ -261,8 +261,9 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="{{ route('yor-index') }}">YOR</a></li>
-            <li><a href="{{ route('movement-index') }}">Movement</a></li>
+            <li><a href="{{ route('yor-index') }}">Laporan YOR</a></li>
+            <li><a href="{{ route('movement-container-index') }}">Data Container</a></li>
+            <li><a href="{{ route('movement-index') }}">Laporan Movement</a></li>
           </ul>
         </li>
         <li class="treeview">

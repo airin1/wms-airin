@@ -110,6 +110,16 @@ class TablesRepository extends EloquentRepositoryAbstract {
                             ->whereNotNull('TGLRELEASE')
                             ->whereNotNull('JAMRELEASE');
                     break;
+                    case 'release_movement':
+                        $Model = \DB::table('tcontainercy')
+                            ->where('KD_TPS_ASAL', 'NCT1')
+                            ->whereNotNull('TGLMASUK')
+                            ->whereNotNull('JAMMASUK')
+                            ->whereNotNull('TGLKELUAR_TPK')
+                            ->whereNotNull('JAMKELUAR_TPK')
+                            ->whereNotNull('TGLRELEASE')
+                            ->whereNotNull('JAMRELEASE');
+                    break;
                     case 'longstay':
                         if(isset($request['startdate']) || isset($request['enddate'])){
                             $start_date = date('Y-m-d',strtotime($request['startdate']));

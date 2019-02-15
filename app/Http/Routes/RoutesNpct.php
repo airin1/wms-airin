@@ -23,5 +23,17 @@ Route::group(['prefix' => 'npct', 'namespace' => 'Tps'], function(){
         'as' => 'movement-index',
         'uses' => 'NpctController@MovementIndex'
     ]);
+    Route::post('/movement/grid-data', function()
+    {
+        GridEncoder::encodeRequestedData(new \App\Models\NpctTablesRepository(new App\Models\NpctMovement(),Illuminate\Support\Facades\Request::all()) ,Illuminate\Support\Facades\Request::all());
+    });
+    Route::get('/movement/container', [
+        'as' => 'movement-container-index',
+        'uses' => 'NpctController@MovementContainerIndex'
+    ]);
+    Route::post('/movement/container/create', [
+        'as' => 'movement-container-create',
+        'uses' => 'NpctController@MovementContainerCreate'
+    ]);
 
 });
