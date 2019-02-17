@@ -49,6 +49,8 @@
                     } else {
                       $('#alert').showAlertAfterElement('alert-danger alert-custom', json.message, 5000);
                     }
+                    
+                    $('#npctMovementGrid').jqGrid().trigger("reloadGrid");
                 }
             });
         }
