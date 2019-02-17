@@ -97,7 +97,7 @@
                                 <div class="col-sm-8">
                                     <select class="form-control select2 select2-hidden-accessible" name="warehouse_code" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
                                         <option value="">Choose Warehouse</option>
-                                        <option value="ARN1">Gudang Timur (ARN1)</option>
+                                        <option value="ARN1">Gudang Utara (ARN1)</option>
                                         <option value="ARN3">Gudang Barat (ARN3)</option>
                                     </select>
                                 </div>
