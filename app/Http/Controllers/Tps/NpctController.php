@@ -128,6 +128,18 @@ class NpctController extends Controller
         
     }
     
+    public function movementUpdate(Request $request)
+    {
+        $action_time = date('YmdHis', strtotime($request->tgl_movement.' '.$request->jam_movement));
+        $update = \App\Models\NpctMovement::where('id', $request->movement_id)->update(['action_time' => $action_time]);       
+        
+        if ($update){
+            return back()->with('success', 'Movement data has been updated.');
+        }
+        
+        return back()->with('error', 'Something went wrong, please try again later.');
+    }
+
     public function movementUpload(Request $request)
     {
         $movement_id = $request->movement_id;
@@ -267,6 +279,12 @@ class NpctController extends Controller
         } catch (SoapFault $exception) {
             echo $exception;      
         }        
+        
+//        libxml_use_internal_errors(true);
+//        $xml = simplexml_load_string($this->response);
+//        if(!$xml  || !$xml->children()){
+//           return back()->with('error', $this->response);
+//        }
         
         $update = \App\Models\NpctYor::where('id', $id)->update(['status' => 1, 'response' => $this->response]);       
         

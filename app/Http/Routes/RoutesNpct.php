@@ -27,6 +27,10 @@ Route::group(['prefix' => 'npct', 'namespace' => 'Tps'], function(){
     {
         GridEncoder::encodeRequestedData(new \App\Models\NpctTablesRepository(new App\Models\NpctMovement(),Illuminate\Support\Facades\Request::all()) ,Illuminate\Support\Facades\Request::all());
     });
+    Route::post('/movement/update',[
+        'as' => 'movement-update',
+        'uses' => 'NpctController@movementUpdate'
+    ]);
     Route::post('/movement/upload',[
         'as' => 'movement-upload',
         'uses' => 'NpctController@movementUpload'
