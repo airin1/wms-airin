@@ -183,7 +183,7 @@ class NpctController extends Controller
         \SoapWrapper::service('movementRequest', function ($service) use ($reqData) {    
 //            var_dump($service->getFunctions());
 //            var_dump($service->call('yor', [$reqData])->yorResponse);
-            $this->response = $service->call('movement', $reqData)->yorResponse;      
+            $this->response = $service->call('movement', [$reqData])->yorResponse;      
         });
         
         $update = \App\Models\NpctMovement::whereIn('id', $move_id)->update(['action' => $action,'response' => $this->response]);       
