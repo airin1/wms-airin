@@ -193,9 +193,10 @@ class NpctController extends Controller
         $update = \App\Models\NpctMovement::whereIn('id', $move_id)->update(['action' => $action,'response' => $this->response]);       
         
         if ($update){
-            return back()->with('success', 'Laporan Movement berhasil dikirim.');
+//            return back()->with('success', 'Laporan Movement berhasil dikirim.');
+            return json_encode(array('success' => true, 'message' => 'Laporan Movement berhasil dikirim.'));
         }
-        
+        return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
         var_dump($this->response);
     }
     
