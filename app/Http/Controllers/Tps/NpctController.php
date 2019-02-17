@@ -180,11 +180,15 @@ class NpctController extends Controller
         ];
         
         // Using the added service
-        \SoapWrapper::service('movementRequest', function ($service) use ($reqData) {    
-//            var_dump($service->getFunctions());
-//            var_dump($service->call('yor', [$reqData])->yorResponse);
-            $this->response = $service->call('movement', [$reqData])->yorResponse;      
-        });
+        try {      
+            \SoapWrapper::service('movementRequest', function ($service) use ($reqData) {    
+    //            var_dump($service->getFunctions());
+//                var_dump($service->call('movement', $reqData));
+                $this->response = $service->call('movement', $reqData);      
+            });
+        } catch (SoapFault $exception) {
+            echo $exception;      
+        }
         
         $update = \App\Models\NpctMovement::whereIn('id', $move_id)->update(['action' => $action,'response' => $this->response]);       
         
@@ -253,11 +257,15 @@ class NpctController extends Controller
         ];
         
         // Using the added service
-        \SoapWrapper::service('yorRequest', function ($service) use ($reqData) {    
-//            var_dump($service->getFunctions());
-//            var_dump($service->call('yor', [$reqData])->yorResponse);
-            $this->response = $service->call('yor', $reqData)->yorResponse;      
-        });
+        try {      
+            \SoapWrapper::service('yorRequest', function ($service) use ($reqData) {    
+    //            var_dump($service->getFunctions());
+//                var_dump($service->call('yor', $reqData));
+                $this->response = $service->call('yor', $reqData);      
+            });
+        } catch (SoapFault $exception) {
+            echo $exception;      
+        }        
         
         $update = \App\Models\NpctYor::where('id', $id)->update(['status' => 1, 'response' => $this->response]);       
         
