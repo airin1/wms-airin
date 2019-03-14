@@ -15,8 +15,8 @@ class PaymentController extends Controller
 
     public function __construct() {
 //        parent::__construct();
-        $this->url = 'https://apibeta.bni-ecollection.com/'; //Demo
-//        $this->url = 'https://api.bni-ecollection.com/'; //Real
+//        $this->url = 'https://apibeta.bni-ecollection.com/'; //Demo
+        $this->url = 'https://api.bni-ecollection.com/'; //Real
         $this->client_id = '617';
     }
     
