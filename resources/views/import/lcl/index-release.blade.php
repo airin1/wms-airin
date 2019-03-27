@@ -219,14 +219,14 @@
                 $('#btn-group-4').enableButtonGroup();
                 $('#btn-group-5').enableButtonGroup();
             
-            if(rowdata.KD_DOK_INOUT == 1){
-                @role('super-admin')
-                    
-                @else
-                    $('#NO_SPPB').attr('disabled','disabled');
-                    $('#TGL_SPPB').attr('disabled','disabled');
-                @endrole
-            }
+//            if(rowdata.KD_DOK_INOUT == 1){
+//                @role('super-admin')
+//                    
+//                @else
+//                    $('#NO_SPPB').attr('disabled','disabled');
+//                    $('#TGL_SPPB').attr('disabled','disabled');
+//                @endrole
+//            }
             
             if(!rowdata.tglrelease && !rowdata.jamrelease) {
 
