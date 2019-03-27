@@ -138,15 +138,34 @@
                 apv = '<button style="margin:5px;" class="btn btn-danger btn-xs approve-manifest-btn" data-id="'+cl+'" disabled><i class="fa fa-check"></i> Approve</button>';
                 $("#" + cl).find("td").css("color", "#999999");
             }
-            if(rowdata.flag_bc == 'Y') {
-                $("#" + cl).find("td").css("color", "#FF0000");
+            
+            @role('pbm')
+                apv = '';
+            @endrole
+            
+            if(rowdata.perubahan_hbl == 'Y') {
+                $("#" + cl).find("td").css("background-color", "#3dc6f2");
             }
+            if(rowdata.flag_bc == 'Y') {
+                $("#" + cl).find("td").css("background-color", "#FF0000");
+            }
+            if(rowdata.status_bc == 'HOLD') {
+                $("#" + cl).find("td").css("background-color", "#ffe500");
+            }
+
+              
             jQuery("#lclManifestGrid").jqGrid('setRowData',ids[i],{action:apv}); 
         } 
     }
     
     function approveManifest($id)
     {
+        var rowdata = $('#lclManifestGrid').getRowData($id);
+        if(rowdata.tglstripping == '' || rowdata.tglstripping == '0000-00-00'){
+            alert('HBL ini belum melakukan stripping!');
+            return false;
+        }
+
         $.ajax({
             type: 'GET',
             dataType : 'json',
@@ -186,6 +205,16 @@
         $('#btn-group-1').enableButtonGroup();
         $('#btn-group-6').enableButtonGroup();
 
+        $("#perubahan_hbl").on("change", function(){
+            var $this = $(this).val();
+            console.log($this);
+            if($this == 'Y'){
+                $(".select-alasan").show();
+            }else{
+                $(".select-alasan").hide();
+            }
+        });
+        
       //Binds onClick event to the "Refresh" button.
       $('#btn-refresh').click(function()
       {
@@ -196,7 +225,7 @@
             $('#TNOTIFYPARTY_FK').val('Same of Consignee').trigger("change");
             $('#DG_SURCHARGE').val('N').trigger("change");
             $('#WEIGHT_SURCHARGE').val('N').trigger("change");
-            $('#flag_bc').val('N').trigger("change");
+            $('#perubahan_hbl').val('N').trigger("change");
             $('#id').val("");
             
             //Disables all buttons within the toolbar
@@ -244,7 +273,12 @@
         $("#TPACKING_FK").val(rowdata.TPACKING_FK).trigger("change");
         $("#DG_SURCHARGE").val(rowdata.DG_SURCHARGE).trigger("change");
         $("#WEIGHT_SURCHARGE").val(rowdata.WEIGHT_SURCHARGE).trigger("change");
-        $("#flag_bc").val(rowdata.flag_bc).trigger("change");
+        if(rowdata.perubahan_hbl != ''){
+            $("#perubahan_hbl").val(rowdata.perubahan_hbl).trigger("change");
+        }
+        if(rowdata.alasan_perubahan != ''){
+            $("#alasan_perubahan").val(rowdata.alasan_perubahan).trigger("change");
+        }
         
         $("#TGL_HBL").datepicker('setDate', rowdata.TGL_HBL);
         $("#TGL_BC11").val(rowdata.TGL_BC11);
@@ -673,7 +707,7 @@
                               <input type="text" id="NO_POS_BC11" name="NO_POS_BC11" class="form-control" required>
                           </div>
                         </div>
-                        <div class="form-group">
+<!--                        <div class="form-group">
                             <label class="col-sm-3 control-label">Surcharge(DG)</label>
                             <div class="col-sm-2">
                                 <select class="form-control select2" id="DG_SURCHARGE" name="DG_SURCHARGE" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
@@ -688,16 +722,27 @@
                                     <option value="Y">Y</option>
                                 </select>
                             </div>
-                        </div>
+                        </div>-->
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">FLAG</label>
+                            <label class="col-sm-3 control-label">Perubahan HBL</label>
                             <div class="col-sm-2">
-                                <select class="form-control select2" id="flag_bc" name="flag_bc" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
+                                <select class="form-control select2" id="perubahan_hbl" name="perubahan_hbl" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
                                     <option value="N">N</option>
                                     <option value="Y">Y</option>
                                 </select>
                             </div>
                         </div>
+                        <div class="form-group select-alasan" style="display:none;">
+                            <label class="col-sm-3 control-label">Alasan Perubahan</label>
+                            <div class="col-sm-8">
+                                <select class="form-control select2" id="alasan_perubahan" name="alasan_perubahan" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
+                                    <option value="Perubahan Quantity" selected>Perubahan Quantity</option>
+                                    <option value="Perubahan kemasan">Perubahan kemasan</option>
+                                    <option value="Redress">Redress</option>
+                                    <option value="Lainnya">Lainnya</option>
+                                </select>
+                    </div>
+                </div>
                     </div>
                 </div>
             </form>

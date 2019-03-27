@@ -69,7 +69,6 @@
                 $('#load_photos').html(html);
             }
             
-//            if(!rowdata.TGLMASUK && !rowdata.JAMMASUK) {
                 $('#btn-group-2,#btn-photo').enableButtonGroup();
                 $('#btn-group-5').enableButtonGroup();
                 $('#gatein-form').enableFormGroup();

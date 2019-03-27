@@ -19,13 +19,58 @@
             if(rowdata.VALIDASI == 'Y') {
                 $("#" + cl).find("td").css("color", "#666");
             }
+            if(rowdata.perubahan_hbl == 'Y') {
+                $("#" + cl).find("td").css("background-color", "#3dc6f2");
+            }
+            if(rowdata.flag_bc == 'Y') {
+                $("#" + cl).find("td").css("background-color", "#FF0000");
+            }
             if(rowdata.status_bc == 'HOLD') {
                 $("#" + cl).find("td").css("background-color", "#ffe500");
             }
-            if(rowdata.flag_bc == 'Y') {
-                $("#" + cl).find("td").css("color", "#FF0000");
+              
+            if(rowdata.photo_release != ''){
+                vi = '<button style="margin:5px;" class="btn btn-default btn-xs approve-manifest-btn" data-id="'+cl+'" onclick="viewPhoto('+cl+')"><i class="fa fa-photo"></i> View Photo</button>';
+            }else{
+                vi = '<button style="margin:5px;" class="btn btn-default btn-xs approve-manifest-btn" disabled><i class="fa fa-photo"></i> Not Found</button>';
             } 
+            
+            jQuery("#lclReleaseGrid").jqGrid('setRowData',ids[i],{photo:vi});
         } 
+    }
+    
+    function viewPhoto(manifestID)
+    {
+
+        $.ajax({
+            type: 'GET',
+            dataType : 'json',
+            url: '{{route("lcl-report-inout-view-photo","")}}/'+manifestID,
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert('Something went wrong, please try again later.');
+            },
+            beforeSend:function()
+            {
+                $('#release-photo').html('');
+            },
+            success:function(json)
+            {
+                if(json.data.photo_release){
+                    var photos_release = $.parseJSON(json.data.photo_release);
+                    var html_release = '';
+                    $.each(photos_release, function(i, item) {
+                        /// do stuff
+                        html_release += '<img src="{{url("uploads/photos/manifest")}}/'+item+'" style="width: 200px;padding:5px;" />';
+                    });
+                    $('#release-photo').html(html_release);
+                }
+ 
+                $("#title-photo").html('PHOTO HBL NO. '+json.data.NOHBL);
+            }
+        });
+        
+        $('#view-photo-modal').modal('show');
     }
     
     function onSelectRowEvent()
@@ -38,6 +83,7 @@
         $('#release-form').disabledFormGroup();
         $('#btn-toolbar,#btn-sppb, #btn-photo').disabledButtonGroup();
         $('#btn-group-3').enableButtonGroup();
+        $(".hide-kddoc").hide();
         
         $("#KD_DOK_INOUT").on("change", function(){
             var $this = $(this).val();
@@ -46,6 +92,30 @@
             }else{
                 $(".select-bcf-consignee").hide();
             }
+            
+            if($this == 2){
+                $(".pabean-field").show();
+            }else{
+                $(".pabean-field").hide();
+            }
+            
+            if($this){
+                $(".hide-kddoc").show();
+            }else{
+                $(".hide-kddoc").hide();
+            }
+            
+//            if($this == 1){
+//                @role('super-admin')
+//                    
+//                @else
+//                    $('#NO_SPPB').attr('disabled','disabled');
+//                    $('#TGL_SPPB').attr('disabled','disabled');
+//                @endrole
+//            }else{
+//                $('#NO_SPPB').removeAttr('disabled');
+//                $('#TGL_SPPB').removeAttr('disabled');
+//            }
         });
         
         $('#get-sppb-btn').click(function(){
@@ -116,8 +186,8 @@
             $('#NO_BC11').val(rowdata.NO_BC11);
             $('#TGL_BC11').val(rowdata.TGL_BC11);
             $('#NO_POS_BC11').val(rowdata.NO_POS_BC11);
-            $('#NO_SPJM').val(rowdata.NO_SPJM);
-            $('#TGL_SPJM').val(rowdata.TGL_SPJM);
+            $('#no_pabean').val(rowdata.no_pabean);
+            $('#tgl_pabean').val(rowdata.tgl_pabean);
             $('#ID_CONSIGNEE').val(rowdata.ID_CONSIGNEE);
             $('#NO_SPPB').val(rowdata.NO_SPPB);
             $('#TGL_SPPB').val(rowdata.TGL_SPPB);
@@ -144,19 +214,41 @@
                 });
                 $('#load_photos').html(html);
             }
-            
-//            if(!rowdata.tglrelease && !rowdata.jamrelease) {
-//                $('#btn-group-4').disabledButtonGroup();
-//                $('#btn-group-5').disabledButtonGroup();
                 $('#btn-group-2,#btn-sppb,#btn-photo').enableButtonGroup();
                 $('#release-form').enableFormGroup();
-//            }else{
                 $('#btn-group-4').enableButtonGroup();
                 $('#btn-group-5').enableButtonGroup();
-//                $('#btn-group-2').disabledButtonGroup();
-//                $('#release-form').disabledFormGroup();
-//            }
             
+            if(rowdata.KD_DOK_INOUT == 1){
+                @role('super-admin')
+                    
+                @else
+                    $('#NO_SPPB').attr('disabled','disabled');
+                    $('#TGL_SPPB').attr('disabled','disabled');
+                @endrole
+            }
+            
+            if(!rowdata.tglrelease && !rowdata.jamrelease) {
+
+            }else{ 
+                @role('super-admin')
+
+                @else
+                    $('#tglrelease').attr('disabled','disabled');
+                    $('#jamrelease').attr('disabled','disabled');
+                @endrole
+            }
+  
+            if(rowdata.status_bc == 'HOLD'){
+                $('#tglrelease').attr('disabled','disabled');
+                $('#jamrelease').attr('disabled','disabled');
+                $('#NOPOL_RELEASE').attr('disabled','disabled');
+            }else{
+//                $('#tglrelease').removeAttr('disabled');
+//                $('#jamrelease').removeAttr('disabled');
+//                $('#NOPOL_RELEASE').removeAttr('disabled');
+            }
+
             if(rowdata.flag_bc == 'Y'){
                 $('#btn-group-4').disabledButtonGroup();
                 $('#btn-group-5').disabledButtonGroup();
@@ -362,50 +454,65 @@
                     ->setGridEvent('gridComplete', 'gridCompleteEvent')
                     ->setGridEvent('onSelectRow', 'onSelectRowEvent')
                     ->addColumn(array('key'=>true,'index'=>'TMANIFEST_PK','hidden'=>true))
+                    ->addColumn(array('label'=>'Photo','index'=>'photo', 'width'=>120, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
                     ->addColumn(array('label'=>'Status BC','index'=>'status_bc','width'=>100, 'align'=>'center'))
-                    ->addColumn(array('label'=>'Flag','index'=>'flag_bc','width'=>80, 'align'=>'center'))
+                    ->addColumn(array('label'=>'Segel Merah','index'=>'flag_bc','width'=>80, 'align'=>'center'))
                     ->addColumn(array('label'=>'Validasi','index'=>'VALIDASI','width'=>80, 'align'=>'center'))
                     ->addColumn(array('label'=>'No. HBL','index'=>'NOHBL','width'=>160))
-                    ->addColumn(array('label'=>'Tgl. HBL','index'=>'TGL_HBL', 'width'=>150,'hidden'=>true))
+                    ->addColumn(array('label'=>'Tgl. HBL','index'=>'TGL_HBL', 'width'=>150,'hidden'=>false, 'align'=>'center'))
                     ->addColumn(array('label'=>'No. Tally','index'=>'NOTALLY','width'=>160))
-                    ->addColumn(array('label'=>'No. SPK','index'=>'NOJOBORDER', 'width'=>150,'hidden'=>true))
-                    ->addColumn(array('label'=>'No. Container','index'=>'NOCONTAINER', 'width'=>150,'hidden'=>true))
-                    ->addColumn(array('label'=>'No. SPJM','index'=>'NO_SPJM', 'width'=>150))
-                    ->addColumn(array('label'=>'Tgl. SPJM','index'=>'TGL_SPJM', 'width'=>150))
-                    ->addColumn(array('label'=>'No. SPPB','index'=>'NO_SPPB', 'width'=>150))
-                    ->addColumn(array('label'=>'Tgl. SPPB','index'=>'TGL_SPPB', 'width'=>150))
-                    ->addColumn(array('label'=>'Kode Dokumen','index'=>'KD_DOK_INOUT', 'width'=>100,'hidden'=>false))
-                    ->addColumn(array('label'=>'Nama Dokumen','index'=>'KODE_DOKUMEN', 'width'=>100,'hidden'=>false, 'align'=>'center'))                   
-                    ->addColumn(array('label'=>'Kode Kuitansi','index'=>'NO_KUITANSI', 'width'=>150,'hidden'=>true))
-                    ->addColumn(array('label'=>'Shipper','index'=>'SHIPPER','width'=>160))
-                    ->addColumn(array('label'=>'Consignee','index'=>'CONSIGNEE','width'=>160))
-                    ->addColumn(array('label'=>'Notify Party','index'=>'NOTIFYPARTY','width'=>160))
+                    ->addColumn(array('label'=>'No. SPK','index'=>'NOJOBORDER', 'width'=>150,'hidden'=>false))
+                    ->addColumn(array('label'=>'No. Container','index'=>'NOCONTAINER', 'width'=>150,'hidden'=>false))
+                    ->addColumn(array('label'=>'Vessel','index'=>'VESSEL','width'=>120,'align'=>'center'))
+                    ->addColumn(array('label'=>'TPS Asal','index'=>'KD_TPS_ASAL','width'=>80,'align'=>'center'))
+                    ->addColumn(array('label'=>'No. MBL','index'=>'NOMBL','width'=>160))
+                    ->addColumn(array('label'=>'Tgl. MBL','index'=>'TGL_MASTER_BL', 'width'=>150,'hidden'=>false, 'align'=>'center'))                  
+                    
                     ->addColumn(array('label'=>'Consolidator','index'=>'NAMACONSOLIDATOR','width'=>250))
-                    ->addColumn(array('label'=>'Weight','index'=>'WEIGHT', 'width'=>120))               
-                    ->addColumn(array('label'=>'Meas','index'=>'MEAS', 'width'=>120))
+                    ->addColumn(array('label'=>'Consignee','index'=>'CONSIGNEE','width'=>250))
+                    ->addColumn(array('label'=>'Weight','index'=>'WEIGHT', 'width'=>120, 'align'=>'center'))               
+                    ->addColumn(array('label'=>'Meas','index'=>'MEAS', 'width'=>120, 'align'=>'center'))
                     ->addColumn(array('label'=>'Qty','index'=>'QUANTITY', 'width'=>80,'align'=>'center'))
-                    ->addColumn(array('label'=>'Packing','index'=>'NAMAPACKING', 'width'=>120))
+                    ->addColumn(array('label'=>'Packing','index'=>'NAMAPACKING', 'width'=>120, 'align'=>'center'))
                     ->addColumn(array('label'=>'Kode Kemas','index'=>'KODE_KEMAS', 'width'=>100,'align'=>'center'))
+                    ->addColumn(array('label'=>'No.PLP','index'=>'NO_PLP', 'width'=>120,'hidden'=>false, 'align'=>'center'))                
+                    ->addColumn(array('label'=>'Tgl.PLP','index'=>'TGL_PLP', 'width'=>120,'hidden'=>false, 'align'=>'center'))
+                    ->addColumn(array('label'=>'No.BC11','index'=>'NO_BC11', 'width'=>120,'hidden'=>false, 'align'=>'center'))
+                    ->addColumn(array('label'=>'Tgl.BC11','index'=>'TGL_BC11', 'width'=>120,'hidden'=>false, 'align'=>'center'))
+                    ->addColumn(array('label'=>'No.POS BC11','index'=>'NO_POS_BC11', 'width'=>120, 'align'=>'center'))
+                    ->addColumn(array('label'=>'No. SPPB','index'=>'NO_SPPB', 'width'=>120,'hidden'=>false, 'align'=>'center'))
+                    ->addColumn(array('label'=>'Tgl. SPPB','index'=>'TGL_SPPB', 'width'=>120,'hidden'=>false, 'align'=>'center'))
+                    ->addColumn(array('label'=>'Kode Dokumen','index'=>'KD_DOK_INOUT', 'width'=>120,'hidden'=>false, 'align'=>'center'))
+                    ->addColumn(array('label'=>'Nama Dokumen','index'=>'KODE_DOKUMEN', 'width'=>150,'hidden'=>false, 'align'=>'center'))  
+                    ->addColumn(array('label'=>'Tgl. Release','index'=>'tglrelease', 'width'=>120, 'align'=>'center'))
+                    ->addColumn(array('label'=>'Jam. Release','index'=>'jamrelease', 'width'=>120,'hidden'=>false, 'align'=>'center'))
+                    ->addColumn(array('label'=>'No. POL','index'=>'NOPOL_RELEASE', 'width'=>100,'hidden'=>false, 'align'=>'center'))
+                    
+                    ->addColumn(array('label'=>'No. Pabean','index'=>'no_pabean', 'width'=>150,'hidden'=>true))
+                    ->addColumn(array('label'=>'Tgl. Pabean','index'=>'tgl_pabean', 'width'=>150,'hidden'=>true))
+                    ->addColumn(array('label'=>'No. SPJM','index'=>'NO_SPJM', 'width'=>150,'hidden'=>true))
+                    ->addColumn(array('label'=>'Tgl. SPJM','index'=>'TGL_SPJM', 'width'=>150,'hidden'=>true))
+                    
+                                     
+                    ->addColumn(array('label'=>'Kode Kuitansi','index'=>'NO_KUITANSI', 'width'=>150,'hidden'=>true))
+                    ->addColumn(array('label'=>'Shipper','index'=>'SHIPPER','width'=>160,'hidden'=>true))
+                    ->addColumn(array('label'=>'Notify Party','index'=>'NOTIFYPARTY','width'=>160,'hidden'=>true))
+                    
                     ->addColumn(array('label'=>'No. Rack','index'=>'RACKING', 'width'=>150,'hidden'=>true)) 
                     ->addColumn(array('label'=>'UID','index'=>'UID', 'width'=>150,'hidden'=>true))          
                     ->addColumn(array('index'=>'TSHIPPER_FK', 'width'=>150,'hidden'=>true))
                     ->addColumn(array('index'=>'TCONSIGNEE_FK', 'width'=>150,'hidden'=>true))
                     ->addColumn(array('label'=>'Consignee','index'=>'CONSIGNEE', 'width'=>150,'hidden'=>true))
                     ->addColumn(array('label'=>'NPWP Consignee','index'=>'ID_CONSIGNEE', 'width'=>150,'hidden'=>true))
-                    ->addColumn(array('label'=>'No. Kuitansi','index'=>'NO_KUITANSI', 'width'=>150,'hidden'=>true))
                     ->addColumn(array('index'=>'TNOTIFYPARTY_FK', 'width'=>150,'hidden'=>true))
                     ->addColumn(array('index'=>'TPACKING_FK', 'width'=>150,'hidden'=>true))
                     ->addColumn(array('label'=>'Marking','index'=>'MARKING', 'width'=>150,'hidden'=>true)) 
                     ->addColumn(array('label'=>'Desc of Goods','index'=>'DESCOFGOODS', 'width'=>150,'hidden'=>true))              
-                    ->addColumn(array('label'=>'No.BC11','index'=>'NO_BC11', 'width'=>150,'hidden'=>true))
-                    ->addColumn(array('label'=>'Tgl.BC11','index'=>'TGL_BC11', 'width'=>150,'hidden'=>true))
-                    ->addColumn(array('label'=>'No.POS BC11','index'=>'NO_POS_BC11', 'width'=>150))
-                    ->addColumn(array('label'=>'No.PLP','index'=>'NO_PLP', 'width'=>150,'hidden'=>true))                
-                    ->addColumn(array('label'=>'Tgl.PLP','index'=>'TGL_PLP', 'width'=>150,'hidden'=>true)) 
+                    
                     ->addColumn(array('label'=>'Tgl.Behandle','index'=>'tglbehandle', 'width'=>150,'hidden'=>true)) 
                     ->addColumn(array('label'=>'Surcharge (DG)','index'=>'DG_SURCHARGE', 'width'=>150,'hidden'=>true))
                     ->addColumn(array('label'=>'Surcharge (Weight)','index'=>'WEIGHT_SURCHARGE', 'width'=>150,'hidden'=>true))
-                    ->addColumn(array('label'=>'Flag','index'=>'flag_bc','width'=>80, 'align'=>'center'))
+                    
                     ->addColumn(array('label'=>'Nama EMKL','index'=>'NAMAEMKL', 'width'=>150,'hidden'=>true)) 
                     ->addColumn(array('label'=>'Telp. EMKL','index'=>'TELPEMKL', 'width'=>150,'hidden'=>true)) 
                     ->addColumn(array('label'=>'No. Truck','index'=>'NOPOL', 'width'=>150,'hidden'=>true)) 
@@ -413,16 +520,17 @@
                     ->addColumn(array('label'=>'Tgl. Surat Jalan','index'=>'TGLSURATJALAN', 'width'=>120,'hidden'=>true))
                     ->addColumn(array('label'=>'Jam. Surat Jalan','index'=>'JAMSURATJALAN', 'width'=>70,'hidden'=>true))
                     ->addColumn(array('label'=>'Petugas Surat Jalan','index'=>'UIDSURATJALAN', 'width'=>70,'hidden'=>true))
-                    ->addColumn(array('label'=>'Petugas Release','index'=>'UIDRELEASE', 'width'=>70,'hidden'=>true))
+                    ->addColumn(array('label'=>'Petugas Release','index'=>'UIDRELEASE', 'width'=>120,'hidden'=>false, 'align'=>'center'))
                     ->addColumn(array('label'=>'Penagihan','index'=>'PENAGIHAN', 'width'=>70,'hidden'=>true))
                     ->addColumn(array('label'=>'BCF Consignee','index'=>'bcf_consignee', 'width'=>70,'hidden'=>true))
                     ->addColumn(array('label'=>'Ref Number','index'=>'REF_NUMBER_OUT', 'width'=>70,'hidden'=>true))
                     ->addColumn(array('label'=>'Tgl. Fiat Muat','index'=>'tglfiat', 'width'=>120,'hidden'=>true))
                     ->addColumn(array('label'=>'Jam. Fiat Muat','index'=>'jamfiat', 'width'=>70,'hidden'=>true))
-                    ->addColumn(array('label'=>'Tgl. Entry','index'=>'tglentry', 'width'=>120))
-                    ->addColumn(array('label'=>'Jam. Entry','index'=>'jamentry', 'width'=>70,'hidden'=>true))
-                    ->addColumn(array('label'=>'Tgl. Release','index'=>'tglrelease', 'width'=>120))
-                    ->addColumn(array('label'=>'Jam. Release','index'=>'jamrelease', 'width'=>70,'hidden'=>true))
+                    ->addColumn(array('label'=>'Tgl. Entry','index'=>'tglentry', 'width'=>120, 'align'=>'center'))
+                    ->addColumn(array('label'=>'Jam. Entry','index'=>'jamentry', 'width'=>120,'hidden'=>false, 'align'=>'center'))
+                    ->addColumn(array('label'=>'Perubahan HBL','index'=>'perubahan_hbl','width'=>100, 'align'=>'center'))
+                    ->addColumn(array('label'=>'Alasan Perubahan','index'=>'alasan_perubahan','width'=>150,'align'=>'center'))
+                    ->addColumn(array('label'=>'Alasan Segel','index'=>'alasan_segel','width'=>150,'align'=>'center'))
                     ->addColumn(array('label'=>'Photo Release','index'=>'photo_release', 'width'=>70,'hidden'=>true))
                     ->addColumn(array('label'=>'Lokasi Tujuan','index'=>'LOKASI_TUJUAN', 'width'=>70,'hidden'=>true))
                     ->addColumn(array('label'=>'Updated','index'=>'last_update', 'width'=>150, 'search'=>false,'hidden'=>true))
@@ -457,7 +565,6 @@
         <form class="form-horizontal" id="release-form" action="{{ route('lcl-delivery-release-index') }}" method="POST">
             <div class="row">
                 <div class="col-md-6">
-                    
                     <input name="_token" type="hidden" value="{{ csrf_token() }}">
                     <input id="TMANIFEST_PK" name="TMANIFEST_PK" type="hidden">
                     <input name="delete_photo" id="delete_photo" value="N" type="hidden">
@@ -515,7 +622,7 @@
                             <input type="text" id="NO_POS_BC11" name="NO_POS_BC11" class="form-control">
                         </div>
                     </div>
-                    <div class="form-group">
+<!--                    <div class="form-group">
                         <label class="col-sm-3 control-label">No.SPJM</label>
                         <div class="col-sm-3">
                             <input type="text" id="NO_SPJM" name="NO_SPJM" class="form-control" readonly>
@@ -524,7 +631,7 @@
                         <div class="col-sm-3">
                             <input type="text" id="TGL_SPJM" name="TGL_SPJM" class="form-control" readonly>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Consolidator</label>
                         <div class="col-sm-8">
@@ -548,7 +655,22 @@
             <hr />
             <div class="row">
                 <div class="col-md-6">
-                    
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Kode Dokumen</label>
+                        <div class="col-sm-8">
+                            <select class="form-control select2" id="KD_DOK_INOUT" name="KD_DOK_INOUT" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
+                                <option value="">Choose Document</option>
+                                @foreach($kode_doks as $kode)
+                                    <option value="{{ $kode->kode }}">({{$kode->kode}}) {{ $kode->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-11" id="btn-sppb">
+                            <button type="button" class="btn btn-info pull-right" id="get-sppb-btn"><i class="fa fa-download"></i> Get Data</button>
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label">No.SPPB/BC.23</label>
                         <div class="col-sm-8">
@@ -566,17 +688,17 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">Kode Dokumen</label>
+                    
+<!--                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Status BC</label>
                         <div class="col-sm-8">
-                            <select class="form-control select2" id="KD_DOK_INOUT" name="KD_DOK_INOUT" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
-                                <option value="">Choose Document</option>
-                                @foreach($kode_doks as $kode)
-                                    <option value="{{ $kode->kode }}">({{$kode->kode}}) {{ $kode->name }}</option>
-                                @endforeach
+                            <select class="form-control select2" id="status_bc" name="status_bc" style="width: 100%;" tabindex="-1" aria-hidden="true" required disabled>
+                                <option value="">Choose Status</option>
+                                <option value="HOLD">HOLD</option>
+                                <option value="RELEASE">RELEASE</option>
                             </select>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="form-group select-bcf-consignee" style="display:none;">
                         <label class="col-sm-3 control-label">BCF 1.5 Consignee</label>
                         <div class="col-sm-8">
@@ -603,44 +725,41 @@
                     </div>
                 </div>
                 <div class="col-md-6"> 
-<!--                    <div class="form-group">
-                        <label class="col-sm-3 control-label">Lokasi Tujuan</label>
+                    <div class="form-group pabean-field" style="display:none;">
+                        <label class="col-sm-3 control-label">No. Pabean</label>
                         <div class="col-sm-8">
-                            <select class="form-control select2" id="LOKASI_TUJUAN" name="LOKASI_TUJUAN" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
-                                <option value="consignee">Consignee</option>
-                                @foreach($perusahaans as $perusahaan)
-                                    <option value="{{ $perusahaan->name }}">{{ $perusahaan->name }}</option>
-                                @endforeach
-                            </select>
+                            <input type="text" id="no_pabean" name="no_pabean" class="form-control" required>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">Penagihan</label>
+                    <div class="form-group pabean-field" style="display:none;">
+                        <label class="col-sm-3 control-label">Tgl. Pabean</label>
                         <div class="col-sm-8">
-                            <select class="form-control select2" id="PENAGIHAN" name="PENAGIHAN" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
-                                <option value="kredit">Kredit</option>
-                                <option value="tunai">Tunai</option>
-                            </select>
+                            <div class="input-group date">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
                         </div>
-                    </div>-->
-                    <div class="form-group">
+                                <input type="text" id="tgl_pabean" name="tgl_pabean" class="form-control pull-right datepicker" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group hide-kddoc">
                         <label class="col-sm-3 control-label">Tgl.Release</label>
                         <div class="col-sm-8">
                             <div class="input-group date">
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <input type="text" id="tglrelease" name="tglrelease" class="form-control pull-right datepicker" required value="{{ date('Y-m-d') }}">
+                                <input type="text" id="tglrelease" name="tglrelease" class="form-control pull-right datepicker" required>
                             </div>
                         </div>
                     </div>
                     
-                    <div class="bootstrap-timepicker">
+                    <div class="bootstrap-timepicker hide-kddoc">
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Jam Release</label>
                             <div class="col-sm-8">
                                 <div class="input-group">
-                                    <input type="text" id="jamrelease" name="jamrelease" class="form-control timepicker" value="{{ date('H:i:s') }}" required>
+                                    <input type="text" id="jamrelease" name="jamrelease" class="form-control timepicker" required>
                                     <div class="input-group-addon">
                                           <i class="fa fa-clock-o"></i>
                                     </div>
@@ -649,13 +768,13 @@
                         </div>
                     </div>
                     
-                    <div class="form-group">
+                    <div class="form-group hide-kddoc">
                         <label class="col-sm-3 control-label">Petugas</label>
                         <div class="col-sm-8">
                             <input type="text" id="UIDRELEASE" name="UIDRELEASE" class="form-control" required>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group hide-kddoc">
                         <label class="col-sm-3 control-label">No. POL</label>
                         <div class="col-sm-8">
                             <input type="text" id="NOPOL_RELEASE" name="NOPOL_RELEASE" class="form-control" required>
@@ -711,6 +830,24 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<div id="view-photo-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="title-photo">Photo</h4>
+            </div>
+            <div class="modal-body"> 
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>RELEASE</h4>
+                        <div id="release-photo"></div>
+                    </div>
+                </div>
+            </div>    
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->    
 @endsection
 
 @section('custom_css')
