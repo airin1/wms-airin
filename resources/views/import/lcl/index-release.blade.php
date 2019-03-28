@@ -228,16 +228,16 @@
 //                @endrole
 //            }
             
-            if(!rowdata.tglrelease && !rowdata.jamrelease) {
-
-            }else{ 
-                @role('super-admin')
-
-                @else
-                    $('#tglrelease').attr('disabled','disabled');
-                    $('#jamrelease').attr('disabled','disabled');
-                @endrole
-            }
+//            if(!rowdata.tglrelease && !rowdata.jamrelease) {
+//
+//            }else{ 
+//                @role('super-admin')
+//
+//                @else
+//                    $('#tglrelease').attr('disabled','disabled');
+//                    $('#jamrelease').attr('disabled','disabled');
+//                @endrole
+//            }
   
             if(rowdata.status_bc == 'HOLD'){
                 $('#tglrelease').attr('disabled','disabled');

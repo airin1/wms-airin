@@ -229,16 +229,16 @@
 //                @endrole
 //            }
             
-            if(!rowdata.TGLRELEASE && !rowdata.JAMRELEASE) {
-                
-            }else{
-                @role('super-admin')
-
-                @else
-                    $('#TGLRELEASE').attr('disabled','disabled');
-                    $('#JAMRELEASE').attr('disabled','disabled');
-                @endrole
-            }
+//            if(!rowdata.TGLRELEASE && !rowdata.JAMRELEASE) {
+//                
+//            }else{
+//                @role('super-admin')
+//
+//                @else
+//                    $('#TGLRELEASE').attr('disabled','disabled');
+//                    $('#JAMRELEASE').attr('disabled','disabled');
+//                @endrole
+//            }
             
             if(rowdata.status_bc == 'HOLD'){
                 $('#TGLRELEASE').attr('disabled','disabled');
@@ -428,6 +428,7 @@
                     ->addColumn(array('label'=>'No. BL/AWB','index'=>'NO_BL_AWB', 'width'=>150))
                     ->addColumn(array('label'=>'Tgl. BL/AWB','index'=>'TGL_BL_AWB', 'width'=>150,'align'=>'center'))
                     ->addColumn(array('label'=>'Consignee','index'=>'CONSIGNEE','width'=>160))
+                    ->addColumn(array('label'=>'TPS Asal','index'=>'KD_TPS_ASAL','width'=>80,'align'=>'center'))
                     ->addColumn(array('label'=>'NPWP Consignee','index'=>'ID_CONSIGNEE','width'=>160,'hidden'=>true))
                     ->addColumn(array('label'=>'No. SPK','index'=>'NoJob','width'=>160))
                     ->addColumn(array('label'=>'No. MBL','index'=>'NOMBL','width'=>160))
