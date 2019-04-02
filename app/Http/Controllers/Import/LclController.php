@@ -1970,7 +1970,7 @@ class LclController extends Controller
                                 $ex_header_tglhbl = isset($ex_header[10]) ? $ex_header[10] : null;
                                 $ex_header_berat = isset($ex_header[11]) ? $ex_header[11] : null;
                             else:
-                                return $count_ex_header;
+//                                return $count_ex_header;
                                 return back()->with('error', 'Cannot upload TXT file, new flat file detected.')->withInput();
                             endif;
                             
