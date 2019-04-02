@@ -83,6 +83,12 @@ class TablesRepository extends EloquentRepositoryAbstract {
             }elseif(isset($request['module'])){
                 
                 switch ($request['module']) {
+                    case 'status_behandle':
+                        $Model = \DB::table('tcontainercy')
+                            ->whereNotNull('NO_SPJM')
+                            ->whereNotNull('TGL_SPJM')
+                            ->where('BEHANDLE', 'Y');
+                    break;
                     case 'behandle':
                         
                     break;
@@ -111,6 +117,40 @@ class TablesRepository extends EloquentRepositoryAbstract {
                             ->whereNotNull('JAMMASUK')
                             ->whereNotNull('TGLRELEASE')
                             ->whereNotNull('JAMRELEASE');
+                    break;
+                                    case 'hold':
+                        if(isset($request['startdate']) || isset($request['enddate'])){
+                            $start_date = date('Y-m-d',strtotime($request['startdate']));
+                            $end_date = date('Y-m-d',strtotime($request['enddate']));  
+                            
+                            $Model = \DB::table('tcontainercy')
+                                ->select(\DB::raw('*, timestampdiff(DAY, now(), TGLMASUK) as timeSinceUpdate'))
+                                ->where('status_bc','HOLD')
+                                ->where($request['by'], '>=',$start_date)
+                                ->where($request['by'], '<=',$end_date);
+                        }else{
+                            $Model = \DB::table('tcontainercy')
+                                ->select(\DB::raw('*, timestampdiff(DAY, now(), TGLMASUK) as timeSinceUpdate'))
+                                ->where('status_bc','HOLD');
+                        }
+                    break;
+                    case 'segel':
+                        if(isset($request['startdate']) || isset($request['enddate'])){
+                            $start_date = date('Y-m-d',strtotime($request['startdate']));
+                            $end_date = date('Y-m-d',strtotime($request['enddate']));  
+                            
+                            $Model = \DB::table('tcontainercy')
+                                ->select(\DB::raw('*, timestampdiff(DAY, now(), TGLMASUK) as timeSinceUpdate'))
+                                ->whereNotNull('TGLMASUK')
+                                ->whereNull('TGLRELEASE')
+                                ->where($request['by'], '>=',$start_date)
+                                ->where($request['by'], '<=',$end_date);
+                        }else{
+                            $Model = \DB::table('tcontainercy')
+                                ->select(\DB::raw('*, timestampdiff(DAY, now(), TGLMASUK) as timeSinceUpdate'))
+                                ->whereNotNull('TGLMASUK')
+                                ->whereNull('TGLRELEASE');
+                        }
                     break;
                     case 'release_movement':
                         $Model = \DB::table('tcontainercy')
@@ -205,6 +245,12 @@ class TablesRepository extends EloquentRepositoryAbstract {
             }elseif(isset($request['module'])){
                 
                 switch ($request['module']) {
+                    case 'status_behandle':
+                        $Model = \DB::table('tmanifest')
+                            ->whereNotNull('NO_SPJM')
+                            ->whereNotNull('TGL_SPJM')
+                            ->where('BEHANDLE', 'Y');
+                    break;
                     case 'behandle':
                         
                     break;
@@ -228,6 +274,42 @@ class TablesRepository extends EloquentRepositoryAbstract {
 //                            ->whereNotNull('TGLSURATJALAN')
 //                            ->whereNotNull('JAMSURATJALAN');
 //                            ->where('VALIDASI', 'Y');
+                    break;
+                    case 'hold':
+                        if(isset($request['startdate']) || isset($request['enddate'])){
+                            $start_date = date('Y-m-d',strtotime($request['startdate']));
+                            $end_date = date('Y-m-d',strtotime($request['enddate']));  
+                            
+                            $Model = \DB::table('tmanifest')
+                            ->select(\DB::raw('*, timestampdiff(DAY, now(), tglmasuk) as timeSinceUpdate'))
+                            ->where('status_bc', 'HOLD')
+                            ->where($request['by'], '>=',$start_date)
+                            ->where($request['by'], '<=',$end_date);
+                        }else{
+                            $Model = \DB::table('tmanifest')
+                                ->select(\DB::raw('*, timestampdiff(DAY, now(), tglmasuk) as timeSinceUpdate'))
+                                ->where('status_bc', 'HOLD');
+                        }
+                    break;
+                    case 'segel':
+                        if(isset($request['startdate']) || isset($request['enddate'])){
+                            $start_date = date('Y-m-d',strtotime($request['startdate']));
+                            $end_date = date('Y-m-d',strtotime($request['enddate']));  
+                            
+                            $Model = \DB::table('tmanifest')
+                            ->select(\DB::raw('*, timestampdiff(DAY, now(), tglmasuk) as timeSinceUpdate'))
+                            ->whereNotNull('tglmasuk')
+                            ->whereNotNull('tglstripping')
+                            ->whereNull('tglrelease')
+                            ->where($request['by'], '>=',$start_date)
+                            ->where($request['by'], '<=',$end_date);
+                        }else{
+                            $Model = \DB::table('tmanifest')
+                                ->select(\DB::raw('*, timestampdiff(DAY, now(), tglmasuk) as timeSinceUpdate'))
+                                ->whereNotNull('tglmasuk')
+                                ->whereNotNull('tglstripping')
+                                ->whereNull('tglrelease');
+                        }
                     break;
                     case 'longstay':
                         if(isset($request['startdate']) || isset($request['enddate'])){

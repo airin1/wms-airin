@@ -59,6 +59,15 @@ Route::group(['prefix' => 'lcl', 'namespace' => 'Import'], function(){
         'uses' => 'LclController@dispatcheUpdate'
     ]);
     
+    Route::get('/status-behandle', [
+        'as' => 'lcl-behandle-index',
+        'uses' => 'LclController@statusBehandleIndex'
+    ]);
+    Route::post('/status-behandle/checking', [
+        'as' => 'lcl-change-status-behandle',
+        'uses' => 'LclController@changeStatusBehandle'
+    ]);
+    
     // REPORT
     Route::get('/report/inout', [
         'as' => 'lcl-report-inout',
@@ -111,5 +120,27 @@ Route::group(['prefix' => 'lcl', 'namespace' => 'Import'], function(){
     Route::post('/report/longstay/unlock-flag', [
         'as' => 'lcl-unlock-flag',
         'uses' => 'LclController@unlockFlag'
+    ]);
+    
+    // Menu BC
+    Route::get('/bc/hold', [
+        'as' => 'lcl-hold-index',
+        'uses' => 'LclController@holdIndex'
+    ]);
+    Route::get('/bc/segel', [
+        'as' => 'lcl-segel-index',
+        'uses' => 'LclController@segelIndex'
+    ]);
+    Route::get('/bc/report-container', [
+        'as' => 'lcl-bc-report-container',
+        'uses' => 'LclController@reportContainerIndex'
+    ]);
+    Route::get('/bc/report-stock', [
+        'as' => 'lcl-bc-report-stock',
+        'uses' => 'LclController@reportStockIndex'
+    ]);
+    Route::get('/bc/inventory', [
+        'as' => 'lcl-bc-report-inventory',
+        'uses' => 'LclController@reportInventoryIndex'
     ]);
 });

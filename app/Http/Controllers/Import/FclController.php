@@ -76,6 +76,20 @@ class FclController extends Controller
         return view('import.fcl.index-gatein')->with($data);
     }
     
+    public function statusBehandleIndex()
+    {
+        $data['page_title'] = "FCL Status Behandle";
+        $data['page_description'] = "";
+        $data['breadcrumbs'] = [
+            [
+                'action' => '',
+                'title' => 'FCL Status Behandle'
+            ]
+        ];        
+        
+        return view('import.fcl.index-status-behandle')->with($data);
+    }
+    
     public function behandleIndex()
     {
         if ( !$this->access->can('show.fcl.behandle.index') ) {
@@ -679,15 +693,38 @@ class FclController extends Controller
     public function behandleUpdate(Request $request, $id)
     {
         $data = $request->json()->all(); 
-        unset($data['TCONTAINER_PK'], $data['_token']);
+        $delete_photo = $data['delete_photo'];
+        unset($data['TCONTAINER_PK'], $data['delete_photo'], $data['_token']);
         
         $data['BEHANDLE'] = 'Y';
+        
+        if($delete_photo == 'Y'){
+            $data['photo_behandle'] = '';
+        }
         
         $update = DBContainer::where('TCONTAINER_PK', $id)
             ->update($data);
         
         if($update){
             return json_encode(array('success' => true, 'message' => 'Behandle successfully updated!'));
+        }
+        
+        return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
+    }
+    
+    public function behandleReady(Request $request, $id)
+    {
+        $data = $request->json()->all(); 
+        unset($data['_token']);
+
+        $data['date_ready_behandle'] = date('Y-m-d H:i:s');        
+        $data['status_behandle'] = 'Ready';
+        
+        $update = DBContainer::where('TCONTAINER_PK', $id)
+            ->update($data);
+        
+        if($update){
+            return json_encode(array('success' => true, 'message' => 'Behandle successfully updated to Ready!'));
         }
         
         return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
@@ -748,7 +785,7 @@ class FclController extends Controller
                 $data['JAMRELEASE'] = NULL;
             }else{
                 if($container->flag_bc == 'Y'){
-                    $data['status_bc'] = 'HOLD';
+                    $data['status_bc'] = 'SEGEL';
                     $data['TGLRELEASE'] = NULL;
                     $data['JAMRELEASE'] = NULL;
                 }else{
@@ -764,6 +801,8 @@ class FclController extends Controller
         $data['NAMAEMKL'] = '';
 //        $data['NOPOL'] = $data['NOPOL_OUT'];
         
+        $data['ID_CONSIGNEE'] = str_replace(array('.','-'), array('',''), $data['ID_CONSIGNEE']);
+
         $update = DBContainer::where('TCONTAINER_PK', $id)
             ->update($data);
         
@@ -810,6 +849,7 @@ class FclController extends Controller
             $container = DBContainer::where(array('NOCONTAINER' => $data['NO_CONT'], 'NO_PLP' => $data['NO_PLP']))->first(); 
             if($container){
                 $container->NOPOL = $data['NOPOL'];
+//                $container->WEIGHT = $data['WEIGHT'];
                 $container->ESEALCODE = $data['ESEALCODE'];
                 $container->save();
             }
@@ -2112,6 +2152,66 @@ class FclController extends Controller
         }
     }
     
+    public function releaseUploadPhoto(Request $request)
+    {
+        $picture = array();
+        if ($request->hasFile('photos')) {
+            $files = $request->file('photos');
+            $destinationPath = base_path() . '/public/uploads/photos/container/fcl/'.$request->no_cont;
+            $i = 1;
+            foreach($files as $file){
+//                $filename = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+                
+                $filename = date('dmyHis').'_'.str_slug($request->no_cont).'_'.$i.'.'.$extension;
+                $picture[] = $filename;
+                $file->move($destinationPath, $filename);
+                $i++;
+            }
+            // update to Database
+            $container = DBContainer::find($request->id_cont);
+            $container->photo_release_extra = json_encode($picture);
+            if($container->save()){
+                return back()->with('success', 'Photo for Container '. $request->no_cont .' has been uploaded.');
+            }else{
+                return back()->with('error', 'Photo uploaded, but not save in Database.');
+            }
+            
+        } else {
+            return back()->with('error', 'Something wrong!!! Can\'t upload photo, please try again.');
+        }
+    }
+    
+        public function behandleUploadPhoto(Request $request)
+    {
+        $picture = array();
+        if ($request->hasFile('photos')) {
+            $files = $request->file('photos');
+            $destinationPath = base_path() . '/public/uploads/photos/container/fcl/'.$request->no_cont;
+            $i = 1;
+            foreach($files as $file){
+//                $filename = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+                
+                $filename = date('dmyHis').'_'.str_slug($request->no_cont).'_'.$i.'.'.$extension;
+                $picture[] = $filename;
+                $file->move($destinationPath, $filename);
+                $i++;
+            }
+            // update to Database
+            $container = DBContainer::find($request->id_cont);
+            $container->photo_behandle = json_encode($picture);
+            if($container->save()){
+                return back()->with('success', 'Photo for Container '. $request->no_cont .' has been uploaded.');
+            }else{
+                return back()->with('error', 'Photo uploaded, but not save in Database.');
+            }
+            
+        } else {
+            return back()->with('error', 'Something wrong!!! Can\'t upload photo, please try again.');
+        }
+    }
+    
     public function changeStatusBc($id)
     { 
         $container = DBContainer::find($id);
@@ -2166,6 +2266,7 @@ class FclController extends Controller
         
         $container = DBContainer::find($container_id);
         $container->flag_bc = 'Y';
+        $container->status_bc = 'SEGEL';
         $container->no_flag_bc = $request->no_flag_bc;
         $container->description_flag_bc = $request->description_flag_bc;
 //        if($alasan == 'Lainnya' && !empty($lainnya)){
@@ -2205,6 +2306,18 @@ class FclController extends Controller
         
         $container = DBContainer::find($container_id);
         $container->flag_bc = 'N';
+        if($container->release_bc == 'Y'){
+            $container->status_bc = 'RELEASE';
+        }else{
+            if($container->KD_DOK_INOUT > 1){
+                $container->status_bc = 'HOLD';
+                $container->TGLRELEASE = NULL;
+                $container->JAMRELEASE = NULL;
+            }else{
+                $container->status_bc = 'RELEASE';
+            }
+        }
+        
         $container->no_unflag_bc = $request->no_unflag_bc;
         $container->description_unflag_bc = $request->description_unflag_bc;
         $container->alasan_lepas_segel = $alasan;
@@ -2221,5 +2334,138 @@ class FclController extends Controller
     {
         $container = DBContainer::find($container_id);
         return json_encode(array('success' => true, 'data' => $container));
+    }
+    
+    public function changeStatusBehandle(Request $request)
+    {
+        $container_id = $request->id;
+        $desc = $request->desc;
+        $status = $request->status_behandle;
+        
+        $container = DBContainer::find($container_id);
+        $container->status_behandle = $status;
+        if($status == 'Checking'){
+            $container->date_check_behandle = date('Y-m-d H:i:s');
+            $container->desc_check_behandle = $desc;
+        }else{
+            $container->date_finish_behandle = date('Y-m-d H:i:s');
+            $container->desc_finish_behandle = $desc;
+            $container->TGLBEHANDLE = date('Y-m-d');
+            $container->JAMBEHANDLE = date('H:i:s');
+}
+
+        if($container->save()){
+            return back()->with('success', 'Status Behandle has been change.')->withInput();
+        }
+        
+        return back()->with('error', 'Something wrong, please try again.')->withInput();
+
+    }
+    
+    public function holdIndex()
+    {
+        $data['page_title'] = "FCL Dokumen HOLD";
+        $data['page_description'] = "";
+        $data['breadcrumbs'] = [
+            [
+                'action' => '',
+                'title' => 'FCL Dokumen HOLD'
+            ]
+        ];        
+        
+        return view('import.fcl.bc-hold')->with($data);
+    }
+    
+    public function segelIndex()
+    {
+        $data['page_title'] = "FCL Segel Merah";
+        $data['page_description'] = "";
+        $data['breadcrumbs'] = [
+            [
+                'action' => '',
+                'title' => 'FCL Segel Merah'
+            ]
+        ];        
+        
+        return view('import.fcl.bc-segel')->with($data);
+    }
+    
+    public function reportContainerIndex(Request $request)
+    {
+        $data['page_title'] = "FCL Report Container";
+        $data['page_description'] = "";
+        $data['breadcrumbs'] = [
+            [
+                'action' => '',
+                'title' => 'FCL Report Container'
+            ]
+        ];   
+        
+        if($request->month && $request->year) {
+            $month = $request->month;
+            $year = $request->year;
+        } else {
+            $month = date('m');
+            $year = date('Y');
+        }
+        
+//        BY PLP
+        $twenty = DBContainer::where('SIZE', 20)->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $fourty = DBContainer::where('SIZE', 40)->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $teus = ($twenty*1)+($fourty*2);
+        $data['countbysize'] = array('twenty' => $twenty, 'fourty' => $fourty, 'total' => $twenty+$fourty, 'teus' => $teus);
+        
+        $jict = DBContainer::where('KD_TPS_ASAL', 'JICT')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $koja = DBContainer::where('KD_TPS_ASAL', 'KOJA')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $mal = DBContainer::where('KD_TPS_ASAL', 'MAL0')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $nct1 = DBContainer::where('KD_TPS_ASAL', 'NCT1')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $pldc = DBContainer::where('KD_TPS_ASAL', 'PLDC')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+              
+//        BY GATEIN
+        $twentyg = DBContainer::where('SIZE', 20)->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $fourtyg = DBContainer::where('SIZE', 40)->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $teusg = ($twentyg*1)+($fourtyg*2);
+        $data['countbysizegatein'] = array('twenty' => $twentyg, 'fourty' => $fourtyg, 'total' => $twentyg+$fourtyg, 'teus' => $teusg);
+        
+        $jictg = DBContainer::where('KD_TPS_ASAL', 'JICT')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $kojag = DBContainer::where('KD_TPS_ASAL', 'KOJA')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $malg = DBContainer::where('KD_TPS_ASAL', 'MAL0')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $nct1g = DBContainer::where('KD_TPS_ASAL', 'NCT1')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $pldcg = DBContainer::where('KD_TPS_ASAL', 'PLDC')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $data['countbytps'] = array('JICT' => array($jict, $jictg), 'KOJA' => array($koja, $kojag), 'MAL0' => array($mal, $malg), 'NCT1' => array($nct1, $nct1g), 'PLDC' => array($pldc, $pldcg));
+        
+//        BY DOKUMEN
+        $bc20 = DBContainer::where('KD_DOK_INOUT', 1)->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $bc23 = DBContainer::where('KD_DOK_INOUT', 2)->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $bc12 = DBContainer::where('KD_DOK_INOUT', 4)->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $bc15 = DBContainer::where('KD_DOK_INOUT', 9)->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $bc11 = DBContainer::where('KD_DOK_INOUT', 20)->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $bcf26 = DBContainer::where('KD_DOK_INOUT', 5)->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $data['countbydoc'] = array('BC 2.0' => $bc20, 'BC 2.3' => $bc23, 'BC 1.2' => $bc12, 'BC 1.5' => $bc15, 'BC 1.1' => $bc11, 'BCF 2.6' => $bcf26);
+             
+        $data['totcounttpsp'] = array_sum(array($jict,$koja,$mal,$nct1,$pldc));
+        $data['totcounttpsg'] = array_sum(array($jictg,$kojag,$malg,$nct1g,$pldcg));
+
+        $data['month'] = $month;
+        $data['year'] = $year;
+        
+        $this->updateYorByTeus();
+        $data['yor'] = \App\Models\SorYor::where('type', 'yor')->first();
+        
+        return view('import.fcl.bc-report-container')->with($data);
+    }
+    
+    public function reportInventoryIndex()
+    {
+        $data['page_title'] = "FCL Inventory";
+        $data['page_description'] = "";
+        $data['breadcrumbs'] = [
+            [
+                'action' => '',
+                'title' => 'FCL Inventory'
+            ]
+        ];        
+        
+        return view('import.fcl.bc-inventory')->with($data);
     }
 }

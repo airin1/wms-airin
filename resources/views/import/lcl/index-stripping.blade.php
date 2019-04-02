@@ -11,15 +11,47 @@
     function gridCompleteEvent()
     {
         var ids = jQuery("#lclStrippingGrid").jqGrid('getDataIDs'),
-            edt = '',
-            del = ''; 
+            apv = ''; 
         for(var i=0;i < ids.length;i++){ 
             var cl = ids[i];
+            var rowdata = $('#lclStrippingGrid').getRowData(cl);
             
-            edt = '<a href="{{ route("lcl-manifest-edit",'') }}/'+cl+'"><i class="fa fa-pencil"></i></a> ';
-            del = '<a href="{{ route("lcl-manifest-delete",'') }}/'+cl+'" onclick="if (confirm(\'Are You Sure ?\')){return true; }else{return false; };"><i class="fa fa-close"></i></a>';
-            jQuery("#lclStrippingGrid").jqGrid('setRowData',ids[i],{action:edt+' '+del}); 
+            if(rowdata.STARTSTRIPPING !== ''){
+                apv = '<button style="margin:5px;" class="btn btn-danger btn-xs approve-stripping-btn" disabled><i class="fa fa-close"></i> Stripping</button>';
+            }else{
+                apv = '<button style="margin:5px;" class="btn btn-danger btn-xs approve-stripping-btn" data-id="'+cl+'" onclick="if (confirm(\'Are You Sure ?\')){ approveStripping('+cl+'); }else{return false;};"><i class="fa fa-check"></i> Stripping</button>';
         } 
+            
+            jQuery("#lclStrippingGrid").jqGrid('setRowData',ids[i],{action:apv}); 
+    }
+    }
+    
+    function approveStripping($id)
+    {
+        $.ajax({
+            type: 'GET',
+            dataType : 'json',
+            url: '{{route("lcl-realisasi-stripping-approve","")}}/'+$id,
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert('Something went wrong, please try again later.');
+            },
+            beforeSend:function()
+            {
+
+            },
+            success:function(json)
+            {
+                if(json.success) {
+                    $('#btn-toolbar').showAlertAfterElement('alert-success alert-custom', json.message, 5000);
+                } else {
+                    $('#btn-toolbar').showAlertAfterElement('alert-danger alert-custom', json.message, 5000);
+                }
+
+                //Triggers the "Refresh" button funcionality.
+                $('#btn-refresh').click();
+            }
+        });
     }
     
     function onSelectRowEvent()
@@ -40,6 +72,11 @@
             console.log(rowdata);
             populateFormFields(rowdata, '');
             $('#TCONTAINER_PK').val(rowid);
+            $('#NO_BC11').val(rowdata.NO_BC11);
+            $('#TGL_BC11').val(rowdata.TGL_BC11);
+            $('#NO_PLP').val(rowdata.NO_PLP);
+            $('#TGL_PLP').val(rowdata.TGL_PLP);
+            $('#KD_TPS_ASAL').val(rowdata.KD_TPS_ASAL);
             if(rowdata.STARTSTRIPPING) {
                 var date_start = new Date(rowdata.STARTSTRIPPING);
                 var date = date_start.toString("yyyy-MM-dd");
@@ -149,7 +186,7 @@
                     ->setGridOption('shrinkToFit', true)
                     ->setGridOption('sortname','TCONTAINER_PK')
                     ->setGridOption('rownumbers', true)
-                    ->setGridOption('height', '250')
+                    ->setGridOption('height', '300')
                     ->setGridOption('rowList',array(20,50,100))
                     ->setGridOption('useColSpanStyle', true)
                     ->setNavigatorOptions('navigator', array('viewtext'=>'view'))
@@ -157,38 +194,44 @@
                     ->setFilterToolbarOptions(array('autosearch'=>true))
                     ->setGridEvent('gridComplete', 'gridCompleteEvent')
                     ->setGridEvent('onSelectRow', 'onSelectRowEvent')
-        //            ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>80, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
+                    ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>100, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
                     ->addColumn(array('key'=>true,'index'=>'TCONTAINER_PK','hidden'=>true))
                     ->addColumn(array('label'=>'No. Container','index'=>'NOCONTAINER','width'=>150))
                     ->addColumn(array('label'=>'No. Joborder','index'=>'NoJob','width'=>150))
-                    ->addColumn(array('label'=>'Tgl. ETA','index'=>'ETA','width'=>120))
-                    ->addColumn(array('label'=>'Consolidator','index'=>'NAMACONSOLIDATOR','width'=>250))
-                    ->addColumn(array('label'=>'No. BC11','index'=>'NO_BC11','width'=>120))
-                    ->addColumn(array('label'=>'Tgl. BC11','index'=>'TGL_BC11','width'=>120,'hidden'=>true))
-                    ->addColumn(array('label'=>'No. PLP','index'=>'NO_PLP','width'=>120))
-                    ->addColumn(array('label'=>'Tgl. PLP','index'=>'TGL_PLP','width'=>120,'hidden'=>true))
                     ->addColumn(array('label'=>'Size','index'=>'SIZE', 'width'=>80,'align'=>'center'))
-        //            ->addColumn(array('label'=>'Teus','index'=>'TEUS', 'width'=>80,'align'=>'center'))
-                    ->addColumn(array('label'=>'No. Seal','index'=>'NO_SEAL', 'width'=>120,'align'=>'right'))
-                    ->addColumn(array('label'=>'Tgl. Masuk','index'=>'TGLMASUK','width'=>120))
-                    ->addColumn(array('label'=>'Jam Masuk','index'=>'JAMMASUK','width'=>120))
+                    ->addColumn(array('label'=>'Teus','index'=>'TEUS', 'width'=>80,'align'=>'center'))
+                    ->addColumn(array('label'=>'Vessel','index'=>'VESSEL','width'=>120,'align'=>'center'))
+                    ->addColumn(array('label'=>'Tgl. ETA','index'=>'ETA','width'=>120,'align'=>'center'))
+                    ->addColumn(array('label'=>'TPS Asal','index'=>'KD_TPS_ASAL','width'=>80,'align'=>'center'))
+                    ->addColumn(array('label'=>'Tgl. Masuk','index'=>'TGLMASUK','width'=>120,'align'=>'center'))
+                    ->addColumn(array('label'=>'Jam Masuk','index'=>'JAMMASUK','width'=>120,'align'=>'center'))
+                    ->addColumn(array('label'=>'Mulai Stripping','index'=>'STARTSTRIPPING','width'=>150,'align'=>'center','hidden'=>false))
+                    ->addColumn(array('label'=>'Jam Mulai','index'=>'JAMSTARTSTRIPPING','width'=>120,'align'=>'center','hidden'=>true))
+                    ->addColumn(array('label'=>'Selesai Stripping','index'=>'ENDSTRIPPING','width'=>150,'align'=>'center','hidden'=>false))
+                    ->addColumn(array('label'=>'Jam Selesai','index'=>'JAMENDSTRIPPING','width'=>120,'align'=>'center','hidden'=>true))
+                    ->addColumn(array('label'=>'Working Hours','index'=>'working_hours','width'=>100,'align'=>'center','hidden'=>false))
+            
+                    ->addColumn(array('label'=>'No. BC11','index'=>'NO_BC11','width'=>120,'hidden'=>true))
+                    ->addColumn(array('label'=>'Tgl. BC11','index'=>'TGL_BC11','width'=>120,'hidden'=>true))
+                    ->addColumn(array('label'=>'No. PLP','index'=>'NO_PLP','width'=>120,'hidden'=>true))
+                    ->addColumn(array('label'=>'Tgl. PLP','index'=>'TGL_PLP','width'=>120,'hidden'=>true))
+                    
+                    ->addColumn(array('label'=>'No. Seal','index'=>'NO_SEAL', 'width'=>120,'align'=>'right','hidden'=>true))
+                    
                     ->addColumn(array('label'=>'Coordinator','index'=>'coordinator_stripping','hidden'=>true))           
-                    ->addColumn(array('label'=>'Petugas','index'=>'UIDSTRIPPING','hidden'=>true))
+                    ->addColumn(array('label'=>'Petugas','index'=>'UIDSTRIPPING','hidden'=>false,'align'=>'center'))
                     ->addColumn(array('label'=>'Jumlah B/L','index'=>'jumlah_bl','hidden'=>true))
-                    ->addColumn(array('label'=>'Mulai Stripping','index'=>'STARTSTRIPPING','align'=>'center','hidden'=>false))
-                    ->addColumn(array('label'=>'Jam Mulai','index'=>'JAMSTARTSTRIPPING','hidden'=>true))
-                    ->addColumn(array('label'=>'Selesai Stripping','index'=>'ENDSTRIPPING','align'=>'center','hidden'=>false))
-                    ->addColumn(array('label'=>'Jam Selesai','index'=>'JAMENDSTRIPPING','hidden'=>true))
                     ->addColumn(array('label'=>'MEAS','index'=>'MEAS','hidden'=>true))
+            
                     ->addColumn(array('label'=>'Mulai Tunda','index'=>'mulai_tunda','hidden'=>true))
                     ->addColumn(array('label'=>'Selesai Tunda','index'=>'selesai_tunda','hidden'=>true))
                     ->addColumn(array('label'=>'Keterangan','index'=>'keterangan','hidden'=>true))
-                    ->addColumn(array('label'=>'Working Hours','index'=>'working_hours','hidden'=>true))
+                    
                     ->addColumn(array('label'=>'Operator Forklif','index'=>'operator_forklif','hidden'=>true))
         //            ->addColumn(array('label'=>'Layout','index'=>'layout','width'=>80,'align'=>'center','hidden'=>true))
         //            ->addColumn(array('label'=>'UID','index'=>'UID', 'width'=>150))
-                    ->addColumn(array('label'=>'Tgl. Entry','index'=>'TGLENTRY', 'width'=>150))
-                    ->addColumn(array('label'=>'Updated','index'=>'last_update', 'width'=>150, 'search'=>false))
+                    ->addColumn(array('label'=>'Tgl. Entry','index'=>'TGLENTRY', 'width'=>150,'align'=>'center'))
+                    ->addColumn(array('label'=>'Updated','index'=>'last_update', 'width'=>150,'align'=>'center','search'=>false))
         //            ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>80, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
                     ->renderGrid()
                 }}
@@ -231,16 +274,46 @@
                             <input type="text" id="NOCONTAINER" name="NOCONTAINER" class="form-control" readonly>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Size</label>
+                        <div class="col-sm-3">
+                            <input type="text" id="SIZE" name="SIZE" class="form-control" readonly>
+                </div>
+                        <label class="col-sm-2 control-label">TPS Asal</label>
+                        <div class="col-sm-3">
+                            <input type="text" id="KD_TPS_ASAL" name="KD_TPS_ASAL" class="form-control" readonly>
+                        </div>
+                    </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
+                        <label class="col-sm-3 control-label">No.BC11</label>
+                        <div class="col-sm-3">
+                            <input type="text" id="NO_BC11" name="NO_BC11" class="form-control" readonly>
+                        </div>
+                        <label class="col-sm-2 control-label">Tgl.BC11</label>
+                        <div class="col-sm-3">
+                            <input type="text" id="TGL_BC11" name="TGL_BC11" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">No.PLP</label>
+                        <div class="col-sm-3">
+                            <input type="text" id="NO_PLP" name="NO_PLP" class="form-control" readonly>
+                        </div>
+                        <label class="col-sm-2 control-label">Tgl.PLP</label>
+                        <div class="col-sm-3">
+                            <input type="text" id="TGL_PLP" name="TGL_PLP" class="form-control" readonly>
+                        </div>
+                    </div>
+<!--                    <div class="form-group">
                         <label class="col-sm-3 control-label">Consolidator</label>
                         <div class="col-sm-8">
                             <input type="text" id="NAMACONSOLIDATOR" name="NAMACONSOLIDATOR" class="form-control" readonly>
                         </div>
+                    </div>-->
                     </div>
                 </div>
-            </div>
             <hr />
             <div class="row">
                 <div class="col-md-6">

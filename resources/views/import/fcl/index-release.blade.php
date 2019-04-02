@@ -14,18 +14,61 @@
             
         for(var i=0;i < ids.length;i++){ 
             var cl = ids[i];
+            var vi = '';
             
             rowdata = $('#fclReleaseGrid').getRowData(cl);
             if(rowdata.VALIDASI == 'Y') {
                 $("#" + cl).find("td").css("color", "#666");
             }
+            if(rowdata.flag_bc == 'Y') {
+                $("#" + cl).find("td").css("background-color", "#FF0000");
+            }
             if(rowdata.status_bc == 'HOLD') {
                 $("#" + cl).find("td").css("background-color", "#ffe500");
             }
-            if(rowdata.flag_bc == 'Y') {
-                $("#" + cl).find("td").css("color", "#FF0000");
+            
+            if(rowdata.photo_release_extra != ''){
+                vi = '<button style="margin:5px;" class="btn btn-default btn-xs approve-manifest-btn" data-id="'+cl+'" onclick="viewPhoto('+cl+')"><i class="fa fa-photo"></i> View Photo</button>';
+            }else{
+                vi = '<button style="margin:5px;" class="btn btn-default btn-xs approve-manifest-btn" disabled><i class="fa fa-photo"></i> Not Found</button>';
             } 
+            
+            jQuery("#fclReleaseGrid").jqGrid('setRowData',ids[i],{action:vi}); 
         } 
+    }
+    
+    function viewPhoto(containerID)
+    {       
+        $.ajax({
+            type: 'GET',
+            dataType : 'json',
+            url: '{{route("fcl-report-rekap-view-photo","")}}/'+containerID,
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert('Something went wrong, please try again later.');
+            },
+            beforeSend:function()
+            {
+                $('#container-photo').html('');
+            },
+            success:function(json)
+            {
+                var html_container = '';
+                
+                if(json.data.photo_release_extra){
+                    var photos_container = $.parseJSON(json.data.photo_release_extra);
+                    var html_container = '';
+                    $.each(photos_container, function(i, item) {
+                        /// do stuff
+                        html_container += '<img src="{{url("uploads/photos/container/fcl")}}/'+json.data.NOCONTAINER+'/'+item+'" style="width: 200px;padding:5px;" />';
+
+                    });
+                    $('#container-photo').html(html_container);
+                }
+            }
+        });
+        
+        $('#view-photo-modal').modal('show');
     }
     
     function onSelectRowEvent()
@@ -36,8 +79,9 @@
     $(document).ready(function()
     {
         $('#release-form').disabledFormGroup();
-        $('#btn-toolbar').disabledButtonGroup();
+        $('#btn-toolbar,#btn-sppb,#btn-photo').disabledButtonGroup();
         $('#btn-group-3').enableButtonGroup();
+        $(".hide-kddoc").hide();
         
         $("#KD_DOK_INOUT").on("change", function(){
             var $this = $(this).val();
@@ -46,6 +90,80 @@
             }else{
                 $(".select-bcf-consignee").hide();
             }
+            if($this){
+                $(".hide-kddoc").show();
+            }else{
+                $(".hide-kddoc").hide();
+            }
+//            if($this == 1){
+//                @role('super-admin')
+//                    
+//                @else
+//                    $('#NO_SPPB').attr('disabled','disabled');
+//                    $('#TGL_SPPB').attr('disabled','disabled');
+//                @endrole
+//            }else{
+//                $('#NO_SPPB').removeAttr('disabled');
+//                $('#TGL_SPPB').removeAttr('disabled');
+//            }
+        });
+        
+        $('#get-sppb-btn').click(function(){
+     
+            if(!confirm('Apakah anda yakin?')){return false;}
+            
+            var kd_dok = $("#KD_DOK_INOUT").val();
+            if(kd_dok == ''){
+                alert('Kode Dokumen masih kosong!!!');
+                return false;
+            }
+            
+            $this = $(this);
+            $this.html('<i class="fa fa-spin fa-spinner"></i> Please wait...');
+            $this.attr('disabled','disabled');
+            
+            var url = '{{ route("fcl-delivery-release-getdatasppb") }}';
+
+            $.ajax({
+                type: 'POST',
+                data: 
+                {
+                    'id' : $('#TCONTAINER_PK').val(),
+                    'kd_dok' : kd_dok,
+                    '_token' : '{{ csrf_token() }}'
+                },
+                dataType : 'json',
+                url: url,
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    alert('Something went wrong, please try again later.');
+                    $this.html('<i class="fa fa-download"></i> Get Data');
+                    $this.removeAttr('disabled');
+                },
+                beforeSend:function()
+                {
+
+                },
+                success:function(json)
+                {
+                    console.log(json);
+
+                    if(json.success) {
+                        $('#btn-toolbar').showAlertAfterElement('alert-success alert-custom', json.message, 5000);
+                        
+                        var datasppb = json.data; 
+                        $('#NO_SPPB').val(datasppb.NO_SPPB);
+                        $('#TGL_SPPB').val(datasppb.TGL_SPPB);
+                        $('#ID_CONSIGNEE').val(datasppb.NPWP);
+                    } else {
+                      $('#btn-toolbar').showAlertAfterElement('alert-danger alert-custom', json.message, 5000);
+                    }
+                    
+                    $this.html('<i class="fa fa-download"></i> Get Data');
+                    $this.removeAttr('disabled');
+
+                }
+            });
         });
         
         $('#btn-edit').click(function() {
@@ -81,17 +199,64 @@
             $('#bcf_consignee').val(rowdata.bcf_consignee).trigger('change');
             $('#KD_TPS_ASAL').val(rowdata.KD_TPS_ASAL);
 
-//            if(!rowdata.TGLRELEASE && !rowdata.JAMRELEASE) {
-                $('#btn-group-2').enableButtonGroup();
+            $('#upload-title').html('Upload Photo for '+rowdata.NOCONTAINER);
+            $('#no_cont').val(rowdata.NOCONTAINER);
+            $('#id_cont').val(rowdata.TCONTAINER_PK);
+            $('#load_photos').html('');
+            $('#delete_photo').val('N');
+            
+            if(rowdata.photo_release_extra){
+                var html = '';
+                var photos = $.parseJSON(rowdata.photo_release_extra);
+                $.each(photos, function(i, item) {
+                    /// do stuff
+                    html += '<img src="{{url("uploads/photos/container/fcl/")}}/'+rowdata.NOCONTAINER+'/'+item+'" style="width: 200px;padding:5px;" />';
+                });
+                $('#load_photos').html(html);
+            }
+            
+            $('#btn-group-2,#btn-sppb,#btn-photo').enableButtonGroup();
                 $('#release-form').enableFormGroup();
-//                $('#btn-group-5').disabledButtonGroup();
-//            }else{
                 $('#btn-group-4').enableButtonGroup();
                 $('#btn-group-5').enableButtonGroup();
-//                $('#btn-group-2').disabledButtonGroup();
-//                $('#release-form').disabledFormGroup();
-//            }
 
+//            if(rowdata.KD_DOK_INOUT == 1){
+//                @role('super-admin')
+//                    
+//                @else
+//                    $('#NO_SPPB').attr('disabled','disabled');
+//                    $('#TGL_SPPB').attr('disabled','disabled');
+//                @endrole
+//            }
+            
+//            if(!rowdata.TGLRELEASE && !rowdata.JAMRELEASE) {
+//                
+//            }else{
+//                @role('super-admin')
+//
+//                @else
+//                    $('#TGLRELEASE').attr('disabled','disabled');
+//                    $('#JAMRELEASE').attr('disabled','disabled');
+//                @endrole
+//            }
+            
+            if(rowdata.status_bc == 'HOLD'){
+                $('#TGLRELEASE').attr('disabled','disabled');
+                $('#JAMRELEASE').attr('disabled','disabled');
+                $('#NOPOL_OUT').attr('disabled','disabled');
+            }else{
+//                $('#TGLRELEASE').removeAttr('disabled');
+//                $('#JAMRELEASE').removeAttr('disabled');
+//                $('#NOPOL_OUT').removeAttr('disabled');
+            } 
+            
+            if(rowdata.flag_bc == 'Y'){
+                $('#btn-group-4').disabledButtonGroup();
+                $('#btn-group-5').disabledButtonGroup();
+                $('#btn-group-2,#btn-sppb,#btn-photo').disabledButtonGroup();
+                $('#release-form').disabledFormGroup();
+            }
+            
         });
         
         $('#btn-print-sj').click(function() {
@@ -256,12 +421,14 @@
                     ->setGridEvent('onSelectRow', 'onSelectRowEvent')
                     ->setGridEvent('gridComplete', 'gridCompleteEvent')
                     ->addColumn(array('key'=>true,'index'=>'TCONTAINER_PK','hidden'=>true))
+                    ->addColumn(array('label'=>'Photo','index'=>'action', 'width'=>120, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
                     ->addColumn(array('label'=>'Status BC','index'=>'status_bc','width'=>100, 'align'=>'center'))
-                    ->addColumn(array('label'=>'Flag','index'=>'flag_bc','width'=>80, 'align'=>'center'))
+                    ->addColumn(array('label'=>'Segel Merah','index'=>'flag_bc','width'=>80, 'align'=>'center'))
                     ->addColumn(array('label'=>'No. Container','index'=>'NOCONTAINER','width'=>160,'editable' => true, 'editrules' => array('required' => true)))                   
                     ->addColumn(array('label'=>'No. BL/AWB','index'=>'NO_BL_AWB', 'width'=>150))
                     ->addColumn(array('label'=>'Tgl. BL/AWB','index'=>'TGL_BL_AWB', 'width'=>150,'align'=>'center'))
                     ->addColumn(array('label'=>'Consignee','index'=>'CONSIGNEE','width'=>160))
+                    ->addColumn(array('label'=>'TPS Asal','index'=>'KD_TPS_ASAL','width'=>80,'align'=>'center'))
                     ->addColumn(array('label'=>'NPWP Consignee','index'=>'ID_CONSIGNEE','width'=>160,'hidden'=>true))
                     ->addColumn(array('label'=>'No. SPK','index'=>'NoJob','width'=>160))
                     ->addColumn(array('label'=>'No. MBL','index'=>'NOMBL','width'=>160))
@@ -298,17 +465,18 @@
                     ->addColumn(array('label'=>'Weight','index'=>'WEIGHT', 'width'=>120,'editable' => true, 'align'=>'right','editrules' => array('required' => true)))
                     ->addColumn(array('label'=>'Measurment','index'=>'MEAS', 'width'=>120,'editable' => true, 'align'=>'right','editrules' => array('required' => true)))
                     ->addColumn(array('label'=>'Layout','index'=>'layout', 'width'=>80,'editable' => true,'align'=>'center','editoptions'=>array('defaultValue'=>"C-1")))
-                    ->addColumn(array('label'=>'UID','index'=>'UID', 'width'=>150))
                     ->addColumn(array('label'=>'BCF Consignee','index'=>'bcf_consignee', 'width'=>70,'hidden'=>true))
                     ->addColumn(array('label'=>'Nama EMKL','index'=>'NAMAEMKL', 'width'=>150,'hidden'=>true)) 
                     ->addColumn(array('label'=>'Telp. EMKL','index'=>'TELPEMKL', 'width'=>150,'hidden'=>true)) 
                     ->addColumn(array('label'=>'No. Truck','index'=>'NOPOL', 'width'=>150,'hidden'=>true)) 
                     ->addColumn(array('label'=>'No. POL','index'=>'NOPOLCIROUT', 'width'=>150,'hidden'=>true))
                     ->addColumn(array('label'=>'No. POL Out','index'=>'NOPOL_OUT', 'width'=>150,'hidden'=>true))
+                    ->addColumn(array('label'=>'Photo Extra','index'=>'photo_release_extra', 'width'=>70,'hidden'=>true))
                     ->addColumn(array('label'=>'Ref. Number Out','index'=>'REF_NUMBER_OUT', 'width'=>150,'hidden'=>true))
-                    ->addColumn(array('label'=>'Tgl. Entry','index'=>'TGLENTRY', 'width'=>150, 'search'=>false))
+                    ->addColumn(array('label'=>'UID','index'=>'UID', 'width'=>150,'align'=>'center'))
+                    ->addColumn(array('label'=>'Tgl. Entry','index'=>'TGLENTRY', 'width'=>150, 'search'=>false,'align'=>'center'))
                     ->addColumn(array('label'=>'Jam. Entry','index'=>'JAMENTRY', 'width'=>150, 'search'=>false, 'hidden'=>true))
-                    ->addColumn(array('label'=>'Updated','index'=>'last_update', 'width'=>150, 'search'=>false))
+                    ->addColumn(array('label'=>'Updated','index'=>'last_update', 'width'=>150, 'search'=>false,'hidden'=>true))
                     ->renderGrid()
                 }}
                 
@@ -349,12 +517,12 @@
                             <input type="text" id="NOJOBORDER" name="NOJOBORDER" class="form-control" readonly>
                         </div>
                     </div>
-                    <div class="form-group">
+<!--                    <div class="form-group">
                         <label class="col-sm-3 control-label">No. MBL</label>
                         <div class="col-sm-8">
                             <input type="text" id="NOMBL" name="NOMBL" class="form-control" readonly>
                         </div>
-                    </div>
+                    </div>-->
                     <div class="form-group">
                         <label class="col-sm-3 control-label">No. Container</label>
                         <div class="col-sm-8">
@@ -362,11 +530,21 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-sm-3 control-label">Size</label>
+                        <div class="col-sm-3">
+                            <input type="text" id="SIZE" name="SIZE" class="form-control" readonly>
+                        </div>
+                        <label class="col-sm-2 control-label">TPS Asal</label>
+                        <div class="col-sm-3">
+                            <input type="text" id="KD_TPS_ASAL" name="KD_TPS_ASAL" class="form-control" readonly>
+                        </div>
+                    </div>
+<!--                    <div class="form-group">
                         <label class="col-sm-3 control-label">Consolidator</label>
                         <div class="col-sm-8">
                             <input type="text" id="NAMACONSOLIDATOR" name="NAMACONSOLIDATOR" class="form-control" readonly>
                         </div>
-                    </div>
+                    </div>-->
 <!--                    <div class="form-group">
                         <label class="col-sm-3 control-label">Kode Dokumen</label>
                         <div class="col-sm-8">
@@ -398,6 +576,26 @@
                         </div>
                     </div>-->
                     <div class="form-group">
+                        <label class="col-sm-3 control-label">No.BC11</label>
+                        <div class="col-sm-3">
+                            <input type="text" id="NO_BC11" name="NO_BC11" class="form-control" readonly>
+                        </div>
+                        <label class="col-sm-2 control-label">Tgl.BC11</label>
+                        <div class="col-sm-3">
+                            <input type="text" id="TGL_BC11" name="TGL_BC11" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">No.PLP</label>
+                        <div class="col-sm-3">
+                            <input type="text" id="NO_PLP" name="NO_PLP" class="form-control" readonly>
+                        </div>
+                        <label class="col-sm-2 control-label">Tgl.PLP</label>
+                        <div class="col-sm-3">
+                            <input type="text" id="TGL_PLP" name="TGL_PLP" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-sm-3 control-label">Consignee</label>
                         <div class="col-sm-8">
                             <input type="text" id="CONSIGNEE" name="CONSIGNEE" class="form-control" readonly>
@@ -427,6 +625,22 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
+                        <label class="col-sm-3 control-label">Kode Dokumen</label>
+                        <div class="col-sm-8">
+                            <select class="form-control select2" id="KD_DOK_INOUT" name="KD_DOK_INOUT" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
+                                <option value="">Choose Document</option>
+                                @foreach($kode_doks as $kode)
+                                    <option value="{{ $kode->kode }}">({{$kode->kode}}) {{ $kode->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-11" id="btn-sppb">
+                            <button type="button" class="btn btn-info pull-right" id="get-sppb-btn"><i class="fa fa-download"></i> Get Data</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-sm-3 control-label">No. SPPB</label>
                         <div class="col-sm-8">
                             <input type="text" id="NO_SPPB" name="NO_SPPB" class="form-control" required>
@@ -443,17 +657,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">Kode Dokumen</label>
-                        <div class="col-sm-8">
-                            <select class="form-control select2" id="KD_DOK_INOUT" name="KD_DOK_INOUT" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
-                                <option value="">Choose Document</option>
-                                @foreach($kode_doks as $kode)
-                                    <option value="{{ $kode->kode }}">({{$kode->kode}}) {{ $kode->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
+                    
                     <div class="form-group select-bcf-consignee" style="display:none;">
                         <label class="col-sm-3 control-label">BCF 1.5 Consignee</label>
                         <div class="col-sm-8">
@@ -489,16 +693,21 @@
                             </div>
                         </div>
                     </div>
-                    
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Ref. Number</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="REF_NUMBER_OUT" name="REF_NUMBER_OUT" class="form-control" required>
+                </div>
+                    </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="form-group">
+                    <div class="form-group hide-kddoc">
                         <label class="col-sm-3 control-label">No. Pabean</label>
                         <div class="col-sm-8">
                             <input type="text" id="NO_DAFTAR_PABEAN" name="NO_DAFTAR_PABEAN" class="form-control" required>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group hide-kddoc">
                         <label class="col-sm-3 control-label">Tgl. Pabean</label>
                         <div class="col-sm-8">
                             <div class="input-group date">
@@ -510,24 +719,24 @@
                         </div>
                     </div>
                     
-                    <div class="form-group">
+                    <div class="form-group hide-kddoc">
                         <label class="col-sm-3 control-label">Tgl. Release</label>
                         <div class="col-sm-8">
                             <div class="input-group date">
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <input type="text" id="TGLRELEASE" name="TGLRELEASE" class="form-control pull-right datepicker" required>
+                                <input type="text" id="TGLRELEASE" name="TGLRELEASE" class="form-control pull-right datepicker">
                             </div>
                         </div>
                     </div>
                     
-                    <div class="bootstrap-timepicker">
+                    <div class="bootstrap-timepicker hide-kddoc">
                         <div class="form-group">
                             <label class="col-sm-3 control-label">Jam Release</label>
                             <div class="col-sm-8">
                                 <div class="input-group">
-                                    <input type="text" id="JAMRELEASE" name="JAMRELEASE" class="form-control timepicker" required>
+                                    <input type="text" id="JAMRELEASE" name="JAMRELEASE" class="form-control timepicker">
                                     <div class="input-group-addon">
                                           <i class="fa fa-clock-o"></i>
                                     </div>
@@ -536,19 +745,25 @@
                         </div>
                     </div>
                     
-                    <div class="form-group">
+                    <div class="form-group hide-kddoc">
                         <label class="col-sm-3 control-label">No. POL</label>
                         <div class="col-sm-8">
                             <input type="text" id="NOPOL_OUT" name="NOPOL_OUT" class="form-control" required>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">Ref. Number</label>
+                    
+                    <div class="form-group hide-kddoc" id="btn-photo">
+                        <label class="col-sm-3 control-label">Photo</label>
                         <div class="col-sm-8">
-                            <input type="text" id="REF_NUMBER_OUT" name="REF_NUMBER_OUT" class="form-control" required>
+                            <button type="button" class="btn btn-warning" id="upload-photo-btn">Upload Photo</button>
+                            <button type="button" class="btn btn-danger" id="delete-photo-btn">Delete Photo</button>
                         </div>
                     </div>
-                    
+                    <div class="form-group hide-kddoc">
+                        <div class="col-sm-12">
+                            <div id="load_photos" style="text-align: center;"></div>
+                </div>
+                    </div>
                 </div>
                 <!--<div class="col-md-6">--> 
                                      
@@ -564,7 +779,57 @@
         </form>  
     </div>
 </div>
+<div id="photo-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="upload-title"></h4>
+            </div>
+            <form class="form-horizontal" id="upload-photo-form" action="{{ route('fcl-release-upload-photo') }}" method="POST" enctype="multipart/form-data">
+                <div class="modal-body"> 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input name="_token" type="hidden" value="{{ csrf_token() }}">
+                            <input type="hidden" id="id_cont" name="id_cont" required>   
+                            <input type="hidden" id="no_cont" name="no_cont" required>    
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Photo</label>
+                                <div class="col-sm-8">
+                                    <input type="file" name="photos[]" class="form-control" multiple="true" required>
+                                </div>
+                            </div>
 
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div id="view-photo-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Photo</h4>
+            </div>
+            <div class="modal-body"> 
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>CONTAINER</h3>
+                        <div id="container-photo"></div>
+                    </div>
+                </div>
+            </div>    
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 @endsection
 
 @section('custom_css')
@@ -583,6 +848,20 @@
 <script type="text/javascript">
     $('.select2').select2();
     $('#ID_CONSIGNEE').mask("99.999.999.9-999.999");
+    
+    $("#upload-photo-btn").on("click", function(e){
+        e.preventDefault();
+        $("#photo-modal").modal('show');
+        return false;
+    });
+    
+    $("#delete-photo-btn").on("click", function(e){
+        if(!confirm('Apakah anda yakin akan menghapus photo?')){return false;}
+        
+        $('#load_photos').html('');
+        $('#delete_photo').val('Y');
+    });
+    
     $('.datepicker').datepicker({
         autoclose: true,
         todayHighlight: true,

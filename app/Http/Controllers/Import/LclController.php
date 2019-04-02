@@ -122,6 +122,20 @@ class LclController extends Controller
         return view('import.lcl.index-buangmty')->with($data);
     }
     
+    public function statusBehandleIndex()
+    {
+        $data['page_title'] = "LCL Status Behandle";
+        $data['page_description'] = "";
+        $data['breadcrumbs'] = [
+            [
+                'action' => '',
+                'title' => 'LCL Status Behandle'
+            ]
+        ];        
+        
+        return view('import.lcl.index-status-behandle')->with($data);
+    }
+    
     public function behandleIndex()
     {
         if ( !$this->access->can('show.lcl.behandle.index') ) {
@@ -701,8 +715,6 @@ class LclController extends Controller
             $updateManifest = DBManifest::where('TCONTAINER_FK', $id)
                     ->update($dataManifest);
             
-//            return json_encode($dataManifest);
-            
             if($updateManifest){
                 return json_encode(array('success' => true, 'message' => 'Stripping successfully updated!'));
             }
@@ -808,15 +820,38 @@ class LclController extends Controller
     public function behandleUpdate(Request $request, $id)
     {
         $data = $request->json()->all(); 
-        unset($data['TMANIFEST_PK'], $data['_token']);
+        $delete_photo = $data['delete_photo'];
+        unset($data['TMANIFEST_PK'], $data['delete_photo'], $data['_token']);
         
         $data['BEHANDLE'] = 'Y';
+        
+        if($delete_photo == 'Y'){
+            $data['photo_behandle'] = '';
+        }
         
         $update = DBManifest::where('TMANIFEST_PK', $id)
             ->update($data);
         
         if($update){
             return json_encode(array('success' => true, 'message' => 'Behandle successfully updated!'));
+        }
+        
+        return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
+    }
+    
+    public function behandleReady(Request $request, $id)
+    {
+        $data = $request->json()->all(); 
+        unset($data['_token']);
+
+        $data['date_ready_behandle'] = date('Y-m-d H:i:s');  
+        $data['status_behandle'] = 'Ready';
+        
+        $update = DBManifest::where('TMANIFEST_PK', $id)
+            ->update($data);
+        
+        if($update){
+            return json_encode(array('success' => true, 'message' => 'Behandle successfully updated to Ready!'));
         }
         
         return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
@@ -977,7 +1012,6 @@ class LclController extends Controller
         }
         
         return back()->with('error', 'Error delete LCL register, please try again.'); 
- 
     }
     
     public function registerPrintPermohonan(Request $request)
@@ -1092,6 +1126,11 @@ class LclController extends Controller
     public function reportInoutViewPhoto($manifestID)
     {
         $manifest = DBManifest::find($manifestID);
+        $container = DBContainer::find($manifest->TCONTAINER_FK);
+        
+        $manifest->photo_get_in = $container->photo_get_in;
+        $manifest->photo_get_out = $container->photo_get_out;
+        $manifest->photo_gatein_extra = $container->photo_gatein_extra;
         
         return json_encode(array('success' => true, 'data' => $manifest));
     }
@@ -2284,7 +2323,6 @@ class LclController extends Controller
     
     public function changeStatusBc($id)
     {
-    
         $manifest = DBManifest::find($id);
         $manifest->status_bc = 'RELEASE';
         $manifest->release_bc = 'Y';
@@ -2338,6 +2376,7 @@ class LclController extends Controller
         
         $manifest = DBManifest::find($manifest_id);
         $manifest->flag_bc = 'Y';
+        $manifest->status_bc = 'SEGEL';
         $manifest->no_flag_bc = $request->no_flag_bc;
         $manifest->description_flag_bc = $request->description_flag_bc;
 //        if($alasan == 'Lainnya' && !empty($lainnya)){
@@ -2377,6 +2416,19 @@ class LclController extends Controller
         
         $manifest = DBManifest::find($manifest_id);
         $manifest->flag_bc = 'N';
+        
+        if($manifest->release_bc == 'Y'){
+            $manifest->status_bc = 'RELEASE';
+        }else{
+            if($manifest->KD_DOK_INOUT > 1){
+                $manifest->status_bc = 'HOLD';
+                $manifest->tglrelease = NULL;
+                $manifest->jamrelease = NULL;
+            }else{
+                $manifest->status_bc = 'RELEASE';
+            }
+        }
+
         $manifest->no_unflag_bc = $request->no_unflag_bc;
         $manifest->description_unflag_bc = $request->description_unflag_bc;
         $manifest->alasan_lepas_segel = $alasan;
@@ -2393,6 +2445,183 @@ class LclController extends Controller
     {
         $manifest = DBManifest::find($manifest_id);
         return json_encode(array('success' => true, 'data' => $manifest));
+    }
+    
+    public function changeStatusBehandle(Request $request)
+    {
+        $manifest_id = $request->id;
+        $desc = $request->desc;
+        $status = $request->status_behandle;
+        
+        $manifest = DBManifest::find($manifest_id);
+        $manifest->status_behandle = $status;
+        if($status == 'Checking'){
+            $manifest->date_check_behandle = date('Y-m-d H:i:s');
+            $manifest->desc_check_behandle = $desc;
+        }else{
+            $manifest->date_finish_behandle = date('Y-m-d H:i:s');
+            $manifest->desc_finish_behandle = $desc;
+            $manifest->tglbehandle = date('Y-m-d');
+            $manifest->jambehandle = date('H:i:s');
+}
+
+        if($manifest->save()){
+            return back()->with('success', 'Status Behandle has been change.')->withInput();
+        }
+        
+        return back()->with('error', 'Something wrong, please try again.')->withInput();
+
+    }
+    
+    public function holdIndex()
+    {
+        $data['page_title'] = "LCL Dokumen HOLD";
+        $data['page_description'] = "";
+        $data['breadcrumbs'] = [
+            [
+                'action' => '',
+                'title' => 'LCL Dokumen HOLD'
+            ]
+        ];        
+        
+        return view('import.lcl.bc-hold')->with($data);
+    }
+    
+    public function segelIndex()
+    {
+        $data['page_title'] = "LCL Segel Merah";
+        $data['page_description'] = "";
+        $data['breadcrumbs'] = [
+            [
+                'action' => '',
+                'title' => 'LCL Segel Merah'
+            ]
+        ];        
+        
+        return view('import.lcl.bc-segel')->with($data);
+    }
+    
+    public function reportContainerIndex(Request $request)
+    {
+        $data['page_title'] = "LCL Report Container";
+        $data['page_description'] = "";
+        $data['breadcrumbs'] = [
+            [
+                'action' => '',
+                'title' => 'LCL Report Container'
+            ]
+        ];      
+        
+        if($request->month && $request->year) {
+            $month = $request->month;
+            $year = $request->year;
+        } else {
+            $month = date('m');
+            $year = date('Y');
+        }
+        
+//        BY PLP
+        $twenty = DBContainer::where('SIZE', 20)->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $fourty = DBContainer::where('SIZE', 40)->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $teus = ($twenty*1)+($fourty*2);
+        $data['countbysize'] = array('twenty' => $twenty, 'fourty' => $fourty, 'total' => $twenty+$fourty, 'teus' => $teus);
+        
+        $jict = DBContainer::where('KD_TPS_ASAL', 'JICT')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $koja = DBContainer::where('KD_TPS_ASAL', 'KOJA')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $mal = DBContainer::where('KD_TPS_ASAL', 'MAL0')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $nct1 = DBContainer::where('KD_TPS_ASAL', 'NCT1')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $pldc = DBContainer::where('KD_TPS_ASAL', 'PLDC')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        
+        $fc = DBContainer::whereIn('TCONSOLIDATOR_FK', array(1,4))->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $me = DBContainer::whereIn('TCONSOLIDATOR_FK', array(13,16))->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $ap = DBContainer::whereIn('TCONSOLIDATOR_FK', array(10,12))->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $da = DBContainer::whereIn('TCONSOLIDATOR_FK', array(24))->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        
+//        BY GATEIN
+        $twentyg = DBContainer::where('SIZE', 20)->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $fourtyg = DBContainer::where('SIZE', 40)->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $teusg = ($twentyg*1)+($fourtyg*2);
+        $data['countbysizegatein'] = array('twenty' => $twentyg, 'fourty' => $fourtyg, 'total' => $twentyg+$fourtyg, 'teus' => $teusg);
+        
+        $jictg = DBContainer::where('KD_TPS_ASAL', 'JICT')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $kojag = DBContainer::where('KD_TPS_ASAL', 'KOJA')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $malg = DBContainer::where('KD_TPS_ASAL', 'MAL0')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $nct1g = DBContainer::where('KD_TPS_ASAL', 'NCT1')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $pldcg = DBContainer::where('KD_TPS_ASAL', 'PLDC')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        
+        $fcg = DBContainer::whereIn('TCONSOLIDATOR_FK', array(1,4))->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $meg = DBContainer::whereIn('TCONSOLIDATOR_FK', array(13,16))->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $apg = DBContainer::whereIn('TCONSOLIDATOR_FK', array(10,12))->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $dae = DBContainer::whereIn('TCONSOLIDATOR_FK', array(24))->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        
+        $data['countbytps'] = array('JICT' => array($jict, $jictg), 'KOJA' => array($koja, $kojag), 'MAL0' => array($mal, $malg), 'NCT1' => array($nct1, $nct1g), 'PLDC' => array($pldc, $pldcg));
+        $data['countbyconsolidator'] = array('FBI/CPL' => array($fc, $fcg), 'MKT/ECU' => array($me, $meg), 'ARJAKA/PELOPOR' => array($ap, $apg), 'DAEHAN' => array($da, $dae));
+        
+        $data['totcounttpsp'] = array_sum(array($jict,$koja,$mal,$nct1,$pldc));
+        $data['totcounttpsg'] = array_sum(array($jictg,$kojag,$malg,$nct1g,$pldcg));
+        
+        $data['totcountconsolidatorp'] = array_sum(array($fc,$me,$ap,$da));
+        $data['totcountconsolidatorg'] = array_sum(array($fcg,$meg,$apg,$dae));
+        
+        $data['month'] = $month;
+        $data['year'] = $year;
+        
+        return view('import.lcl.bc-report-container')->with($data);
+    }
+    
+    public function reportStockIndex(Request $request)
+    {
+        $data['page_title'] = "LCL Report Stock";
+        $data['page_description'] = "";
+        $data['breadcrumbs'] = [
+            [
+                'action' => '',
+                'title' => 'LCL Report Stock'
+            ]
+        ];        
+        
+        if($request->month && $request->year) {
+            $month = $request->month;
+            $year = $request->year;
+        } else {
+            $month = date('m');
+            $year = date('Y');
+        }
+        
+        $bc20 = DBManifest::where('KD_DOK_INOUT', 1)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
+        $bc23 = DBManifest::where('KD_DOK_INOUT', 2)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
+        $bc12 = DBManifest::where('KD_DOK_INOUT', 4)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
+        $bc15 = DBManifest::where('KD_DOK_INOUT', 9)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
+        $bc11 = DBManifest::where('KD_DOK_INOUT', 20)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
+        $bcf26 = DBManifest::where('KD_DOK_INOUT', 5)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
+        $data['countbydoc'] = array('BC 2.0' => $bc20, 'BC 2.3' => $bc23, 'BC 1.2' => $bc12, 'BC 1.5' => $bc15, 'BC 1.1' => $bc11, 'BCF 2.6' => $bcf26);
+        
+        $data['month'] = $month;
+        $data['year'] = $year;
+        
+        $meas_count = DBManifest::whereNotNull('tglmasuk')
+                                ->whereNotNull('tglstripping')
+                                ->whereNull('tglrelease')                                
+                                ->sum('MEAS');
+        $data['meas'] = $meas_count;
+        $this->updateSorByMeas();
+        $data['sor'] = \App\Models\SorYor::where('type', 'sor')->first();
+        
+        return view('import.lcl.bc-report-stock')->with($data);
+    }
+    
+    public function reportInventoryIndex()
+    {
+        $data['page_title'] = "LCL Inventory";
+        $data['page_description'] = "";
+        $data['breadcrumbs'] = [
+            [
+                'action' => '',
+                'title' => 'LCL Inventory'
+            ]
+        ];        
+        
+        return view('import.lcl.bc-inventory')->with($data);
     }
     
 }
