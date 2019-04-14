@@ -709,8 +709,8 @@ class LclController extends Controller
             
             $dataManifest['tglstripping'] = $data['ENDSTRIPPING'];
             $dataManifest['jamstripping'] = $data['JAMENDSTRIPPING'];  
-            $dataManifest['STARTSTRIPPING'] = $data['STARTSTRIPPING'].' '.$data['JAMSTARTSTRIPPING'].':00';
-            $dataManifest['ENDSTRIPPING'] = $data['ENDSTRIPPING'].' '.$data['JAMENDSTRIPPING'].':00';
+            $dataManifest['STARTSTRIPPING'] = $data['STARTSTRIPPING'].' '.$data['JAMSTARTSTRIPPING'];
+            $dataManifest['ENDSTRIPPING'] = $data['ENDSTRIPPING'].' '.$data['JAMENDSTRIPPING'];
             
             $updateManifest = DBManifest::where('TCONTAINER_FK', $id)
                     ->update($dataManifest);
@@ -1114,6 +1114,7 @@ class LclController extends Controller
         $data['year'] = $year;
         
         $meas_count = DBManifest::whereNotNull('tglmasuk')
+                                ->whereNotNull('tglstripping')
                                 ->whereNull('tglrelease')
                                 ->sum('MEAS');
         $data['meas'] = $meas_count;
@@ -1131,6 +1132,7 @@ class LclController extends Controller
         $manifest->photo_get_in = $container->photo_get_in;
         $manifest->photo_get_out = $container->photo_get_out;
         $manifest->photo_gatein_extra = $container->photo_gatein_extra;
+        $manifest->photo_hasil_stripping = $container->photo_stripping;
         
         return json_encode(array('success' => true, 'data' => $manifest));
     }
@@ -2072,9 +2074,11 @@ class LclController extends Controller
                             // Get Packing
                             if($df['pack']) {
                                 $packing = \App\Models\Packing::where('KODEPACKING', $df['pack'])->first();
+                                if($packing){
                                 $data['TPACKING_FK'] = $packing->TPACKING_PK;
                                 $data['NAMAPACKING'] = $packing->NAMAPACKING;
                                 $data['KODE_KEMAS'] = $packing->KODEPACKING;
+                            }
                             }
 
                             $data['tglmasuk'] = $container->TGL_PLP;
@@ -2321,13 +2325,43 @@ class LclController extends Controller
         }
     }
     
+    public function strippingUploadPhoto(Request $request)
+    {
+        $picture = array();
+        if ($request->hasFile('photos')) {
+            $files = $request->file('photos');
+            $destinationPath = base_path() . '/public/uploads/photos/container/lcl/'.$request->no_cont;
+            $i = 1;
+            foreach($files as $file){
+//                $filename = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+                
+                $filename = date('dmyHis').'_'.str_slug($request->no_cont).'_'.$i.'.'.$extension;
+                $picture[] = $filename;
+                $file->move($destinationPath, $filename);
+                $i++;
+            }
+            // update to Database
+            $container = DBContainer::find($request->id_cont);
+            $container->photo_stripping = json_encode($picture);
+            if($container->save()){
+                return back()->with('success', 'Photo for Container '. $request->no_cont .' has been uploaded.');
+            }else{
+                return back()->with('error', 'Photo uploaded, but not save in Database.');
+            }
+            
+        } else {
+            return back()->with('error', 'Something wrong!!! Can\'t upload photo, please try again.');
+        }
+    }
+    
     public function changeStatusBc($id)
     {
         $manifest = DBManifest::find($id);
         $manifest->status_bc = 'RELEASE';
         $manifest->release_bc = 'Y';
         $manifest->release_bc_date = date('Y-m-d H:i:s');
-        $manifest->release_bc_uid = \Auth::getUser()->name;
+//        $manifest->release_bc_uid = \Auth::getUser()->name;
         
         if($manifest->save()){
 

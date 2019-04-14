@@ -849,7 +849,7 @@ class FclController extends Controller
             $container = DBContainer::where(array('NOCONTAINER' => $data['NO_CONT'], 'NO_PLP' => $data['NO_PLP']))->first(); 
             if($container){
                 $container->NOPOL = $data['NOPOL'];
-//                $container->WEIGHT = $data['WEIGHT'];
+                $container->WEIGHT = $data['WEIGHT'];
                 $container->ESEALCODE = $data['ESEALCODE'];
                 $container->save();
             }

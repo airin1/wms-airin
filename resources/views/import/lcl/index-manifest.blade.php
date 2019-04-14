@@ -11,9 +11,20 @@
         for(var i=0;i < ids.length;i++){ 
             var cl = ids[i];
             
+            @role('pbm')
             edt = '<a href="{{ route("lcl-manifest-edit",'') }}/'+cl+'"><i class="fa fa-pencil"></i></a> ';
-            del = '<a href="{{ route("lcl-manifest-delete",'') }}/'+cl+'" onclick="if (confirm(\'Are You Sure ?\')){return true; }else{return false; };"><i class="fa fa-close"></i></a>';
+                del = '';
+            @else
+                edt = '<a href="{{ route("lcl-manifest-edit",'') }}/'+cl+'"><i class="fa fa-pencil"></i></a> ';
+                del = '';
+//                del = '<a href="{{ route("lcl-manifest-delete",'') }}/'+cl+'" onclick="if (confirm(\'Are You Sure ?\')){return true; }else{return false; };"><i class="fa fa-close"></i></a>';
+            @endrole
+            
+            @role('bea-cukai')
+                jQuery("#lclManifestGrid").jqGrid('setRowData',ids[i],{action:edt});
+            @else
             jQuery("#lclManifestGrid").jqGrid('setRowData',ids[i],{action:edt+' '+del}); 
+            @endrole
         } 
     }
     

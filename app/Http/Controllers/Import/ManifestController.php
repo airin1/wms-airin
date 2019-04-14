@@ -62,7 +62,7 @@ class ManifestController extends Controller
         unset($data['id'], $data['delete_photo'], $data['_token']);
         
         $container = DBContainer::find($data['TCONTAINER_FK']);  
-//        $packing = DBPacking::find($data['TPACKING_FK']);
+        
         
         $num = 0; 
 //        $manifestID = DBManifest::select('NOTALLY')->where('TJOBORDER_FK',$container->TJOBORDER_FK)->count();
@@ -76,8 +76,8 @@ class ManifestController extends Controller
  
         $data['NOTALLY'] = $container->NoJob.'.'.$regID; 
         $data['TJOBORDER_FK'] = $container->TJOBORDER_FK;
-        if($data['TPACKING_FK']){
             $packing = DBPacking::find($data['TPACKING_FK']);
+        if($packing){
             $data['KODE_KEMAS'] = $packing->KODEPACKING;
             $data['NAMAPACKING'] = $packing->NAMAPACKING;
         }
@@ -211,6 +211,7 @@ class ManifestController extends Controller
 //        $data['tally_number'] = $container->NoJob.'.'.$regID;
         $data['perusahaans'] = DBPerusahaan::select('TPERUSAHAAN_PK as id', 'NAMAPERUSAHAAN as name')->get();
         $data['packings'] = DBPacking::select('TPACKING_PK as id', 'KODEPACKING as code', 'NAMAPACKING as name')->get();
+        $data['locations'] = \DB::table('location')->get();
         
         return view('import.lcl.edit-manifest')->with($data);
     }
@@ -258,6 +259,12 @@ class ManifestController extends Controller
         
         if($delete_photo == 'Y'){
             $data['photo_stripping'] = '';
+        }
+        
+        $location = \DB::table('location')->find($data['location_id']);
+        if($location){
+            $data['location_id'] = $location->id;
+            $data['location_name'] = $location->name;
         }
         
         $update = DBManifest::where('TMANIFEST_PK', $id)
@@ -318,6 +325,10 @@ class ManifestController extends Controller
         
         $manifest = DBManifest::find($id);
 
+        if(empty($manifest->tglstripping) || $manifest->tglstripping == '0000-00-00' || $manifest->tglstripping == '01-01-1970'){
+            return json_encode(array('success' => false, 'message' => 'HBL ini belum melakukan stripping!'));
+        }
+        
         $update = DBManifest::where('TMANIFEST_PK', $id)
             ->update(array('VALIDASI'=>'Y'));
         
@@ -339,6 +350,12 @@ class ManifestController extends Controller
     public function approveAll($container_id)
     {
         
+        $container = DBContainer::find($container_id)->first();
+        
+        if(empty($container->TGLSTRIPPING) || $container->TGLSTRIPPING == '0000-00-00' || $container->TGLSTRIPPING == '01-01-1970'){
+            return json_encode(array('success' => false, 'message' => 'Kontainer ini belum melakukan stripping!'));
+        }
+
         $update = DBManifest::where('TCONTAINER_FK', $container_id)
             ->update(array('VALIDASI'=>'Y'));
         

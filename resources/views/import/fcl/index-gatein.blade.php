@@ -120,11 +120,16 @@
                 $('#btn-group-2, #btn-photo').enableButtonGroup();
                 $('#btn-group-5').enableButtonGroup();
                 $('#gatein-form').enableFormGroup();
-                $('#UIDMASUK').val('{{ Auth::getUser()->name }}');
-//            }else{
-//                $('#btn-group-2').disabledButtonGroup();
-//                $('#gatein-form').disabledFormGroup();
-//            }
+//                if(!rowdata.TGLMASUK && !rowdata.JAMMASUK) {
+                    $('#UIDMASUK').val('{{ Auth::getUser()->name }}');
+//                }else{           
+//                    @role('super-admin')
+//
+//                    @else
+//                        $("#TGLMASUK").attr('disabled','disabled');
+//                        $("#JAMMASUK").attr('disabled','disabled');
+//                    @endrole
+//                }
 
         });
         
@@ -321,8 +326,8 @@
                     ->addColumn(array('label'=>'E-Seal','index'=>'ESEALCODE','hidden'=>true))
                     ->addColumn(array('label'=>'Weight','index'=>'WEIGHT','hidden'=>true))
                     ->addColumn(array('label'=>'Photo Extra','index'=>'photo_gatein_extra', 'width'=>70,'hidden'=>true))
-                    ->addColumn(array('label'=>'Segel Merah','index'=>'flag_bc','width'=>80, 'align'=>'center','hidden'=>true))
-                    ->addColumn(array('label'=>'Alasan Segel','index'=>'alasan_segel','width'=>150,'align'=>'center','hidden'=>true))
+                    ->addColumn(array('label'=>'Segel Merah','index'=>'flag_bc','width'=>80, 'align'=>'center'))
+                    ->addColumn(array('label'=>'Alasan Segel','index'=>'alasan_segel','width'=>150,'align'=>'center'))
         //            ->addColumn(array('label'=>'UID','index'=>'UID', 'width'=>150))
                     ->addColumn(array('label'=>'Tgl. Entry','index'=>'TGLENTRY', 'width'=>150,'align'=>'center'))
 //                    ->addColumn(array('label'=>'Updated','index'=>'last_update', 'width'=>150, 'search'=>false))

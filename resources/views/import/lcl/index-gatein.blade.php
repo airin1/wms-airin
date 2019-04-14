@@ -72,10 +72,15 @@
                 $('#btn-group-2,#btn-photo').enableButtonGroup();
                 $('#btn-group-5').enableButtonGroup();
                 $('#gatein-form').enableFormGroup();
+//            if(!rowdata.TGLMASUK && !rowdata.JAMMASUK) {             
                 $('#UIDMASUK').val('{{ Auth::getUser()->name }}');
 //            }else{
-//                $('#btn-group-2').disabledButtonGroup();
-//                $('#gatein-form').disabledFormGroup();
+//                @role('super-admin')
+//
+//                @else
+//                    $("#TGLMASUK").attr('disabled','disabled');
+//                    $("#JAMMASUK").attr('disabled','disabled');
+//                @endrole  
 //            }
 
         });
@@ -255,13 +260,13 @@
                     ->addColumn(array('label'=>'Photo Gate In','index'=>'photo_get_in', 'width'=>70,'hidden'=>true))
                     ->addColumn(array('label'=>'Photo Gate Out','index'=>'photo_get_out', 'width'=>70,'hidden'=>true))
                     ->addColumn(array('label'=>'Photo Extra','index'=>'photo_gatein_extra', 'width'=>70,'hidden'=>true))
-                    ->addColumn(array('label'=>'No. SP2','index'=>'NO_SP2','width'=>120,'hidden'=>true))
-                    ->addColumn(array('label'=>'Tgl. SP2','index'=>'TGL_SP2','hidden'=>true))
-                    ->addColumn(array('label'=>'E-Seal','index'=>'ESEALCODE','hidden'=>true))
+//                    ->addColumn(array('label'=>'No. SP2','index'=>'NO_SP2','width'=>120,'hidden'=>true))
+//                    ->addColumn(array('label'=>'Tgl. SP2','index'=>'TGL_SP2','hidden'=>true))
+                    ->addColumn(array('label'=>'E-Seal','index'=>'ESEALCODE','align'=>'center'))
         //            ->addColumn(array('label'=>'Layout','index'=>'layout','width'=>80,'align'=>'center','hidden'=>true))
-        //            ->addColumn(array('label'=>'UID','index'=>'UID', 'width'=>150))
-                    ->addColumn(array('label'=>'Tgl. Entry','index'=>'TGLENTRY', 'width'=>150))
-                    ->addColumn(array('label'=>'Updated','index'=>'last_update', 'width'=>150, 'search'=>false))
+                    ->addColumn(array('label'=>'UID','index'=>'UID', 'width'=>150,'align'=>'center'))
+                    ->addColumn(array('label'=>'Tgl. Entry','index'=>'TGLENTRY', 'width'=>150,'align'=>'center'))
+                    ->addColumn(array('label'=>'Updated','index'=>'last_update', 'width'=>150, 'search'=>false,'align'=>'center'))
         //            ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>80, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
                     ->renderGrid()
                 }}
@@ -409,7 +414,7 @@
                         </div>
                     </div>
                     
-                    <div class="form-group" style="display: none;">
+<!--                    <div class="form-group">
                         <label class="col-sm-3 control-label">Perkiraan Tgl.Kaluar</label>
                         <div class="col-sm-8">
                             <div class="input-group date">
@@ -419,8 +424,8 @@
                                 <input type="text" id="P_TGLKELUAR" name="P_TGLKELUAR" class="form-control pull-right datepicker" required value="{{ date('Y-m-d',strtotime('+3Days')) }}">
                             </div>
                         </div>
+                    </div>-->
                     </div>
-                </div>
                 <div class="col-md-6"> 
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Petugas</label>
@@ -500,8 +505,6 @@
                                     <input type="file" name="photos[]" class="form-control" multiple="true" required>
                                 </div>
                             </div>
-
-                            
                         </div>
                     </div>
                 </div>

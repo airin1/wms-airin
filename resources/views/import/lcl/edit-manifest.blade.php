@@ -201,7 +201,13 @@
     {
         $('#btn-toolbar, #btn-photo').disabledButtonGroup();
         $('#btn-group-4').enableButtonGroup();
+        @role('pbm')
+            $('#manifest-form').disabledFormGroup();
+            $('#btn-group-3').disabledButtonGroup();
+        @else
         $('#btn-group-3').enableButtonGroup();
+        @endrole
+        
         $('#btn-group-1').enableButtonGroup();
         $('#btn-group-6').enableButtonGroup();
 
@@ -229,9 +235,15 @@
             $('#id').val("");
             
             //Disables all buttons within the toolbar
+            @role('pbm')
             $('#btn-toolbar, #btn-photo').disabledButtonGroup();
+                $('#manifest-form').disabledFormGroup();
+                $('#btn-group-3').disabledButtonGroup();
+            @else
+                $('#btn-toolbar').disabledButtonGroup();
+                $('#btn-group-3').enableButtonGroup();
+            @endrole
             $('#btn-group-4').enableButtonGroup();
-            $('#btn-group-3').enableButtonGroup();
             $('#btn-group-1').enableButtonGroup();
       });
 
@@ -279,6 +291,8 @@
         if(rowdata.alasan_perubahan != ''){
             $("#alasan_perubahan").val(rowdata.alasan_perubahan).trigger("change");
         }
+        
+        $("#location_id").val(rowdata.location_id).trigger("change")
         
         $("#TGL_HBL").datepicker('setDate', rowdata.TGL_HBL);
         $("#TGL_BC11").val(rowdata.TGL_BC11);
@@ -490,6 +504,70 @@
     <!-- /.box-header -->
     <div class="form-horizontal">
         <div class="box-body">            
+            @role('bea-cukai')
+            <div class="row">
+                <div class="col-md-12">         
+                    {{
+                        GridRender::setGridId("lclManifestGrid")
+                        ->enableFilterToolbar()
+                        ->setGridOption('mtype', 'POST')
+                        ->setGridOption('url', URL::to('/lcl/manifest/grid-data?containerid='.$container->TCONTAINER_PK.'&_token='.csrf_token()))
+                        ->setGridOption('rowNum', 10)
+                        ->setGridOption('shrinkToFit', true)
+                        ->setGridOption('sortname','TMANIFEST_PK')
+                        ->setGridOption('rownumbers', true)
+                        ->setGridOption('height', '295')
+                        ->setGridOption('rowList',array(10,20,50))
+                        ->setGridOption('useColSpanStyle', true)
+                        ->setNavigatorOptions('navigator', array('viewtext'=>'view'))
+                        ->setNavigatorOptions('view',array('closeOnEscape'=>false))
+                        ->setFilterToolbarOptions(array('autosearch'=>true))
+                        ->setGridEvent('gridComplete', 'gridCompleteEvent')
+                        ->setGridEvent('onSelectRow', 'onSelectRowEvent')
+                        ->addColumn(array('key'=>true,'index'=>'TMANIFEST_PK','hidden'=>true))
+                        ->addColumn(array('label'=>'Validasi','index'=>'VALIDASI','width'=>80, 'align'=>'center'))
+                        ->addColumn(array('label'=>'No.HBL','index'=>'NOHBL', 'width'=>160, 'align'=>'center'))
+                        ->addColumn(array('label'=>'Tgl.HBL','index'=>'TGL_HBL', 'width'=>160, 'align'=>'center'))
+                        ->addColumn(array('label'=>'No. Tally','index'=>'NOTALLY','width'=>160))
+                        ->addColumn(array('label'=>'Shipper','index'=>'SHIPPER','width'=>230))
+                        ->addColumn(array('label'=>'Consignee','index'=>'CONSIGNEE','width'=>250))
+                        ->addColumn(array('label'=>'Notify Party','index'=>'NOTIFYPARTY','width'=>160))
+                        ->addColumn(array('label'=>'Qty','index'=>'QUANTITY', 'width'=>80,'align'=>'center'))
+                        ->addColumn(array('label'=>'Packing','index'=>'NAMAPACKING', 'width'=>120))
+                        ->addColumn(array('label'=>'Kode Kemas','index'=>'KODE_KEMAS', 'width'=>100,'align'=>'center'))
+                        ->addColumn(array('label'=>'UID','index'=>'UID', 'width'=>150,'hidden'=>true))
+                        ->addColumn(array('index'=>'TSHIPPER_FK', 'width'=>150,'hidden'=>true))
+                        ->addColumn(array('index'=>'TCONSIGNEE_FK', 'width'=>150,'hidden'=>true))
+                        ->addColumn(array('index'=>'TNOTIFYPARTY_FK', 'width'=>150,'hidden'=>true))
+                        ->addColumn(array('index'=>'TPACKING_FK', 'width'=>150,'hidden'=>true))
+                        ->addColumn(array('label'=>'Marking','index'=>'MARKING', 'width'=>150,'hidden'=>true)) 
+                        ->addColumn(array('label'=>'Desc of Goods','index'=>'DESCOFGOODS', 'width'=>150,'hidden'=>false))              
+                        ->addColumn(array('label'=>'Weight','index'=>'WEIGHT', 'width'=>120,'hidden'=>false, 'align'=>'right'))               
+                        ->addColumn(array('label'=>'Meas','index'=>'MEAS', 'width'=>120,'hidden'=>false, 'align'=>'right'))
+                        ->addColumn(array('label'=>'No.BC11','index'=>'NO_BC11', 'width'=>150,'hidden'=>true))
+                        ->addColumn(array('label'=>'Tgl.BC11','index'=>'TGL_BC11', 'width'=>150,'hidden'=>true))
+                        ->addColumn(array('label'=>'No.POS BC11','index'=>'NO_POS_BC11', 'width'=>150, 'align'=>'center'))
+                        ->addColumn(array('label'=>'No.PLP','index'=>'NO_PLP', 'width'=>150,'hidden'=>true))                
+                        ->addColumn(array('label'=>'Tgl.PLP','index'=>'TGL_PLP', 'width'=>150,'hidden'=>true))                
+                        ->addColumn(array('label'=>'Surcharge (DG)','index'=>'DG_SURCHARGE', 'width'=>150,'hidden'=>true))
+                        ->addColumn(array('label'=>'Surcharge (Weight)','index'=>'WEIGHT_SURCHARGE', 'width'=>150,'hidden'=>true))      
+                        ->addColumn(array('label'=>'Segel Merah','index'=>'flag_bc','width'=>100, 'align'=>'center'))
+                        ->addColumn(array('label'=>'Alasan Segel','index'=>'alasan_segel','width'=>150,'align'=>'center'))
+                        ->addColumn(array('label'=>'Perubahan HBL','index'=>'perubahan_hbl','width'=>100, 'align'=>'center'))
+                        ->addColumn(array('label'=>'Alasan Perubahan','index'=>'alasan_perubahan','width'=>150,'align'=>'center'))
+                        ->addColumn(array('index'=>'location_id', 'width'=>150,'hidden'=>true))
+                        ->addColumn(array('label'=>'Location','index'=>'location_name','width'=>200, 'align'=>'center'))
+                        ->addColumn(array('label'=>'Tgl. Entry','index'=>'tglentry', 'width'=>120))
+                        ->addColumn(array('label'=>'Jam. Entry','index'=>'jamentry', 'width'=>70,'hidden'=>true))
+                        ->addColumn(array('label'=>'Tgl. Stripping','index'=>'tglstripping', 'width'=>70,'hidden'=>true))
+                        ->addColumn(array('label'=>'Jam. Stripping','index'=>'jamstripping', 'width'=>70,'hidden'=>true))
+                        ->addColumn(array('label'=>'Photo Stripping','index'=>'photo_stripping', 'width'=>70,'hidden'=>true))
+                        ->addColumn(array('label'=>'Updated','index'=>'last_update', 'width'=>150, 'search'=>false,'hidden'=>true))
+                        ->renderGrid()
+                    }}
+                </div>
+            </div>
+            @else
             <div class="row" style="margin-bottom: 30px;">
                 <div class="col-md-12">         
                     {{
@@ -538,7 +616,12 @@
                         ->addColumn(array('label'=>'Tgl.PLP','index'=>'TGL_PLP', 'width'=>150,'hidden'=>true))                
                         ->addColumn(array('label'=>'Surcharge (DG)','index'=>'DG_SURCHARGE', 'width'=>150,'hidden'=>true))
                         ->addColumn(array('label'=>'Surcharge (Weight)','index'=>'WEIGHT_SURCHARGE', 'width'=>150,'hidden'=>true))      
-                        ->addColumn(array('label'=>'Flag','index'=>'flag_bc','width'=>80, 'align'=>'center'))
+                        ->addColumn(array('label'=>'Segel Merah','index'=>'flag_bc','width'=>100, 'align'=>'center'))
+                        ->addColumn(array('label'=>'Alasan Segel','index'=>'alasan_segel','width'=>150,'align'=>'center'))
+                        ->addColumn(array('label'=>'Perubahan HBL','index'=>'perubahan_hbl','width'=>100, 'align'=>'center'))
+                        ->addColumn(array('label'=>'Alasan Perubahan','index'=>'alasan_perubahan','width'=>150,'align'=>'center'))
+                        ->addColumn(array('index'=>'location_id', 'width'=>150,'hidden'=>true))
+                        ->addColumn(array('label'=>'Location','index'=>'location_name','width'=>200, 'align'=>'center'))
                         ->addColumn(array('label'=>'Tgl. Entry','index'=>'tglentry', 'width'=>120))
                         ->addColumn(array('label'=>'Jam. Entry','index'=>'jamentry', 'width'=>70,'hidden'=>true))
                         ->addColumn(array('label'=>'Tgl. Stripping','index'=>'tglstripping', 'width'=>70,'hidden'=>true))
@@ -548,6 +631,19 @@
                         ->renderGrid()
                     }}
                     
+                    @role('pbm')
+                    <div id="btn-toolbar" class="section-header btn-toolbar" role="toolbar" style="margin: 10px 0;">
+                        <div id="btn-group-1" class="btn-group">
+                            <button class="btn btn-default" id="btn-refresh"><i class="fa fa-refresh"></i> Refresh</button>
+                        </div>
+                        <div id="btn-group-2" class="btn-group">
+                            <button class="btn btn-default" id="btn-edit"><i class="fa fa-edit"></i> Edit</button>
+                        </div>
+                        <div id="btn-group-3" class="btn-group toolbar-block">
+                            <button class="btn btn-default" id="btn-save"><i class="fa fa-save"></i> Save</button>
+                        </div>
+                    </div>
+                    @else
                     <div id="btn-toolbar" class="section-header btn-toolbar" role="toolbar" style="margin: 10px 0;">
                         <div id="btn-group-1" class="btn-group">
                             <button class="btn btn-default" id="btn-refresh"><i class="fa fa-refresh"></i> New/Refresh</button>
@@ -570,6 +666,7 @@
                             <button class="btn btn-default" id="btn-approve-all"><i class="fa fa-check"></i> Approve All</button>
                         </div>
                     </div>
+                    @endrole
                 </div>
             </div>
             
@@ -629,6 +726,17 @@
                           <div class="col-sm-8">
                               <textarea class="form-control" id="MARKING"  name="MARKING" rows="3"></textarea>
                           </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Location</label>
+                            <div class="col-sm-8">
+                                <select class="form-control select2" id="location_id" name="location_id" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
+                                    <option value="">Choose Location</option>
+                                    @foreach($locations as $location)
+                                        <option value="{{ $location->id }}">{{ $location->name.' ('.$location->type.')' }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group" id="btn-photo">
                           <label class="col-sm-3 control-label">Photo</label>
@@ -746,6 +854,7 @@
                     </div>
                 </div>
             </form>
+            @endrole
         </div>
     </div>
 </div>
