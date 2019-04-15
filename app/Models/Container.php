@@ -71,15 +71,15 @@ class Container extends Model
 
 }
 
-class Containercy extends Model
-{
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
-    protected $table = 'tcontainercy';
-    protected $primaryKey = 'TCONTAINER_PK';
-    public $timestamps = false;
-
-}
+//class Containercy extends Model
+//{
+//    /**
+//     * The database table used by the model.
+//     *
+//     * @var string
+//     */
+//    protected $table = 'tcontainercy';
+//    protected $primaryKey = 'TCONTAINER_PK';
+//    public $timestamps = false;
+//
+//}
