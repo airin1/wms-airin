@@ -31,6 +31,12 @@
             }else{
                 lt = 'Sudah Release';
             }
+            if(rowdata.flag_bc == 'Y') {
+                $("#" + cl).find("td").css("background-color", "#FF0000");
+            }
+            if(rowdata.status_bc == 'HOLD') {
+                $("#" + cl).find("td").css("background-color", "#ffe500");
+            }  
             
             if(rowdata.photo_get_in != '' || rowdata.photo_get_out != '' || rowdata.photo_gatein_extra != ''){
                 vi = '<button style="margin:5px;" class="btn btn-default btn-xs approve-manifest-btn" data-id="'+cl+'" onclick="viewPhoto('+cl+')"><i class="fa fa-photo"></i> View Photo</button>';
@@ -61,9 +67,11 @@
             {
                 var html_gate = '';
                 if(json.data.photo_get_in){
+                    html_gate += '<img src="{{url("uploads/photos/autogate")}}/'+json.data.photo_get_in.replace("C2", "C1")+'" style="width: 200px;padding:5px;" />';
                     html_gate += '<img src="{{url("uploads/photos/autogate")}}/'+json.data.photo_get_in+'" style="width: 200px;padding:5px;" />';
                 }
                 if(json.data.photo_get_out){
+                    html_gate += '<img src="{{url("uploads/photos/autogate")}}/'+json.data.photo_get_out.replace("C2", "C1")+'" style="width: 200px;padding:5px;" />';
                     html_gate += '<img src="{{url("uploads/photos/autogate")}}/'+json.data.photo_get_out+'" style="width: 200px;padding:5px;" />';
                 }
                 $('#gateinout-photo').html(html_gate);
@@ -485,7 +493,26 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
+<div id="view-photo-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Photo</h4>
+            </div>
+            <div class="modal-body"> 
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>AUTOGATE</h3>
+                        <div id="gateinout-photo"></div>
+                        <h3>CONTAINER</h3>
+                        <div id="container-photo"></div>
+                    </div>
+                </div>
+            </div>    
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 @endsection
 
 @section('custom_css')
