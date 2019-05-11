@@ -249,277 +249,350 @@
                 </ul>
             </li>
         @else
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-files-o"></i>
-            <span>Master Data</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="{{ route('consolidator-index') }}">Consolidator</a></li>
-            <li><a href="{{ route('depomty-index') }}">Depo MTY</a></li>
-            <li><a href="{{ route('lokasisandar-index') }}">Lokasi Sandar</a></li>
-            <li><a href="{{ route('negara-index') }}">Negara</a></li>
-            <li><a href="{{ route('packing-index') }}">Packing</a></li>
-            <li><a href="{{ route('pelabuhan-index') }}">Pelabuhan</a></li>
-            <li><a href="{{ route('perusahaan-index') }}">Perusahaan</a></li>
-            <li><a href="{{ route('tpp-index') }}">TPP</a></li>
-            <li><a href="{{ route('shippingline-index') }}">Shipping Line</a></li>
-            <li><a href="{{ route('eseal-index') }}">E-Seal</a></li>
-            <li><a href="{{ route('vessel-index') }}">Vessel</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-            <a href="{{route('payment-bni-index')}}">
-                <i class="fa fa-money"></i> BNI E-Collection
-            </a>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-th"></i> <span>Import LCL</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a tabindex="-1" href="{{ route('lcl-register-index') }}">Register</a></li>
-            <li><a tabindex="-1" href="{{ route('lcl-manifest-index') }}">Manifest</a></li>
-            <li><a tabindex="-1" href="{{ route('lcl-dispatche-index') }}">Dispatche E-Seal</a></li>
-            
-            <li class="treeview">
-              <a href="#"><i class="fa fa-circle-o"></i> Realisasi
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="{{ route('lcl-realisasi-gatein-index') }}">Masuk / Gate In</a></li>
-                <li><a href="{{ route('lcl-realisasi-stripping-index') }}">Stripping</a></li>
-                <li><a href="{{ route('lcl-realisasi-buangmty-index') }}">Buang MTY</a></li>
-              </ul>
-            </li>
-            
-            <li class="treeview">
-              <a href="#"><i class="fa fa-circle-o"></i> Delivery
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="{{ route('lcl-delivery-behandle-index') }}">Behandle</a></li>
-                <li><a href="{{ route('lcl-delivery-release-index') }}">Release / Gate Out</a></li>
-              </ul>
-            </li>
-            
-            <li class="treeview">
-              <a href="#"><i class="fa fa-circle-o"></i> Report
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="{{ route('lcl-report-container') }}">Report Container</a></li>
-                <li><a href="{{ route('lcl-report-inout') }}">Report Stock</a></li>    
-                <li><a href="{{ route('lcl-report-longstay') }}">Inventory</a></li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-th"></i> <span>Import FCL</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a tabindex="-1" href="{{ route('fcl-register-index') }}">Register</a></li>
-            <li><a tabindex="-1" href="{{ route('fcl-dispatche-index') }}">Dispatche E-Seal</a></li>
-            
-            <li class="treeview">
-              <a href="#"><i class="fa fa-circle-o"></i> Realisasi
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="{{ route('fcl-realisasi-gatein-index') }}">Masuk / Gate In</a></li>
-              </ul>
-            </li>
-            
-            <li class="treeview">
-              <a href="#"><i class="fa fa-circle-o"></i> Delivery
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="{{ route('fcl-delivery-behandle-index') }}">Behandle</a></li>
-                <li><a href="{{ route('fcl-delivery-release-index') }}">Release / Gate Out</a></li>
-              </ul>
-            </li>
-            
-            <li class="treeview">
-              <a href="#"><i class="fa fa-circle-o"></i> Report
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="{{ route('fcl-report-rekap') }}">Report Container</a></li>
-                <li><a href="{{ route('fcl-report-longstay') }}">Inventory</a></li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-pie-chart"></i>
-            <span>TPS Online</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li class="treeview">
-              <a href="#"><i class="fa fa-circle-o"></i> Data
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="{{ route('gudang-index') }}">Gudang</a></li>
-                <li><a href="{{ route('pelabuhandn-index') }}">Pelabuhan DN</a></li>
-                <li><a href="{{ route('pelabuhanln-index') }}">Pelabuhan LN</a></li>
-              </ul>
-            </li>
-            <li class="treeview">
-              <a href="#"><i class="fa fa-circle-o"></i> Penerimaan Data
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                <li><a href="{{ route('tps-responPlp-index') }}">Data Respon PLP</a></li>
-                <li><a href="{{ route('tps-responBatalPlp-index') }}">Data Respon Batal PLP</a></li>
-                <li><a href="{{ route('tps-obLcl-index') }}">Data OB LCL</a></li>
-                <li><a href="{{ route('tps-obFcl-index') }}">Data OB FCL</a></li>
-                <li><a href="{{ route('tps-spjm-index') }}">Data SPJM</a></li>
-                <!--<li><a href="{{ route('tps-dokManual-index') }}">Data Dok Manual</a></li>-->
-                <li><a href="{{ route('tps-sppbPib-index') }}">Data SPPB</a></li>
-                <li><a href="{{ route('tps-sppbBc-index') }}">Data SPPB BC23</a></li>
-                <li><a href="{{ route('tps-infoNomorBc-index') }}">Info Nomor BC11</a></li>
-              </ul>
-            </li>
-            <li class="treeview">
-              <a href="#"><i class="fa fa-circle-o"></i> Pengiriman Data
-                <span class="pull-right-container">
-                  <i class="fa fa-angle-left pull-right"></i>
-                </span>
-              </a>
-              <ul class="treeview-menu">
-                <li class="treeview">
-                    <a href="#"><i class="fa fa-circle-o"></i> COARI (Cargo Masuk)
-                      <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                      </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="{{ route('tps-coariCont-index') }}">Coari Cont</a></li>
-                        <li><a href="{{ route('tps-coariKms-index') }}">Coari KMS</a></li>
-                    </ul>
-                </li>
-                <li class="treeview">
-                    <a href="#"><i class="fa fa-circle-o"></i> CODECO (Cargo Keluar)
-                      <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                      </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="{{ route('tps-codecoContFcl-index') }}">Codeco Cont FCL</a></li>
-                        <li><a href="{{ route('tps-codecoContBuangMty-index') }}">Codeco Cont Buang MTY</a></li>
-                        <li><a href="{{ route('tps-codecoKms-index') }}">Codeco KMS</a></li>
-                    </ul>
-                </li>
-                <li><a href="{{ route('tps-realisasiBongkarMuat-index') }}">Realisasi Bongkar Muat</a></li>
-                <li><a href="{{ route('tps-laporanYor-index') }}">Laporan YOR</a></li>
-              </ul>
-            </li>
-            
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-upload"></i>
-            <span>NPCT1</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="{{ route('yor-index') }}">Laporan YOR</a></li>
-            <li><a href="{{ route('movement-container-index') }}">Data Container</a></li>
-            <li><a href="{{ route('movement-index') }}">Laporan Movement</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-            <a href="#">
-              <i class="fa fa-money"></i>
-              <span>Invoice</span>
-              <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-            </a>
-            <ul class="treeview-menu">
-                <li class="treeview">
-                    <a href="#"><i class="fa fa-circle-o"></i> FCL
-                      <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                      </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="{{route('invoice-tarif-nct-index')}}">Data Tarif NCT1</a></li>
-                        <li><a href="{{route('invoice-release-nct-index')}}">Data Release/Gate Out</a></li>
-                        <li><a href="{{route('invoice-nct-index')}}">Data Invoice</a></li>
-                    </ul>
-                </li>
-                <li class="treeview">
-                    <a href="#"><i class="fa fa-circle-o"></i> LCL
-                      <span class="pull-right-container">
-                        <i class="fa fa-angle-left pull-right"></i>
-                      </span>
-                    </a>
-                    <ul class="treeview-menu">
-                        <li><a href="{{route('invoice-tarif-index')}}">Data Tarif</a></li>
-                        <li><a href="{{route('invoice-release-index')}}">Data Release/Gate Out</a></li>
-                        <li><a href="{{route('invoice-index')}}">Data Invoice</a></li>
-                    </ul>
-                </li>
-                
-            </ul>
-        </li>
         
-        <li class="treeview">
-            <a href="{{route('barcode-index')}}">
-                <i class="fa fa-barcode"></i> QR Code (Autogate)
-            </a>
-        </li>
-        <li class="treeview">
-            <a href="#">
-              <i class="fa fa-users"></i>
-              <span>Users</span>
-              <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-            </a>
-            <ul class="treeview-menu">
-                <li><a href="{{route('user-index')}}">User Lists</a></li>
-                <li><a href="{{route('role-index')}}">Roles</a></li>
-                <li><a href="{{route('permission-index')}}">Permissions</a></li>
-            </ul>
-        </li>
+        @role('upload-fcl')
+            <li class="treeview">
+                <a href="#">
+                  <i class="fa fa-th"></i> <span>Import FCL</span>
+                  <span class="pull-right-container">
+                    <i class="fa fa-angle-left pull-right"></i>
+                  </span>
+                </a>
+                <ul class="treeview-menu">
+                  <li class="treeview">
+                    <a href="#"><i class="fa fa-circle-o"></i> Realisasi
+                      <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                      </span>
+                    </a>
+                    <ul class="treeview-menu">
+                      <li><a href="{{ route('fcl-realisasi-gatein-index') }}">Masuk / Gate In</a></li>
+                    </ul>
+                  </li>
+
+                  <li class="treeview">
+                    <a href="#"><i class="fa fa-circle-o"></i> Delivery
+                      <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                      </span>
+                    </a>
+                    <ul class="treeview-menu">
+                      <li><a href="{{ route('fcl-delivery-release-index') }}">Release / Gate Out</a></li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+        @else
+            @role('upload-lcl')
+                <li class="treeview">
+                    <a href="#">
+                      <i class="fa fa-th"></i> <span>Import LCL</span>
+                      <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                      </span>
+                    </a>
+                    <ul class="treeview-menu">
+                      <li><a tabindex="-1" href="{{ route('lcl-manifest-index') }}">Manifest</a></li>
+
+                      <li class="treeview">
+                        <a href="#"><i class="fa fa-circle-o"></i> Realisasi
+                          <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                          </span>
+                        </a>
+                        <ul class="treeview-menu">
+                          <li><a href="{{ route('lcl-realisasi-gatein-index') }}">Masuk / Gate In</a></li>
+                          <li><a href="{{ route('lcl-realisasi-stripping-index') }}">Stripping</a></li>
+                        </ul>
+                      </li>
+
+                      <li class="treeview">
+                        <a href="#"><i class="fa fa-circle-o"></i> Delivery
+                          <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                          </span>
+                        </a>
+                        <ul class="treeview-menu">
+                          <li><a href="{{ route('lcl-delivery-release-index') }}">Release / Gate Out</a></li>
+                        </ul>
+                      </li>
+
+                    </ul>
+                  </li>
+            @else
+                <li class="treeview">
+                    <a href="#">
+                      <i class="fa fa-files-o"></i>
+                      <span>Master Data</span>
+                      <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                      </span>
+                    </a>
+                    <ul class="treeview-menu">
+                      <li><a href="{{ route('consolidator-index') }}">Consolidator</a></li>
+                      <li><a href="{{ route('depomty-index') }}">Depo MTY</a></li>
+                      <li><a href="{{ route('lokasisandar-index') }}">Lokasi Sandar</a></li>
+                      <li><a href="{{ route('negara-index') }}">Negara</a></li>
+                      <li><a href="{{ route('packing-index') }}">Packing</a></li>
+                      <li><a href="{{ route('pelabuhan-index') }}">Pelabuhan</a></li>
+                      <li><a href="{{ route('perusahaan-index') }}">Perusahaan</a></li>
+                      <li><a href="{{ route('tpp-index') }}">TPP</a></li>
+                      <li><a href="{{ route('shippingline-index') }}">Shipping Line</a></li>
+                      <li><a href="{{ route('eseal-index') }}">E-Seal</a></li>
+                      <li><a href="{{ route('vessel-index') }}">Vessel</a></li>
+                    </ul>
+                  </li>
+                  <li class="treeview">
+                      <a href="{{route('payment-bni-index')}}">
+                          <i class="fa fa-money"></i> BNI E-Collection
+                      </a>
+                  </li>
+                  <li class="treeview">
+                    <a href="#">
+                      <i class="fa fa-th"></i> <span>Import LCL</span>
+                      <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                      </span>
+                    </a>
+                    <ul class="treeview-menu">
+                      <li><a tabindex="-1" href="{{ route('lcl-register-index') }}">Register</a></li>
+                      <li><a tabindex="-1" href="{{ route('lcl-manifest-index') }}">Manifest</a></li>
+                      <li><a tabindex="-1" href="{{ route('lcl-dispatche-index') }}">Dispatche E-Seal</a></li>
+
+                      <li class="treeview">
+                        <a href="#"><i class="fa fa-circle-o"></i> Realisasi
+                          <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                          </span>
+                        </a>
+                        <ul class="treeview-menu">
+                          <li><a href="{{ route('lcl-realisasi-gatein-index') }}">Masuk / Gate In</a></li>
+                          <li><a href="{{ route('lcl-realisasi-stripping-index') }}">Stripping</a></li>
+                          <li><a href="{{ route('lcl-realisasi-buangmty-index') }}">Buang MTY</a></li>
+                        </ul>
+                      </li>
+
+                      <li class="treeview">
+                        <a href="#"><i class="fa fa-circle-o"></i> Delivery
+                          <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                          </span>
+                        </a>
+                        <ul class="treeview-menu">
+                          <li><a href="{{ route('lcl-delivery-behandle-index') }}">Behandle</a></li>
+                          <li><a href="{{ route('lcl-delivery-release-index') }}">Release / Gate Out</a></li>
+                        </ul>
+                      </li>
+
+                      <li class="treeview">
+                        <a href="#"><i class="fa fa-circle-o"></i> Report
+                          <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                          </span>
+                        </a>
+                        <ul class="treeview-menu">
+                          <li><a href="{{ route('lcl-report-container') }}">Report Container</a></li>
+                          <li><a href="{{ route('lcl-report-inout') }}">Report Stock</a></li>    
+                          <li><a href="{{ route('lcl-report-longstay') }}">Inventory</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="treeview">
+                    <a href="#">
+                      <i class="fa fa-th"></i> <span>Import FCL</span>
+                      <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                      </span>
+                    </a>
+                    <ul class="treeview-menu">
+                      <li><a tabindex="-1" href="{{ route('fcl-register-index') }}">Register</a></li>
+                      <li><a tabindex="-1" href="{{ route('fcl-dispatche-index') }}">Dispatche E-Seal</a></li>
+
+                      <li class="treeview">
+                        <a href="#"><i class="fa fa-circle-o"></i> Realisasi
+                          <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                          </span>
+                        </a>
+                        <ul class="treeview-menu">
+                          <li><a href="{{ route('fcl-realisasi-gatein-index') }}">Masuk / Gate In</a></li>
+                        </ul>
+                      </li>
+
+                      <li class="treeview">
+                        <a href="#"><i class="fa fa-circle-o"></i> Delivery
+                          <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                          </span>
+                        </a>
+                        <ul class="treeview-menu">
+                          <li><a href="{{ route('fcl-delivery-behandle-index') }}">Behandle</a></li>
+                          <li><a href="{{ route('fcl-delivery-release-index') }}">Release / Gate Out</a></li>
+                        </ul>
+                      </li>
+
+                      <li class="treeview">
+                        <a href="#"><i class="fa fa-circle-o"></i> Report
+                          <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                          </span>
+                        </a>
+                        <ul class="treeview-menu">
+                          <li><a href="{{ route('fcl-report-rekap') }}">Report Container</a></li>
+                          <li><a href="{{ route('fcl-report-longstay') }}">Inventory</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="treeview">
+                    <a href="#">
+                      <i class="fa fa-pie-chart"></i>
+                      <span>TPS Online</span>
+                      <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                      </span>
+                    </a>
+                    <ul class="treeview-menu">
+                      <li class="treeview">
+                        <a href="#"><i class="fa fa-circle-o"></i> Data
+                          <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                          </span>
+                        </a>
+                        <ul class="treeview-menu">
+                          <li><a href="{{ route('gudang-index') }}">Gudang</a></li>
+                          <li><a href="{{ route('pelabuhandn-index') }}">Pelabuhan DN</a></li>
+                          <li><a href="{{ route('pelabuhanln-index') }}">Pelabuhan LN</a></li>
+                        </ul>
+                      </li>
+                      <li class="treeview">
+                        <a href="#"><i class="fa fa-circle-o"></i> Penerimaan Data
+                          <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                          </span>
+                        </a>
+                        <ul class="treeview-menu">
+                          <li><a href="{{ route('tps-responPlp-index') }}">Data Respon PLP</a></li>
+                          <li><a href="{{ route('tps-responBatalPlp-index') }}">Data Respon Batal PLP</a></li>
+                          <li><a href="{{ route('tps-obLcl-index') }}">Data OB LCL</a></li>
+                          <li><a href="{{ route('tps-obFcl-index') }}">Data OB FCL</a></li>
+                          <li><a href="{{ route('tps-spjm-index') }}">Data SPJM</a></li>
+                          <!--<li><a href="{{ route('tps-dokManual-index') }}">Data Dok Manual</a></li>-->
+                          <li><a href="{{ route('tps-sppbPib-index') }}">Data SPPB</a></li>
+                          <li><a href="{{ route('tps-sppbBc-index') }}">Data SPPB BC23</a></li>
+                          <li><a href="{{ route('tps-infoNomorBc-index') }}">Info Nomor BC11</a></li>
+                        </ul>
+                      </li>
+                      <li class="treeview">
+                        <a href="#"><i class="fa fa-circle-o"></i> Pengiriman Data
+                          <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                          </span>
+                        </a>
+                        <ul class="treeview-menu">
+                          <li class="treeview">
+                              <a href="#"><i class="fa fa-circle-o"></i> COARI (Cargo Masuk)
+                                <span class="pull-right-container">
+                                  <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                              </a>
+                              <ul class="treeview-menu">
+                                  <li><a href="{{ route('tps-coariCont-index') }}">Coari Cont</a></li>
+                                  <li><a href="{{ route('tps-coariKms-index') }}">Coari KMS</a></li>
+                              </ul>
+                          </li>
+                          <li class="treeview">
+                              <a href="#"><i class="fa fa-circle-o"></i> CODECO (Cargo Keluar)
+                                <span class="pull-right-container">
+                                  <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                              </a>
+                              <ul class="treeview-menu">
+                                  <li><a href="{{ route('tps-codecoContFcl-index') }}">Codeco Cont FCL</a></li>
+                                  <li><a href="{{ route('tps-codecoContBuangMty-index') }}">Codeco Cont Buang MTY</a></li>
+                                  <li><a href="{{ route('tps-codecoKms-index') }}">Codeco KMS</a></li>
+                              </ul>
+                          </li>
+                          <li><a href="{{ route('tps-realisasiBongkarMuat-index') }}">Realisasi Bongkar Muat</a></li>
+                          <li><a href="{{ route('tps-laporanYor-index') }}">Laporan YOR</a></li>
+                        </ul>
+                      </li>
+
+                    </ul>
+                  </li>
+                  <li class="treeview">
+                    <a href="#">
+                      <i class="fa fa-upload"></i>
+                      <span>NPCT1</span>
+                      <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                      </span>
+                    </a>
+                    <ul class="treeview-menu">
+                      <li><a href="{{ route('yor-index') }}">Laporan YOR</a></li>
+                      <li><a href="{{ route('movement-container-index') }}">Data Container</a></li>
+                      <li><a href="{{ route('movement-index') }}">Laporan Movement</a></li>
+                    </ul>
+                  </li>
+                  <li class="treeview">
+                      <a href="#">
+                        <i class="fa fa-money"></i>
+                        <span>Invoice</span>
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                      </a>
+                      <ul class="treeview-menu">
+                          <li class="treeview">
+                              <a href="#"><i class="fa fa-circle-o"></i> FCL
+                                <span class="pull-right-container">
+                                  <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                              </a>
+                              <ul class="treeview-menu">
+                                  <li><a href="{{route('invoice-tarif-nct-index')}}">Data Tarif NCT1</a></li>
+                                  <li><a href="{{route('invoice-release-nct-index')}}">Data Release/Gate Out</a></li>
+                                  <li><a href="{{route('invoice-nct-index')}}">Data Invoice</a></li>
+                              </ul>
+                          </li>
+                          <li class="treeview">
+                              <a href="#"><i class="fa fa-circle-o"></i> LCL
+                                <span class="pull-right-container">
+                                  <i class="fa fa-angle-left pull-right"></i>
+                                </span>
+                              </a>
+                              <ul class="treeview-menu">
+                                  <li><a href="{{route('invoice-tarif-index')}}">Data Tarif</a></li>
+                                  <li><a href="{{route('invoice-release-index')}}">Data Release/Gate Out</a></li>
+                                  <li><a href="{{route('invoice-index')}}">Data Invoice</a></li>
+                              </ul>
+                          </li>
+
+                      </ul>
+                  </li>
+
+                  <li class="treeview">
+                      <a href="{{route('barcode-index')}}">
+                          <i class="fa fa-barcode"></i> QR Code (Autogate)
+                      </a>
+                  </li>
+                  <li class="treeview">
+                      <a href="#">
+                        <i class="fa fa-users"></i>
+                        <span>Users</span>
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                      </a>
+                      <ul class="treeview-menu">
+                          <li><a href="{{route('user-index')}}">User Lists</a></li>
+                          <li><a href="{{route('role-index')}}">Roles</a></li>
+                          <li><a href="{{route('permission-index')}}">Permissions</a></li>
+                      </ul>
+                  </li>
+            @endrole
+        @endrole
     </ul>
     @endrole  
     </section>
