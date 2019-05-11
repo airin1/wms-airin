@@ -1517,7 +1517,15 @@ class FclController extends Controller
                         } else {
                             
                             // GERAKAN
-                            if($request->behandle) {
+                            // Check Behandle
+                            $count_behandle = 0;
+                            foreach ($container20 as $c_20):
+                                if($c_20->BEHANDLE == Y){
+                                    $count_behandle++;
+                                }
+                            endforeach;
+//                            if($request->behandle) {
+                            if($count_behandle > 0){
                                 $jenis = array('Lift On/Off' => $t20->lift_off,'Paket PLP' => $t20->paket_plp,'Behandle' => $t20->behandle);
                             }else{
                                 $jenis = array('Lift On/Off' => $t20->lift_off,'Paket PLP' => $t20->paket_plp);
@@ -1531,6 +1539,8 @@ class FclController extends Controller
                                 $invoice_gerakan->size = 20;
                                 if($key == 'Lift On/Off'){
                                     $invoice_gerakan->qty = count($container20)*2;
+                                }elseif($key == 'Behandle'){
+                                    $invoice_gerakan->qty = $count_behandle;
                                 }else{
                                     $invoice_gerakan->qty = count($container20);
                                 } 
@@ -1682,7 +1692,15 @@ class FclController extends Controller
                             
                         } else {
                             // GERAKAN
-                            if($request->behandle) {
+//                          // Check Behandle
+                            $count_behandle = 0;
+                            foreach ($container40 as $c_40):
+                                if($c_40->BEHANDLE == Y){
+                                    $count_behandle++;
+                                }
+                            endforeach;
+//                            if($request->behandle) {
+                            if($count_behandle > 0){
                                 $jenis = array('Lift On/Off' => $t40->lift_off,'Paket PLP' => $t40->paket_plp,'Behandle' => $t40->behandle);
                             }else{
                                 $jenis = array('Lift On/Off' => $t40->lift_off,'Paket PLP' => $t40->paket_plp);
@@ -1696,6 +1714,8 @@ class FclController extends Controller
                                 $invoice_gerakan->size = 40;
                                 if($key == 'Lift On/Off'){
                                     $invoice_gerakan->qty = count($container40)*2;
+                                }elseif($key == 'Behandle'){
+                                    $invoice_gerakan->qty = $count_behandle;
                                 }else{
                                     $invoice_gerakan->qty = count($container40);
                                 }
@@ -1847,7 +1867,14 @@ class FclController extends Controller
                             
                         } else {
                             // GERAKAN
-                            if($request->behandle) {
+                            $count_behandle = 0;
+                            foreach ($container45 as $c_45):
+                                if($c_45->BEHANDLE == Y){
+                                    $count_behandle++;
+                                }
+                            endforeach;
+//                            if($request->behandle) {
+                            if($count_behandle > 0){
                                 $jenis = array('Lift On/Off' => $t45->lift_off,'Paket PLP' => $t45->paket_plp,'Behandle' => $t45->behandle);
                             }else{
                                 $jenis = array('Lift On/Off' => $t45->lift_off,'Paket PLP' => $t45->paket_plp);
@@ -1861,6 +1888,8 @@ class FclController extends Controller
                                 $invoice_gerakan->size = 45;
                                 if($key == 'Lift On/Off'){
                                     $invoice_gerakan->qty = count($container45)*2;
+                                }elseif($key == 'Behandle'){
+                                    $invoice_gerakan->qty = $count_behandle;
                                 }else{
                                     $invoice_gerakan->qty = count($container45);
                                 }
