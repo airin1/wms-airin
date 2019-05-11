@@ -205,8 +205,14 @@
             $('#manifest-form').disabledFormGroup();
             $('#btn-group-3').disabledButtonGroup();
         @else
-        $('#btn-group-3').enableButtonGroup();
+            @role('upload-lcl')
+                $('#manifest-form').disabledFormGroup();
+                $('#btn-group-3').disabledButtonGroup();
+            @else
+                $('#btn-group-3').enableButtonGroup();
+            @endrole
         @endrole
+        
         
         $('#btn-group-1').enableButtonGroup();
         $('#btn-group-6').enableButtonGroup();
@@ -236,7 +242,7 @@
             
             //Disables all buttons within the toolbar
             @role('pbm')
-            $('#btn-toolbar, #btn-photo').disabledButtonGroup();
+                $('#btn-toolbar, #btn-photo').disabledButtonGroup();
                 $('#manifest-form').disabledFormGroup();
                 $('#btn-group-3').disabledButtonGroup();
             @else
@@ -302,9 +308,13 @@
         $("#NO_POS_BC11").val(rowdata.NO_POS_BC11);
         
 //        console.log(rowdata);
-        $('#btn-toolbar').disabledButtonGroup();
-        $('#btn-group-1, #btn-photo').enableButtonGroup();
-        $('#btn-group-3').enableButtonGroup();
+        @role('upload-lcl')
+            $('#btn-photo').enableButtonGroup();
+        @else
+            $('#btn-toolbar').disabledButtonGroup();
+            $('#btn-group-1, #btn-photo').enableButtonGroup();
+            $('#btn-group-3').enableButtonGroup();
+        @endrole
         
         $('#upload-title').html('Upload Photo for '+rowdata.NOHBL);
         $('#no_hbl').val(rowdata.NOHBL);

@@ -118,7 +118,9 @@
                 });
                 $('#load_photos').html(html);
             }
-            
+            @role('upload-fcl')
+                $('#btn-group-2,#btn-photo').enableButtonGroup();
+            @else
                 $('#btn-group-2, #btn-photo').enableButtonGroup();
                 $('#btn-group-5').enableButtonGroup();
                 $('#gatein-form').enableFormGroup();
@@ -132,6 +134,7 @@
 //                        $("#JAMMASUK").attr('disabled','disabled');
 //                    @endrole
 //                }
+            @endrole
 
         });
         

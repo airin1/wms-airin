@@ -214,11 +214,14 @@
                 });
                 $('#load_photos').html(html);
             }
-            
-            $('#btn-group-2,#btn-sppb,#btn-photo').enableButtonGroup();
+            @role('upload-fcl')
+                $('#btn-group-2,#btn-photo').enableButtonGroup();
+            @else
+                $('#btn-group-2,#btn-sppb,#btn-photo').enableButtonGroup();
                 $('#release-form').enableFormGroup();
                 $('#btn-group-4').enableButtonGroup();
                 $('#btn-group-5').enableButtonGroup();
+            @endrole
 
 //            if(rowdata.KD_DOK_INOUT == 1){
 //                @role('super-admin')

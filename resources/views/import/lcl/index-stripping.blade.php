@@ -165,16 +165,20 @@
                 $('#load_photos').html(html);
             }
             
-            if(rowdata.TGLMASUK && rowdata.JAMMASUK) {
+            @role('upload-lcl')
                 $('#btn-group-2,#btn-photo').enableButtonGroup();
-                $('#stripping-form').enableFormGroup();
-                $('#UIDSTRIPPING').val('{{ Auth::getUser()->name }}');
-                $('#TGLMASUK').attr('disabled','disabled');
-                $('#JAMMASUK').attr('disabled','disabled');
-            }else{
-                $('#btn-group-2').disabledButtonGroup();
-                $('#stripping-form').disabledFormGroup();
-            }
+            @else      
+                if(rowdata.TGLMASUK && rowdata.JAMMASUK) {
+                    $('#btn-group-2,#btn-photo').enableButtonGroup();
+                    $('#stripping-form').enableFormGroup();
+                    $('#UIDSTRIPPING').val('{{ Auth::getUser()->name }}');
+                    $('#TGLMASUK').attr('disabled','disabled');
+                    $('#JAMMASUK').attr('disabled','disabled');
+                }else{
+                    $('#btn-group-2').disabledButtonGroup();
+                    $('#stripping-form').disabledFormGroup();
+                }
+            @endrole
 
         });
         
