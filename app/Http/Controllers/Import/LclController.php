@@ -1070,8 +1070,8 @@ class LclController extends Controller
     {
         $mainfest = DBManifest::find($id);
         $data['manifest'] = $mainfest;
-//        return view('print.delivery-surat-jalan', $data);
-        $pdf = \PDF::loadView('print.delivery-surat-jalan', $data); 
+        return view('print.delivery-surat-jalan', $data);
+//        $pdf = \PDF::loadView('print.delivery-surat-jalan', $data); 
         return $pdf->stream('Delivery-SuratJalan-'.$mainfest->NOHBL.'-'.date('dmy').'.pdf');
     }
     
