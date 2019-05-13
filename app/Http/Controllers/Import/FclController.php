@@ -1520,7 +1520,7 @@ class FclController extends Controller
                             // Check Behandle
                             $count_behandle = 0;
                             foreach ($container20 as $c_20):
-                                if($c_20->BEHANDLE == Y){
+                                if($c_20->BEHANDLE == 'Y'){
                                     $count_behandle++;
                                 }
                             endforeach;
@@ -1695,7 +1695,7 @@ class FclController extends Controller
 //                          // Check Behandle
                             $count_behandle = 0;
                             foreach ($container40 as $c_40):
-                                if($c_40->BEHANDLE == Y){
+                                if($c_40->BEHANDLE == 'Y'){
                                     $count_behandle++;
                                 }
                             endforeach;
@@ -1869,7 +1869,7 @@ class FclController extends Controller
                             // GERAKAN
                             $count_behandle = 0;
                             foreach ($container45 as $c_45):
-                                if($c_45->BEHANDLE == Y){
+                                if($c_45->BEHANDLE == 'Y'){
                                     $count_behandle++;
                                 }
                             endforeach;
