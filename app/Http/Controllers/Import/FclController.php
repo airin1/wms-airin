@@ -1979,10 +1979,10 @@ class FclController extends Controller
                 $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
                 $invoice_gerakan->lokasi_sandar = 'NPCT1';
                 $invoice_gerakan->size = 0;
-                $invoice_gerakan->qty = count($container20)+count($container40); 
+                $invoice_gerakan->qty = count($container20)+count($container40)+count($container45); 
                 $invoice_gerakan->jenis_gerakan = $key;
                 $invoice_gerakan->tarif_dasar = $value;
-                $invoice_gerakan->total = (count($container20)+count($container40)) * $value;
+                $invoice_gerakan->total = (count($container20)+count($container40)+count($container45)) * $value;
 
                 $invoice_gerakan->save();
             endforeach;

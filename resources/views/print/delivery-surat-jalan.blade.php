@@ -317,7 +317,7 @@ table tfoot tr td:first-child {
                             <td>DIKIRIM KEPADA : </td>
                         </tr>
                         <tr>
-                            <td>{{ $manifest->NAMACONSOLIDATOR }}</td>
+                            <td>{{ $manifest->CONSIGNEE }}</td>
                         </tr>
                     </table>
                 </td>
