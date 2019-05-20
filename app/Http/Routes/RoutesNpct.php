@@ -44,4 +44,17 @@ Route::group(['prefix' => 'npct', 'namespace' => 'Tps'], function(){
         'uses' => 'NpctController@MovementContainerCreate'
     ]);
 
+    Route::get('/tracking', [
+        'as' => 'tracking-index',
+        'uses' => 'NpctController@trackingIndex'
+    ]);
+    Route::post('/tracking/grid-data', function()
+    {
+        GridEncoder::encodeRequestedData(new \App\Models\NpctTablesRepository(new App\Models\NpctTracking(),Illuminate\Support\Facades\Request::all()) ,Illuminate\Support\Facades\Request::all());
+    });
+    Route::post('/tracking/getdata',[
+        'as' => 'getdata-tracking',
+        'uses' => 'NpctController@getdataTracking'
+    ]);
+    
 });

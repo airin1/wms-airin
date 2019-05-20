@@ -61,6 +61,20 @@ class NpctController extends Controller
         return view('npct.index-movement')->with($data);
     }
     
+    public function trackingIndex()
+    {
+        $data['page_title'] = "Data Tracking Container";
+        $data['page_description'] = "";
+        $data['breadcrumbs'] = [
+            [
+                'action' => '',
+                'title' => 'Data Tracking Container'
+            ]
+        ];        
+        
+        return view('npct.index-tracking')->with($data);
+    }
+    
     public function MovementContainerIndex()
     {
         $data['page_title'] = "Data Container Release";
@@ -82,16 +96,16 @@ class NpctController extends Controller
         
         foreach ($containers as $container):
             // OUT1
-            $data[] = array(
-                'request_no' => $container->NO_PLP,
-                'request_date' => date('Ymd', strtotime($container->TGL_PLP)),
-                'warehouse_code' => $container->GUDANG_TUJUAN,
-                'container_id' => $container->TCONTAINER_PK,
-                'container_no' => $container->NOCONTAINER,
-                'message_type' => 'OUT1',
-                'action_time' => date('YmdHis', strtotime($container->TGLKELUAR_TPK.' '.$container->JAMKELUAR_TPK)),
-                'uid' => \Auth::getUser()->name
-            );
+//            $data[] = array(
+//                'request_no' => $container->NO_PLP,
+//                'request_date' => date('Ymd', strtotime($container->TGL_PLP)),
+//                'warehouse_code' => $container->GUDANG_TUJUAN,
+//                'container_id' => $container->TCONTAINER_PK,
+//                'container_no' => $container->NOCONTAINER,
+//                'message_type' => 'OUT1',
+//                'action_time' => date('YmdHis', strtotime($container->TGLKELUAR_TPK.' '.$container->JAMKELUAR_TPK)),
+//                'uid' => \Auth::getUser()->name
+//            );
             // IN2
             $data[] = array(
                 'request_no' => $container->NO_PLP,
@@ -265,6 +279,7 @@ class NpctController extends Controller
             'username' => $this->user, 
             'Password' => $this->password,
             'warehouse_code' => $data->warehouse_code,
+            'warehouse_type' => $data->warehouse_type,
             'yor' => $data->yor,
             'capacity' => $data->capacity
         ];
@@ -276,8 +291,8 @@ class NpctController extends Controller
 //                var_dump($service->call('yor', $reqData));
                 $this->response = $service->call('yor', $reqData);      
             });
-        } catch (SoapFault $exception) {
-            echo $exception;      
+        } catch (\SoapFault $exception) {
+            var_dump($exception);     
         }        
         
 //        libxml_use_internal_errors(true);
@@ -293,6 +308,77 @@ class NpctController extends Controller
         }
         
         var_dump($this->response);
+    }
+    
+    public function getdataTracking(Request $request)
+    {
+        $validator = \Validator::make($request->all(), [
+            'container' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return back()->withErrors($validator)->withInput();
+        }
+        
+        \SoapWrapper::add(function ($service) {
+            $service
+                ->name('trackingRequest')
+                ->wsdl($this->wsdl)
+                ->trace(true)                                                                                                                                                 
+                ->cache(WSDL_CACHE_NONE)                                        
+                ->options([
+                    'stream_context' => stream_context_create([
+                        'ssl' => array(
+                            'verify_peer' => false,
+                            'verify_peer_name' => false,
+                            'allow_self_signed' => true
+                        )
+                    ]),
+                    'soap_version' => SOAP_1_1
+                ]);                                                    
+        });
+        
+        $reqData = [
+            'username' => $this->user, 
+            'Password' => $this->password,
+            'direction' => $request->direction,
+            'container' => $request->container,
+        ];
+        
+        try {      
+            \SoapWrapper::service('trackingRequest', function ($service) use ($reqData) {    
+                $this->response = $service->call('tracking', $reqData);      
+            });
+        } catch (\SoapFault $exception) {
+            var_dump($exception);     
+            return false;
+        } 
+        
+        libxml_use_internal_errors(true);
+        $xml = simplexml_load_string($this->response);       
+        
+        if(!$xml || !$xml->children()){
+           return back()->with('error', $this->response);
+        }
+        
+        $data = array();
+        foreach($xml->children() as $child) {      
+            foreach($child as $key=>$value) {
+                $data[$key]=$value;
+            }
+        }
+        
+        $respon = new \App\Models\NpctTracking;
+        foreach ($data as $dkey=>$dval):
+            $respon->$dkey = $dval[0];
+        endforeach;
+        
+        if($respon->save()){
+            return back()->with('success', 'Get Data Tracking has been success.');
+        }
+        
+        var_dump($this->response);
+
     }
     
 //    public function yorUpload1($id)

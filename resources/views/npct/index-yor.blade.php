@@ -64,11 +64,12 @@
             ->setGridEvent('gridComplete', 'gridCompleteEvent')
             ->addColumn(array('key'=>true,'index'=>'id','hidden'=>true))
             ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>80, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
-            ->addColumn(array('label'=>'Kode Gudang','index'=>'warehouse_code', 'width'=>150, 'editable' => true, 'editrules' => array('required' => true)))
-            ->addColumn(array('label'=>'YOR','index'=>'yor', 'width'=>150, 'align'=>'center','editable' => true, 'editrules' => array('required' => true)))
-            ->addColumn(array('label'=>'Kapasitas','index'=>'capacity', 'width'=>150,'align'=>'center', 'editable' => true, 'editrules' => array('required' => true)))
-            ->addColumn(array('label'=>'Status','index'=>'status', 'width'=>120,'align'=>'center', 'editable' => true, 'editrules' => array('required' => true)))
-            ->addColumn(array('label'=>'Response','index'=>'response', 'width'=>120,'align'=>'center', 'editable' => true, 'editrules' => array('required' => true)))
+            ->addColumn(array('label'=>'Kode Gudang','index'=>'warehouse_code', 'width'=>100,'align'=>'center', 'editable' => true, 'editrules' => array('required' => true)))
+            ->addColumn(array('label'=>'Tipe','index'=>'warehouse_type', 'width'=>100,'align'=>'center', 'editable' => true, 'editrules' => array('required' => true)))
+            ->addColumn(array('label'=>'YOR','index'=>'yor', 'width'=>100, 'align'=>'center','editable' => true, 'editrules' => array('required' => true)))
+            ->addColumn(array('label'=>'Kapasitas','index'=>'capacity', 'width'=>100,'align'=>'center', 'editable' => true, 'editrules' => array('required' => true)))
+            ->addColumn(array('label'=>'Status','index'=>'status', 'width'=>80,'align'=>'center', 'editable' => true, 'editrules' => array('required' => true)))
+            ->addColumn(array('label'=>'Response','index'=>'response', 'width'=>150,'align'=>'center', 'editable' => true, 'editrules' => array('required' => true)))
             ->addColumn(array('label'=>'Created','index'=>'created_at', 'width'=>120,'align'=>'center', 'editable' => true, 'editrules' => array('required' => true)))
 //            ->addColumn(array('label'=>'Updated','index'=>'updated_at', 'width'=>120,'align'=>'center', 'editable' => true, 'editrules' => array('required' => true)))
             ->addColumn(array('label'=>'UID','index'=>'uid', 'width'=>150, 'editable' => true, 'editrules' => array('required' => true)))
@@ -93,12 +94,25 @@
                             <input name="_token" type="hidden" value="{{ csrf_token() }}" />
                             
                             <div class="form-group">
-                                <label for="roles" class="col-sm-3 control-label">Consolidator</label>
+                                <label for="roles" class="col-sm-3 control-label">Kode Gudang</label>
                                 <div class="col-sm-8">
                                     <select class="form-control select2 select2-hidden-accessible" name="warehouse_code" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
                                         <option value="">Choose Warehouse</option>
                                         <option value="ARN1">Gudang Utara (ARN1)</option>
                                         <option value="ARN3">Gudang Barat (ARN3)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="roles" class="col-sm-3 control-label">Tipe</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control select2 select2-hidden-accessible" name="warehouse_type" style="width: 100%;" tabindex="-1" aria-hidden="true" required>  
+                                        <option value="REEFER">REEFER</option>
+                                        <option value="IMDG">IMDG</option>
+                                        <option value="DRY">DRY</option>
+                                        <option value="OOG">OOG</option>
+                                        <option value="OTHER" selected>OTHER</option>
                                     </select>
                                 </div>
                             </div>

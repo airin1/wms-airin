@@ -529,10 +529,11 @@
                         <i class="fa fa-angle-left pull-right"></i>
                       </span>
                     </a>
-                    <ul class="treeview-menu">
-                      <li><a href="{{ route('yor-index') }}">Laporan YOR</a></li>
+                    <ul class="treeview-menu">  
                       <li><a href="{{ route('movement-container-index') }}">Data Container</a></li>
                       <li><a href="{{ route('movement-index') }}">Laporan Movement</a></li>
+                      <li><a href="{{ route('yor-index') }}">Laporan YOR</a></li>
+                      <li><a href="{{ route('tracking-index') }}">Tracking</a></li>
                     </ul>
                   </li>
                   <li class="treeview">
