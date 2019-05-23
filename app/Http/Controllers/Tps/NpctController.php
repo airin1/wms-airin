@@ -259,7 +259,7 @@ class NpctController extends Controller
 
         \SoapWrapper::add(function ($service) {
             $service
-                ->name('yorRequest')
+                ->name('yorRequestNpct')
                 ->wsdl($this->wsdl)
                 ->trace(true)                                                                                                                                                 
                 ->cache(WSDL_CACHE_NONE)                                        
@@ -278,15 +278,15 @@ class NpctController extends Controller
         $reqData = [
             'username' => $this->user, 
             'Password' => $this->password,
-            'warehouse_code' => $data->warehouse_code,
             'warehouse_type' => $data->warehouse_type,
+            'warehouse_code' => $data->warehouse_code,
             'yor' => $data->yor,
             'capacity' => $data->capacity
         ];
-        
+//        return $reqData;
         // Using the added service
         try {      
-            \SoapWrapper::service('yorRequest', function ($service) use ($reqData) {    
+            \SoapWrapper::service('yorRequestNpct', function ($service) use ($reqData) {    
     //            var_dump($service->getFunctions());
 //                var_dump($service->call('yor', $reqData));
                 $this->response = $service->call('yor', $reqData);      
