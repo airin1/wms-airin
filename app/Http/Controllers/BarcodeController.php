@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\View;
 
 class BarcodeController extends Controller
 {
@@ -15,12 +16,12 @@ class BarcodeController extends Controller
     
     public function index()
     {
-        $data['page_title'] = "QR Code (Auto Gate)";
+        $data['page_title'] = "Gate Pass (Auto Gate)";
         $data['page_description'] = "";
         $data['breadcrumbs'] = [
             [
                 'action' => '',
-                'title' => 'QR Code (Auto Gate)'
+                'title' => 'Gate Pass (Auto Gate)'
             ]
         ];        
         
@@ -34,7 +35,7 @@ class BarcodeController extends Controller
         $data['breadcrumbs'] = [
             [
                 'action' => route('barcode-index'),
-                'title' => 'QR Code (Auto Gate)'
+                'title' => 'Gate Pass (Auto Gate)'
             ],
             [
                 'action' => '',
@@ -81,7 +82,69 @@ class BarcodeController extends Controller
     public function delete($id)
     {
         \App\Models\Barcode::where('id', $id)->delete();
-        return back()->with('success', 'QR Code has been deleted.'); 
+        return back()->with('success', 'Gate Pass has been deleted.'); 
+    }
+    
+    public function setRfid(Request $request)
+    {
+        $model = '';
+        $expired = date('Y-m-d', strtotime('+1 day'));
+        
+        switch ($request->type) {
+            case 'fcl':
+                $model = 'tcontainercy';
+                break;
+            case 'lcl':
+                $model = 'tcontainer';
+                break;
+            case 'manifest':
+                $model = 'tmanifest';
+                break;
+        }
+        
+        // Check data
+        $ref_number = '';
+        if($request->type == 'manifest'){
+            $refdata = \App\Models\Manifest::find($request->refid);
+            $ref_number = $refdata->NOHBL;
+        }elseif($request->type == 'lcl'){
+            $refdata = \App\Models\Container::find($request->refid);
+            $ref_number = $refdata->NOCONTAINER;
+        }elseif($request->type == 'fcl'){
+            $refdata = \App\Models\Containercy::find($request->refid);
+            $ref_number = $refdata->NOCONTAINER;
+            if($request->action == 'get'){
+                $expired = date('Y-m-d', strtotime('+3 day'));
+            }
+        }
+
+        $check = \App\Models\Barcode::where(array('barcode'=>$request->code, 'status'=>'active'))->first();               
+        if(count($check) > 0){
+//                    continue;
+//            $barcode = \App\Models\Barcode::find($check->id);
+//            $barcode->expired = $expired;
+//            $barcode->status = 'active';
+//            $barcode->uid = \Auth::getUser()->name;
+//            $barcode->save();
+            return back()->with('error', 'RFID No.'.$request->code.' masih di gunakan.'); 
+        }else{
+            $barcode = new \App\Models\Barcode();
+            $barcode->ref_id = $request->refid;
+            $barcode->ref_type = ucwords($request->type);
+            $barcode->ref_action = $request->action;
+            $barcode->ref_number = $ref_number;
+            $barcode->barcode = $request->code;
+            $barcode->expired = $expired;
+            $barcode->status = 'active';
+            $barcode->uid = \Auth::getUser()->name;
+            
+            if($barcode->save()){
+                 return back()->with('success', 'RFID No.'.$request->code.' berhasil di gunakan.'); 
+            }
+        }  
+        
+        return back()->with('error', 'Something wrong!!!'); 
+        
     }
     
     public function printBarcodePreview($id, $type, $action)

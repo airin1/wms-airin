@@ -192,7 +192,7 @@
               </li>
             <li class="treeview">
                 <a href="{{route('barcode-index')}}">
-                    <i class="fa fa-barcode"></i> QR Code (Autogate)
+                    <i class="fa fa-barcode"></i> Gate Pass (Autogate)
                 </a>
             </li>
             @endif
@@ -575,7 +575,7 @@
 
                   <li class="treeview">
                       <a href="{{route('barcode-index')}}">
-                          <i class="fa fa-barcode"></i> QR Code (Autogate)
+                          <i class="fa fa-barcode"></i> Gate Pass (Autogate)
                       </a>
                   </li>
                   <li class="treeview">

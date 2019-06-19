@@ -119,6 +119,7 @@ table {
   border-spacing: 0;
   margin-bottom: 20px;
   font-size: 12px;
+  font-weight: bold;
 }
 
 table th,

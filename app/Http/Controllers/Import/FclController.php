@@ -49,6 +49,8 @@ class FclController extends Controller
             ]
         ];        
         
+        $data['rfids'] = \DB::table('trfid')->get();
+        
         return view('import.fcl.index-register')->with($data);
     }
     

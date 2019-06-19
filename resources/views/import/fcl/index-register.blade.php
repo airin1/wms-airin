@@ -22,6 +22,15 @@
         } 
     }
     
+    function onSelectRowEvent()
+    {
+        rowid = $('#fclRegisterGrid').jqGrid('getGridParam', 'selrow');
+        rowdata = $('#fclRegisterGrid').getRowData(rowid);
+
+        $("#refid").val(rowdata.TCONTAINER_PK);
+        $("#nocont").html(rowdata.NOCONTAINER);      
+    }
+    
     $(document).ready(function(){
 
         $('#print-barcode-btn').on("click", function(){
@@ -40,6 +49,16 @@
 //            console.log(containerId);
             window.open("{{ route('cetak-barcode', array('','','')) }}/"+containerId+"/fcl/get","preview barcode","width=305,height=600,menubar=no,status=no,scrollbars=yes");    
         });
+        
+        $("#rfid-btn").on("click", function(){
+            if($("#refid").val() != ''){
+                $('#rfid-modal').modal('show');
+            }else{
+                alert('Silahkan pilih kontainer terlebih dahulu!');
+                return false;
+            }
+        });
+        
     });
     
 </script>
@@ -86,7 +105,7 @@
             ->setGridOption('url', URL::to('/fcl/joborder/grid-data?_token='.csrf_token()))
             ->setGridOption('rowNum', 50)
             ->setGridOption('shrinkToFit', true)
-            ->setGridOption('sortname','NoJob')
+            ->setGridOption('sortname','TCONTAINER_PK')
             ->setGridOption('rownumbers', true)
             ->setGridOption('rownumWidth', 50)
             ->setGridOption('height', '295')
@@ -97,22 +116,23 @@
             ->setNavigatorOptions('view',array('closeOnEscape'=>false))
             ->setFilterToolbarOptions(array('autosearch'=>true))
             ->setGridEvent('gridComplete', 'gridCompleteEvent')
+            ->setGridEvent('onSelectRow', 'onSelectRowEvent')
             ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>80, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
 //            ->addColumn(array('key'=>true,'index'=>'TJOBORDER_PK','hidden'=>true))  
             ->addColumn(array('key'=>true,'index'=>'TCONTAINER_PK','hidden'=>true))
 //            ->addColumn(array('index'=>'TCONSIGNEE_FK','hidden'=>true))  
-            ->addColumn(array('label'=>'No. Job Order','index'=>'NoJob','width'=>160))
-            ->addColumn(array('label'=>'No. SPK','index'=>'tcontainercy.NOSPK','width'=>160))
+            ->addColumn(array('label'=>'No. Job Order','index'=>'NOJOBORDER','width'=>160))
+            ->addColumn(array('label'=>'No. SPK','index'=>'NOSPK','width'=>160))
             ->addColumn(array('label'=>'No. MBL','index'=>'NOMBL','width'=>160,'hidden'=>true))
             ->addColumn(array('label'=>'Tgl. MBL','index'=>'TGLMBL','width'=>150,'align'=>'center','hidden'=>true))
             ->addColumn(array('label'=>'Consolidator','index'=>'NAMACONSOLIDATOR','width'=>250,'hidden'=>true))
             ->addColumn(array('label'=>'No. Container','index'=>'NOCONTAINER','width'=>160,'hidden'=>false))           
-            ->addColumn(array('label'=>'Consignee','index'=>'tcontainercy.CONSIGNEE','width'=>250,'hidden'=>false))
-            ->addColumn(array('label'=>'No. BC11','index'=>'NO_BC11','width'=>150,'align'=>'right'))
+            ->addColumn(array('label'=>'Consignee','index'=>'CONSIGNEE','width'=>250,'hidden'=>false))
+            ->addColumn(array('label'=>'No. BC11','index'=>'NO_BC11','width'=>150,'align'=>'center'))
             ->addColumn(array('label'=>'Tgl. BC11','index'=>'TGL_BC11','width'=>150,'align'=>'center'))
             ->addColumn(array('label'=>'Tgl. POS BC11','index'=>'NO_POS_BC11','width'=>150,'align'=>'center'))
-            ->addColumn(array('label'=>'No. PLP','index'=>'TNO_PLP','width'=>150,'align'=>'right'))
-            ->addColumn(array('label'=>'Tgl. PLP','index'=>'TTGL_PLP','width'=>150,'align'=>'center'))
+            ->addColumn(array('label'=>'No. PLP','index'=>'NO_PLP','width'=>150,'align'=>'center'))
+            ->addColumn(array('label'=>'Tgl. PLP','index'=>'TGL_PLP','width'=>150,'align'=>'center'))
             ->addColumn(array('label'=>'ETA','index'=>'ETA', 'width'=>150,'align'=>'center'))
             ->addColumn(array('label'=>'ETD','index'=>'ETD', 'width'=>150,'align'=>'center','hidden'=>true))
             ->addColumn(array('label'=>'Vessel','index'=>'VESSEL', 'width'=>150))
@@ -121,15 +141,53 @@
             ->addColumn(array('label'=>'Teus','index'=>'TEUS', 'width'=>80,'align'=>'center','hidden'=>true))
             ->addColumn(array('label'=>'No. Seal','index'=>'NO_SEAL', 'width'=>120,'align'=>'right','hidden'=>true))
             ->addColumn(array('label'=>'Layout','index'=>'layout','width'=>80,'align'=>'center','hidden'=>true,'hidden'=>true))
-            ->addColumn(array('label'=>'UID','index'=>'UID', 'width'=>150))
-            ->addColumn(array('label'=>'Tgl. Entry','index'=>'TGLENTRY', 'width'=>150,'align'=>'center'))
+            ->addColumn(array('label'=>'UID','index'=>'UID', 'width'=>150,'align'=>'right'))
+//            ->addColumn(array('label'=>'Tgl. Entry','index'=>'TGLENTRY', 'width'=>150,'align'=>'center'))
 //            ->addColumn(array('label'=>'Updated','index'=>'last_update', 'width'=>150, 'search'=>false))
             ->renderGrid()
         }}
     </div>
     <button type="button" id="print-barcode-btn" class="btn btn-danger" style="margin: 10px;"><i class="fa fa-print"></i> Print Barcode</button>
+    <button type="button" id="rfid-btn" class="btn btn-warning pull-right" style="margin: 10px;"><i class="fa fa-credit-card"></i> Set RFID</button>
 </div>
 
+<div id="rfid-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">RFID For <span id="nocont"></span></h4>
+            </div>
+            <form id="create-invoice-form" class="form-horizontal" action="{{route('set-rfid')}}" method="POST" enctype="multipart/form-data">
+                <div class="modal-body"> 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input name="_token" type="hidden" value="{{ csrf_token() }}" />
+                            <input name="refid" type="hidden" id="refid" />
+                            <input name="action" type="hidden" value="get" />
+                            <input name="type" type="hidden" value="fcl" />
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">RFID</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control select2 select2-hidden-accessible" name="code" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
+                                        <option value="">Choose RFID Card</option>
+                                        @foreach($rfids as $rfid)
+                                            <option value="{{ $rfid->code }}">{{ $rfid->code }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
+                  <button type="submit" class="btn btn-primary">Set RFID</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 @endsection
 
 @section('custom_css')

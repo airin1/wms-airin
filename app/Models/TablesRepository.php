@@ -224,15 +224,16 @@ class TablesRepository extends EloquentRepositoryAbstract {
                 
             }elseif(isset($request['startdate']) || isset($request['enddate'])){
                 
-                $Model = \DB::table('tjobordercy')->join('tcontainercy', 'tjobordercy.TJOBORDER_PK', '=', 'tcontainercy.TJOBORDER_FK')
-                        ->select('tjobordercy.*','tcontainercy.*','tcontainercy.CONSIGNEE as tcontainercy.CONSIGNEE','tcontainercy.NOSPK as tcontainercy.NOSPK')
-                        ->where('tcontainercy.TGLENTRY', '>=',date('Y-m-d 00:00:00',strtotime($request['startdate'])))
-                        ->where('tcontainercy.TGLENTRY', '<=',date('Y-m-d 23:59:59',strtotime($request['enddate'])));
+//                $Model = \DB::table('tjobordercy')->join('tcontainercy', 'tjobordercy.TJOBORDER_PK', '=', 'tcontainercy.TJOBORDER_FK')
+//                        ->select('tjobordercy.*','tcontainercy.*','tcontainercy.CONSIGNEE as tcontainercy.CONSIGNEE','tcontainercy.NOSPK as tcontainercy.NOSPK')
+                    $Model =\DB::table('tcontainercy')
+                        ->where('tcontainercy.TGLMASUK', '>=',date('Y-m-d 00:00:00',strtotime($request['startdate'])))
+                        ->where('tcontainercy.TGLMASUK', '<=',date('Y-m-d 23:59:59',strtotime($request['enddate'])));
                 
             }else{
-                $Model = \DB::table('tjobordercy')
-                        ->select('tjobordercy.*','tcontainercy.*','tcontainercy.CONSIGNEE as tcontainercy.CONSIGNEE','tcontainercy.NOSPK as tcontainercy.NOSPK')
-                        ->join('tcontainercy', 'tjobordercy.TJOBORDER_PK', '=', 'tcontainercy.TJOBORDER_FK');
+                $Model = \DB::table('tcontainercy');
+//                        ->select('tjobordercy.*','tcontainercy.*','tcontainercy.CONSIGNEE as tcontainercy.CONSIGNEE','tcontainercy.NOSPK as tcontainercy.NOSPK')
+//                        ->join('tcontainercy', 'tjobordercy.TJOBORDER_PK', '=', 'tcontainercy.TJOBORDER_FK');
             }
             
         }elseif($Model->getMorphClass() == 'App\Models\Manifest'){

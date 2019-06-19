@@ -47,6 +47,7 @@
             ->setGridOption('rowNum', 50)
             ->setGridOption('shrinkToFit', true)
             ->setGridOption('sortname','id')
+            ->setGridOption('sortorder','DESC')  
             ->setGridOption('rownumbers', true)
             ->setGridOption('rownumWidth', 50)
             ->setGridOption('height', '395')
@@ -69,8 +70,8 @@
             ->addColumn(array('label'=>'YOR','index'=>'yor', 'width'=>100, 'align'=>'center','editable' => true, 'editrules' => array('required' => true)))
             ->addColumn(array('label'=>'Kapasitas','index'=>'capacity', 'width'=>100,'align'=>'center', 'editable' => true, 'editrules' => array('required' => true)))
             ->addColumn(array('label'=>'Status','index'=>'status', 'width'=>80,'align'=>'center', 'editable' => true, 'editrules' => array('required' => true)))
-            ->addColumn(array('label'=>'Response','index'=>'response', 'width'=>150,'align'=>'center', 'editable' => true, 'editrules' => array('required' => true)))
-            ->addColumn(array('label'=>'Created','index'=>'created_at', 'width'=>120,'align'=>'center', 'editable' => true, 'editrules' => array('required' => true)))
+            ->addColumn(array('label'=>'Response','index'=>'response', 'width'=>250,'align'=>'center', 'editable' => true, 'editrules' => array('required' => true)))
+            ->addColumn(array('label'=>'Created','index'=>'created_at', 'width'=>150,'align'=>'center', 'editable' => true, 'editrules' => array('required' => true)))
 //            ->addColumn(array('label'=>'Updated','index'=>'updated_at', 'width'=>120,'align'=>'center', 'editable' => true, 'editrules' => array('required' => true)))
             ->addColumn(array('label'=>'UID','index'=>'uid', 'width'=>150, 'editable' => true, 'editrules' => array('required' => true)))
 
