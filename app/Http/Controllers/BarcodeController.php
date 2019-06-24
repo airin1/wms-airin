@@ -147,11 +147,11 @@ class BarcodeController extends Controller
         
     }
     
-    public function printBarcodePreview($id, $type, $action)
+    public function printBarcodePreview($id, $type, $action, $car = null)
     { 
         $ids = explode(',', $id);
         $model = '';
-        $expired = date('Y-m-d', strtotime('+1 day'));
+        $expired = date('Y-m-d', strtotime('+2 day'));
         
         switch ($type) {
             case 'fcl':
@@ -182,27 +182,43 @@ class BarcodeController extends Controller
                         $expired = date('Y-m-d', strtotime('+3 day'));
                     }
                 }
-
-                $check = \App\Models\Barcode::where(array('ref_id'=>$ref_id, 'ref_type'=>ucwords($type), 'ref_action'=>$action))->first();               
-                if(count($check) > 0){
-//                    continue;
-                    $barcode = \App\Models\Barcode::find($check->id);
-                    $barcode->expired = $expired;
-                    $barcode->status = 'active';
-                    $barcode->uid = \Auth::getUser()->name;
-                    $barcode->save();
+                
+                if($car && $car > 0){
+                    for ($i = 0; $i < $car; $i++) { 
+                        $barcode = new \App\Models\Barcode();
+                        $barcode->ref_id = $ref_id;
+                        $barcode->ref_type = ucwords($type);
+                        $barcode->ref_action = $action;
+                        $barcode->ref_number = $ref_number;
+                        $barcode->barcode = str_random(20);
+                        $barcode->expired = $expired;
+                        $barcode->status = 'active';
+                        $barcode->uid = \Auth::getUser()->name;
+                        $barcode->save();
+                    }   
                 }else{
-                    $barcode = new \App\Models\Barcode();
-                    $barcode->ref_id = $ref_id;
-                    $barcode->ref_type = ucwords($type);
-                    $barcode->ref_action = $action;
-                    $barcode->ref_number = $ref_number;
-                    $barcode->barcode = str_random(20);
-                    $barcode->expired = $expired;
-                    $barcode->status = 'active';
-                    $barcode->uid = \Auth::getUser()->name;
-                    $barcode->save();
-                }  
+                    $check = \App\Models\Barcode::where(array('ref_id'=>$ref_id, 'ref_type'=>ucwords($type), 'ref_action'=>$action))->first();               
+                    if(count($check) > 0){
+    //                    continue;
+                        $barcode = \App\Models\Barcode::find($check->id);
+                        $barcode->expired = $expired;
+                        $barcode->status = 'active';
+                        $barcode->uid = \Auth::getUser()->name;
+                        $barcode->save();
+                    }else{
+                        $barcode = new \App\Models\Barcode();
+                        $barcode->ref_id = $ref_id;
+                        $barcode->ref_type = ucwords($type);
+                        $barcode->ref_action = $action;
+                        $barcode->ref_number = $ref_number;
+                        $barcode->barcode = str_random(20);
+                        $barcode->expired = $expired;
+                        $barcode->status = 'active';
+                        $barcode->uid = \Auth::getUser()->name;
+                        $barcode->save();
+                    }
+                }
+  
             endforeach;
         }else{
             return $ids;

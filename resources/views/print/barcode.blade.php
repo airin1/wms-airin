@@ -5,7 +5,11 @@
             <div style="text-align: center;margin: 0 auto;">
                 <span style="font-size:10px;">{{strtoupper($barcode->ref_action).' - '.date('d/m/Y H:i')}}</span>
                 <h3 style="margin: 10px;">GATE PASS</h3>
-                <h5 style="margin: 10px;">TPS AIRIN</h5>
+                @if($barcode->LOKASI_GUDANG == 'ARN1'){
+                    <h5 style="margin: 10px;">TPS AIRIN (Utara)</h5>
+                @else
+                    <h5 style="margin: 10px;">TPS AIRIN (Barat)</h5>
+                @endif
                 {!!QrCode::margin(0)->size(80)->generate($barcode->barcode)!!}
                 <p style="font-size: 10px;margin: 0;padding: 0;">{{$barcode->barcode}}</p>
                 <p style="font-size: 13px;font-weight: bold;">
@@ -17,6 +21,7 @@
                     NO. BC11 {{$barcode->NO_BC11}}<br />
                     TGL. BC11 {{date('d/m/Y', strtotime($barcode->TGL_BC11))}}
                 </p>
+                <span style="font-size:10px;">{{'EXPIRED - '.date('d/m/Y', strtotime($barcode->expired))}}</span>
             </div>
         </div>
         <div style="display:block; page-break-before:always;"></div>
@@ -25,7 +30,19 @@
             <div style="text-align: center;margin: 0 auto;">
                 <span style="font-size:10px;">{{strtoupper($barcode->ref_action).' - '.date('d/m/Y H:i')}}</span>
                 <h3 style="margin: 10px;">GATE PASS</h3>
-                <h5 style="margin: 10px;">TPS AIRIN</h5>
+                @if(isset($barcode->LOKASI_GUDANG))
+                    @if($barcode->LOKASI_GUDANG == 'ARN1'){
+                        <h5 style="margin: 10px;">TPS AIRIN (Utara)</h5>
+                    @else
+                        <h5 style="margin: 10px;">TPS AIRIN (Barat)</h5>
+                    @endif
+                @else
+                    @if($barcode->GUDANG_TUJUAN == 'ARN1'){
+                        <h5 style="margin: 10px;">TPS AIRIN (Utara)</h5>
+                    @else
+                        <h5 style="margin: 10px;">TPS AIRIN (Barat)</h5>
+                    @endif
+                @endif               
                 {!!QrCode::margin(0)->size(80)->generate($barcode->barcode)!!}
                 <p style="font-size: 10px;margin: 0;padding: 0;">{{$barcode->barcode}}</p>
                 <p style="font-size: 13px;font-weight: bold;">
@@ -40,6 +57,7 @@
                     NO. PLP {{$barcode->NO_PLP}}<br />
                     TGL. PLP {{date('d/m/Y', strtotime($barcode->TGL_PLP))}}
                 </p>
+                <span style="font-size:10px;">{{'EXPIRED - '.date('d/m/Y', strtotime($barcode->expired))}}</span>
             </div>
         </div>
         <div style="display:block; page-break-before:always;"></div>
