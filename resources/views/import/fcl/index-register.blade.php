@@ -53,12 +53,20 @@
         $("#rfid-btn").on("click", function(){
             if($("#refid").val() != ''){
                 $('#rfid-modal').modal('show');
+                $('#code').focus();
             }else{
                 alert('Silahkan pilih kontainer terlebih dahulu!');
                 return false;
             }
         });
         
+        $('#rfid-modal').on('shown.bs.modal', function () {
+            $('#code').focus();
+        });  
+        
+        $('#code').on('input', function(){
+            $('#create-rfid-form').submit();
+        });
     });
     
 </script>
@@ -159,7 +167,7 @@
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
               <h4 class="modal-title">RFID For <span id="nocont"></span></h4>
             </div>
-            <form id="create-invoice-form" class="form-horizontal" action="{{route('set-rfid')}}" method="POST" enctype="multipart/form-data">
+            <form id="create-rfid-form" class="form-horizontal" action="{{route('set-rfid')}}" method="POST" enctype="multipart/form-data">
                 <div class="modal-body"> 
                     <div class="row">
                         <div class="col-md-12">
@@ -167,7 +175,7 @@
                             <input name="refid" type="hidden" id="refid" />
                             <input name="action" type="hidden" value="get" />
                             <input name="type" type="hidden" value="fcl" />
-                            <div class="form-group">
+<!--                            <div class="form-group">
                                 <label class="col-sm-3 control-label">RFID</label>
                                 <div class="col-sm-8">
                                     <select class="form-control select2 select2-hidden-accessible" name="code" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
@@ -175,15 +183,20 @@
                                         @foreach($rfids as $rfid)
                                             <option value="{{ $rfid->code }}">{{ $rfid->code }}</option>
                                         @endforeach
-                                    </select>
+                                    </select>                                    
+                                </div>
+                            </div>-->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">RFID Code</label>
+                                <div class="col-sm-8">
+                                    <input type="text" id="code" onkeydown="return false" name="code" class="form-control" onblur="this.focus()" autofocus placeholder="Scan RFID Card" />
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
-                  <button type="submit" class="btn btn-primary">Set RFID</button>
+                  <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->
