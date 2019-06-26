@@ -65,7 +65,11 @@
         });  
         
         $('#code').on('input', function(){
-            $('#create-rfid-form').submit();
+//            delay(function(){
+                if ($("#code").val().length == 10) {
+                    $('#create-rfid-form').submit();
+                }
+//             }, 20 );           
         });
     });
     
@@ -189,7 +193,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">RFID Code</label>
                                 <div class="col-sm-8">
-                                    <input type="text" id="code" onkeydown="return false" name="code" class="form-control" onblur="this.focus()" autofocus placeholder="Scan RFID Card" />
+                                    <input type="text" id="code" name="code" class="form-control" onblur="this.focus()" autofocus placeholder="Scan RFID Card" />
                                 </div>
                             </div>
                         </div>
