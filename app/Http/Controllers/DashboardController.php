@@ -22,7 +22,8 @@ class DashboardController extends Controller
         $data['page_title'] = "Welcome to Dashboard";
         $data['page_description'] = "This is Admin Page WIS PT.AIRIN!";
         
-        $month = date('m');
+        $day = 23;
+        $month = 05;
         $year = date('Y');
         
         // FCL DASHBOARD       
@@ -52,7 +53,7 @@ class DashboardController extends Controller
         $data['totcounttpsp'] = array_sum(array($jict,$koja,$mal,$nct1,$pldc));
         $data['totcounttpsg'] = array_sum(array($jictg,$kojag,$malg,$nct1g,$pldcg));
         
-        $data['countfclcont'] = \App\Models\Containercy::whereNotNull('TGLMASUK')->whereNull('TGLRELEASE')->count();
+//        $data['countfclcont'] = \App\Models\Containercy::whereNotNull('TGLMASUK')->whereNull('TGLRELEASE')->count();
         
         $data['key_graph'] = json_encode(array('JICT', 'KOJA', 'MAL0', 'NCT1', 'PLDC'));
         $data['val_graph'] = json_encode(array($jict, $koja, $mal, $nct1, $pldc));
@@ -85,10 +86,13 @@ class DashboardController extends Controller
         $bcf26lcl = DBManifest::where('KD_DOK_INOUT', 5)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
         $data['countbydoclcl'] = array('BC 2.0' => $bc20lcl, 'BC 2.3' => $bc23lcl, 'Lain-lain' => $bc12lcl+$bc12lcl+$bc15lcl+$bc11lcl+$bcf26lcl);
         
-        $data['countlclmanifest'] = \App\Models\Manifest::whereNotNull('tglmasuk')->whereNotNull('tglstripping')->whereNull('tglrelease')->count();
+//        $data['countlclmanifest'] = \App\Models\Manifest::whereNotNull('tglmasuk')->whereNotNull('tglstripping')->whereNull('tglrelease')->count();
         
         $data['sor'] = \App\Models\SorYor::where('type', 'sor')->first();
         $data['yor'] = \App\Models\SorYor::where('type', 'yor')->first();
+        
+        // Laporan YOR NPCT
+        $data['yornpct'] = \App\Models\NpctYor::whereRaw('DAY(created_at) = '.$day)->whereRaw('MONTH(created_at) = '.$month)->whereRaw('YEAR(created_at) = '.$year)->get();
         
         return view('welcome')->with($data);
     }
