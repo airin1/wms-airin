@@ -238,8 +238,8 @@
                 @role('super-admin')
 
                 @else
-                    $('#TGLRELEASE').attr('disabled','disabled');
-                    $('#JAMRELEASE').attr('disabled','disabled');
+//                    $('#TGLRELEASE').attr('disabled','disabled');
+//                    $('#JAMRELEASE').attr('disabled','disabled');
                 @endrole
             }
             

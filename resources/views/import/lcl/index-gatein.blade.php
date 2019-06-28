@@ -83,8 +83,8 @@
                 @role('super-admin')
 
                 @else
-                    $("#TGLMASUK").attr('disabled','disabled');
-                    $("#JAMMASUK").attr('disabled','disabled');
+//                    $("#TGLMASUK").attr('disabled','disabled');
+//                    $("#JAMMASUK").attr('disabled','disabled');
                 @endrole
             }
 

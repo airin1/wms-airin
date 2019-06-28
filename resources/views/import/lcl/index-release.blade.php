@@ -240,8 +240,8 @@
                 @role('super-admin')
 
                 @else
-                    $('#tglrelease').attr('disabled','disabled');
-                    $('#jamrelease').attr('disabled','disabled');
+//                    $('#tglrelease').attr('disabled','disabled');
+//                    $('#jamrelease').attr('disabled','disabled');
                 @endrole
             }
   
