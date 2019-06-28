@@ -292,10 +292,12 @@ class BarcodeController extends Controller
                 case 'Fcl':
                     $model = \App\Models\Containercy::find($data_barcode->ref_id);
                     $ref_number = $model->REF_NUMBER;
+                    $ref_number_out = $model->REF_NUMBER_OUT;
                     break;
                 case 'Lcl':
                     $model = \App\Models\Container::find($data_barcode->ref_id);
                     $ref_number = $model->REF_NUMBER_IN;
+                    $ref_number_out = $model->REF_NUMBER_OUT;
                     break;
                 case 'Manifest':
                     $model = \App\Models\Manifest::find($data_barcode->ref_id);
@@ -391,7 +393,7 @@ class BarcodeController extends Controller
                             }
                             if($model->save()){
                                 // Check Coari Exist
-                                if($ref_number){
+                                if($ref_number_out){
                                     return $model->NOCONTAINER.' '.$data_barcode->ref_type.' '.$data_barcode->ref_action.' Updated';
                                 }else{
                                     $codeco_id = $this->uploadTpsOnlineCodecoCont($data_barcode->ref_type,$data_barcode->ref_id);
@@ -421,7 +423,7 @@ class BarcodeController extends Controller
                         }
                         if($model->save()){
                             // Check Coari Exist
-                            if($ref_number){
+                            if($ref_number_out){
                                 return $model->NOCONTAINER.' '.$data_barcode->ref_type.' '.$data_barcode->ref_action.' Updated';
                             }else{
                                 $codeco_id = $this->uploadTpsOnlineCodecoCont($data_barcode->ref_type,$data_barcode->ref_id);
