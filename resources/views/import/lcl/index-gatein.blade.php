@@ -75,17 +75,18 @@
                 $('#btn-group-2,#btn-photo').enableButtonGroup();
                 $('#btn-group-5').enableButtonGroup();
                 $('#gatein-form').enableFormGroup();
-//            if(!rowdata.TGLMASUK && !rowdata.JAMMASUK) {             
-                $('#UIDMASUK').val('{{ Auth::getUser()->name }}');
-//            }else{
-//                @role('super-admin')
-//
-//                @else
-//                    $("#TGLMASUK").attr('disabled','disabled');
-//                    $("#JAMMASUK").attr('disabled','disabled');
-//                @endrole  
-//            }
             @endrole
+            
+            if(!rowdata.TGLMASUK && !rowdata.JAMMASUK) {             
+                $('#UIDMASUK').val('{{ Auth::getUser()->name }}');
+            }else{
+                @role('super-admin')
+
+                @else
+                    $("#TGLMASUK").attr('disabled','disabled');
+                    $("#JAMMASUK").attr('disabled','disabled');
+                @endrole
+            }
 
         });
         
