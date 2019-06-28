@@ -334,9 +334,9 @@ class BarcodeController extends Controller
                                      return $model->NOCONTAINER.' '.$data_barcode->ref_type.' '.$data_barcode->ref_action.' Updated';
                                  }else{
                                     $coari_id = $this->uploadTpsOnlineCoariCont($data_barcode->ref_type,$data_barcode->ref_id);
-                                    return $model->NOCONTAINER.' '.$data_barcode->ref_type.' '.$data_barcode->ref_action.' XML Coari Created';
+//                                    return $model->NOCONTAINER.' '.$data_barcode->ref_type.' '.$data_barcode->ref_action.' XML Coari Created';
 //                                    return $coari_id;
-//                                    return redirect()->route('tps-coariCont-upload', $coari_id);
+                                    return redirect()->route('tps-coariCont-upload', $coari_id);
                                  }
                             }
   
@@ -397,9 +397,9 @@ class BarcodeController extends Controller
                                     return $model->NOCONTAINER.' '.$data_barcode->ref_type.' '.$data_barcode->ref_action.' Updated';
                                 }else{
                                     $codeco_id = $this->uploadTpsOnlineCodecoCont($data_barcode->ref_type,$data_barcode->ref_id);
-                                    return $model->NOCONTAINER.' '.$data_barcode->ref_type.' '.$data_barcode->ref_action.' XML Codeco Created';
+//                                    return $model->NOCONTAINER.' '.$data_barcode->ref_type.' '.$data_barcode->ref_action.' XML Codeco Created';
 //                                    return $codeco_id;
-//                                    return redirect()->route('tps-codecoCont-upload', $codeco_id);
+                                    return redirect()->route('tps-codecoCont-upload', $codeco_id);
                                 }
                             }else{
                                 return 'Something wrong!!! Cannot store to database';
@@ -427,8 +427,8 @@ class BarcodeController extends Controller
                                 return $model->NOCONTAINER.' '.$data_barcode->ref_type.' '.$data_barcode->ref_action.' Updated';
                             }else{
                                 $codeco_id = $this->uploadTpsOnlineCodecoCont($data_barcode->ref_type,$data_barcode->ref_id);
-                                return $model->NOCONTAINER.' '.$data_barcode->ref_type.' '.$data_barcode->ref_action.' XML Codeco Created';
-//                                return redirect()->route('tps-codecoCont-upload', $codeco_id);
+//                                return $model->NOCONTAINER.' '.$data_barcode->ref_type.' '.$data_barcode->ref_action.' XML Codeco Created';
+                                return redirect()->route('tps-codecoCont-upload', $codeco_id);
                             }
                         }else{
                             return 'Something wrong!!! Cannot store to database';
