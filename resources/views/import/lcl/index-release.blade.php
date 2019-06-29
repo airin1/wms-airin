@@ -105,17 +105,17 @@
                 $(".hide-kddoc").hide();
             }
             
-//            if($this == 1){
-//                @role('super-admin')
-//                    
-//                @else
-//                    $('#NO_SPPB').attr('disabled','disabled');
-//                    $('#TGL_SPPB').attr('disabled','disabled');
-//                @endrole
-//            }else{
-//                $('#NO_SPPB').removeAttr('disabled');
-//                $('#TGL_SPPB').removeAttr('disabled');
-//            }
+            if($this == 1){
+                @role('super-admin')
+                    
+                @else
+                    $('#NO_SPPB').attr('disabled','disabled');
+                    $('#TGL_SPPB').attr('disabled','disabled');
+                @endrole
+            }else{
+                $('#NO_SPPB').removeAttr('disabled');
+                $('#TGL_SPPB').removeAttr('disabled');
+            }
         });
         
         $('#get-sppb-btn').click(function(){
@@ -225,25 +225,25 @@
                 $('#btn-group-5').enableButtonGroup();
             @endrole
             
-//            if(rowdata.KD_DOK_INOUT == 1){
-//                @role('super-admin')
-//                    
-//                @else
-//                    $('#NO_SPPB').attr('disabled','disabled');
-//                    $('#TGL_SPPB').attr('disabled','disabled');
-//                @endrole
-//            }
+            if(rowdata.KD_DOK_INOUT == 1){
+                @role('super-admin')
+                    
+                @else
+                    $('#NO_SPPB').attr('disabled','disabled');
+                    $('#TGL_SPPB').attr('disabled','disabled');
+                @endrole
+            }
             
-//            if(!rowdata.tglrelease && !rowdata.jamrelease) {
-//
-//            }else{ 
-//                @role('super-admin')
-//
-//                @else
+            if(!rowdata.tglrelease && !rowdata.jamrelease) {
+
+            }else{ 
+                @role('super-admin')
+
+                @else
 //                    $('#tglrelease').attr('disabled','disabled');
 //                    $('#jamrelease').attr('disabled','disabled');
-//                @endrole
-//            }
+                @endrole
+            }
   
             if(rowdata.status_bc == 'HOLD'){
                 $('#tglrelease').attr('disabled','disabled');
