@@ -128,12 +128,12 @@
                 if(!rowdata.TGLMASUK && !rowdata.JAMMASUK) {
                     $('#UIDMASUK').val('{{ Auth::getUser()->name }}');
                 }else{           
-//                    @role('super-admin')
-//
-//                    @else
+                    @role('super-admin')
+
+                    @else
 //                        $("#TGLMASUK").attr('disabled','disabled');
 //                        $("#JAMMASUK").attr('disabled','disabled');
-//                    @endrole
+                    @endrole
                 }
             @endrole
 
