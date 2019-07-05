@@ -657,7 +657,7 @@ class LclController extends Controller
 //        unset($data['TCONTAINER_PK'], $data['working_hours'], $data['_token']);
         
         if($delete_photo == 'Y'){
-            $data['photo_stripping'] = '';
+            $dataupdate['photo_stripping'] = '';
         }
         
         $dataupdate['STARTSTRIPPING'] = $data['STARTSTRIPPING'].' '.$data['JAMSTARTSTRIPPING'];
