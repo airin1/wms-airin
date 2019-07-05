@@ -652,8 +652,13 @@ class LclController extends Controller
     public function strippingUpdate(Request $request, $id)
     {
         $data = $request->json()->all(); 
+        $delete_photo = $data['delete_photo'];
         $dataupdate = array();
 //        unset($data['TCONTAINER_PK'], $data['working_hours'], $data['_token']);
+        
+        if($delete_photo == 'Y'){
+            $data['photo_stripping'] = '';
+        }
         
         $dataupdate['STARTSTRIPPING'] = $data['STARTSTRIPPING'].' '.$data['JAMSTARTSTRIPPING'];
         $dataupdate['ENDSTRIPPING'] = $data['ENDSTRIPPING'].' '.$data['JAMENDSTRIPPING'];
