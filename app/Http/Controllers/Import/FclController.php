@@ -202,7 +202,7 @@ class FclController extends Controller
         
         $data['eseals'] = DBEseal::select('eseal_id as id','esealcode as code')->get();
         
-        return view('import.fcl.index-dispatche-ob')->with($data);
+        return view('import.fcl.index-dispatche')->with($data);
     }
 
     /**
@@ -830,6 +830,21 @@ class FclController extends Controller
         return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
     }
     
+    public function dispatcheUpdateByRegister(Request $request, $id)
+    {
+        $data = $request->json()->all(); 
+        unset($data['TCONTAINER_PK'], $data['_token'], $data['container_type']);
+        
+        $update = DBContainer::where('TCONTAINER_PK', $id)
+            ->update($data);
+        
+        if($update){
+            return json_encode(array('success' => true, 'message' => 'Container successfully updated.'));
+        }
+        
+        return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
+    }
+    
     public function dispatcheUpdate(Request $request, $id)
     {
         $data = $request->json()->all(); 
@@ -1092,7 +1107,7 @@ class FclController extends Controller
                     $message->subject($subject);
 //                    $message->to('reethree269@gmail.com');
                     $message->to($dataGateOut->email, $dataGateOut->shippingline);
-                    $message->cc('busdev@jict.co.id');
+//                    $message->cc('busdev@jict.co.id');
                 });
                 
                 if($send_email){
@@ -2314,7 +2329,25 @@ class FclController extends Controller
 //        }
         $container->photo_lock = json_encode($picture);
             
+        if($alasan == 'IKP / Temuan Lapangan'){
+            $container->BEHANDLE = 'Y';
+            $container->status_behandle = 'New';
+        }
+        
         if($container->save()){
+            // Save to log
+            $datalog = array(
+                'ref_id' => $container_id,
+                'ref_type' => 'fcl',
+                'no_segel'=> $container->no_flag_bc,
+                'alasan' => $container->alasan_segel,
+                'keterangan' => $container->description_flag_bc,
+                'photo' => $container->photo_lock,
+                'action' => 'lock',
+                'uid' => \Auth::getUser()->name
+            );
+            $this->addLogSegel($datalog);
+            
             return back()->with('success', 'Flag has been locked.')->withInput();
         }
         
@@ -2362,6 +2395,19 @@ class FclController extends Controller
         $container->photo_unlock = json_encode($picture);
         
         if($container->save()){
+            // Save to log
+            $datalog = array(
+                'ref_id' => $container_id,
+                'ref_type' => 'fcl',
+                'no_segel'=> $container->no_unflag_bc,
+                'alasan' => $container->alasan_lepas_segel,
+                'keterangan' => $container->description_unflag_bc,
+                'photo' => $container->photo_unlock,
+                'action' => 'unlock',
+                'uid' => \Auth::getUser()->name
+            );
+            $this->addLogSegel($datalog);
+            
             return back()->with('success', 'Flag has been unlocked.')->withInput();
         }
         
@@ -2371,7 +2417,8 @@ class FclController extends Controller
     public function viewFlagInfo($container_id)
     {
         $container = DBContainer::find($container_id);
-        return json_encode(array('success' => true, 'data' => $container));
+        $data = \DB::table('log_segel')->where(array('ref_id' => $container_id,'ref_type' => 'fcl'))->get();
+        return json_encode(array('success' => true, 'data' => $data, 'NOCONTAINER' => $container->NOCONTAINER, 'container' => $container));
     }
     
     public function changeStatusBehandle(Request $request)
@@ -2388,8 +2435,8 @@ class FclController extends Controller
         }else{
             $container->date_finish_behandle = date('Y-m-d H:i:s');
             $container->desc_finish_behandle = $desc;
-            $container->TGLBEHANDLE = date('Y-m-d');
-            $container->JAMBEHANDLE = date('H:i:s');
+//            $container->TGLBEHANDLE = date('Y-m-d');
+//            $container->JAMBEHANDLE = date('H:i:s');
 }
 
         if($container->save()){

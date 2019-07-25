@@ -29,6 +29,12 @@
             $('#NOJOBORDER').val(rowdata.NoJob);
             $('#NO_PLP').val(rowdata.NO_PLP);
             $('#TGL_PLP').val(rowdata.TGL_PLP);
+            $('#KD_TPS_ASAL').val(rowdata.KD_TPS_ASAL);
+            $('#TGL_DISPATCHE').val(rowdata.TGL_DISPATCHE);
+            $('#JAM_DISPATCHE').val(rowdata.JAM_DISPATCHE);
+            $('#TGL_KELUAR_TPK_ESEAL').val(rowdata.TGL_KELUAR_TPK_ESEAL);
+            $('#JAM_KELUAR_TPK_ESEAL').val(rowdata.JAM_KELUAR_TPK_ESEAL);
+            
             $('#ESEALCODE').val(rowdata.ESEALCODE).trigger('change');
             $('#RESPONSE_DISPATCHE').val(rowdata.RESPONSE_DISPATCHE);
             $('#STATUS_DISPATCHE').val(rowdata.STATUS_DISPATCHE);
@@ -68,7 +74,8 @@
             
             $.ajax({
                 type: 'POST',
-                data: JSON.stringify($('#dispatche-form').formToObject('')),
+//                data: JSON.stringify($('#dispatche-form').formToObject('')),
+                data: $('#dispatche-form').formToObject(''),
                 dataType : 'json',
                 url: '{{ route("easygo-inputdo") }}',
                 error: function (jqXHR, textStatus, errorThrown)
@@ -174,8 +181,8 @@
                     ->addColumn(array('key'=>true,'index'=>'TCONTAINER_PK','hidden'=>true))
                     ->addColumn(array('label'=>'No. Container','index'=>'NOCONTAINER','width'=>160,'editable' => true, 'editrules' => array('required' => true)))
                     ->addColumn(array('label'=>'No. SPK','index'=>'NoJob','width'=>160))
-                    ->addColumn(array('label'=>'No. MBL','index'=>'NOMBL','width'=>160))
-                    ->addColumn(array('label'=>'Tgl. MBL','index'=>'TGL_MASTER_BL','width'=>150,'align'=>'center'))
+                    ->addColumn(array('label'=>'No. MBL','index'=>'NOMBL','width'=>160,'hidden'=>true))
+                    ->addColumn(array('label'=>'Tgl. MBL','index'=>'TGL_MASTER_BL','width'=>150,'align'=>'center','hidden'=>true))
                     ->addColumn(array('label'=>'Consolidator','index'=>'NAMACONSOLIDATOR','width'=>250))
                     ->addColumn(array('label'=>'Vessel','index'=>'VESSEL', 'width'=>100,'align'=>'center'))
                     ->addColumn(array('label'=>'Voy','index'=>'VOY', 'width'=>100,'align'=>'center'))
@@ -200,7 +207,7 @@
                     ->addColumn(array('label'=>'Jam Keluar TPK','index'=>'JAM_KELUAR_TPK_ESEAL', 'width'=>150,'hidden'=>true))
 //                    ->addColumn(array('label'=>'Kode Dokumen','index'=>'KODE_DOKUMEN', 'width'=>150,'hidden'=>true))
 //                    ->addColumn(array('index'=>'KD_DOK_INOUT', 'width'=>150,'hidden'=>true))
-//                    ->addColumn(array('label'=>'Kode Kuitansi','index'=>'NO_KUITANSI', 'width'=>150,'hidden'=>true))
+                    ->addColumn(array('label'=>'TPS Asal','index'=>'KD_TPS_ASAL', 'width'=>150,'hidden'=>true))
 //                    ->addColumn(array('label'=>'Consignee','index'=>'CONSIGNEE','width'=>160))
 //                    ->addColumn(array('label'=>'Importir','index'=>'NAMA_IMP','width'=>160))
 //                    ->addColumn(array('label'=>'NPWP Importir','index'=>'NPWP_IMP','width'=>160))
@@ -290,6 +297,12 @@
                             <input type="text" id="VESSEL" name="VESSEL" class="form-control" readonly>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">TPS Asal</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="KD_TPS_ASAL" name="KD_TPS_ASAL" class="form-control" readonly>
+                </div>
+                    </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
@@ -377,12 +390,12 @@
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <input type="text" id="TGL_DISPATCHE" name="TGL_DISPATCHE" class="form-control pull-right datepicker" required value="{{ date('Y-m-d') }}">
+                                <input type="text" id="TGL_DISPATCHE" name="TGL_DISPATCHE" class="form-control pull-right datepicker" required>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="input-group">
-                                <input type="text" id="JAM_DISPATCHE" name="JAM_DISPATCHE" class="form-control timepicker" value="{{ date('H:i:s') }}" required>
+                                <input type="text" id="JAM_DISPATCHE" name="JAM_DISPATCHE" class="form-control timepicker" required>
                                 <div class="input-group-addon">
                                       <i class="fa fa-clock-o"></i>
                                 </div>
@@ -398,12 +411,12 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input type="text" id="TGL_KELUAR_TPK_ESEAL" name="TGL_KELUAR_TPK_ESEAL" class="form-control pull-right datepicker" required value="{{ date('Y-m-d') }}">
+                                    <input type="text" id="TGL_KELUAR_TPK_ESEAL" name="TGL_KELUAR_TPK_ESEAL" class="form-control pull-right datepicker" required>
                                 </div>
                             </div>
                             <div class="col-sm-4">
                                 <div class="input-group">
-                                    <input type="text" id="JAM_KELUAR_TPK_ESEAL" name="JAM_KELUAR_TPK_ESEAL" class="form-control timepicker" value="{{ date('H:i:s') }}" required>
+                                    <input type="text" id="JAM_KELUAR_TPK_ESEAL" name="JAM_KELUAR_TPK_ESEAL" class="form-control timepicker" required>
                                     <div class="input-group-addon">
                                           <i class="fa fa-clock-o"></i>
                                     </div>

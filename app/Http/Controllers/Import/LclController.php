@@ -245,7 +245,7 @@ class LclController extends Controller
         
         $data['eseals'] = DBEseal::select('eseal_id as id','esealcode as code')->get();
         
-        return view('import.lcl.index-dispatche-ob')->with($data);
+        return view('import.lcl.index-dispatche')->with($data);
     }
     
     /**
@@ -652,9 +652,10 @@ class LclController extends Controller
     public function strippingUpdate(Request $request, $id)
     {
         $data = $request->json()->all(); 
-        $delete_photo = $data['delete_photo'];
         $dataupdate = array();
 //        unset($data['TCONTAINER_PK'], $data['working_hours'], $data['_token']);
+        
+        $delete_photo = $data['delete_photo'];
         
         if($delete_photo == 'Y'){
             $dataupdate['photo_stripping'] = '';
@@ -969,29 +970,41 @@ class LclController extends Controller
     {
         $data = $request->json()->all(); 
 //        return $data;
-//        unset($data['TCONTAINER_PK'], $data['_token'], $data['container_type']);
-//        
-//        $update = DBContainer::where('TCONTAINER_PK', $id)
-//            ->update($data);
+        unset($data['TCONTAINER_PK'], $data['_token'], $data['container_type']);
         
-        $insert = new \App\Models\Easygo;
-        $insert->ESEALCODE = $data['ESEALCODE'];
-	$insert->TGL_PLP = $data['TGL_PLP'];
-	$insert->NO_PLP = $data['NO_PLP'];
-        $insert->KD_TPS_ASAL = $data['KD_TPS_ASAL'];
-        $insert->KD_TPS_TUJUAN = 'AIRN';
-        $insert->NOCONTAINER = $data['NO_CONT'];
-        $insert->SIZE = $data['UK_CONT'];
-        $insert->TYPE = $data['TYPE'];
-        $insert->NOPOL = $data['NOPOL'];
-        $insert->OB_ID = $id;
+        $update = DBContainer::where('TCONTAINER_PK', $id)
+            ->update($data);
         
-        if($insert->save()){
-            
-            $updateOB = \App\Models\TpsOb::where('TPSOBXML_PK', $id)->update(['STATUS_DISPATCHE' => 'S']);
-            
+        if($update){
             return json_encode(array('success' => true, 'message' => 'Container successfully updated.'));
         }
+        
+//        $insert = new \App\Models\Easygo;
+//        $insert->ESEALCODE = $data['ESEALCODE'];
+//	$insert->TGL_PLP = $data['TGL_PLP'];
+//	$insert->NO_PLP = $data['NO_PLP'];
+//        $insert->KD_TPS_ASAL = $data['KD_TPS_ASAL'];
+//        $insert->KD_TPS_TUJUAN = 'PRJP';
+//        $insert->NOCONTAINER = $data['NO_CONT'];
+//        $insert->SIZE = $data['UK_CONT'];
+//        $insert->TYPE = $data['container_type'];
+//        $insert->NOPOL = $data['NOPOL'];
+//        $insert->OB_ID = $id;
+//        
+//        if($insert->save()){
+//            
+//            $updateOB = \App\Models\TpsOb::where('TPSOBXML_PK', $id)->update(['STATUS_DISPATCHE' => 'S']);
+//            
+//            // Update Container
+//            $container = DBContainer::where(array('NOCONTAINER' => $data['NOCONTAINER'], 'NO_PLP' => $data['NO_PLP']))->first(); 
+//            if($container){
+//                $container->NOPOL = $data['NOPOL'];
+//                $container->ESEALCODE = $data['ESEALCODE'];
+//                $container->save();
+//            }
+//            
+//            return json_encode(array('success' => true, 'message' => 'Container successfully updated.'));
+//        }
         
         return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
     }
@@ -2425,7 +2438,25 @@ class LclController extends Controller
 //        }
         $manifest->photo_lock = json_encode($picture);
             
+        if($alasan == 'IKP / Temuan Lapangan'){
+            $manifest->BEHANDLE = 'Y';
+            $manifest->status_behandle = 'New';
+        }
+        
         if($manifest->save()){
+            // Save to log
+            $datalog = array(
+                'ref_id' => $manifest_id,
+                'ref_type' => 'lcl',
+                'no_segel'=> $manifest->no_flag_bc,
+                'alasan' => $manifest->alasan_segel,
+                'keterangan' => $manifest->description_flag_bc,
+                'photo' => $manifest->photo_lock,
+                'action' => 'lock',
+                'uid' => \Auth::getUser()->name
+            );
+            $this->addLogSegel($datalog);
+            
             return back()->with('success', 'Flag has been locked.')->withInput();
         }
         
@@ -2474,6 +2505,19 @@ class LclController extends Controller
         $manifest->photo_unlock = json_encode($picture);
         
         if($manifest->save()){
+            // Save to log
+            $datalog = array(
+                'ref_id' => $manifest_id,
+                'ref_type' => 'lcl',
+                'no_segel'=> $manifest->no_unflag_bc,
+                'alasan' => $manifest->alasan_lepas_segel,
+                'keterangan' => $manifest->description_unflag_bc,
+                'photo' => $manifest->photo_unlock,
+                'action' => 'unlock',
+                'uid' => \Auth::getUser()->name
+            );
+            $this->addLogSegel($datalog);
+            
             return back()->with('success', 'Flag has been unlocked.')->withInput();
         }
         
@@ -2483,7 +2527,8 @@ class LclController extends Controller
     public function viewFlagInfo($manifest_id)
     {
         $manifest = DBManifest::find($manifest_id);
-        return json_encode(array('success' => true, 'data' => $manifest));
+        $data = \DB::table('log_segel')->where(array('ref_id' => $manifest_id,'ref_type' => 'lcl'))->get();
+        return json_encode(array('success' => true, 'data' => $data, 'NOHBL' => $manifest->NOHBL, 'manifest' => $manifest));
     }
     
     public function changeStatusBehandle(Request $request)
@@ -2500,8 +2545,8 @@ class LclController extends Controller
         }else{
             $manifest->date_finish_behandle = date('Y-m-d H:i:s');
             $manifest->desc_finish_behandle = $desc;
-            $manifest->tglbehandle = date('Y-m-d');
-            $manifest->jambehandle = date('H:i:s');
+//            $manifest->tglbehandle = date('Y-m-d');
+//            $manifest->jambehandle = date('H:i:s');
 }
 
         if($manifest->save()){
