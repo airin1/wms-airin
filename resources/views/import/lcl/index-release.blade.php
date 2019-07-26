@@ -227,11 +227,18 @@
             
             if(rowdata.KD_DOK_INOUT == 1){
                 @role('super-admin')
-                    
+                    $('#NO_SPPB').removeAttr('disabled');
+                    $('#TGL_SPPB').removeAttr('disabled');
                 @else
                     $('#NO_SPPB').attr('disabled','disabled');
                     $('#TGL_SPPB').attr('disabled','disabled');
                 @endrole
+            }else if(rowdata.KD_DOK_INOUT == ""){
+                $('#NO_SPPB').attr('disabled','disabled');
+                $('#TGL_SPPB').attr('disabled','disabled');
+            }else{
+                $('#NO_SPPB').removeAttr('disabled');
+                $('#TGL_SPPB').removeAttr('disabled');
             }
             
             if(!rowdata.tglrelease && !rowdata.jamrelease) {
@@ -369,9 +376,16 @@
             var $grid = $("#lclReleaseGrid"), selIds = $grid.jqGrid("getGridParam", "selarrrow"), i, n,
                 cellValues = [];
             for (i = 0, n = selIds.length; i < n; i++) {
+                var check_sppb = $grid.jqGrid("getCell", selIds[i], "NO_SPPB");
+                
+                if(check_sppb == ''){
+                    alert('Silahkan masukan No. SPPB terlebih dahulu!!!');
+                    return false;
+                }
+                
                 cellValues.push($grid.jqGrid("getCell", selIds[i], "TMANIFEST_PK"));
             }
-//            console.log(cellValues);
+            console.log(cellValues);
             var manifestId = cellValues.join(",");
             
             if(!manifestId) {alert('Please Select Row');return false;}      
