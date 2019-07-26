@@ -638,8 +638,10 @@
         $('#delete_photo').val('Y');
     });
     
-    $("#view-photo-bl-btn").on("click", function(){
-        var cont_id = $(this).data("id");
+    $("#view-photo-bl-btn").on("click", function(e){
+        e.preventDefault();
+        var cont_id = $(this).attr('data-id');
+
         window.open("{{ route('lcl-realisasi-stripping-view-photo-bl', '') }}/"+cont_id,"View B/L Photo","width=600,height=600,menubar=no,status=no,scrollbars=yes");
     });
     
