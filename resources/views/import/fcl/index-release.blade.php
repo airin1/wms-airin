@@ -230,6 +230,12 @@
                     $('#NO_SPPB').attr('disabled','disabled');
                     $('#TGL_SPPB').attr('disabled','disabled');
                 @endrole
+            }else if(rowdata.KD_DOK_INOUT == ""){
+                $('#NO_SPPB').attr('disabled','disabled');
+                $('#TGL_SPPB').attr('disabled','disabled');
+            }else{
+                $('#NO_SPPB').removeAttr('disabled');
+                $('#TGL_SPPB').removeAttr('disabled');
             }
             
             if(!rowdata.TGLRELEASE && !rowdata.JAMRELEASE) {
@@ -327,6 +333,12 @@
             var $grid = $("#fclReleaseGrid"), selIds = $grid.jqGrid("getGridParam", "selarrrow"), i, n,
                 cellValues = [];
             for (i = 0, n = selIds.length; i < n; i++) {
+                var check_sppb = $grid.jqGrid("getCell", selIds[i], "NO_SPPB");
+                
+                if(check_sppb == ''){
+                    alert('Silahkan masukan No. SPPB terlebih dahulu!!!');
+                    return false;
+                }
                 cellValues.push($grid.jqGrid("getCell", selIds[i], "TCONTAINER_PK"));
             }
             
