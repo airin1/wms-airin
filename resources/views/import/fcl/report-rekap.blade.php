@@ -126,14 +126,12 @@
             if(!containerId) {alert('Please Select Row');return false;}
                 
             var id_shippingline = $grid.jqGrid("getCell", selIds[0], "TSHIPPINGLINE_FK");
-            console.log(id_shippingline);
+
             if(!id_shippingline) {alert('Shipping Line not found!!!');return false;}
             
             $('#create-report-npct-modal').modal('show');     
             
             $('#shippingline_id_npct').val(id_shippingline);
-//            $('#consignee').val($grid.jqGrid("getCell", selIds[0], "CONSIGNEE"));
-//            $('#npwp').val($grid.jqGrid("getCell", selIds[0], "ID_CONSIGNEE"));
             $('#container_id_selected_npct').val(containerId);
             
         });
