@@ -827,8 +827,8 @@ class PenerimaanController extends Controller
                         $data['NAMACONSOLIDATOR'] = $namaconsolidator->NAMALOKASISANDAR;
                     }
                     
-                    if($request->TSHIPPINGLINE_FK){
-                        $namashippingline = \App\Models\Shippingline::select('SHIPPINGLINE')->where('TSHIPPINGLINE_PK',$request->TSHIPPINGLINE_FK)->first();
+                    $namashippingline = \App\Models\Shippingline::select('SHIPPINGLINE')->where('TSHIPPINGLINE_PK',$request->TSHIPPINGLINE_FK)->first();
+                    if($namashippingline){                        
                         $data['TSHIPPINGLINE_FK'] = $request->TSHIPPINGLINE_FK;
                         $data['SHIPPINGLINE'] = $namashippingline->SHIPPINGLINE;
                     }
