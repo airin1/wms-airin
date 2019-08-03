@@ -277,6 +277,7 @@ class PenerimaanController extends Controller
         
         $data['consolidators'] = \App\Models\Consolidator::select('TCONSOLIDATOR_PK as id','NAMACONSOLIDATOR as name')->get();        
         $data['lokasisandars'] = \App\Models\Lokasisandar::select('TLOKASISANDAR_PK as id','NAMALOKASISANDAR as name')->get();
+        $data['shippinglines'] = \App\Models\Shippingline::select('TSHIPPINGLINE_PK as id','SHIPPINGLINE as name')->get();
         
         return view('tpsonline.edit-respon-plp')->with($data);
     }
@@ -826,6 +827,12 @@ class PenerimaanController extends Controller
                         $data['NAMACONSOLIDATOR'] = $namaconsolidator->NAMALOKASISANDAR;
                     }
                     
+                    if($request->TSHIPPINGLINE_FK){
+                        $namashippingline = \App\Models\Shippingline::select('SHIPPINGLINE')->where('TSHIPPINGLINE_PK',$request->TSHIPPINGLINE_FK)->first();
+                        $data['TSHIPPINGLINE_FK'] = $request->TSHIPPINGLINE_FK;
+                        $data['SHIPPINGLINE'] = $namashippingline->SHIPPINGLINE;
+                    }
+                    
                     $namaconsignee = \App\Models\Perusahaan::select('TPERUSAHAAN_PK','NAMAPERUSAHAAN','NPWP')->where('NAMAPERUSAHAAN',$detail->CONSIGNEE)->first();
                     if($namaconsignee){
                         $data['TCONSIGNEE_FK'] = $namaconsignee->TPERUSAHAAN_PK;
@@ -866,6 +873,8 @@ class PenerimaanController extends Controller
                                 $data['CONSIGNEE'] = $joborder->CONSIGNEE;
                                 $data['ID_CONSIGNEE'] = $joborder->ID_CONSIGNEE;
                         //        $data['TLOKASISANDAR_FK'] = $joborder->TLOKASISANDAR_FK;
+                                $data['TSHIPPINGLINE_FK'] = $joborder->TSHIPPINGLINE_FK;
+                                $data['SHIPPINGLINE'] = $joborder->SHIPPINGLINE;
                                 $data['ETA'] = $joborder->ETA;
                                 $data['ETD'] = $joborder->ETD;
                                 $data['VESSEL'] = $joborder->VESSEL;
