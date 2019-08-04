@@ -1168,6 +1168,7 @@ UNZ+1+1709131341'\n";
             $message->sender('tps@airin.co.id');
             $message->subject($subject);
             $message->to('andikabayuprjp@gmail.com');
+            $message->cc('reethree269@gmail.com');
             $message->attachData($dataTxt, $file);
         });
 
