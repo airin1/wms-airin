@@ -198,6 +198,7 @@
             $('#KD_DOK_INOUT').val(rowdata.KD_DOK_INOUT).trigger('change');
             $('#bcf_consignee').val(rowdata.bcf_consignee).trigger('change');
             $('#KD_TPS_ASAL').val(rowdata.KD_TPS_ASAL);
+            $('#TSHIPPINGLINE_FK').val(rowdata.TSHIPPINGLINE_FK).trigger('change');
 
             $('#upload-title').html('Upload Photo for '+rowdata.NOCONTAINER);
             $('#no_cont').val(rowdata.NOCONTAINER);
@@ -436,6 +437,7 @@
                     ->setGridEvent('onSelectRow', 'onSelectRowEvent')
                     ->setGridEvent('gridComplete', 'gridCompleteEvent')
                     ->addColumn(array('key'=>true,'index'=>'TCONTAINER_PK','hidden'=>true))
+                    ->addColumn(array('index'=>'TSHIPPINGLINE_FK','hidden'=>true))
                     ->addColumn(array('label'=>'Photo','index'=>'action', 'width'=>120, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
                     ->addColumn(array('label'=>'Status BC','index'=>'status_bc','width'=>100, 'align'=>'center'))
                     ->addColumn(array('label'=>'Segel Merah','index'=>'flag_bc','width'=>80, 'align'=>'center'))
@@ -522,6 +524,7 @@
                     ->setGridEvent('onSelectRow', 'onSelectRowEvent')
                     ->setGridEvent('gridComplete', 'gridCompleteEvent')
                     ->addColumn(array('key'=>true,'index'=>'TCONTAINER_PK','hidden'=>true))
+                    ->addColumn(array('index'=>'TSHIPPINGLINE_FK','hidden'=>true))
                     ->addColumn(array('label'=>'Photo','index'=>'action', 'width'=>120, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
                     ->addColumn(array('label'=>'Status BC','index'=>'status_bc','width'=>100, 'align'=>'center'))
                     ->addColumn(array('label'=>'Segel Merah','index'=>'flag_bc','width'=>80, 'align'=>'center'))
@@ -638,6 +641,17 @@
                         <label class="col-sm-2 control-label">TPS Asal</label>
                         <div class="col-sm-3">
                             <input type="text" id="KD_TPS_ASAL" name="KD_TPS_ASAL" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Shipping Line</label>
+                        <div class="col-sm-8">
+                            <select class="form-control select2" id="TSHIPPINGLINE_FK" name="TSHIPPINGLINE_FK" style="width: 100%;" tabindex="-1" aria-hidden="true" >
+                                <option value="">Choose Shipping Line</option>
+                                @foreach($shippinglines as $shippingline)
+                                    <option value="{{ $shippingline->id }}">{{ $shippingline->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
 <!--                    <div class="form-group">

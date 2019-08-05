@@ -177,7 +177,8 @@ class FclController extends Controller
         ];        
         
         $data['kode_doks'] = \App\Models\KodeDok::get(); 
-        $data['perusahaans'] = DBPerusahaan::select('TPERUSAHAAN_PK as id', 'NAMAPERUSAHAAN as name')->get();
+//        $data['perusahaans'] = DBPerusahaan::select('TPERUSAHAAN_PK as id', 'NAMAPERUSAHAAN as name')->get();
+        $data['shippinglines'] = DBShippingline::select('TSHIPPINGLINE_PK as id','SHIPPINGLINE as name')->get();
         
         return view('import.fcl.index-release')->with($data);
     }
@@ -779,6 +780,10 @@ class FclController extends Controller
         if($kd_dok):
             $data['KODE_DOKUMEN'] = $kd_dok->name;
         endif;
+        if($data['TSHIPPINGLINE_FK']){
+            $namashippingline = DBShippingline::select('SHIPPINGLINE')->where('TSHIPPINGLINE_PK',$data['TSHIPPINGLINE_FK'])->first();
+            $data['SHIPPINGLINE'] = $namashippingline->SHIPPINGLINE;
+        }
         
         if(empty($data['TGLRELEASE']) || $data['TGLRELEASE'] == '0000-00-00'){
             $data['TGLRELEASE'] = NULL;
