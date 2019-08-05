@@ -92,6 +92,11 @@ Route::group(['prefix' => 'fcl', 'namespace' => 'Import'], function(){
         'uses' => 'FclController@reportRealisasiPlp'
     ]);
     
+    Route::post('/report/rekap/sendemail-npct', [
+        'as' => 'fcl-report-sendemail-npct',
+        'uses' => 'FclController@reportRekapSendNpct'
+    ]);
+    
     Route::get('/report/longstay/change-status-flag/{id}', [
         'as' => 'fcl-change-status-flag',
         'uses' => 'FclController@changeStatusFlag'

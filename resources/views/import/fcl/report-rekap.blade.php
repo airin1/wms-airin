@@ -114,6 +114,28 @@
             
         });
         
+        $('#btn-report-npct').on("click", function(){
+            
+            var $grid = $("#fclContainerReportGrid"), selIds = $grid.jqGrid("getGridParam", "selarrrow"), i, n,
+                cellValues = [];
+            for (i = 0, n = selIds.length; i < n; i++) {
+                cellValues.push($grid.jqGrid("getCell", selIds[i], "TCONTAINER_PK"));
+            }
+            
+            var containerId = cellValues.join(",");
+            if(!containerId) {alert('Please Select Row');return false;}
+                
+            var id_shippingline = $grid.jqGrid("getCell", selIds[0], "TSHIPPINGLINE_FK");
+
+            if(!id_shippingline) {alert('Shipping Line not found!!!');return false;}
+            
+            $('#create-report-npct-modal').modal('show');     
+            
+            $('#shippingline_id_npct').val(id_shippingline);
+            $('#container_id_selected_npct').val(containerId);
+            
+        });
+        
         $('#btn-create-report').on('click', function(){
             var $grid = $("#fclContainerReportGrid"), selIds = $grid.jqGrid("getGridParam", "selarrrow"), i, n,
                 cellValues = [];
@@ -269,6 +291,7 @@
     <div class="box-footer with-border">
         <button type="button" class="btn btn-danger" id="btn-create-report"><i class="fa fa-wrench"></i> Realisasi PLP</button>
         <button type="button" class="btn btn-info pull-right" id="btn-report"><i class="fa fa-paperclip"></i> Send Report</button>
+        <button type="button" class="btn btn-warning pull-right" id="btn-report-npct" style="margin-right: 10px;"><i class="fa fa-envelope"></i> Send Report TXT</button>
     </div>
 </div>
 
@@ -442,6 +465,48 @@
                                         </div>
                                         <input type="text" name="tgl_laporan" class="form-control pull-right datepicker" value="{{date('Y-m-d')}}" required>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Send Report</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div id="create-report-npct-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Please Choose Report Type</h4>
+            </div>
+            <form id="create-invoice-form" class="form-horizontal" action="{{ route("fcl-report-sendemail-npct") }}" method="POST" enctype="multipart/form-data">
+                <div class="modal-body"> 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input name="_token" type="hidden" value="{{ csrf_token() }}" />
+                            <input name="id" type="hidden" id="container_id_selected_npct" />
+                            <input name="shippingline_id" type="hidden" id="shippingline_id_npct" />
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Subject Email</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" name="subject" value="GATE OUT CONTAINER (PELAYARAN HAPAG LLOYD) TPS AIRIN" required />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Type</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control select2" name="type" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
+                                        <option value="">Choose Codeco Type</option>
+                                        <option value="34">CODECO-IN</option>
+                                        <option value="36">CODECO-OUT</option>
+                                    </select>
                                 </div>
                             </div>
                         </div>

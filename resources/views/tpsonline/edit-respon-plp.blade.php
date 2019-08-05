@@ -1,7 +1,16 @@
 @extends('layout')
 
 @section('content')
-
+<style>
+    .datepicker.dropdown-menu {
+        z-index: 9999 !important;
+    }
+    th.ui-th-column div{
+        white-space:normal !important;
+        height:auto !important;
+        padding:2px;
+    }
+</style>
 @include('partials.form-alert')
 
 <script>
@@ -275,7 +284,7 @@
     </div>
 </div>
 
-<div id="plp-modal" class="modal fade" tabindex="-1" role="dialog">
+<div id="plp-modal" class="modal fade" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -303,6 +312,17 @@
                                         @endforeach
                                         @foreach($lokasisandars as $lokasisandar)
                                             <option value="{{ $lokasisandar->id }}">{{ $lokasisandar->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Shipping Line</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control select2" name="TSHIPPINGLINE_FK" style="width: 100%;" tabindex="-1" aria-hidden="true" >
+                                        <option value="">Choose Shipping Line</option>
+                                        @foreach($shippinglines as $shippingline)
+                                            <option value="{{ $shippingline->id }}">{{ $shippingline->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
