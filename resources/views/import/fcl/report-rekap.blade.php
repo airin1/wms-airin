@@ -499,7 +499,7 @@
                                     <input type="text" class="form-control" name="subject" value="GATE OUT CONTAINER (PELAYARAN HAPAG LLOYD) TPS AIRIN" required />
                                 </div>
                             </div>
-                            <div class="form-group">
+<!--                            <div class="form-group">
                                 <label class="col-sm-3 control-label">Type</label>
                                 <div class="col-sm-8">
                                     <select class="form-control select2" name="type" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
@@ -508,7 +508,7 @@
                                         <option value="36">CODECO-OUT</option>
                                     </select>
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                 </div>

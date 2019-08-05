@@ -1135,46 +1135,60 @@ class FclController extends Controller
         $selected_id = $request->get('id');
         $shippingline_id = $request->get('shippingline_id');
         $subject = $request->get('subject');
-        $type = $request->get('type');
+//        $type = $request->get('type');
         
         $shippingline = DBShippingline::find($shippingline_id);
         
         $cont_id = explode(',', $selected_id);
         $containers = DBContainer::whereIn('TCONTAINER_PK',$cont_id)->get();
 
-        $dataTxt = '';
+        $dataTxtIn = '';
+        $dataTxtOut = '';
         foreach ($containers as $cont):
-            if($type == '34'){
-                $tgl = $cont->TGLMASUK.' '.$cont->JAMMASUK;
-            }else{
-                $tgl = $cont->TGLRELEASE.' '.$cont->JAMRELEASE;
-            }
-            $date = date('YmdHi', strtotime($tgl));
-            $dataTxt .= "UNB+UNOA:1+AIRIN004+HLC+170913:1341+1709131341'
+            $dateIn = date('YmdHi', strtotime($cont->TGLMASUK.' '.$cont->JAMMASUK));
+            $dateOut = date('YmdHi', strtotime($cont->TGLRELEASE.' '.$cont->JAMRELEASE));
+            
+            $dataTxtIn .= "UNB+UNOA:1+AIRIN004+HLC+170913:1341+1709131341'
 UNH+1709130001+CODECO:D:95B:UN:ITG12'
-BGM+".$type."+000001+9'
+BGM+34+000001+9'
 TDT+20++1++HLC:172:166+++:::'
 NAD+MS+AIRIN004'
 NAD+CF+HLC:160:166'
 EQD+CN+".$cont->NOCONTAINER."+++3+5'
 RFF+BM:".$cont->NO_BL_AWB."'
-DTM+7:".$date.":203'
+DTM+7:".$dateIn.":203'
+LOC+165+IDJKT+AIRIN004'
+CNT+16:1'
+UNT+11+1709130001'
+UNZ+1+1709131341'\n";
+            
+            $dataTxtOut .= "UNB+UNOA:1+AIRIN004+HLC+170913:1341+1709131341'
+UNH+1709130001+CODECO:D:95B:UN:ITG12'
+BGM+36+000001+9'
+TDT+20++1++HLC:172:166+++:::'
+NAD+MS+AIRIN004'
+NAD+CF+HLC:160:166'
+EQD+CN+".$cont->NOCONTAINER."+++3+5'
+RFF+BM:".$cont->NO_BL_AWB."'
+DTM+7:".$dateOut.":203'
 LOC+165+IDJKT+AIRIN004'
 CNT+16:1'
 UNT+11+1709130001'
 UNZ+1+1709131341'\n";
         endforeach;
         
-        $file = str_slug($shippingline->shippingline,'-').'_'.(($type == 34) ? 'CODECO-IN' : 'CODECO-OUT').'_'.time() .rand().'.txt';
+        $fileIn = strtoupper(str_slug($shippingline->shippingline,'-')).'_CODECO-IN_'.time() .rand().'.txt';
+        $fileOut = strtoupper(str_slug($shippingline->shippingline,'-')).'_CODECO-OUT_'.time() .rand().'.txt';
 //        $destinationPath = public_path()."/uploads/txt/";
         
-        $send_email = \Mail::send('emails.report-txt', array(), function($message) use($subject,$dataTxt,$file) {
+        $send_email = \Mail::send('emails.report-txt', array(), function($message) use($subject,$dataTxtIn,$dataTxtOut,$fileIn,$fileOut) {
             $message->from('tps@airin.co.id', 'PT. AIRIN');
             $message->sender('tps@airin.co.id');
             $message->subject($subject);
             $message->to('andikabayuprjp@gmail.com');
             $message->cc('reethree269@gmail.com');
-            $message->attachData($dataTxt, $file);
+            $message->attachData($dataTxtIn, $fileIn);
+            $message->attachData($dataTxtOut, $fileOut);
         });
 
         if($send_email){

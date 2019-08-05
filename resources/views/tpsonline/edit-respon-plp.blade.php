@@ -316,7 +316,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-group">
+<!--                            <div class="form-group">
                                 <label class="col-sm-3 control-label">Shipping Line</label>
                                 <div class="col-sm-8">
                                     <select class="form-control select2" name="TSHIPPINGLINE_FK" style="width: 100%;" tabindex="-1" aria-hidden="true" >
@@ -326,7 +326,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                 </div>
