@@ -41,10 +41,12 @@ class EasygoController extends Controller
         if(isset($data['container_type']) && $data['container_type'] == 'L'){
             $dispatche = \App\Models\Container::find($data['TCONTAINER_PK']);
             $type = 'L';
+            $tujuan = $dispatche->KD_TPS_TUJUAN;
         }else{
             $dispatche = \App\Models\Containercy::find($data['TCONTAINER_PK']);
 //            $dispatche = \App\Models\Easygo::where('OB_ID', $request->ob_id)->orderBy('created_at', 'DESC')->first();
             $type = 'F';
+            $tujuan = $dispatche->GUDANG_TUJUAN;
         }
 
 //        $kode_asal = \App\Models\Lokasisandar::find($container->TLOKASISANDAR_FK);
@@ -67,7 +69,7 @@ class EasygoController extends Controller
             'Car_plate' => $dispatche->ESEALCODE,
             'Tgl_DO' => date('Y-m-d H:i:s', strtotime($dispatche->TGL_PLP)), // Tgl.PLP
             'Kode_asal' => $dispatche->KD_TPS_ASAL, 
-            'Kode_tujuan' => $dispatche->KD_TPS_TUJUAN,
+            'Kode_tujuan' => $tujuan,
             'No_do' => $dispatche->NO_PLP, // No.PLP
 //            'No_sj' => '', // No.Surat Jalan
             'No_Container' => $dispatche->NOCONTAINER,
