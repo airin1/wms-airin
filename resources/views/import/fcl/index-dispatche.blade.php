@@ -337,6 +337,12 @@
                             <input type="text" id="VOY" name="VOY" class="form-control" readonly>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Weight</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="WEIGHT" name="WEIGHT" class="form-control">
+                        </div>
+                    </div>
                 </div>
             </div>
             <hr />

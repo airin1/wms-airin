@@ -46,6 +46,41 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table table-bordered table-hover table-striped" style="background: #FFF;">
+                <tbody>
+                    <tr>
+                        <th>KODE DOKUMEN</th>
+                        <th>JUMLAH DOKUMEN KELUAR FCL BULAN {{strtoupper(date('F Y'))}}</th>
+                    </tr>
+                    @foreach($countbydoc as $key=>$value)
+                    <tr>
+                        <th>{{ $key }}</th>
+                        <td align="center">{{ $value }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <table class="table table-bordered table-hover table-striped" style="background: #FFF;">
+                <tbody>
+                    <tr>
+                        <th>KODE DOKUMEN</th>
+                        <th>JUMLAH DOKUMEN KELUAR LCL BULAN {{strtoupper(date('F Y'))}}</th>
+                    </tr>
+                    @foreach($countbydoclcl as $key=>$value)
+                    <tr>
+                        <th>{{ $key }}</th>
+                        <td align="center">{{ $value }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
     
     <div class="row">
         <div class="col-sm-6">
@@ -95,40 +130,7 @@
             </table>           
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-6">
-            <table class="table table-bordered table-hover table-striped" style="background: #FFF;">
-                <tbody>
-                    <tr>
-                        <th>KODE DOKUMEN</th>
-                        <th>JUMLAH DOKUMEN KELUAR FCL BULAN {{strtoupper(date('F Y'))}}</th>
-                    </tr>
-                    @foreach($countbydoc as $key=>$value)
-                    <tr>
-                        <th>{{ $key }}</th>
-                        <td align="center">{{ $value }}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-        <div class="col-md-6">
-            <table class="table table-bordered table-hover table-striped" style="background: #FFF;">
-                <tbody>
-                    <tr>
-                        <th>KODE DOKUMEN</th>
-                        <th>JUMLAH DOKUMEN KELUAR LCL BULAN {{strtoupper(date('F Y'))}}</th>
-                    </tr>
-                    @foreach($countbydoclcl as $key=>$value)
-                    <tr>
-                        <th>{{ $key }}</th>
-                        <td align="center">{{ $value }}</td>
-                    </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
+    
     <div class="row">
         <div class="col-md-12">
             <h4>LAPORAN YOR TANGGAL {{strtoupper(date('d F Y'))}}</h4>
