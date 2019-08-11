@@ -33,6 +33,7 @@
             ->setGridOption('rowNum', 50)
             ->setGridOption('shrinkToFit', true)
             ->setGridOption('sortname','id')
+            ->setGridOption('sortorder','DESC')
             ->setGridOption('rownumbers', true)
             ->setGridOption('rownumWidth', 50)
             ->setGridOption('height', '395')
