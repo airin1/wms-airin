@@ -139,6 +139,7 @@
             ->setGridOption('rowNum', 50)
             ->setGridOption('shrinkToFit', true)
             ->setGridOption('sortname','TMANIFEST_PK')
+            ->setGridOption('sortorder','DESC')
             ->setGridOption('rownumbers', true)
             ->setGridOption('height', '320')
             ->setGridOption('rowList',array(50,100,200,500))

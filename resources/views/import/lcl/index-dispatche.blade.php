@@ -62,7 +62,13 @@
 //                $('#btn-group-2').disabledButtonGroup();
 //                $('#dispatche-form').disabledFormGroup();
 //            }
-
+            if(rowdata.DO_ID && rowdata.DO_ID != 0){
+                $('#ESEALCODE').attr('disabled','disabled');
+                $('#NOPOL').attr('disabled','disabled');
+            }else{
+                $('#ESEALCODE').removeAttr('disabled');
+                $('#NOPOL').removeAttr('disabled');
+            }
         });
         
         $('#btn-print').click(function() {
@@ -187,6 +193,7 @@
                     ->setGridOption('rowNum', 20)
                     ->setGridOption('shrinkToFit', true)
                     ->setGridOption('sortname','TCONTAINER_PK')
+                    ->setGridOption('sortorder','DESC')
                     ->setGridOption('rownumbers', true)
                     ->setGridOption('height', '350')
                     ->setGridOption('rowList',array(20,50,100))
