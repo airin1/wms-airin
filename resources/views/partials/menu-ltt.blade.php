@@ -206,9 +206,33 @@
                             <span>LCL @if($notif_behandle['lcl'] > 0)<small class="label pull-right bg-red">{{$notif_behandle['lcl']}}</small>@endif</span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a tabindex="-1" href="{{ route('lcl-behandle-index') }}">Status Behandle @if($notif_behandle['lcl'] > 0)<small class="label pull-right bg-red">{{$notif_behandle['lcl']}}</small>@endif</a></li>
+<!--                            <li><a tabindex="-1" href="{{ route('lcl-behandle-index') }}">Status Behandle @if($notif_behandle['lcl'] > 0)<small class="label pull-right bg-red">{{$notif_behandle['lcl']}}</small>@endif</a></li>-->
+                            <li class="treeview">
+                                <a href="#">
+                                    <span>Behandle</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="{{ route('lcl-behandle-index') }}">Ready @if($notif_behandle['lcl'] > 0)<small class="label pull-right bg-red">{{$notif_behandle['lcl']}}</small>@endif</a></li>
+                                    <li><a href="{{ route('lcl-behandle-finish') }}">Finish</a></li>
+                                </ul>
+                            </li>
                             <li><a href="{{route('lcl-hold-index')}}">Dokumen HOLD</a></li>
-                            <li><a href="{{route('lcl-segel-index')}}">Segel Merah</a></li>
+                            <!--<li><a href="{{route('lcl-segel-index')}}">Segel Merah</a></li>-->
+                            <li class="treeview">
+                                <a href="#">
+                                    <span>Segel Merah</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="{{ route('lcl-segel-index') }}">List Container</a></li>
+                                    <li><a href="{{ route('lcl-segel-report') }}">Report Lepas Segel</a></li>
+                                </ul>
+                            </li>
                             <li class="treeview">
                                 <a href="#">
                                     <span>Report</span>
@@ -229,9 +253,33 @@
                             <span>FCL @if($notif_behandle['fcl'] > 0)<small class="label pull-right bg-red">{{$notif_behandle['fcl']}}</small>@endif</span>
                         </a>          
                         <ul class="treeview-menu">
-                            <li><a tabindex="-1" href="{{ route('fcl-behandle-index') }}">Status Behandle @if($notif_behandle['fcl'] > 0)<small class="label pull-right bg-red">{{$notif_behandle['fcl']}}</small>@endif</a></li>
+                            <!--<li><a tabindex="-1" href="{{ route('fcl-behandle-index') }}">Status Behandle @if($notif_behandle['fcl'] > 0)<small class="label pull-right bg-red">{{$notif_behandle['fcl']}}</small>@endif</a></li>-->
+                            <li class="treeview">
+                                <a href="#">
+                                    <span>Behandle</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="{{ route('fcl-behandle-index') }}">Ready @if($notif_behandle['fcl'] > 0)<small class="label pull-right bg-red">{{$notif_behandle['fcl']}}</small>@endif</a></li>
+                                    <li><a href="{{ route('fcl-behandle-finish') }}">Finish</a></li>
+                                </ul>
+                            </li>
                             <li><a href="{{route('fcl-hold-index')}}">Dokumen HOLD</a></li>
-                            <li><a href="{{route('fcl-segel-index')}}">Segel Merah</a></li>
+                            <!--<li><a href="{{route('fcl-segel-index')}}">Segel Merah</a></li>-->
+                            <li class="treeview">
+                                <a href="#">
+                                    <span>Segel Merah</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="{{ route('fcl-segel-index') }}">List Container</a></li>
+                                    <li><a href="{{ route('fcl-segel-report') }}">Report Lepas Segel</a></li>
+                                </ul>
+                            </li>
                             <li class="treeview">
                                 <a href="#">
                                     <span>Report</span>

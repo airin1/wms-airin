@@ -87,6 +87,10 @@
         
         $("#KD_DOK_INOUT").on("change", function(){
             var $this = $(this).val();
+            
+            $('#NO_SPPB').val("");
+            $('#TGL_SPPB').val("");
+//            console.log($this);
             if($this == 9){
                 $(".select-bcf-consignee").show();
             }else{
@@ -113,8 +117,13 @@
                     $('#TGL_SPPB').attr('disabled','disabled');
                 @endrole
             }else{
-                $('#NO_SPPB').removeAttr('disabled');
-                $('#TGL_SPPB').removeAttr('disabled');
+                if($this == ''){
+                    $('#NO_SPPB').attr('disabled','disabled');
+                    $('#TGL_SPPB').attr('disabled','disabled');
+                }else{
+                    $('#NO_SPPB').removeAttr('disabled');
+                    $('#TGL_SPPB').removeAttr('disabled');
+                }
             }
         });
         
@@ -189,14 +198,14 @@
             $('#no_pabean').val(rowdata.no_pabean);
             $('#tgl_pabean').val(rowdata.tgl_pabean);
             $('#ID_CONSIGNEE').val(rowdata.ID_CONSIGNEE);
-            $('#NO_SPPB').val(rowdata.NO_SPPB);
-            $('#TGL_SPPB').val(rowdata.TGL_SPPB);
             $('#NOPOL_RELEASE').val(rowdata.NOPOL_RELEASE);
             $('#PENAGIHAN').val(rowdata.PENAGIHAN).trigger("change");
             $('#LOKASI_TUJUAN').val(rowdata.LOKASI_TUJUAN).trigger("change");
             $('#REF_NUMBER_OUT').val(rowdata.REF_NUMBER_OUT);
             $('#UIDRELEASE').val(rowdata.UIDRELEASE);
             $('#KD_DOK_INOUT').val(rowdata.KD_DOK_INOUT).trigger('change');
+            $('#NO_SPPB').val(rowdata.NO_SPPB);
+            $('#TGL_SPPB').val(rowdata.TGL_SPPB);
             $('#bcf_consignee').val(rowdata.bcf_consignee).trigger('change');
                         
             $('#upload-title').html('Upload Photo for '+rowdata.NOHBL);
@@ -227,18 +236,11 @@
             
             if(rowdata.KD_DOK_INOUT == 1){
                 @role('super-admin')
-                    $('#NO_SPPB').removeAttr('disabled');
-                    $('#TGL_SPPB').removeAttr('disabled');
+                    
                 @else
                     $('#NO_SPPB').attr('disabled','disabled');
                     $('#TGL_SPPB').attr('disabled','disabled');
                 @endrole
-            }else if(rowdata.KD_DOK_INOUT == ""){
-                $('#NO_SPPB').attr('disabled','disabled');
-                $('#TGL_SPPB').attr('disabled','disabled');
-            }else{
-                $('#NO_SPPB').removeAttr('disabled');
-                $('#TGL_SPPB').removeAttr('disabled');
             }
             
             if(!rowdata.tglrelease && !rowdata.jamrelease) {
@@ -247,8 +249,8 @@
                 @role('super-admin')
 
                 @else
-//                    $('#tglrelease').attr('disabled','disabled');
-//                    $('#jamrelease').attr('disabled','disabled');
+                    $('#tglrelease').attr('disabled','disabled');
+                    $('#jamrelease').attr('disabled','disabled');
                 @endrole
             }
   
@@ -352,6 +354,7 @@
                         $('#btn-refresh').click();
                     }
                 });
+                
             }else{
                 $('#btn-toolbar').showAlertAfterElement('alert-danger alert-custom', 'NO. SPPB & TGL. SPPB Belum diisi.', 5000);
                 return false;
@@ -364,8 +367,9 @@
         
         $('#btn-refresh').click(function() {
             $('#lclReleaseGrid').jqGrid().trigger("reloadGrid");
+            
             $('#release-form').disabledFormGroup();
-            $('#btn-toolbar').disabledButtonGroup();
+            $('#btn-toolbar,#btn-sppb, #btn-photo').disabledButtonGroup();
             $('#btn-group-3').enableButtonGroup();
             
             $('#release-form')[0].reset();
@@ -822,18 +826,18 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group hide-kddoc">
                         <div class="col-sm-11" id="btn-sppb">
                             <button type="button" class="btn btn-info pull-right" id="get-sppb-btn"><i class="fa fa-download"></i> Get Data</button>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group hide-kddoc">
                         <label class="col-sm-3 control-label">No.SPPB/BC.23</label>
                         <div class="col-sm-8">
                             <input type="text" id="NO_SPPB" name="NO_SPPB" class="form-control" required>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group hide-kddoc">
                         <label class="col-sm-3 control-label">Tgl.SPPB/BC.23</label>
                         <div class="col-sm-8">
                             <div class="input-group date">
@@ -873,7 +877,7 @@
                             <input type="text" id="NO_KUITANSI" name="NO_KUITANSI" class="form-control" required>
                         </div>
                     </div>-->
-                    <div class="form-group">
+                    <div class="form-group hide-kddoc">
                         <label class="col-sm-3 control-label">Ref. Number</label>
                         <div class="col-sm-8">
                             <input type="text" id="REF_NUMBER_OUT" name="REF_NUMBER_OUT" class="form-control" required>

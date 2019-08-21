@@ -93,6 +93,20 @@ class FclController extends Controller
         return view('import.fcl.index-status-behandle')->with($data);
     }
     
+    public function statusBehandleFinish()
+    {
+        $data['page_title'] = "FCL Status Behandle Finish";
+        $data['page_description'] = "";
+        $data['breadcrumbs'] = [
+            [
+                'action' => '',
+                'title' => 'FCL Status Behandle Finish'
+            ]
+        ];        
+        
+        return view('import.fcl.finish-status-behandle')->with($data);
+    }
+
     public function behandleIndex()
     {
         if ( !$this->access->can('show.fcl.behandle.index') ) {
@@ -2270,7 +2284,9 @@ UNZ+1+1709131341'\n";
             }
             // update to Database
             $container = DBContainer::find($request->id_cont);
-            $container->photo_gatein_extra = json_encode($picture);
+            $oldJson = json_decode($container->photo_gatein_extra);
+            $newJson = array_collapse([$oldJson,$picture]);
+            $container->photo_gatein_extra = json_encode($newJson);
             if($container->save()){
                 return back()->with('success', 'Photo for Container '. $request->no_cont .' has been uploaded.');
             }else{
@@ -2300,7 +2316,9 @@ UNZ+1+1709131341'\n";
             }
             // update to Database
             $container = DBContainer::find($request->id_cont);
-            $container->photo_release_extra = json_encode($picture);
+            $oldJson = json_decode($container->photo_release_extra);
+            $newJson = array_collapse([$oldJson,$picture]);
+            $container->photo_release_extra = json_encode($newJson);
             if($container->save()){
                 return back()->with('success', 'Photo for Container '. $request->no_cont .' has been uploaded.');
             }else{
@@ -2330,7 +2348,9 @@ UNZ+1+1709131341'\n";
             }
             // update to Database
             $container = DBContainer::find($request->id_cont);
-            $container->photo_behandle = json_encode($picture);
+            $oldJson = json_decode($container->photo_behandle);
+            $newJson = array_collapse([$oldJson,$picture]);
+            $container->photo_behandle = json_encode($newJson);
             if($container->save()){
                 return back()->with('success', 'Photo for Container '. $request->no_cont .' has been uploaded.');
             }else{
@@ -2512,8 +2532,8 @@ UNZ+1+1709131341'\n";
         }else{
             $container->date_finish_behandle = date('Y-m-d H:i:s');
             $container->desc_finish_behandle = $desc;
-//            $container->TGLBEHANDLE = date('Y-m-d');
-//            $container->JAMBEHANDLE = date('H:i:s');
+            $container->TGLBEHANDLE = date('Y-m-d');
+            $container->JAMBEHANDLE = date('H:i:s');
 }
 
         if($container->save()){
@@ -2550,6 +2570,20 @@ UNZ+1+1709131341'\n";
         ];        
         
         return view('import.fcl.bc-segel')->with($data);
+    }
+    
+    public function segelReport()
+    {
+        $data['page_title'] = "FCL Report Segel Merah";
+        $data['page_description'] = "";
+        $data['breadcrumbs'] = [
+            [
+                'action' => '',
+                'title' => 'FCL Report Segel Merah'
+            ]
+        ];        
+        
+        return view('import.fcl.bc-segel-report')->with($data);
     }
     
     public function reportContainerIndex(Request $request)
@@ -2629,5 +2663,17 @@ UNZ+1+1709131341'\n";
         ];        
         
         return view('import.fcl.bc-inventory')->with($data);
+    }
+    
+    public function releaseVerify($id, $no)
+    {
+        $cont = DBContainer::find($id);
+        
+        // Verify Container
+        if($cont->NOCONTAINER == $no){
+            return json_encode(array('success' => true, 'message' => 'Nomor Kontainer Sesuai!'));
+        }else{
+            return json_encode(array('success' => false, 'message' => 'Nomor Kontainer TIDAK Sesuai, silahkan periksa kembali!!!'));
+        }
     }
 }

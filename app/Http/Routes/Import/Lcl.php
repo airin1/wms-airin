@@ -63,6 +63,10 @@ Route::group(['prefix' => 'lcl', 'namespace' => 'Import'], function(){
         'as' => 'lcl-behandle-index',
         'uses' => 'LclController@statusBehandleIndex'
     ]);
+    Route::get('/status-behandle/finish', [
+        'as' => 'lcl-behandle-finish',
+        'uses' => 'LclController@statusBehandleFinish'
+    ]);
     Route::post('/status-behandle/checking', [
         'as' => 'lcl-change-status-behandle',
         'uses' => 'LclController@changeStatusBehandle'
@@ -130,6 +134,10 @@ Route::group(['prefix' => 'lcl', 'namespace' => 'Import'], function(){
     Route::get('/bc/segel', [
         'as' => 'lcl-segel-index',
         'uses' => 'LclController@segelIndex'
+    ]);
+    Route::get('/bc/segel/report', [
+        'as' => 'lcl-segel-report',
+        'uses' => 'LclController@segelReport'
     ]);
     Route::get('/bc/report-container', [
         'as' => 'lcl-bc-report-container',

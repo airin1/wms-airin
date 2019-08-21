@@ -48,6 +48,10 @@ Route::group(['prefix' => 'fcl', 'namespace' => 'Import'], function(){
         'as' => 'fcl-behandle-index',
         'uses' => 'FclController@statusBehandleIndex'
     ]);
+    Route::get('/status-behandle/finish', [
+        'as' => 'fcl-behandle-finish',
+        'uses' => 'FclController@statusBehandleFinish'
+    ]);
     Route::post('/status-behandle/checking', [
         'as' => 'fcl-change-status-behandle',
         'uses' => 'FclController@changeStatusBehandle'
@@ -118,6 +122,10 @@ Route::group(['prefix' => 'fcl', 'namespace' => 'Import'], function(){
     Route::get('/bc/segel', [
         'as' => 'fcl-segel-index',
         'uses' => 'FclController@segelIndex'
+    ]);
+    Route::get('/bc/segel/report', [
+        'as' => 'fcl-segel-report',
+        'uses' => 'FclController@segelReport'
     ]);
     Route::get('/bc/report-container', [
         'as' => 'fcl-bc-report-container',

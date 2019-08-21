@@ -299,6 +299,7 @@
         }
         
         $("#location_id").val(rowdata.location_id).trigger("change")
+        $("#packing_tally").val(rowdata.packing_tally).trigger("change");
         
         $("#TGL_HBL").datepicker('setDate', rowdata.TGL_HBL);
         $("#TGL_BC11").val(rowdata.TGL_BC11);
@@ -307,7 +308,7 @@
         $("#NO_PLP").val(rowdata.NO_PLP);
         $("#NO_POS_BC11").val(rowdata.NO_POS_BC11);
         $("#final_qty").val(rowdata.final_qty);
-        $("#hasil_tally").val(rowdata.hasil_tally);
+        $("#packing_tally").val(rowdata.packing_tally);
         
 //        console.log(rowdata);
         @role('upload-lcl')
@@ -325,7 +326,7 @@
             $('#location_id').removeAttr('disabled');
             $('#NO_POS_BC11').removeAttr('disabled');
             $('#final_qty').removeAttr('disabled');
-            $('#hasil_tally').removeAttr('disabled');
+            $('#packing_tally').removeAttr('disabled');
         @endrole
         
         $('#upload-title').html('Upload Photo for '+rowdata.NOHBL);
@@ -604,8 +605,8 @@
                         ->addColumn(array('label'=>'Surcharge (Weight)','index'=>'WEIGHT_SURCHARGE', 'width'=>150,'hidden'=>true))      
                         ->addColumn(array('label'=>'Segel Merah','index'=>'flag_bc','width'=>100, 'align'=>'center'))
                         ->addColumn(array('label'=>'Alasan Segel','index'=>'alasan_segel','width'=>150,'align'=>'center'))
-                        ->addColumn(array('label'=>'Final Qty','index'=>'final_qty', 'width'=>80,'align'=>'center'))
-                        ->addColumn(array('label'=>'Tally','index'=>'hasil_tally', 'width'=>80,'align'=>'center'))
+                        ->addColumn(array('label'=>'Qty Tally','index'=>'final_qty', 'width'=>80,'align'=>'center'))
+                        ->addColumn(array('label'=>'Packing Tally','index'=>'packing_tally', 'width'=>80,'align'=>'center'))
                         ->addColumn(array('label'=>'Perubahan HBL','index'=>'perubahan_hbl','width'=>100, 'align'=>'center','hidden'=>true))
                         ->addColumn(array('label'=>'Alasan Perubahan','index'=>'alasan_perubahan','width'=>150,'align'=>'center','hidden'=>true))
                         ->addColumn(array('index'=>'location_id', 'width'=>150,'hidden'=>true))
@@ -670,8 +671,8 @@
                         ->addColumn(array('label'=>'Surcharge (Weight)','index'=>'WEIGHT_SURCHARGE', 'width'=>150,'hidden'=>true))      
                         ->addColumn(array('label'=>'Segel Merah','index'=>'flag_bc','width'=>100, 'align'=>'center'))
                         ->addColumn(array('label'=>'Alasan Segel','index'=>'alasan_segel','width'=>150,'align'=>'center'))
-                        ->addColumn(array('label'=>'Final Qty','index'=>'final_qty', 'width'=>80,'align'=>'center'))
-                        ->addColumn(array('label'=>'Tally','index'=>'hasil_tally', 'width'=>80,'align'=>'center'))
+                        ->addColumn(array('label'=>'Qty Tally','index'=>'final_qty', 'width'=>80,'align'=>'center'))
+                        ->addColumn(array('label'=>'Packing Tally','index'=>'packing_tally', 'width'=>80,'align'=>'center'))
                         ->addColumn(array('label'=>'Perubahan HBL','index'=>'perubahan_hbl','width'=>100, 'align'=>'center','hidden'=>true))
                         ->addColumn(array('label'=>'Alasan Perubahan','index'=>'alasan_perubahan','width'=>150,'align'=>'center','hidden'=>true))
                         ->addColumn(array('index'=>'location_id', 'width'=>150,'hidden'=>true))
@@ -873,15 +874,20 @@
                           </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">Final Qty</label>
-                            <div class="col-sm-3">
-                                <input type="number" id="final_qty" name="final_qty" class="form-control" required>
+                            <label class="col-sm-3 control-label">QTY Tally</label>
+                            <div class="col-sm-2">
+                                <input type="number" name="final_qty" class="form-control" required>
                             </div>
-                            <label class="col-sm-2 control-label">Tally</label>
-                            <div class="col-sm-3">
-                                <input type="number" id="hasil_tally" name="hasil_tally" class="form-control" required>
+                            <label class="col-sm-2 control-label">Packing</label>
+                            <div class="col-sm-4">
+                                <select class="form-control select2" name="packing_tally" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
+                                    <option value="">Choose Packing</option>
+                                    @foreach($packings as $packing)
+                                        <option value="{{ $packing->name }}">{{ $packing->name.' ('.$packing->code.')' }}</option>
+                                    @endforeach
+                                </select>
                             </div>
-                        </div>
+                        </div>          
 <!--                        <div class="form-group">
                             <label class="col-sm-3 control-label">Surcharge(DG)</label>
                             <div class="col-sm-2">

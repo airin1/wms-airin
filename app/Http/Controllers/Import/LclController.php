@@ -136,6 +136,20 @@ class LclController extends Controller
         return view('import.lcl.index-status-behandle')->with($data);
     }
     
+    public function statusBehandleFinish()
+    {
+        $data['page_title'] = "LCL Status Behandle Finish";
+        $data['page_description'] = "";
+        $data['breadcrumbs'] = [
+            [
+                'action' => '',
+                'title' => 'LCL Status Behandle Finish'
+            ]
+        ];        
+        
+        return view('import.lcl.finish-status-behandle')->with($data);
+    }
+    
     public function behandleIndex()
     {
         if ( !$this->access->can('show.lcl.behandle.index') ) {
@@ -2331,7 +2345,9 @@ class LclController extends Controller
             }
             // update to Database
             $container = DBContainer::find($request->id_cont);
-            $container->photo_gatein_extra = json_encode($picture);
+            $oldJson = json_decode($container->photo_gatein_extra);
+            $newJson = array_collapse([$oldJson,$picture]);
+            $container->photo_gatein_extra = json_encode($newJson);
             if($container->save()){
                 return back()->with('success', 'Photo for Container '. $request->no_cont .' has been uploaded.');
             }else{
@@ -2361,7 +2377,9 @@ class LclController extends Controller
             }
             // update to Database
             $container = DBContainer::find($request->id_cont);
-            $container->photo_stripping = json_encode($picture);
+            $oldJson = json_decode($container->photo_stripping);
+            $newJson = array_collapse([$oldJson,$picture]);
+            $container->photo_stripping = json_encode($newJson);
             if($container->save()){
                 return back()->with('success', 'Photo for Container '. $request->no_cont .' has been uploaded.');
             }else{
@@ -2545,8 +2563,8 @@ class LclController extends Controller
         }else{
             $manifest->date_finish_behandle = date('Y-m-d H:i:s');
             $manifest->desc_finish_behandle = $desc;
-//            $manifest->tglbehandle = date('Y-m-d');
-//            $manifest->jambehandle = date('H:i:s');
+            $manifest->tglbehandle = date('Y-m-d');
+            $manifest->jambehandle = date('H:i:s');
 }
 
         if($manifest->save()){
@@ -2583,6 +2601,20 @@ class LclController extends Controller
         ];        
         
         return view('import.lcl.bc-segel')->with($data);
+    }
+    
+    public function segelReport()
+    {
+        $data['page_title'] = "LCL Report Segel Merah";
+        $data['page_description'] = "";
+        $data['breadcrumbs'] = [
+            [
+                'action' => '',
+                'title' => 'LCL Report Segel Merah'
+            ]
+        ];        
+        
+        return view('import.lcl.bc-segel-report')->with($data);
     }
     
     public function reportContainerIndex(Request $request)
