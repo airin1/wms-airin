@@ -2600,6 +2600,8 @@ class LclController extends Controller
             ]
         ];        
         
+        $data['segel'] = \DB::table('alasan_segel')->get();
+        
         return view('import.lcl.bc-segel')->with($data);
     }
     

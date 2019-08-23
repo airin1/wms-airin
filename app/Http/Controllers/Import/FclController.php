@@ -2569,6 +2569,8 @@ UNZ+1+1709131341'\n";
             ]
         ];        
         
+        $data['segel'] = \DB::table('alasan_segel')->get();
+        
         return view('import.fcl.bc-segel')->with($data);
     }
     
