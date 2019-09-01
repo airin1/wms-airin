@@ -1506,6 +1506,10 @@ UNZ+1+1709131341'\n";
             }else{
                 $data = $container45['0'];
             }
+            
+//            $tgl_release = $data['TGLRELEASE'];
+            $tgl_release = $request->tgl_release;
+            
 //            $data = (count($container20) > 0 ? $container20['0'] : $container40['0']);
 //            $consignee = DBPerusahaan::where('TPERUSAHAAN_PK', $data['TCONSIGNEE_FK'])->first();
             
@@ -1548,7 +1552,7 @@ UNZ+1+1709131341'\n";
             $invoice_nct->no_bl = $request->no_bl;	
             $invoice_nct->eta = $data['ETA'];	
             $invoice_nct->gateout_terminal = $data['TGLMASUK'];	
-            $invoice_nct->gateout_tps = $data['TGLRELEASE'];	
+            $invoice_nct->gateout_tps = $tgl_release;	
             $invoice_nct->uid = \Auth::getUser()->name;	
             
             if($invoice_nct->save()) {
@@ -1690,13 +1694,13 @@ UNZ+1+1709131341'\n";
                             // PENUMPUKAN
                             $date1 = date_create($data['TGLMASUK']);
 //                            $date2 = date_create($data['TGLRELEASE']);
-                            $date2 = date_create(date('Y-m-d',strtotime($data['TGLRELEASE']. '+1 days')));
+                            $date2 = date_create(date('Y-m-d',strtotime($tgl_release. '+1 days')));
                             $diff = date_diff($date1, $date2);
                             $hari = $diff->format("%a");
                             
                             // HARI TERMINAL
                             $date1t = date_create($data['ETA']);
-                            $date2t = date_create(date('Y-m-d',strtotime($data['TGLMASUK']. '+1 days')));
+                            $date2t = date_create(date('Y-m-d',strtotime($tgl_release. '+1 days')));
                             $difft = date_diff($date1t, $date2t);
                             $hari_terminal = $difft->format("%a");
                             
@@ -1710,7 +1714,7 @@ UNZ+1+1709131341'\n";
                             $hari_masa2 = abs($hari - $hari_masa1);
                             
                             $invoice_penumpukan->startdate = $data['TGLMASUK'];
-                            $invoice_penumpukan->enddate = $data['TGLRELEASE'];
+                            $invoice_penumpukan->enddate = $tgl_release;
                             $invoice_penumpukan->lama_timbun = $hari;        
                             $invoice_penumpukan->tarif_dasar = $t20->masa1;
                             $invoice_penumpukan->hari_masa1 = $hari_masa1;
@@ -1865,13 +1869,13 @@ UNZ+1+1709131341'\n";
                             // PENUMPUKAN
                             $date1 = date_create($data['TGLMASUK']);
 //                            $date2 = date_create($data['TGLRELEASE']);
-                            $date2 = date_create(date('Y-m-d',strtotime($data['TGLRELEASE']. '+1 days')));
+                            $date2 = date_create(date('Y-m-d',strtotime($tgl_release. '+1 days')));
                             $diff = date_diff($date1, $date2);
                             $hari = $diff->format("%a");
                             
                             // HARI TERMINAL
                             $date1t = date_create($data['ETA']);
-                            $date2t = date_create(date('Y-m-d',strtotime($data['TGLMASUK']. '+1 days')));
+                            $date2t = date_create(date('Y-m-d',strtotime($tgl_release. '+1 days')));
                             $difft = date_diff($date1t, $date2t);
                             $hari_terminal = $difft->format("%a");
                             
@@ -1885,7 +1889,7 @@ UNZ+1+1709131341'\n";
                             $hari_masa2 = abs($hari - $hari_masa1);
                             
                             $invoice_penumpukan->startdate = $data['TGLMASUK'];
-                            $invoice_penumpukan->enddate = $data['TGLRELEASE'];
+                            $invoice_penumpukan->enddate = $tgl_release;
                             $invoice_penumpukan->lama_timbun = $hari;
                             $invoice_penumpukan->tarif_dasar = $t40->masa1;
                             $invoice_penumpukan->hari_masa1 = $hari_masa1;
@@ -2039,13 +2043,13 @@ UNZ+1+1709131341'\n";
                             // PENUMPUKAN
                             $date1 = date_create($data['TGLMASUK']);
 //                            $date2 = date_create($data['TGLRELEASE']);
-                            $date2 = date_create(date('Y-m-d',strtotime($data['TGLRELEASE']. '+1 days')));
+                            $date2 = date_create(date('Y-m-d',strtotime($tgl_release. '+1 days')));
                             $diff = date_diff($date1, $date2);
                             $hari = $diff->format("%a");
                             
                             // HARI TERMINAL
                             $date1t = date_create($data['ETA']);
-                            $date2t = date_create(date('Y-m-d',strtotime($data['TGLMASUK']. '+1 days')));
+                            $date2t = date_create(date('Y-m-d',strtotime($tgl_release. '+1 days')));
                             $difft = date_diff($date1t, $date2t);
                             $hari_terminal = $difft->format("%a");
                             
@@ -2059,7 +2063,7 @@ UNZ+1+1709131341'\n";
                             $hari_masa2 = abs($hari - $hari_masa1);
                             
                             $invoice_penumpukan->startdate = $data['TGLMASUK'];
-                            $invoice_penumpukan->enddate = $data['TGLRELEASE'];
+                            $invoice_penumpukan->enddate = $tgl_release;
                             $invoice_penumpukan->lama_timbun = $hari;
                             $invoice_penumpukan->tarif_dasar = $t45->masa1;
                             $invoice_penumpukan->hari_masa1 = $hari_masa1;

@@ -249,6 +249,17 @@
                                     <input type="text" class="form-control" name="no_invoice" value="-" required />
                                 </div>
                             </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Tgl. Release</label>
+                                <div class="col-sm-6">
+                                    <div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" name="tgl_release" class="form-control pull-right datepicker" required>
+                                    </div>
+                                </div>
+                            </div>
 <!--                            <div class="form-group">
                                 <label class="col-sm-3 control-label">No. Pajak</label>
                                 <div class="col-sm-6">
@@ -347,7 +358,8 @@
     });
 
     $("#npwp").mask("99.999.999.9-999.999");
-
+    $(".timepicker").mask("99:99:99");
+    $(".datepicker").mask("9999-99-99");
 </script>
 
 @endsection
