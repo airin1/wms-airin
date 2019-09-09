@@ -132,8 +132,9 @@ class TablesRepository extends EloquentRepositoryAbstract {
                             ->where('KD_TPS_ASAL', 'NCT1')
                             ->whereNotNull('TGLMASUK')
                             ->whereNotNull('JAMMASUK')
-                            ->whereNotNull('TGLRELEASE')
-                            ->whereNotNull('JAMRELEASE');
+//                            ->whereNotNull('TGLRELEASE')
+//                            ->whereNotNull('JAMRELEASE')
+                            ;
                     break;
                                     case 'hold':
                         if(isset($request['startdate']) || isset($request['enddate'])){
