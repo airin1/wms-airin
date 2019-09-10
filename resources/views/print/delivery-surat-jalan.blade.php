@@ -40,7 +40,7 @@
             $array_bulan = array("I","II","III", "IV", "V","VI","VII","VIII","IX","X", "XI","XII");
             $romawi_bulan = $array_bulan[date('n')-1];
         ?>
-        <div style="margin-left: 30%;">{{$romawi_bulan.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.date('Y')}}<br /><br /><br /></div>
+        <div style="margin-left: 33%;">{{$romawi_bulan.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.date('Y')}}<br /><br /><br /></div>
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0;width:100%">
             <tr>
                 <td width='56%'>
