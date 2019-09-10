@@ -40,10 +40,10 @@
             $array_bulan = array("I","II","III", "IV", "V","VI","VII","VIII","IX","X", "XI","XII");
             $romawi_bulan = $array_bulan[date('n')-1];
         ?>
-        <div style="text-align: center;">{{$romawi_bulan.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.date('Y')}}<br /><br /><br /></div>
+        <div style="margin-left: 40%;">{{$romawi_bulan.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.date('Y')}}<br /><br /><br /></div>
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0;width:100%">
             <tr>
-                <td width='60%'>
+                <td width='58%'>
                     <table border="0" cellspacing="0" cellpadding="0" style="font-size: 13px;margin-bottom: 0;">
                         <tr>
                             <td style="color: transparent; width: 120px;">Kepada Yth.</td>
@@ -54,23 +54,23 @@
                         <tr>
                             <td style="color: transparent;">Ex. Kapal/Voy</td>
                             <td class="padding-10 text-center" style="color: transparent;">:</td>
-                            <td style="padding: 10px;">{{ $manifest->VESSEL.' V.'.$manifest->VOY }}</td>
+                            <td style="padding-bottom: 10px;">{{ $manifest->VESSEL.' V.'.$manifest->VOY }}</td>
                         </tr>
                         <tr>
                             <td style="color: transparent;">Tanggal Tiba </td>
                             <td class="padding-10 text-center" style="color: transparent;">:</td>
-                            <td style="padding: 10px;">{{ date("d-m-Y", strtotime($manifest->ETA)) }}</td>
+                            <td style="padding-bottom: 10px;">{{ date("d-m-Y", strtotime($manifest->ETA)) }}</td>
                         </tr>
                         
                         <tr>
                             <td style="color: transparent;">Truk No. Pol</td>
                             <td class="padding-10 text-center" style="color: transparent;">:</td>
-                            <td style="padding: 10px;">{{ $manifest->NOPOL }}</td>
+                            <td style="padding-bottom: 10px;">{{ $manifest->NOPOL }}</td>
                         </tr>
                         <tr>
                             <td style="color: transparent;">No. Container</td>
                             <td class="padding-10 text-center" style="color: transparent;">:</td>
-                            <td style="padding: 10px;">{{ $manifest->NOCONTAINER.' / '.$manifest->SIZE }}</td>
+                            <td style="padding-bottom: 10px;">{{ $manifest->NOCONTAINER.' / '.$manifest->SIZE }}</td>
                         </tr>
 <!--                        <tr>
                             <td style="color: transparent;">No. DO</td>
@@ -80,7 +80,7 @@
                         <tr>
                             <td style="color: transparent;">No. BL</td>
                             <td class="padding-10 text-center" style="color: transparent;">:</td>
-                            <td style="padding: 10px;">{{ $manifest->NOHBL }}</td>
+                            <td style="padding-bottom: 10px;">{{ $manifest->NOHBL }}</td>
                         </tr>
 
                     </table>
