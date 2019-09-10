@@ -40,13 +40,13 @@
             $array_bulan = array("I","II","III", "IV", "V","VI","VII","VIII","IX","X", "XI","XII");
             $romawi_bulan = $array_bulan[date('n')-1];
         ?>
-        <div style="margin-left: 40%;">{{$romawi_bulan.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.date('Y')}}<br /><br /><br /></div>
+        <div style="margin-left: 35%;">{{$romawi_bulan.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.date('Y')}}<br /><br /><br /></div>
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0;width:100%">
             <tr>
-                <td width='58%'>
+                <td width='56%'>
                     <table border="0" cellspacing="0" cellpadding="0" style="font-size: 13px;margin-bottom: 0;">
                         <tr>
-                            <td style="color: transparent; width: 120px;">Kepada Yth.</td>
+                            <td style="color: transparent; width: 130px;">Kepada Yth.</td>
                             <td class="padding-10 text-center" style="color: transparent;">:</td>
                             <!--<td>{{ $manifest->NAMACONSOLIDATOR }}</td>-->
                             <td style="color: transparent;">PT. AIRIN</td>
