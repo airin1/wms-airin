@@ -8,6 +8,8 @@
 <style>
     body {
         font-size: 14px;
+        color: #000;
+        background: #FFF;
     }
     td {
         vertical-align: top;
@@ -24,6 +26,8 @@
             margin-left: 38px;
             margin-right: 75px;*/
             font-weight: bold;
+            background: #FFF;
+            color: #000;
         }
         .print-btn {
             display: none;
@@ -36,16 +40,16 @@
             $array_bulan = array("I","II","III", "IV", "V","VI","VII","VIII","IX","X", "XI","XII");
             $romawi_bulan = $array_bulan[date('n')-1];
         ?>
-        <div style="text-align: center;">{{$romawi_bulan.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.date('Y')}}<br /><br /></div>
-        <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0;">
+        <div style="text-align: center;">{{$romawi_bulan.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.date('Y')}}<br /><br /><br /></div>
+        <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0;width:100%">
             <tr>
                 <td width='70%'>
-                    <table border="0" cellspacing="0" cellpadding="0" style="font-size: 12px;margin-bottom: 0;">
+                    <table border="0" cellspacing="0" cellpadding="0" style="font-size: 13px;margin-bottom: 0;">
                         <tr>
                             <td style="color: transparent; width: 140px;">Kepada Yth.</td>
                             <td class="padding-10 text-center" style="color: transparent;">:</td>
                             <!--<td>{{ $manifest->NAMACONSOLIDATOR }}</td>-->
-                            <td>PT. AIRIN</td>
+                            <td style="color: transparent;">PT. AIRIN</td>
                         </tr>
                         <tr>
                             <td style="color: transparent;">Ex. Kapal/Voy</td>
@@ -82,15 +86,15 @@
                     </table>
                 </td>
                 <td style="vertical-align: top;">
-                    <table border="0" cellspacing="0" cellpadding="0" style="font-size: 12px;margin-bottom: 0;">
+                    <table border="0" cellspacing="0" cellpadding="0" style="font-size: 13px;margin-bottom: 0;">
                         <tr>
                             <td style="color: transparent;">No. Bea Cukai</td>
                             <td class="padding-10 text-center" style="color: transparent;">:</td>
                             <td style="color: transparent;">{{ $manifest->NO_SPPB }}</td>
                         </tr>
-                        <tr>
+<!--                        <tr>
                             <td colspan="3">&nbsp;</td>
-                        </tr>
+                        </tr>-->
                         <tr>
                             <td colspan="3">{{ $manifest->CONSIGNEE }}</td>
                         </tr>
@@ -99,7 +103,7 @@
             </tr>
         </table>
         
-        <br /><br />
+        <br /><br /><br /><br /><br /><br />
         <table border="0" cellspacing="0" cellpadding="0" style="font-size: 12px;">
             <thead>
                 <tr>
@@ -113,15 +117,15 @@
             <tbody>
                 <tr>
                     <td width='20%' style="text-align: left;padding-right: 5px;">{{ $manifest->MARKING }}</td>
-                    <td width='30%' style="text-align: left;">{{ str_limit($manifest->DESCOFGOODS, 160) }}</td>
+                    <td width='20%' style="text-align: left;">{{ str_limit($manifest->DESCOFGOODS, 160) }}</td>
                     <td width='15%' style="text-align: center;">{{ $manifest->QUANTITY }}/{{ $manifest->NAMAPACKING }}</td>
                     <td width='15%' style="text-align: center;">{{ $manifest->WEIGHT.' KGS' }}<br />{{ $manifest->MEAS.' CBM' }}</td>
-                    <td width='20%'>&nbsp;</td>    
+                    <td width='30%'>&nbsp;</td>    
                 </tr>
             </tbody>
         </table>
         
-        <div style="position: absolute; bottom: 100px;right: 20px;">{{ date('d F Y') }}</div>
+        <div style="position: absolute; bottom: 200px;right: 20px;">{{ date('d F Y') }}</div>
         
 <!--        <table border="0" cellspacing="0" cellpadding="0">
             <tr>
