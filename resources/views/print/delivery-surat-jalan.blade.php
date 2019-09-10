@@ -40,7 +40,7 @@
             $array_bulan = array("I","II","III", "IV", "V","VI","VII","VIII","IX","X", "XI","XII");
             $romawi_bulan = $array_bulan[date('n')-1];
         ?>
-        <div style="margin-left: 33%;">{{$romawi_bulan.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.date('Y')}}<br /><br /><br /></div>
+        <div style="margin-left: 33%;">{{$romawi_bulan.'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.date('Y')}}<br /><br /><br /></div>
         <table border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 0;width:100%">
             <tr>
                 <td width='56%'>
@@ -121,7 +121,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td width='20%' style="text-align: left;color: transparent;">{{ $manifest->MARKING }}</td>
+                    <td width='20%' style="text-align: left;">{{ $manifest->MARKING }}</td>
                     <td width='20%' style="text-align: left;">{{ str_limit($manifest->DESCOFGOODS, 150) }}</td>
                     <td width='15%' style="text-align: center;">{{ $manifest->QUANTITY }}/{{ $manifest->NAMAPACKING }}</td>
                     <td width='15%' style="text-align: center;">{{ $manifest->WEIGHT.' KGS' }}<br />{{ $manifest->MEAS.' CBM' }}</td>
