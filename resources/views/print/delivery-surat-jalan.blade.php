@@ -82,6 +82,11 @@
                             <td class="padding-10 text-center" style="color: transparent;">:</td>
                             <td style="padding-bottom: 10px;">{{ $manifest->NOHBL }}</td>
                         </tr>
+                        <tr>
+                            <td style="color: transparent;">Party</td>
+                            <td class="padding-10 text-center" style="color: transparent;">:</td>
+                            <td>{{ $manifest->QUANTITY }}/{{ $manifest->NAMAPACKING }}</td>
+                        </tr>
 
                     </table>
                 </td>
@@ -103,7 +108,7 @@
             </tr>
         </table>
         
-        <br /><br /><br /><br /><br /><br />
+        <br /><br /><br /><br />
         <table border="0" cellspacing="0" cellpadding="0" style="font-size: 12px;">
             <thead>
                 <tr>
