@@ -1700,7 +1700,7 @@ UNZ+1+1709131341'\n";
                             
                             // HARI TERMINAL
                             $date1t = date_create($data['ETA']);
-                            $date2t = date_create(date('Y-m-d',strtotime($tgl_release. '+1 days')));
+                            $date2t = date_create(date('Y-m-d',strtotime($data['TGLMASUK']. '+1 days')));
                             $difft = date_diff($date1t, $date2t);
                             $hari_terminal = $difft->format("%a");
                             
@@ -1875,7 +1875,7 @@ UNZ+1+1709131341'\n";
                             
                             // HARI TERMINAL
                             $date1t = date_create($data['ETA']);
-                            $date2t = date_create(date('Y-m-d',strtotime($tgl_release. '+1 days')));
+                            $date2t = date_create(date('Y-m-d',strtotime($data['TGLMASUK']. '+1 days')));
                             $difft = date_diff($date1t, $date2t);
                             $hari_terminal = $difft->format("%a");
                             
@@ -2049,7 +2049,7 @@ UNZ+1+1709131341'\n";
                             
                             // HARI TERMINAL
                             $date1t = date_create($data['ETA']);
-                            $date2t = date_create(date('Y-m-d',strtotime($tgl_release. '+1 days')));
+                            $date2t = date_create(date('Y-m-d',strtotime($data['TGLMASUK']. '+1 days')));
                             $difft = date_diff($date1t, $date2t);
                             $hari_terminal = $difft->format("%a");
                             
