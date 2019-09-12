@@ -876,11 +876,11 @@
                         <div class="form-group">
                             <label class="col-sm-3 control-label">QTY Tally</label>
                             <div class="col-sm-2">
-                                <input type="number" name="final_qty" class="form-control" required>
+                                <input type="number" id="final_qty" name="final_qty" class="form-control" required>
                             </div>
                             <label class="col-sm-2 control-label">Packing</label>
                             <div class="col-sm-4">
-                                <select class="form-control select2" name="packing_tally" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
+                                <select class="form-control select2" id="packing_tally" name="packing_tally" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
                                     <option value="">Choose Packing</option>
                                     @foreach($packings as $packing)
                                         <option value="{{ $packing->name }}">{{ $packing->name.' ('.$packing->code.')' }}</option>
