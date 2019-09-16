@@ -264,7 +264,7 @@ class DefaultController extends BaseController
         $ip1 = 'http://192.168.1.56/snapshot.cgi';
         $ip2 = 'http://192.168.1.57/snapshot.cgi';
 
-//        $port="202";
+        $port="80";
         $username = "admin";
         $password = "Airin12345";
         
@@ -279,7 +279,7 @@ class DefaultController extends BaseController
         curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
         curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
         curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_ALL);
-//        curl_setopt($ch, CURLOPT_PORT, $port);
+        curl_setopt($ch, CURLOPT_PORT, $port);
         curl_setopt($ch, CURLOPT_TIMEOUT, 5);
         curl_setopt($ch, CURLOPT_FILE, $fh);
 
@@ -293,6 +293,7 @@ class DefaultController extends BaseController
         $info = curl_getinfo($ch);
 
         print_r($output);
+        print_r($info);
 
         curl_close($ch);
 
