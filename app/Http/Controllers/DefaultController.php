@@ -263,7 +263,9 @@ class DefaultController extends BaseController
     {
         $ip1 = 'http://192.168.1.56/snapshot.cgi';
         $ip2 = 'http://192.168.1.57/snapshot.cgi';
-
+        
+        $url = 'http://admin:Airin12345@192.168.1.56:80/Streaming/channels/101/picture';
+        
         $port="80";
         $username = "admin";
         $password = "Airin12345";
@@ -275,11 +277,13 @@ class DefaultController extends BaseController
 
         $ch = curl_init();
 
-        curl_setopt($ch, CURLOPT_URL, $ip1);
-        curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+        curl_setopt($ch, CURLOPT_URL, $url);
+//        curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
         curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
         curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_ALL);
-        curl_setopt($ch, CURLOPT_PORT, $port);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+//        curl_setopt($ch, CURLOPT_PORT, $port);
         curl_setopt($ch, CURLOPT_TIMEOUT, 5);
         curl_setopt($ch, CURLOPT_FILE, $fh);
 
