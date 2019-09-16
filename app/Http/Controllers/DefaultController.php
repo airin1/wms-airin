@@ -264,7 +264,7 @@ class DefaultController extends BaseController
         $ip1 = 'http://192.168.1.56/snapshot.cgi';
         $ip2 = 'http://192.168.1.57/snapshot.cgi';
         
-        $url = 'http://admin:Airin12345@192.168.1.56:80/Streaming/channels/101/picture';
+        $url = 'http://admin:Airin12345@192.168.1.56:80/snapshot.cgi?user=admin&pwd=Airin12345';
         
         $port="80";
         $username = "admin";
