@@ -270,28 +270,25 @@ class DefaultController extends BaseController
         $username = "admin";
         $password = "Airin12345";
         
+        $saveto = '/var/www/html/wms-airin/public/uploads/photos/camera/ipcam1.jpg';
+        
         $fh = fopen("/var/www/html/wms-airin/public/uploads/photos/camera/ipcam1.jpg", "w") or die($php_errormsg);
 //        echo "username = " . $username . "<br>";
 //        echo "password = " . $password . "<br>";
 //        echo "url = " . $url . "<br><br>";
-
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, $url);
+        
+        $ch = curl_init ($url);
+//        curl_setopt($ch, CURLOPT_URL, $url);
 //        curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
         curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
         curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_ALL);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_BINARYTRANSFER,1);
 //        curl_setopt($ch, CURLOPT_PORT, $port);
         curl_setopt($ch, CURLOPT_TIMEOUT, 5);
-        curl_setopt($ch, CURLOPT_FILE, $fh);
 
-        $success = curl_exec($ch);
-
-        if( !$success ){
-            
-        }
+        $raw = curl_exec($ch);
 
         $output = curl_exec($ch);
         $info = curl_getinfo($ch);
@@ -300,6 +297,14 @@ class DefaultController extends BaseController
         print_r($info);
 
         curl_close($ch);
+
+        if(file_exists($saveto)){
+            unlink($saveto);
+        }
+        
+        $fp = fopen($saveto,'x');
+        fwrite($fp, $raw);
+        fclose($fp);
 
     }
 
