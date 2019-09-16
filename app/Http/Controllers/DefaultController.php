@@ -292,7 +292,7 @@ class DefaultController extends BaseController
         $output = curl_exec($ch);
         $info = curl_getinfo($ch);
 
-        return $output;
+        print_r($output);
 
         curl_close($ch);
 
