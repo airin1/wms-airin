@@ -264,7 +264,7 @@ class DefaultController extends BaseController
         $ip1 = 'http://192.168.1.56/snapshot.cgi';
         $ip2 = 'http://192.168.1.57/snapshot.cgi';
         
-        $url = 'http://admin:Airin12345@192.168.1.56:80/snapshot.cgi?user=admin&pwd=Airin12345';
+        $url = 'http://192.168.1.56:80/cgi-bin/snapshot.cgi?chn=1&u=admin&p=Airin12345';
         
         $port="80";
         $username = "admin";
