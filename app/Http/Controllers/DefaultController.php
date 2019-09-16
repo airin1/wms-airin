@@ -259,4 +259,44 @@ class DefaultController extends BaseController
 //            </vxml>
     }
     
+    public function captureIpCamera()
+    {
+        $ip1 = 'http://192.168.1.56/snapshot.cgi';
+        $ip2 = 'http://192.168.1.57/snapshot.cgi';
+
+//        $port="202";
+        $username = "admin";
+        $password = "Airin12345";
+        
+        $fh = fopen("/var/www/html/wms-airin/public/uploads/photos/camera/ipcam1.jpg", "w") or die($php_errormsg);
+//        echo "username = " . $username . "<br>";
+//        echo "password = " . $password . "<br>";
+//        echo "url = " . $url . "<br><br>";
+
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $ip1);
+        curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
+        curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
+        curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_ALL);
+//        curl_setopt($ch, CURLOPT_PORT, $port);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+        curl_setopt($ch, CURLOPT_FILE, $fh);
+
+        $success = curl_exec($ch);
+
+        if( !$success ){
+            
+        }
+
+        $output = curl_exec($ch);
+        $info = curl_getinfo($ch);
+
+        return $output;
+
+        curl_close($ch);
+
+    }
+
+    
 }

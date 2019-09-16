@@ -2767,5 +2767,5 @@ class LclController extends Controller
         
         return view('import.lcl.view-photo-bl')->with($data);
     }
-    
+        
 }

@@ -130,3 +130,9 @@ Route::group(['namespace' => 'Payment'], function(){
         'uses' => 'PaymentController@bniNotification'
     ]);
 });
+
+// IP Camera
+Route::get('/capture/camera1', [
+    'uses' => 'DefaultController@captureIpCamera',
+    'as' => 'capture-camera1'
+]);
