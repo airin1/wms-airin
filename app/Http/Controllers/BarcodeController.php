@@ -173,15 +173,18 @@ class BarcodeController extends Controller
             foreach ($ids as $ref_id):
                 // Check data
                 $ref_number = '';
+                $ref_status = 'active';
                 if($type == 'manifest'){
                     $refdata = \App\Models\Manifest::find($ref_id);
                     $ref_number = $refdata->NOHBL;
+                    $ref_status = ($refdata->status_bc == 'HOLD') ? 'hold' : 'active';
                 }elseif($type == 'lcl'){
                     $refdata = \App\Models\Container::find($ref_id);
                     $ref_number = $refdata->NOCONTAINER;
                 }elseif($type == 'fcl'){
                     $refdata = \App\Models\Containercy::find($ref_id);
                     $ref_number = $refdata->NOCONTAINER;
+                    $ref_status = ($refdata->status_bc == 'HOLD') ? 'hold' : 'active';
                     if($action == 'get'){
                         $expired = date('Y-m-d', strtotime('+3 day'));
                     }
@@ -196,7 +199,7 @@ class BarcodeController extends Controller
                         $barcode->ref_number = $ref_number;
                         $barcode->barcode = str_random(20);
                         $barcode->expired = $expired;
-                        $barcode->status = 'active';
+                        $barcode->status = $ref_status;
                         $barcode->uid = \Auth::getUser()->name;
                         $barcode->save();
                     }   
@@ -206,7 +209,7 @@ class BarcodeController extends Controller
     //                    continue;
                         $barcode = \App\Models\Barcode::find($check->id);
                         $barcode->expired = $expired;
-                        $barcode->status = 'active';
+                        $barcode->status = $ref_status;
                         $barcode->uid = \Auth::getUser()->name;
                         $barcode->save();
                     }else{
@@ -217,7 +220,7 @@ class BarcodeController extends Controller
                         $barcode->ref_number = $ref_number;
                         $barcode->barcode = str_random(20);
                         $barcode->expired = $expired;
-                        $barcode->status = 'active';
+                        $barcode->status = $ref_status;
                         $barcode->uid = \Auth::getUser()->name;
                         $barcode->save();
                     }
