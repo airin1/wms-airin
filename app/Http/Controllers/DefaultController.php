@@ -261,32 +261,21 @@ class DefaultController extends BaseController
     
     public function captureIpCamera()
     {
-        $ip1 = 'http://192.168.1.56/snapshot.cgi';
-        $ip2 = 'http://192.168.1.57/snapshot.cgi';
+        $ipcam1 = '192.168.1.56';
+        $ipcam2 = '192.168.1.57';
         
-//        $url = 'http://192.168.1.56:80/cgi-bin/snapshot.cgi?chn=1&u=admin&p=Airin12345';
-        $url = 'http://admin:Airin12345@192.168.1.56/Streaming/channels/1/picture';
-        
-        $port="80";
         $username = "admin";
         $password = "Airin12345";
         
+        $url = 'http://'.$username.':'.$password.'@'.$ipcam1.'/Streaming/channels/1/picture';
         $saveto = '/var/www/html/wms-airin/public/uploads/photos/camera/ipcam1.jpg';
         
-        $fh = fopen("/var/www/html/wms-airin/public/uploads/photos/camera/ipcam1.jpg", "w") or die($php_errormsg);
-//        echo "username = " . $username . "<br>";
-//        echo "password = " . $password . "<br>";
-//        echo "url = " . $url . "<br><br>";
-        
         $ch = curl_init ($url);
-//        curl_setopt($ch, CURLOPT_URL, $url);
-//        curl_setopt($ch, CURLOPT_USERPWD, "$username:$password");
         curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
         curl_setopt($ch, CURLOPT_PROTOCOLS, CURLPROTO_ALL);
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_BINARYTRANSFER,1);
-//        curl_setopt($ch, CURLOPT_PORT, $port);
         curl_setopt($ch, CURLOPT_TIMEOUT, 5);
 
         $raw = curl_exec($ch);
@@ -306,8 +295,6 @@ class DefaultController extends BaseController
         $fp = fopen($saveto,'x');
         fwrite($fp, $raw);
         fclose($fp);
-
     }
-
-    
+   
 }

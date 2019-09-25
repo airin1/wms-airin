@@ -194,6 +194,7 @@
             $('#TGL_SPJM').val(rowdata.TGL_SPJM);
             $('#NAMA_IMP').val(rowdata.NAMA_IMP);
             $('#NPWP_IMP').val(rowdata.NPWP_IMP);
+            $('#telp_ppjk').val(rowdata.telp_ppjk);
             
             $('#NO_BL_AWB').val(rowdata.NO_BL_AWB);
             $('#TGL_BL_AWB').val(rowdata.TGL_BL_AWB);
@@ -277,43 +278,40 @@
         $('#btn-print-sj').click(function() {
             var id = $('#fclReleaseGrid').jqGrid('getGridParam', 'selrow');
             
-            // Verify
-            $.ajax({
-                type: 'GET',
-                dataType : 'json',
-                url: '{{route("fcl-report-rekap-view-photo","")}}/'+id,
-                error: function (jqXHR, textStatus, errorThrown)
-                {
-                    alert('Something went wrong, please try again later.');
-                },
-                beforeSend:function()
-                {
-                    $('#verify-photo').html('');
-                },
-                success:function(json)
-                {
-                    var html_container = '';
-
-                    if(json.data.photo_release_extra){
-                        var photos_container = $.parseJSON(json.data.photo_release_extra);
-                        var html_container = '';
-                        $.each(photos_container, function(i, item) {
-                            /// do stuff
-                            html_container += '<img src="{{url("uploads/photos/container/fcl")}}/'+json.data.NOCONTAINER+'/'+item+'" style="width: 200px;padding:5px;" />';
-
-        });
-                        $('#verify-photo').html(html_container);
-                        $('#verify-contid').val(id);
-        
-                        $('#verify-modal').modal('show');
-                    }else{
-                        alert('Silahkan upload photo kontainer terlebih dahulu!');
-                        return false;
-                    }
-                }
-            });
+//            $.ajax({
+//                type: 'GET',
+//                dataType : 'json',
+//                url: '{{route("fcl-report-rekap-view-photo","")}}/'+id,
+//                error: function (jqXHR, textStatus, errorThrown)
+//                {
+//                    alert('Something went wrong, please try again later.');
+//                },
+//                beforeSend:function()
+//                {
+//                    $('#verify-photo').html('');
+//                },
+//                success:function(json)
+//                {
+//                    var html_container = '';
+//
+//                    if(json.data.photo_release_extra){
+//                        var photos_container = $.parseJSON(json.data.photo_release_extra);
+//                        var html_container = '';
+//                        $.each(photos_container, function(i, item) {
+//                            html_container += '<img src="{{url("uploads/photos/container/fcl")}}/'+json.data.NOCONTAINER+'/'+item+'" style="width: 200px;padding:5px;" />';
+//                        });
+//                        $('#verify-photo').html(html_container);
+//                        $('#verify-contid').val(id);
+//        
+//                        $('#verify-modal').modal('show');
+//                    }else{
+//                        alert('Silahkan upload photo kontainer terlebih dahulu!');
+//                        return false;
+//                    }
+//                }
+//            });
             
-//            window.open("{{ route('fcl-delivery-suratjalan-cetak', '') }}/"+id,"preview wo fiat muat","width=600,height=600,menubar=no,status=no,scrollbars=yes");
+            window.open("{{ route('fcl-delivery-suratjalan-cetak', '') }}/"+id,"preview surat jalan fcl","width=815,height=600,menubar=no,status=no,scrollbars=yes");
         });
         
         $("#verify-form").submit(function(event){
@@ -534,7 +532,7 @@
                     ->addColumn(array('index'=>'TSHIPPINGLINE_FK','hidden'=>true))
                     ->addColumn(array('label'=>'Photo','index'=>'action', 'width'=>120, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
                     ->addColumn(array('label'=>'Status BC','index'=>'status_bc','width'=>100, 'align'=>'center'))
-                    ->addColumn(array('label'=>'Segel Merah','index'=>'flag_bc','width'=>80, 'align'=>'center'))
+                    ->addColumn(array('label'=>'Segel','index'=>'flag_bc','width'=>80, 'align'=>'center'))
                     ->addColumn(array('label'=>'No. SPK','index'=>'NoJob','width'=>160))
                     ->addColumn(array('label'=>'No. Container','index'=>'NOCONTAINER','width'=>160,'editable' => true, 'editrules' => array('required' => true)))
                     ->addColumn(array('label'=>'Size','index'=>'SIZE', 'width'=>80,'align'=>'center','editable' => true, 'editrules' => array('required' => true,'number'=>true),'edittype'=>'select','editoptions'=>array('value'=>"20:20;40:40")))
@@ -582,6 +580,7 @@
                     ->addColumn(array('label'=>'BCF Consignee','index'=>'bcf_consignee', 'width'=>70,'hidden'=>true))
                     ->addColumn(array('label'=>'Nama EMKL','index'=>'NAMAEMKL', 'width'=>150,'hidden'=>true)) 
                     ->addColumn(array('label'=>'Telp. EMKL','index'=>'TELPEMKL', 'width'=>150,'hidden'=>true)) 
+                    ->addColumn(array('label'=>'Telp. PPJK','index'=>'telp_ppjk', 'width'=>150,'hidden'=>true))
                     ->addColumn(array('label'=>'No. Truck','index'=>'NOPOL', 'width'=>150,'hidden'=>true)) 
                     ->addColumn(array('label'=>'No. POL','index'=>'NOPOLCIROUT', 'width'=>150,'hidden'=>true))
                     ->addColumn(array('label'=>'No. POL Out','index'=>'NOPOL_OUT', 'width'=>150,'hidden'=>true))
@@ -666,6 +665,7 @@
                     ->addColumn(array('label'=>'BCF Consignee','index'=>'bcf_consignee', 'width'=>70,'hidden'=>true))
                     ->addColumn(array('label'=>'Nama EMKL','index'=>'NAMAEMKL', 'width'=>150,'hidden'=>true)) 
                     ->addColumn(array('label'=>'Telp. EMKL','index'=>'TELPEMKL', 'width'=>150,'hidden'=>true)) 
+                    ->addColumn(array('label'=>'Telp. PPJK','index'=>'telp_ppjk', 'width'=>150,'hidden'=>true))
                     ->addColumn(array('label'=>'No. Truck','index'=>'NOPOL', 'width'=>150,'hidden'=>true)) 
                     ->addColumn(array('label'=>'No. POL','index'=>'NOPOLCIROUT', 'width'=>150,'hidden'=>true))
                     ->addColumn(array('label'=>'No. POL Out','index'=>'NOPOL_OUT', 'width'=>150,'hidden'=>true))
@@ -814,6 +814,12 @@
                         <label class="col-sm-3 control-label">NPWP Consignee</label>
                         <div class="col-sm-8">
                             <input type="text" id="ID_CONSIGNEE" name="ID_CONSIGNEE" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Telp. PPJK</label>
+                        <div class="col-sm-8">
+                            <input type="text" id="telp_ppjk" name="telp_ppjk" class="form-control">
                         </div>
                     </div>
 <!--                    <div class="form-group">
