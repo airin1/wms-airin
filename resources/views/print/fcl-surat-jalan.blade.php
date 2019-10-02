@@ -53,7 +53,7 @@
     <div style="width: 100%;height: 200px;border: 1px solid transparent;">
         <table width="100%">
             <tr>
-                <td style="width: 60%;">
+                <td style="width: 65%;">
                     <table>
                         <tr>
                             <td style="width: 100px;"></td>
@@ -93,7 +93,7 @@
                         </tr>
                     </table>
                 </td>
-                <td style="width: 40%;vertical-align: top;">
+                <td style="width: 35%;vertical-align: top;">
                     <table>
                         <tr>
                             <td style="width: 50px;"></td>
@@ -137,7 +137,7 @@
                     <td colspan="3" style="height: 70px;">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td align="left">DWI JULIANTORO</td>
+                    <td align="left" style="margin-left: -30px;display: block;">DWI JULIANTORO</td>
                     <td></td>
                     <td align="center">YANUAR ANDRES SUSILO</td>
                 </tr>
