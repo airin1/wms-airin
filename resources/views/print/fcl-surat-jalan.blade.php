@@ -53,7 +53,7 @@
     <div style="width: 100%;height: 200px;border: 1px solid transparent;">
         <table width="100%">
             <tr>
-                <td style="width: 50%;">
+                <td style="width: 60%;">
                     <table>
                         <tr>
                             <td style="width: 100px;"></td>
@@ -93,7 +93,7 @@
                         </tr>
                     </table>
                 </td>
-                <td style="width: 50%;vertical-align: top;">
+                <td style="width: 40%;vertical-align: top;">
                     <table>
                         <tr>
                             <td style="width: 50px;"></td>
