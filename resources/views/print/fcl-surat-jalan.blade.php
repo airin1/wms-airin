@@ -25,9 +25,9 @@
     }
 </style>
 <a href="#" class="print-btn" type="button" onclick="window.print();">PRINT</a>    
-<div style="width: 812px;height: 1058px;border: 1px solid transparent;padding: 30px;">
+<div style="width: 700px;height: 1058px;border: 1px solid transparent;padding: 30px;">
     
-    <div style="width: 100%;height: 200px;border: 1px solid transparent;">
+    <div style="width: 100%;height: 100px;border: 1px solid transparent;">
         
         <div style="float: right;margin-top: 100px;">
             <table>
@@ -53,10 +53,10 @@
     <div style="width: 100%;height: 200px;border: 1px solid transparent;">
         <table width="100%">
             <tr>
-                <td style="width: 70%;">
+                <td style="width: 50%;">
                     <table>
                         <tr>
-                            <td style="width: 200px;"></td>
+                            <td style="width: 100px;"></td>
                             <td><b>{{$container->NOCONTAINER}}</b>&nbsp;</td>
                         </tr>
                         <tr>
@@ -93,7 +93,7 @@
                         </tr>
                     </table>
                 </td>
-                <td style="width: 30%;vertical-align: top;">
+                <td style="width: 50%;vertical-align: top;">
                     <table>
                         <tr>
                             <td style="width: 50px;"></td>
@@ -132,7 +132,7 @@
                 <tr>
                     <td style="width: 30%;"></td>
                     <td style="width: 30%;"></td>
-                    <td style="width: 30%;" align="center"><b>PT. AIRIN</b></td>
+                    <td style="width: 30%;" align="center"></td>
                 </tr>
                 <tr>
                     <td colspan="3" style="height: 70px;">&nbsp;</td>
