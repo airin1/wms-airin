@@ -61,7 +61,7 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td>{{$container->SIZE.' FULL'}}&nbsp;</td>
+                            <td>{{$container->SIZE.' FULL / "'.$container->jenis_container}}&nbsp;</td>
                         </tr>
                         <tr>
                             <td></td>
