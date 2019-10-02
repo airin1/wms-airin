@@ -27,9 +27,9 @@
 <a href="#" class="print-btn" type="button" onclick="window.print();">PRINT</a>    
 <div style="width: 700px;height: 1058px;border: 1px solid transparent;padding: 30px;">
     
-    <div style="width: 100%;height: 100px;border: 1px solid transparent;">
+    <!--<div style="width: 100%;height: 80px;border: 1px solid transparent;display: relative;">-->
         
-        <div style="float: right;margin-top: 100px;">
+        <div style="float: right;margin-top: 80px;margin-bottom: 20px;">
             <table>
                 <tr>
                     <td align="right">SPPB</td>
@@ -38,8 +38,8 @@
                 </tr>
                 <tr>
                     <td align="right">PIB</td>
-                    <td align="left">{{$container->NO_SPJM}}</td>
-                    <td align="right">{{($container->TGL_SPJM != NULL) ? date('d-M-Y', strtotime($container->TGL_SPJM)) : ''}}</td>
+                    <td align="left">{{$container->NO_DAFTAR_PABEAN}}</td>
+                    <td align="right">{{($container->TGL_DAFTAR_PABEAN != NULL) ? date('d-M-Y', strtotime($container->TGL_DAFTAR_PABEAN)) : ''}}</td>
                 </tr>
                 <tr>
                     <td></td>
@@ -48,7 +48,7 @@
                 </tr>
             </table>
         </div>
-    </div>
+    <!--</div>-->
     <br />
     <div style="width: 100%;height: 200px;border: 1px solid transparent;">
         <table width="100%">
@@ -126,7 +126,6 @@
                 <td></td>
             </tr>
         </table>
-        <br />
         <div style="width: 100%;height: 100px;border: 1px solid transparent;">
             <table width="100%">
                 <tr>
@@ -138,7 +137,7 @@
                     <td colspan="3" style="height: 70px;">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td align="center">DWI JULIANTORO</td>
+                    <td align="left">DWI JULIANTORO</td>
                     <td></td>
                     <td align="center">YANUAR ANDRES SUSILO</td>
                 </tr>
