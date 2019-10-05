@@ -43,7 +43,7 @@ Route::group(['prefix' => 'fcl/delivery', 'namespace' => 'Import'], function(){
         'uses' => 'FclController@suratjalanUpdate'
     ]);
     // PRINT
-    Route::get('/suratjalan/cetak/{id}', [
+    Route::get('/suratjalan/cetak/{id}/{date?}', [
         'as' => 'fcl-delivery-suratjalan-cetak',
         'uses' => 'FclController@suratjalanCetak'
     ]);

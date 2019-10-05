@@ -982,10 +982,11 @@ class FclController extends Controller
         return $pdf->stream('FCL-FiatMuat-'.$container->NOCONTAINER.'-'.date('dmy').'.pdf');
     }
     
-    public function suratjalanCetak($id)
+    public function suratjalanCetak($id,$date)
     {
         $container = DBContainer::find($id);
         $data['container'] = $container;
+        $data['pay_date'] = $date;
         return view('print.fcl-surat-jalan', $data);
         $pdf = \PDF::loadView('print.fcl-surat-jalan', $data); 
         return $pdf->stream('Delivery-SuratJalan-'.$container->NOCONTAINER.'-'.date('dmy').'.pdf');

@@ -117,7 +117,7 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td>{{date('d-M-y', strtotime($container->ETA.' +6 Day'))}}&nbsp;</td>
+                            <td>{{date('d-M-y', strtotime($pay_date))}}&nbsp;</td>
                         </tr>
                     </table>
                 </td>

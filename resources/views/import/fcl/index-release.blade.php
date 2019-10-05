@@ -277,7 +277,9 @@
         
         $('#btn-print-sj').click(function() {
             var id = $('#fclReleaseGrid').jqGrid('getGridParam', 'selrow');
-            
+            $('#datepick-contid').val(id);
+            $('#datepick-modal').modal('show');
+                        
 //            $.ajax({
 //                type: 'GET',
 //                dataType : 'json',
@@ -311,7 +313,21 @@
 //                }
 //            });
             
-            window.open("{{ route('fcl-delivery-suratjalan-cetak', '') }}/"+id,"preview surat jalan fcl","width=815,height=600,menubar=no,status=no,scrollbars=yes");
+//            window.open("{{ route('fcl-delivery-suratjalan-cetak', '') }}/"+id,"preview surat jalan fcl","width=815,height=600,menubar=no,status=no,scrollbars=yes");
+        });
+        
+        $("#datepick-form").submit(function(event){
+            event.preventDefault();
+            
+            var cont_id = $('#datepick-contid').val();
+            var date = $('#payment_date').val();
+            
+            if(date == ''){
+                return false;
+            }
+            
+            window.open("{{ route('fcl-delivery-suratjalan-cetak', array('','')) }}/"+cont_id+"/"+date,"preview surat jalan fcl","width=815,height=600,menubar=no,status=no,scrollbars=yes");
+            $('#datepick-modal').modal('hide');
         });
         
         $("#verify-form").submit(function(event){
@@ -1075,6 +1091,40 @@
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                   <button type="submit" class="btn btn-primary">Verify</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div id="datepick-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Please Choose Payment Date</h4>
+            </div>
+            <form class="form-horizontal" id="datepick-form">
+                <div class="modal-body"> 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input type="hidden" id="datepick-contid" name="datepick_contid" required> 
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Pembayaran s/d Tanggal</label>
+                                <div class="col-sm-7">
+                                    <div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" id="payment_date" name="payment_date" class="form-control pull-right datepicker" required>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Print</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->
