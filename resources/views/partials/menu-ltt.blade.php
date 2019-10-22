@@ -3,7 +3,7 @@
     <!-- Logo -->
     <a href="{{route('index')}}" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>L</b>TT</span>
+      <span class="logo-mini">AIRIN</span>
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg"><b>WIS</b>PT.AIRIN</span>
     </a>

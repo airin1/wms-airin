@@ -16,12 +16,31 @@
             var cl = ids[i];
             
             rowdata = $('#lclBehandleGrid').getRowData(cl);
+            
+            if(rowdata.status_behandle == 'Ready' || rowdata.status_behandle == 'Checking') {
+                apv = '<button style="margin:5px;" class="btn btn-info btn-xs" data-id="'+cl+'" onclick="if (confirm(\'Apakah anda yakin telah selesai melakukan pengecekan ?\')){ changeStatusBehandle('+cl+',\'finish\'); }else{return false;};"><i class="fa fa-check"></i> FINISH</button>';
+            }else{
+                apv = '';
+            }  
+            
             if(rowdata.VALIDASI == 'Y') {
                 $("#" + cl).find("td").css("color", "#666");
             }
             if(rowdata.flag_bc == 'Y') {
                 $("#" + cl).find("td").css("background-color", "#FF0000");
             } 
+            
+            if(rowdata.status_behandle == 'Ready') {
+                $("#" + cl).find("td").css("background-color", "#aae25a");
+        } 
+            if(rowdata.status_behandle == 'Checking') {
+                $("#" + cl).find("td").css("background-color", "#f4dc27");
+    }
+            if(rowdata.status_behandle == 'Finish') {
+                $("#" + cl).find("td").css("background-color", "#6acaf7");
+            }
+    
+            jQuery("#lclBehandleGrid").jqGrid('setRowData',ids[i],{action:apv});
         } 
     }
     
@@ -30,9 +49,16 @@
         $('#btn-group-1, #btn-group-4').enableButtonGroup();
     }
     
+    function changeStatusBehandle($id,$action)
+    {
+        $("#manifest_finish_id").val($id);
+        $('#finish-modal').modal('show');
+    }
+ 
     $(document).ready(function()
     {
         $('#behandle-form').disabledFormGroup();
+        $('#desc').removeAttr('disabled');
         $('#btn-toolbar, #btn-photo').disabledButtonGroup();
         $('#btn-group-3').enableButtonGroup();
         
@@ -204,6 +230,7 @@
                     ->setGridEvent('gridComplete', 'gridCompleteEvent')
                     ->setGridEvent('onSelectRow', 'onSelectRowEvent')
                     ->addColumn(array('key'=>true,'index'=>'TMANIFEST_PK','hidden'=>true))
+                    ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>80, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
                     ->addColumn(array('label'=>'Validasi','index'=>'VALIDASI','width'=>80, 'align'=>'center'))
                     ->addColumn(array('label'=>'Status Behandle','index'=>'status_behandle','width'=>120, 'align'=>'center'))
                     ->addColumn(array('label'=>'No. HBL','index'=>'NOHBL','width'=>160))
@@ -211,8 +238,8 @@
                     ->addColumn(array('label'=>'No. Tally','index'=>'NOTALLY','width'=>160))
                     ->addColumn(array('label'=>'No. SPK','index'=>'NOJOBORDER', 'width'=>150,'hidden'=>true))
                     ->addColumn(array('label'=>'No. Container','index'=>'NOCONTAINER', 'width'=>150,'hidden'=>true))
-                    ->addColumn(array('label'=>'No. SPJM','index'=>'NO_SPJM', 'width'=>150, 'align'=>'center'))
-                    ->addColumn(array('label'=>'Tgl. SPJM','index'=>'TGL_SPJM', 'width'=>150, 'align'=>'center'))
+//                    ->addColumn(array('label'=>'No. SPJM','index'=>'NO_SPJM', 'width'=>150, 'align'=>'center'))
+//                    ->addColumn(array('label'=>'Tgl. SPJM','index'=>'TGL_SPJM', 'width'=>150, 'align'=>'center'))
                     ->addColumn(array('label'=>'Shipper','index'=>'SHIPPER','width'=>230))
                     ->addColumn(array('label'=>'Consignee','index'=>'CONSIGNEE','width'=>250))
                     ->addColumn(array('label'=>'Notify Party','index'=>'NOTIFYPARTY','width'=>160))
@@ -220,8 +247,18 @@
                     ->addColumn(array('label'=>'Weight','index'=>'WEIGHT', 'width'=>120, 'align'=>'right'))               
                     ->addColumn(array('label'=>'Meas','index'=>'MEAS', 'width'=>120, 'align'=>'right'))
                     ->addColumn(array('label'=>'Qty','index'=>'QUANTITY', 'width'=>80,'align'=>'center'))
-                    ->addColumn(array('label'=>'Packing','index'=>'NAMAPACKING', 'width'=>120))
+                    ->addColumn(array('label'=>'Packing','index'=>'NAMAPACKING', 'width'=>120,'align'=>'center'))
                     ->addColumn(array('label'=>'Kode Kemas','index'=>'KODE_KEMAS', 'width'=>100,'align'=>'center'))
+                    
+                    ->addColumn(array('label'=>'No. SPJM','index'=>'NO_SPJM', 'width'=>120, 'align'=>'center','hidden'=>false))
+                    ->addColumn(array('label'=>'Tgl. SPJM','index'=>'TGL_SPJM', 'width'=>150, 'align'=>'center','hidden'=>false))
+                    ->addColumn(array('label'=>'Tgl. Behandle','index'=>'tglbehandle', 'width'=>120,'align'=>'center'))
+                    ->addColumn(array('label'=>'Jam Behandle','index'=>'jambehandle', 'width'=>120,'align'=>'center'))
+                    
+                    
+                    ->addColumn(array('label'=>'Shipper','index'=>'SHIPPER','width'=>230,'hidden'=>true))
+                    ->addColumn(array('label'=>'Notify Party','index'=>'NOTIFYPARTY','width'=>160,'hidden'=>true))
+                    
                     ->addColumn(array('label'=>'UID','index'=>'UID', 'width'=>150,'hidden'=>true))          
                     ->addColumn(array('index'=>'TSHIPPER_FK', 'width'=>150,'hidden'=>true))
                     ->addColumn(array('index'=>'TCONSIGNEE_FK', 'width'=>150,'hidden'=>true))
@@ -259,7 +296,7 @@
                         <button class="btn btn-default" id="btn-print"><i class="fa fa-print"></i> Cetak WO</button>
                     </div>
                     <div id="btn-group-5" class="btn-group pull-right">
-                        <button class="btn btn-info" id="btn-ready"><i class="fa fa-check"></i> Ready To Checking</button>
+                        <button class="btn btn-warning" id="btn-ready"><i class="fa fa-check"></i> Ready To Checking</button>
                 </div>
             </div>
             </div>
@@ -416,6 +453,37 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+<div id="finish-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Finish Behandle</h4>
+            </div>
+            <form id="create-invoice-form" class="form-horizontal" action="{{ route('lcl-change-status-behandle') }}" method="POST" enctype="multipart/form-data">
+                <div class="modal-body"> 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input name="_token" type="hidden" value="{{ csrf_token() }}" />
+                            <input name="id" type="hidden" id="manifest_finish_id" />
+                            <input name="status_behandle" type="hidden" id="status_behandle" value="Finish" />
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Keterangan</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control" name="desc" id="desc"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Finish</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal --> 
 @endsection
 
 @section('custom_css')
