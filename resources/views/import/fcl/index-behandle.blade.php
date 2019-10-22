@@ -74,7 +74,7 @@
             $('#TGL_SPJM').val(rowdata.TGL_SPJM);
             $('#NAMA_IMP').val(rowdata.NAMA_IMP);
             $('#NPWP_IMP').val(rowdata.NPWP_IMP);
-
+            $('#location_behandle').val(rowdata.location_behandle);
             $('#upload-title').html('Upload Photo for '+rowdata.NOCONTAINER);
             $('#no_cont').val(rowdata.NOCONTAINER);
             $('#id_cont').val(rowdata.TCONTAINER_PK);
@@ -250,7 +250,8 @@
                     ->addColumn(array('label'=>'Tgl. SPJM','index'=>'TGL_SPJM', 'width'=>150,'hidden'=>false))
                     ->addColumn(array('label'=>'Tgl. Behandle','index'=>'TGLBEHANDLE','width'=>120,'align'=>'center'))
                     ->addColumn(array('label'=>'Jam. Behandle','index'=>'JAMBEHANDLE', 'width'=>120,'align'=>'center'))
-            
+                    ->addColumn(array('label'=>'Lokasi Behandle','index'=>'location_behandle', 'width'=>120,'align'=>'center'))
+                    
                     ->addColumn(array('label'=>'No. MBL','index'=>'NOMBL','width'=>160,'hidden'=>true))
                     ->addColumn(array('label'=>'Tgl. MBL','index'=>'TGLMBL','width'=>150,'align'=>'center','hidden'=>true))
                     ->addColumn(array('label'=>'Consolidator','index'=>'NAMACONSOLIDATOR','width'=>250,'hidden'=>true))
@@ -399,7 +400,16 @@
                             </div>
                         </div>
                     </div>
-                    
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Lokasi Behandle</label>
+                        <div class="col-sm-8">
+                            <select class="form-control select2" id="location_behandle" name="location_behandle" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
+                                <option value="">Choose Location</option>
+                                <option value="ARN1-UTARA">ARN1-UTARA</option>
+                                <option value="ARN3-BARAT">ARN3-BARAT</option>
+                            </select>
+                        </div>
+                    </div>
                     
                 </div>
                 <div class="col-md-6"> 

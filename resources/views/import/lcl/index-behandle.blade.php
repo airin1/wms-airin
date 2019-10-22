@@ -74,7 +74,8 @@
             $('#NO_POS_BC11').val(rowdata.NO_POS_BC11);
             $('#NO_SPJM').val(rowdata.NO_SPJM);
             $('#TGL_SPJM').val(rowdata.TGL_SPJM);
-
+            $('#location_behandle').val(rowdata.location_behandle);
+            
             $('#upload-title').html('Upload Photo for '+rowdata.NOHBL);
             $('#no_hbl').val(rowdata.NOHBL);
             $('#id_hbl').val(rowdata.TMANIFEST_PK);
@@ -254,7 +255,7 @@
                     ->addColumn(array('label'=>'Tgl. SPJM','index'=>'TGL_SPJM', 'width'=>150, 'align'=>'center','hidden'=>false))
                     ->addColumn(array('label'=>'Tgl. Behandle','index'=>'tglbehandle', 'width'=>120,'align'=>'center'))
                     ->addColumn(array('label'=>'Jam Behandle','index'=>'jambehandle', 'width'=>120,'align'=>'center'))
-                    
+                    ->addColumn(array('label'=>'Lokasi Behandle','index'=>'location_behandle', 'width'=>120,'align'=>'center'))
                     
                     ->addColumn(array('label'=>'Shipper','index'=>'SHIPPER','width'=>230,'hidden'=>true))
                     ->addColumn(array('label'=>'Notify Party','index'=>'NOTIFYPARTY','width'=>160,'hidden'=>true))
@@ -375,7 +376,16 @@
                             </div>
                         </div>
                     </div>
-                    
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Lokasi Behandle</label>
+                        <div class="col-sm-8">
+                            <select class="form-control select2" id="location_behandle" name="location_behandle" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
+                                <option value="">Choose Location</option>
+                                <option value="ARN1-UTARA">ARN1-UTARA</option>
+                                <option value="ARN3-BARAT">ARN3-BARAT</option>
+                            </select>
+                        </div>
+                    </div>
                     
                 </div>
                 <div class="col-md-6"> 
