@@ -419,7 +419,8 @@ table tfoot tr td:first-child {
         <tr>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
-            <td><b>SIGIT MARET HARYADI</b><br />Manager TPS</td>
+            <!--<td><b>SIGIT MARET HARYADI</b><br />Manager TPS</td>-->
+            <td><b>YANUAR ANDRES SUSILO</b><br />Plt Manager TPS</td>
         </tr>
     </table>
     </div>
