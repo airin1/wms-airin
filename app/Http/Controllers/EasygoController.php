@@ -41,7 +41,7 @@ class EasygoController extends Controller
         if(isset($data['container_type']) && $data['container_type'] == 'L'){
             $dispatche = \App\Models\Container::find($data['TCONTAINER_PK']);
             $type = 'L';
-            $tujuan = $dispatche->KD_TPS_TUJUAN;
+            $tujuan = $dispatche->LOKASI_GUDANG;
         }else{
             $dispatche = \App\Models\Containercy::find($data['TCONTAINER_PK']);
 //            $dispatche = \App\Models\Easygo::where('OB_ID', $request->ob_id)->orderBy('created_at', 'DESC')->first();
