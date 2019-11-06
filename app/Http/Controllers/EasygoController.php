@@ -98,12 +98,12 @@ class EasygoController extends Controller
         
         $results = json_decode($dataResults);
         if(count($results) > 0){
-                $dispatche->STATUS_DISPATCHE = 'Y';
+            $dispatche->STATUS_DISPATCHE = 'Y';
 //            if($type == 'F'){        
 //                $wkt_dis = date('Y-m-d H:i:s');
 //                $dispatche->TGL_DISPATCHE = date('Y-m-d', strtotime($wkt_dis));
 //                $dispatche->JAM_DISPATCHE = date('H:i:s', strtotime($wkt_dis));
-//                $dispatche->url_reply = $this->url_reply;
+////                $dispatche->url_reply = $this->url_reply;
 //            }
             $dispatche->DO_ID = $results->DO_ID;
             $dispatche->RESPONSE_DISPATCHE = $results->ResponseStatus;
