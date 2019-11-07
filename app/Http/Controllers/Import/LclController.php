@@ -2351,7 +2351,7 @@ class LclController extends Controller
 //                $filename = $file->getClientOriginalName();
                 $extension = $file->getClientOriginalExtension();
                 // create instance
-                $img = \Image::make($file);
+                $img = \Image::make($file)->orientate();
 
                 // resize the image to a width of 300 and constrain aspect ratio (auto height)
                 $img->resize(500, null, function ($constraint) {
@@ -2397,7 +2397,7 @@ class LclController extends Controller
 //                $filename = $file->getClientOriginalName();
                 $extension = $file->getClientOriginalExtension();
                 // create instance
-                $img = \Image::make($file);
+                $img = \Image::make($file)->orientate();
 
                 // resize the image to a width of 300 and constrain aspect ratio (auto height)
                 $img->resize(500, null, function ($constraint) {
