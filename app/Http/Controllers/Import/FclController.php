@@ -2292,14 +2292,14 @@ UNZ+1+1709131341'\n";
             foreach($files as $file){
 //                $filename = $file->getClientOriginalName();
                 $extension = $file->getClientOriginalExtension();
-                $img = \Image::make($file)->orientate();
-                $img->resize(500, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
+//                $img = \Image::make($file)->orientate();
+//                $img->resize(500, null, function ($constraint) {
+//                    $constraint->aspectRatio();
+//                });
                 $filename = date('dmyHis').'_'.str_slug($request->no_cont).'_'.$i.'.'.$extension;
                 $picture[] = $filename;
-//                $file->move($destinationPath, $filename);
-                $img->save($destinationPath.'/'.$filename);
+                $file->move($destinationPath, $filename);
+//                $img->save($destinationPath.'/'.$filename);
                 $i++;
             }
             // update to Database
@@ -2331,14 +2331,14 @@ UNZ+1+1709131341'\n";
             foreach($files as $file){
 //                $filename = $file->getClientOriginalName();
                 $extension = $file->getClientOriginalExtension();
-                $img = \Image::make($file)->orientate();
-                $img->resize(500, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
+//                $img = \Image::make($file)->orientate();
+//                $img->resize(500, null, function ($constraint) {
+//                    $constraint->aspectRatio();
+//                });
                 $filename = date('dmyHis').'_'.str_slug($request->no_cont).'_'.$i.'.'.$extension;
                 $picture[] = $filename;
-//                $file->move($destinationPath, $filename);
-                $img->save($destinationPath.'/'.$filename);
+                $file->move($destinationPath, $filename);
+//                $img->save($destinationPath.'/'.$filename);
                 $i++;
             }
             // update to Database
@@ -2370,14 +2370,14 @@ UNZ+1+1709131341'\n";
             foreach($files as $file){
 //                $filename = $file->getClientOriginalName();
                 $extension = $file->getClientOriginalExtension();
-                $img = \Image::make($file)->orientate();
-                $img->resize(500, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
+//                $img = \Image::make($file)->orientate();
+//                $img->resize(500, null, function ($constraint) {
+//                    $constraint->aspectRatio();
+//                });
                 $filename = date('dmyHis').'_'.str_slug($request->no_cont).'_'.$i.'.'.$extension;
                 $picture[] = $filename;
-//                $file->move($destinationPath, $filename);
-                $img->save($destinationPath.'/'.$filename);
+                $file->move($destinationPath, $filename);
+//                $img->save($destinationPath.'/'.$filename);
                 $i++;
             }
             // update to Database
