@@ -2341,14 +2341,28 @@ class LclController extends Controller
         if ($request->hasFile('photos')) {
             $files = $request->file('photos');
             $destinationPath = base_path() . '/public/uploads/photos/container/lcl/'.$request->no_cont;
+            
+            if (!\File::isDirectory($destinationPath)) {
+                \File::makeDirectory($destinationPath);
+            }
+            
             $i = 1;
             foreach($files as $file){
 //                $filename = $file->getClientOriginalName();
                 $extension = $file->getClientOriginalExtension();
-                
+                // create instance
+                $img = \Image::make($file);
+
+                // resize the image to a width of 300 and constrain aspect ratio (auto height)
+                $img->resize(500, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+
                 $filename = date('dmyHis').'_'.str_slug($request->no_cont).'_'.$i.'.'.$extension;
                 $picture[] = $filename;
-                $file->move($destinationPath, $filename);
+//                $file->move($destinationPath, $filename);
+                $img->save($destinationPath.'/'.$filename);
+                
                 $i++;
             }
             // update to Database
@@ -2373,14 +2387,26 @@ class LclController extends Controller
         if ($request->hasFile('photos')) {
             $files = $request->file('photos');
             $destinationPath = base_path() . '/public/uploads/photos/container/lcl/'.$request->no_cont;
+            
+            if (!\File::isDirectory($destinationPath)) {
+                \File::makeDirectory($destinationPath);
+            }
+            
             $i = 1;
             foreach($files as $file){
 //                $filename = $file->getClientOriginalName();
                 $extension = $file->getClientOriginalExtension();
-                
+                // create instance
+                $img = \Image::make($file);
+
+                // resize the image to a width of 300 and constrain aspect ratio (auto height)
+                $img->resize(500, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
                 $filename = date('dmyHis').'_'.str_slug($request->no_cont).'_'.$i.'.'.$extension;
                 $picture[] = $filename;
-                $file->move($destinationPath, $filename);
+//                $file->move($destinationPath, $filename);
+                $img->save($destinationPath.'/'.$filename);
                 $i++;
             }
             // update to Database
