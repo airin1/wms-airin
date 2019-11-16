@@ -273,6 +273,8 @@
                 $('#release-form').disabledFormGroup();
             }
             
+            $('#telp_ppjk').removeAttr('disabled');
+            
         });
         
         $('#btn-print-sj').click(function() {
