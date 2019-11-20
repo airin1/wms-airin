@@ -326,7 +326,7 @@
             var nosppb = $('#NO_SPPB').val();
             var tglsppb = $('#TGL_SPPB').val();
             
-            if(nosppb && tglsppb){
+//            if(nosppb && tglsppb){
             
                 var manifestId = $('#TMANIFEST_PK').val();
                 var url = "{{route('lcl-delivery-release-update','')}}/"+manifestId;
@@ -358,10 +358,10 @@
                     }
                 });
                 
-            }else{
-                $('#btn-toolbar').showAlertAfterElement('alert-danger alert-custom', 'NO. SPPB & TGL. SPPB Belum diisi.', 5000);
-                return false;
-            }
+//            }else{
+//                $('#btn-toolbar').showAlertAfterElement('alert-danger alert-custom', 'NO. SPPB & TGL. SPPB Belum diisi.', 5000);
+//                return false;
+//            }
         });
         
         $('#btn-cancel').click(function() {
