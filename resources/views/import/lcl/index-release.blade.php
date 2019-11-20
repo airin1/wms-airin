@@ -268,8 +268,12 @@
             if(rowdata.flag_bc == 'Y'){
                 $('#btn-group-4').disabledButtonGroup();
                 $('#btn-group-5').disabledButtonGroup();
-                $('#btn-group-2,#btn-sppb,#btn-photo').disabledButtonGroup();
+                $('#btn-sppb,#btn-photo').disabledButtonGroup();
                 $('#release-form').disabledFormGroup();
+                @role('super-admin')
+                @else
+//                    $('#btn-group-2').disabledButtonGroup();
+                @endrole  
             }
             
             $('#telp_ppjk').removeAttr('disabled');
