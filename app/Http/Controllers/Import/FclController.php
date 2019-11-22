@@ -1204,12 +1204,12 @@ UNZ+1+1709131341'\n";
         $fileOut = strtoupper(str_slug($shippingline->shippingline,'-')).'_CODECO-OUT_'.time() .rand().'.txt';
 //        $destinationPath = public_path()."/uploads/txt/";
         
-        $send_email = \Mail::send('emails.report-txt', array(), function($message) use($subject,$dataTxtIn,$dataTxtOut,$fileIn,$fileOut) {
+        $send_email = \Mail::send('emails.report-txt', array(), function($message) use($subject,$dataTxtIn,$dataTxtOut,$fileIn,$fileOut,$shippingline) {
             $message->from('tps@airin.co.id', 'PT. AIRIN');
             $message->sender('tps@airin.co.id');
             $message->subject($subject);
-            $message->to('andikabayuprjp@gmail.com');
-            $message->cc('reethree269@gmail.com');
+            $message->to($shippingline->email, $shippingline->shippingline);
+            $message->cc('yanu@airin.co.id');
             $message->attachData($dataTxtIn, $fileIn);
             $message->attachData($dataTxtOut, $fileOut);
         });
