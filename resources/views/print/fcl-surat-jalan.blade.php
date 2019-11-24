@@ -6,6 +6,9 @@
 
 @section('content')
 <style>
+    body {
+        font-family: Tahoma, Geneva, sans-serif;
+    }
     table{
         font-size: 14px;
     }
@@ -17,7 +20,7 @@
         @page {
             color: #000;
             background: #fff;
-            font-weight: bold;
+            font-weight: 800;
         }
         .print-btn {
             display: none;
