@@ -32,7 +32,7 @@
         <div style="float: right;margin-top: 80px;margin-bottom: 20px;">
             <table>
                 <tr>
-                    <td align="right">SPPB</td>
+                    <td align="right">{{$container->KODE_DOKUMEN}}</td>
                     <td align="left" style="width: 80px;">{{$container->NO_SPPB}}</td>
                     <td align="right">{{date('d-M-Y', strtotime($container->TGL_SPPB))}}</td>
                 </tr>
@@ -137,7 +137,7 @@
                     <td colspan="3" style="height: 70px;">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td align="left" style="margin-left: -30px;display: block;">DWI JULIANTORO</td>
+                    <td align="left" style="margin-left: -30px;display: block;">{{($container->KODE_GUDANG == 'ARN3') ? 'DWI JULIANTORO' : 'WATMASDEL'}}</td>
                     <td></td>
                     <td align="center">YANUAR ANDRES SUSILO</td>
                 </tr>
