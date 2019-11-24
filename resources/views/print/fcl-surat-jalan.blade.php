@@ -76,7 +76,7 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td>{{($container->KODE_GUDANG == 'ARN3') ? 'PT. AIRIN (BARAT)' : 'PT. AIRIN (UTARA)'}}&nbsp;</td>
+                            <td>{{($container->KODE_GUDANG == 'ARN3') ? 'PT. AIRIN (BARAT)' : 'PT. AIRIN (UTARA)'}}&nbsp;{{$container->location_name}}&nbsp;</td>
                         </tr>
                         <tr>
                             <td></td>
