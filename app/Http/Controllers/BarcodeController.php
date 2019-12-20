@@ -151,7 +151,7 @@ class BarcodeController extends Controller
         
     }
     
-    public function printBarcodePreview($id, $type, $action, $car = null)
+    public function printBarcodePreview($id, $type, $action, $car = null, $location = null)
     { 
         $ids = explode(',', $id);
         $model = '';
@@ -248,6 +248,7 @@ class BarcodeController extends Controller
 //        return json_encode($data_barcode);
 
         $data['barcodes'] = $data_barcode;
+        $data['custom_location'] = $location;
 //        $data['ref'] = $ref;
         return view('print.barcode', $data);
 //        $pdf = \PDF::loadView('print.barcode', $data); 

@@ -84,6 +84,7 @@
         $('#btn-toolbar,#btn-sppb, #btn-photo').disabledButtonGroup();
         $('#btn-group-3').enableButtonGroup();
         $(".hide-kddoc").hide();
+        $('#release_lokasi').removeAttr('disabled');
         
         $("#KD_DOK_INOUT").on("change", function(){
             var $this = $(this).val();
@@ -420,7 +421,9 @@
                 var rowdata = $('#lclReleaseGrid').getRowData(manifestId);
                 $('#barcode_no_hbl').html(rowdata.NOHBL);
                 $('#id_hbl_barcode').val(rowdata.TMANIFEST_PK);
-                
+                if(rowdata.LOKASI_TUJUAN){
+                    $('#release_lokasi').val(rowdata.LOKASI_TUJUAN).trigger("change");
+                }
                 $('#print-barcode-modal').modal('show');
             }
         });
@@ -428,9 +431,10 @@
         $('#print-barcode-single').click(function(){
             var manifestId = $("#id_hbl_barcode").val();
             var car = $("#jumlah_mobil").val();
+            var lokasi = $("#release_lokasi").val();
             $('#print-barcode-modal').modal('hide');
             
-            window.open("{{ route('cetak-barcode', array('','','')) }}/"+manifestId+"/manifest/release/"+car,"preview barcode","width=305,height=600,menubar=no,status=no,scrollbars=yes");
+            window.open("{{ route('cetak-barcode', array('','','')) }}/"+manifestId+"/manifest/release/"+car+"/"+lokasi,"preview barcode","width=305,height=600,menubar=no,status=no,scrollbars=yes");
         });
         
         $('#btn-upload').click(function() {
@@ -1037,6 +1041,16 @@
                         <label class="col-sm-3 control-label">Jumlah Mobil</label>
                         <div class="col-sm-8">
                             <input type="number" id="jumlah_mobil" name="jumlah_mobil" class="form-control" value="1" />
+                        </div>
+                    </div>
+                    <div class="form-group">&nbsp;</div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Lokasi Gudang</label>
+                        <div class="col-sm-8">
+                            <select class="form-control select2" id="release_lokasi" name="lokasi_gudang" style="width: 100%;" tabindex="-1" aria-hidden="true" required disabled="false">
+                                <option value="ARN1" selected>ARN1 (Utara)</option>
+                                <option value="ARN3">ARN3 (Barat)</option>
+                            </select>
                         </div>
                     </div>
                 </div>

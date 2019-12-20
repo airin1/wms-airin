@@ -1,15 +1,25 @@
 @foreach($barcodes as $barcode)
-
+    
     @if($barcode->ref_type == 'Manifest')
         <div style="margin: 20px 0">
             <div style="text-align: center;margin: 0 auto;">
                 <span style="font-size:12px;">{{strtoupper($barcode->ref_action).' - '.date('d/m/Y H:i')}}</span>
                 <h3 style="margin: 10px;">GATE PASS</h3>
-                @if($barcode->LOKASI_GUDANG == 'ARN1')
-                    <h5 style="margin: 10px;">TPS AIRIN (Utara)</h5>
-                @else
-                    <h5 style="margin: 10px;">TPS AIRIN (Barat)</h5>
+                
+                @if($custom_location != '')
+                    @if($custom_location == 'ARN1')
+                        <h5 style="margin: 10px;">TPS AIRIN (Utara)</h5>
+                    @else
+                        <h5 style="margin: 10px;">TPS AIRIN (Barat)</h5>
+                    @endif
+                @else               
+                    @if($barcode->LOKASI_GUDANG == 'ARN1')
+                        <h5 style="margin: 10px;">TPS AIRIN (Utara)</h5>
+                    @else
+                        <h5 style="margin: 10px;">TPS AIRIN (Barat)</h5>
+                    @endif
                 @endif
+                
                 {!!QrCode::margin(0)->size(80)->generate($barcode->barcode)!!}
                 <p style="font-size: 10px;margin: 0;padding: 0;">{{$barcode->barcode}}</p>
                 <p style="font-size: 13px;font-weight: bold;">
@@ -30,19 +40,29 @@
             <div style="text-align: center;margin: 0 auto;">
                 <span style="font-size:12px;">{{strtoupper($barcode->ref_action).' - '.date('d/m/Y H:i')}}</span>
                 <h3 style="margin: 10px;">GATE PASS</h3>
-                @if(isset($barcode->LOKASI_GUDANG))
-                    @if($barcode->LOKASI_GUDANG == 'ARN1')
+                
+                @if($custom_location != '')
+                    @if($custom_location == 'ARN1')
                         <h5 style="margin: 10px;">TPS AIRIN (Utara)</h5>
                     @else
                         <h5 style="margin: 10px;">TPS AIRIN (Barat)</h5>
                     @endif
                 @else
-                    @if($barcode->GUDANG_TUJUAN == 'ARN1')
-                        <h5 style="margin: 10px;">TPS AIRIN (Utara)</h5>
+                    @if(isset($barcode->LOKASI_GUDANG))
+                        @if($barcode->LOKASI_GUDANG == 'ARN1')
+                            <h5 style="margin: 10px;">TPS AIRIN (Utara)</h5>
+                        @else
+                            <h5 style="margin: 10px;">TPS AIRIN (Barat)</h5>
+                        @endif
                     @else
-                        <h5 style="margin: 10px;">TPS AIRIN (Barat)</h5>
-                    @endif
-                @endif               
+                        @if($barcode->GUDANG_TUJUAN == 'ARN1')
+                            <h5 style="margin: 10px;">TPS AIRIN (Utara)</h5>
+                        @else
+                            <h5 style="margin: 10px;">TPS AIRIN (Barat)</h5>
+                        @endif
+                    @endif 
+                @endif
+              
                 {!!QrCode::margin(0)->size(80)->generate($barcode->barcode)!!}
                 <p style="font-size: 10px;margin: 0;padding: 0;">{{$barcode->barcode}}</p>
                 <p style="font-size: 13px;font-weight: bold;">
