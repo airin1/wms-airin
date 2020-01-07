@@ -82,6 +82,7 @@
         $('#btn-toolbar,#btn-sppb,#btn-photo').disabledButtonGroup();
         $('#btn-group-3').enableButtonGroup();
         $(".hide-kddoc").hide();
+        $('#release_lokasi').removeAttr('disabled');
         
         $("#KD_DOK_INOUT").on("change", function(){
             var $this = $(this).val();
@@ -461,8 +462,29 @@
             if(!manifestId) {alert('Please Select Row');return false;}               
 //            if(!confirm('Apakah anda yakin?')){return false;}    
             
+            if(cellValues.length > 1){
+                if(!confirm('Apakah anda yakin?')){return false;}   
+                window.open("{{ route('cetak-barcode', array('','','')) }}/"+manifestId+"/fcl/release","preview barcode","width=305,height=600,menubar=no,status=no,scrollbars=yes");
+            }else{
+                var rowdata = $('#fclReleaseGrid').getRowData(manifestId);
+                $('#barcode_no_cont').html(rowdata.NOCONTAINER);
+                $('#id_cont_barcode').val(rowdata.TCONTAINER_PK);
+                if(rowdata.LOKASI_TUJUAN){
+                    $('#release_lokasi').val(rowdata.GUDANG_TUJUAN).trigger("change");
+                }
+                $('#print-barcode-modal').modal('show');
+            }
+            
 //            console.log(manifestId);
-            window.open("{{ route('cetak-barcode', array('','','')) }}/"+manifestId+"/fcl/release","preview barcode","width=305,height=600,menubar=no,status=no,scrollbars=yes");
+//            window.open("{{ route('cetak-barcode', array('','','')) }}/"+manifestId+"/fcl/release","preview barcode","width=305,height=600,menubar=no,status=no,scrollbars=yes");
+        });
+        
+        $('#print-barcode-single').click(function(){
+            var manifestId = $("#id_cont_barcode").val();
+            var lokasi = $("#release_lokasi").val();
+            $('#print-barcode-modal').modal('hide');
+            
+            window.open("{{ route('cetak-barcode', array('','','')) }}/"+manifestId+"/fcl/release/1/"+lokasi,"preview barcode","width=305,height=600,menubar=no,status=no,scrollbars=yes");
         });
         
         $('#btn-upload').click(function() {
@@ -1133,6 +1155,35 @@
                   <button type="submit" class="btn btn-primary">Print</button>
                 </div>
             </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div id="print-barcode-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="title-photo">Print Barcode <span id="barcode_no_cont"></span></h4>
+            </div>
+            <div class="modal-body"> 
+                <div class="row">
+                    <input name="_token" type="hidden" value="{{ csrf_token() }}">
+                    <input type="hidden" id="id_cont_barcode" required>   
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Lokasi Gudang</label>
+                        <div class="col-sm-8">
+                            <select class="form-control select2" id="release_lokasi" name="lokasi_gudang" style="width: 100%;" tabindex="-1" aria-hidden="true" required disabled="false">
+                                <option value="ARN1" selected>ARN1 (Utara)</option>
+                                <option value="ARN3">ARN3 (Barat)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>    
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" id="print-barcode-single" class="btn btn-primary">Create</button>
+            </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
