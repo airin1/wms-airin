@@ -68,7 +68,7 @@ class EasygoController extends Controller
             'token' => $this->token, // Token
             'Car_plate' => $dispatche->ESEALCODE,
             'Tgl_DO' => date('Y-m-d H:i:s', strtotime($dispatche->TGL_PLP)), // Tgl.PLP
-            'Kode_asal' => $dispatche->KD_TPS_ASAL, 
+            'Kode_asal' => ($dispatche->KD_TPS_ASAL == 'NCT1') ? 'NPCT1' : $dispatche->KD_TPS_ASAL, 
             'Kode_tujuan' => $tujuan,
             'No_do' => $dispatche->NO_PLP, // No.PLP
 //            'No_sj' => '', // No.Surat Jalan
