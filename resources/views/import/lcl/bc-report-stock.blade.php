@@ -170,6 +170,7 @@
                 var html_release = '';
                 
                 if(json.data.photo_get_in){
+                    html_in += '<img src="{{url("uploads/photos/autogate")}}/'+json.data.photo_get_in.replace("C2", "C1")+'" style="width: 200px;padding:5px;" />';
                     html_in += '<img src="{{url("uploads/photos/autogate")}}/'+json.data.photo_get_in+'" style="width: 200px;padding:5px;" />';
                 }
                 $('#gatein-photo').html(html_in);
@@ -217,7 +218,12 @@
                 
                 var html_out = '';
                 if(json.data.photo_release_in){
+                    html_out += '<img src="{{url("uploads/photos/autogate")}}/'+json.data.photo_release_in.replace("C2", "C1")+'" style="width: 200px;padding:5px;" />';
                     html_out += '<img src="{{url("uploads/photos/autogate")}}/'+json.data.photo_release_in+'" style="width: 200px;padding:5px;" />';
+                }
+                if(json.data.photo_release_out){
+                    html_out += '<img src="{{url("uploads/photos/autogate")}}/'+json.data.photo_release_out.replace("C2", "C1")+'" style="width: 200px;padding:5px;" />';
+                    html_out += '<img src="{{url("uploads/photos/autogate")}}/'+json.data.photo_release_out+'" style="width: 200px;padding:5px;" />';
                 }
                 $('#gateout-photo').html(html_out);
                 
@@ -304,7 +310,7 @@
             ->addColumn(array('label'=>'No. Container','index'=>'NOCONTAINER', 'width'=>150,'align'=>'center'))
             ->addColumn(array('label'=>'Size','index'=>'SIZE', 'width'=>100,'align'=>'center'))
             ->addColumn(array('label'=>'Nama Angkut','index'=>'VESSEL','width'=>160))
-            ->addColumn(array('label'=>'VOY','index'=>'VOY','width'=>100,'align'=>'center'))
+            ->addColumn(array('label'=>'VOY','index'=>'VOY','width'=>100,'align'=>'center','hidden'=>true))
             ->addColumn(array('label'=>'Call Sign','index'=>'CALL_SIGN','width'=>100,'align'=>'center','hidden'=>true))
             ->addColumn(array('label'=>'No. SPK','index'=>'NOJOBORDER', 'width'=>150,'hidden'=>true))
             ->addColumn(array('label'=>'Teus','index'=>'TEUS', 'width'=>100,'align'=>'center','hidden'=>true))
@@ -333,7 +339,7 @@
             ->addColumn(array('label'=>'Jam. Stripping','index'=>'jamstripping', 'width'=>100,'align'=>'center'))
             ->addColumn(array('label'=>'Tgl. Release','index'=>'tglrelease', 'width'=>120,'align'=>'center'))
             ->addColumn(array('label'=>'Jam. Release','index'=>'jamrelease', 'width'=>100,'align'=>'center'))
-            ->addColumn(array('label'=>'Kode Dokumen','index'=>'KODE_DOKUMEN', 'width'=>150,'hidden'=>true))
+            ->addColumn(array('label'=>'Kode Dokumen','index'=>'KODE_DOKUMEN', 'width'=>150,'hidden'=>false))
             ->addColumn(array('label'=>'No. SPPB','index'=>'NO_SPPB', 'width'=>150,'align'=>'center'))
             ->addColumn(array('label'=>'Tgl. SPPB','index'=>'TGL_SPPB', 'width'=>150,'align'=>'center'))
             ->addColumn(array('label'=>'No. Segel','index'=>'no_flag_bc','width'=>100,'align'=>'center'))
