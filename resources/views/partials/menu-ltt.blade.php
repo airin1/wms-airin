@@ -406,7 +406,17 @@
                       <li><a tabindex="-1" href="{{ route('lcl-register-index') }}">Register</a></li>
                       <li><a tabindex="-1" href="{{ route('lcl-manifest-index') }}">Manifest</a></li>
                       <li><a tabindex="-1" href="{{ route('lcl-dispatche-index') }}">Dispatche E-Seal</a></li>
-
+                      <li class="treeview">
+                        <a href="#"><i class="fa fa-circle-o"></i> Photo
+                          <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                          </span>
+                        </a>
+                        <ul class="treeview-menu">
+                          <li><a href="{{ route('lcl-photo-container-index') }}">Container</a></li>
+                          <li><a href="{{ route('lcl-photo-cargo-index') }}">Cargo</a></li>
+                        </ul>
+                      </li>
                       <li class="treeview">
                         <a href="#"><i class="fa fa-circle-o"></i> Realisasi
                           <span class="pull-right-container">
@@ -456,7 +466,16 @@
                     <ul class="treeview-menu">
                       <li><a tabindex="-1" href="{{ route('fcl-register-index') }}">Register</a></li>
                       <li><a tabindex="-1" href="{{ route('fcl-dispatche-index') }}">Dispatche E-Seal</a></li>
-
+                        <li class="treeview">
+                        <a href="#"><i class="fa fa-circle-o"></i> Photo
+                          <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                          </span>
+                        </a>
+                        <ul class="treeview-menu">
+                          <li><a href="{{ route('fcl-photo-container-index') }}">Container</a></li>
+                        </ul>
+                      </li>
                       <li class="treeview">
                         <a href="#"><i class="fa fa-circle-o"></i> Realisasi
                           <span class="pull-right-container">

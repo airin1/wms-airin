@@ -28,13 +28,13 @@ class TablesRepository extends EloquentRepositoryAbstract {
             if(isset($request['jobid'])){
                 
                 $Model = \DB::table('tcontainer')
-                        ->leftjoin('tdepomty', 'tcontainer.TUJUAN_MTY', '=', 'tdepomty.TDEPOMTY_PK')
+//                        ->leftjoin('tdepomty', 'tcontainer.TUJUAN_MTY', '=', 'tdepomty.TDEPOMTY_PK')
                         ->where('TJOBORDER_FK', $request['jobid']);
                 
             }elseif(isset($request['startdate']) || isset($request['enddate'])){
                 
                 $Model = \DB::table('tcontainer')
-                        ->leftjoin('tdepomty', 'tcontainer.TUJUAN_MTY', '=', 'tdepomty.TDEPOMTY_PK')
+//                        ->leftjoin('tdepomty', 'tcontainer.TUJUAN_MTY', '=', 'tdepomty.TDEPOMTY_PK')
                         ->where('TGLENTRY', '>=',date('Y-m-d 00:00:00',strtotime($request['startdate'])))
                         ->where('TGLENTRY', '<=',date('Y-m-d 23:59:59',strtotime($request['enddate'])));
                 
@@ -43,7 +43,7 @@ class TablesRepository extends EloquentRepositoryAbstract {
                 switch ($request['module']) {
                     case 'gatein':
                         $Model = \DB::table('tcontainer')
-                            ->leftjoin('tdepomty', 'tcontainer.TUJUAN_MTY', '=', 'tdepomty.TDEPOMTY_PK')
+//                            ->leftjoin('tdepomty', 'tcontainer.TUJUAN_MTY', '=', 'tdepomty.TDEPOMTY_PK')
                             ->whereNotNull('NO_BC11')
                             ->whereNotNull('TGL_BC11')
                             ->whereNotNull('NO_PLP')
@@ -51,13 +51,13 @@ class TablesRepository extends EloquentRepositoryAbstract {
                     break;
                     case 'stripping':
                         $Model = \DB::table('tcontainer')
-                            ->leftjoin('tdepomty', 'tcontainer.TUJUAN_MTY', '=', 'tdepomty.TDEPOMTY_PK')
+//                            ->leftjoin('tdepomty', 'tcontainer.TUJUAN_MTY', '=', 'tdepomty.TDEPOMTY_PK')
                             ->whereNotNull('TGLMASUK')
                             ->whereNotNull('JAMMASUK');
                     break;
                     case 'buangmty':
                         $Model = \DB::table('tcontainer')
-                            ->leftjoin('tdepomty', 'tcontainer.TUJUAN_MTY', '=', 'tdepomty.TDEPOMTY_PK')
+//                            ->leftjoin('tdepomty', 'tcontainer.TUJUAN_MTY', '=', 'tdepomty.TDEPOMTY_PK')
                             ->whereNotNull('TGLSTRIPPING')
                             ->whereNotNull('JAMSTRIPPING');
                     break;
@@ -66,11 +66,17 @@ class TablesRepository extends EloquentRepositoryAbstract {
                             ->whereNotNull('TGLMASUK')
                             ->whereNotNull('JAMMASUK');
                     break;
+                    case 'photo':
+                        $Model = \DB::table('tcontainer')
+                            ->whereNotNull('TGLMASUK')
+                            ->whereNotNull('JAMMASUK');
+                    break;
                 }
                 
             }else{
                 $Model = \DB::table('tcontainer')
-                        ->leftjoin('tdepomty', 'tcontainer.TUJUAN_MTY', '=', 'tdepomty.TDEPOMTY_PK');
+//                        ->leftjoin('tdepomty', 'tcontainer.TUJUAN_MTY', '=', 'tdepomty.TDEPOMTY_PK')
+                        ;
             }
             
         }elseif($Model->getMorphClass() == 'App\Models\Containercy'){
@@ -136,7 +142,7 @@ class TablesRepository extends EloquentRepositoryAbstract {
 //                            ->whereNotNull('JAMRELEASE')
                             ;
                     break;
-                                    case 'hold':
+                    case 'hold':
                         if(isset($request['startdate']) || isset($request['enddate'])){
                             $start_date = date('Y-m-d',strtotime($request['startdate']));
                             $end_date = date('Y-m-d',strtotime($request['enddate']));  
