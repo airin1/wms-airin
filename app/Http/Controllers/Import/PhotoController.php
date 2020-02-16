@@ -161,7 +161,64 @@ class PhotoController extends Controller
     
     public function cargoUploadPhoto(Request $request)
     {
+
+        $manifest = DBManifest::find($request->id_hbl);
         
+        $picture = array();
+        if ($request->hasFile('photos')) {
+            $files = $request->file('photos');
+            $destinationPath = base_path() . '/public/uploads/photos/manifest';
+            
+            if (!\File::isDirectory($destinationPath)) {
+                \File::makeDirectory($destinationPath);
+            }
+            
+            $i = 1;
+            foreach($files as $file){
+//                $filename = $file->getClientOriginalName();
+                $extension = $file->getClientOriginalExtension();
+                // create instance
+                $img = \Image::make($file)->orientate();
+
+                // resize the image to a width of 300 and constrain aspect ratio (auto height)
+                $img->resize(600, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                });
+                
+                $filename = $request->kegiatan.'_'.date('dmyHis').'_'.str_slug($manifest->NOHBL).'_'.$i.'.'.$extension;
+
+                $picture[] = $filename;
+//                $file->move($destinationPath, $filename);
+                $img->save($destinationPath.'/'.$filename);
+                $i++;
+            }
+            
+            // update to Database
+            switch ($request->kegiatan) {
+                case "behandle":
+                    $oldJson = json_decode($manifest->photo_behandle);
+                    $newJson = array_collapse([$oldJson,$picture]);
+                    if(isset($request->hapus)){ $newJson = $picture; }
+                    $manifest->photo_behandle = json_encode($newJson);
+                    break;
+                case "release":
+                    $oldJson = json_decode($manifest->photo_release);
+                    $newJson = array_collapse([$oldJson,$picture]);
+                    if(isset($request->hapus)){ $newJson = $picture; }
+                    $manifest->photo_release = json_encode($newJson);
+                    break;
+
+            }
+            
+            if($manifest->save()){
+                return back()->with('success', 'Photo '.ucfirst($request->kegiatan).' for HBL '. $manifest->NOHBL .' has been uploaded.');
+            }else{
+                return back()->with('error', 'Photo uploaded, but not save in Database.');
+            }
+            
+        } else {
+            return back()->with('error', 'Something wrong!!! Can\'t upload photo, please try again.');
+        }
     }
     
 }

@@ -166,4 +166,8 @@ Route::group(['prefix' => 'lcl', 'namespace' => 'Import'], function(){
         'as' => 'lcl-container-upload-photo',
         'uses' => 'PhotoController@containerUploadPhoto'
     ]);
+    Route::post('/photo/cargo/upload', [
+        'as' => 'lcl-cargo-upload-photo',
+        'uses' => 'PhotoController@cargoUploadPhoto'
+    ]);
 });
