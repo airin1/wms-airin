@@ -10,7 +10,7 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-
+ini_set('default_socket_timeout', 60);
 //Route::group(['middleware' => ['web']], function(){
 
     if (version_compare(PHP_VERSION, '7.2.0', '>=')) {
