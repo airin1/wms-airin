@@ -30,6 +30,10 @@ Route::group(['prefix' => 'tpsonline/penerimaan', 'namespace' => 'Tps'], functio
 //        'uses' => 'PenerimaanController@responPlpCreateSingleSpk'
         'uses' => 'PenerimaanController@responPlpCreateJoborder'
     ]);
+        Route::post('/respon-plp/create-joborder-lcl/{id}', [
+        'as' => 'tps-responPlp-create-joborder-lcl',
+        'uses' => 'PenerimaanController@responPlpCreateJoborderLcl'
+    ]);
     Route::post('/respon-plp/grid-data', function()
     {
         GridEncoder::encodeRequestedData(new \App\Models\TpsTablesRepository(new App\Models\TpsResponPlp(),Illuminate\Support\Facades\Request::all()) ,Illuminate\Support\Facades\Request::all());
@@ -37,6 +41,17 @@ Route::group(['prefix' => 'tpsonline/penerimaan', 'namespace' => 'Tps'], functio
     Route::post('/respon-plp-detail/grid-data', function()
     {
         GridEncoder::encodeRequestedData(new \App\Models\TpsTablesRepository(new App\Models\TpsResponPlpDetail(),Illuminate\Support\Facades\Request::all()) ,Illuminate\Support\Facades\Request::all());
+    });
+    Route::post('/respon-plp-detail/crud', function()
+    {
+        $Eloquent = new App\Models\TpsResponPlpDetail();
+    
+        switch (Illuminate\Support\Facades\Request::get('oper'))
+        {
+          case 'edit':
+            return $Eloquent->updateJns(Illuminate\Support\Facades\Request::get('id'), Illuminate\Support\Facades\Request::except('id', 'oper'));
+            break;
+        }
     });
     
     // Respon Batal PLP
@@ -104,6 +119,10 @@ Route::group(['prefix' => 'tpsonline/penerimaan', 'namespace' => 'Tps'], functio
         'as' => 'tps-spjm-index',
         'uses' => 'PenerimaanController@spjmIndex'
     ]);
+    Route::get('/spjm/edit/{id}', [
+        'as' => 'tps-spjm-edit',
+        'uses' => 'PenerimaanController@spjmEdit'
+    ]);
     Route::post('/spjm/grid-data', function()
     {
         GridEncoder::encodeRequestedData(new \App\Models\TpsTablesRepository(new App\Models\TpsSpjm(),Illuminate\Support\Facades\Request::all()) ,Illuminate\Support\Facades\Request::all());
@@ -118,6 +137,10 @@ Route::group(['prefix' => 'tpsonline/penerimaan', 'namespace' => 'Tps'], functio
     Route::get('/dok-manual', [
         'as' => 'tps-dokManual-index',
         'uses' => 'PenerimaanController@dokManualIndex'
+    ]);
+    Route::get('/dok-manual/edit/{id}', [
+        'as' => 'tps-dokmanual-edit',
+        'uses' => 'PenerimaanController@dokManualEdit'
     ]);
     Route::post('/dok-manual/grid-data', function()
     {

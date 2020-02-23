@@ -195,6 +195,12 @@ class PhotoController extends Controller
             
             // update to Database
             switch ($request->kegiatan) {
+                case "stripping":
+                    $oldJson = json_decode($manifest->photo_stripping);
+                    $newJson = array_collapse([$oldJson,$picture]);
+                    if(isset($request->hapus)){ $newJson = $picture; }
+                    $manifest->photo_stripping = json_encode($newJson);
+                    break;
                 case "behandle":
                     $oldJson = json_decode($manifest->photo_behandle);
                     $newJson = array_collapse([$oldJson,$picture]);

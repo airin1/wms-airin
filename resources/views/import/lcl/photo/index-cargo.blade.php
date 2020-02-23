@@ -159,6 +159,7 @@
                                 <div class="col-sm-8">
                                     <select class="form-control select2" id="kegiatan" name="kegiatan" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
                                         <option value="">Pilih Jenis Kegiatan</option>
+                                        <option value="stripping">Stripping</option>
                                         <option value="behandle">Behandle</option>
                                         <option value="release">Release</option>
                                     </select>
