@@ -24,7 +24,8 @@
     {
         var ids = jQuery("#lclInoutReportGrid").jqGrid('getDataIDs'),
             lt = '',
-            vi = '';   
+            vi = '',
+            info = '';   
             
         for(var i=0;i < ids.length;i++){ 
             var cl = ids[i];
@@ -45,8 +46,13 @@
                 vi = '<button style="margin:5px;" class="btn btn-default btn-xs approve-manifest-btn" disabled><i class="fa fa-photo"></i> Not Found</button>';
             }
             
+            if(rowdata.no_flag_bc != ''){
+                info = '<button style="margin:5px;" class="btn btn-default btn-xs info-segel-btn" data-id="'+cl+'" onclick="viewInfo('+cl+')"><i class="fa fa-info"></i> Flag Info</button>';
+            }else{
+                info = '';
+            }
             
-            jQuery("#lclInoutReportGrid").jqGrid('setRowData',ids[i],{action:vi,lamaTimbun:lt}); 
+            jQuery("#lclInoutReportGrid").jqGrid('setRowData',ids[i],{action:vi+'<br />'+info,lamaTimbun:lt}); 
         } 
     }
     
@@ -102,6 +108,85 @@
         $('#view-photo-modal').modal('show');
     }
     
+    function viewInfo(manifestID)
+    {       
+        $.ajax({
+            type: 'GET',
+            dataType : 'json',
+            url: '{{route("lcl-view-info-flag","")}}/'+manifestID,
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert('Something went wrong, please try again later.');
+            },
+            beforeSend:function()
+            {
+                $('#lock-info').html('');
+                $('#unlock-info').html('');
+            },
+            success:function(json)
+            {
+                var data_segel = json.data;
+                var html_lock = '';
+                var html_unlock = '';
+                
+                if(data_segel.length > 0){
+                
+                    for(var i = 0; i < data_segel.length; i++) {
+                        var segel = data_segel[i];
+
+                        if(segel.action == 'lock'){
+                            html_lock += '<hr /><p>Nomor Segel : <b>'+segel.no_segel+'</b><br />Alasan Segel : <b>'+segel.alasan+'</b><br />Keterangan : <b>'+segel.keterangan+'</b><br />Date : <b>'+segel.created_at+'</b></p>';
+                            if(segel.photo){
+                                var photos_container = $.parseJSON(segel.photo);
+                                $.each(photos_container, function(i, item) {
+                                    /// do stuff
+//                                    html_lock += '<img src="{{url("uploads/photos/flag/lcl")}}/'+item+'" style="width: 200px;padding:5px;" />';
+                                    html_lock += '<a href="{{url("uploads/photos/flag/lcl")}}/'+item+'" target="_blank" class="btn btn-info">Lihat Dokumen Segel</a>';
+                                });
+                            }
+                        }else{
+                            html_unlock += '<hr /><p>Nomor Segel : <b>'+segel.no_segel+'</b><br />Alasan Segel : <b>'+segel.alasan+'</b><br />Keterangan : <b>'+segel.keterangan+'</b><br />Date : <b>'+segel.created_at+'</b></p>';
+                            if(segel.photo){
+                                var photos_container = $.parseJSON(segel.photo);
+                                $.each(photos_container, function(i, item) {
+                                    /// do stuff
+//                                    html_unlock += '<img src="{{url("uploads/photos/unflag/lcl")}}/'+item+'" style="width: 200px;padding:5px;" />';
+                                    html_unlock += '<a href="{{url("uploads/photos/unflag/lcl")}}/'+item+'" target="_blank" class="btn btn-info">Lihat Dokumen Segel</a>';
+                                });
+                            }
+                        }
+                    }
+                }else{
+                    var html_lock = '<p>Nomor Segel : <b>'+json.manifest.no_flag_bc+'</b><br />Alasan Segel : <b>'+json.manifest.alasan_segel+'</b><br />Keterangan : <b>'+json.manifest.description_flag_bc+'</b></p>';
+                    var html_unlock = '<p>Nomor Lepas Segel : <b>'+json.manifest.no_unflag_bc+'</b><br />Alasan Lepas Segel : <b>'+json.manifest.alasan_lepas_segel+'</b><br />Keterangan : <b>'+json.manifest.description_unflag_bc+'</b></p>';
+
+                    if(json.manifest.photo_lock){
+                        var photos_container = $.parseJSON(json.manifest.photo_lock);
+                        $.each(photos_container, function(i, item) {
+                            /// do stuff
+//                            html_lock += '<img src="{{url("uploads/photos/flag/lcl")}}/'+item+'" style="width: 200px;padding:5px;" />';
+                            html_lock += '<a href="{{url("uploads/photos/flag/lcl")}}/'+item+'" target="_blank" class="btn btn-info">Lihat Dokumen Segel</a>';
+
+                        });
+                    }
+                    if(json.manifest.photo_unlock){
+                        var photos_container = $.parseJSON(json.manifest.photo_unlock);
+                        $.each(photos_container, function(i, item) {
+                            /// do stuff
+//                            html_unlock += '<img src="{{url("uploads/photos/unflag/lcl")}}/'+item+'" style="width: 200px;padding:5px;" />';
+                            html_unlock += '<a href="{{url("uploads/photos/unflag/lcl")}}/'+item+'" target="_blank" class="btn btn-info">Lihat Dokumen Segel</a>';
+                        });
+                    }
+                }
+                
+                $('#lock-info').html(html_lock);
+                $('#unlock-info').html(html_unlock);
+                $('#nobl_info').html(json.NOHBL);
+            }
+        });
+        
+        $('#view-info-modal').modal('show');
+    }
 </script>
 <div class="box">
     <div class="box-header with-border">
@@ -209,6 +294,10 @@
             ->addColumn(array('label'=>'Photo Release Out','index'=>'photo_release_out', 'width'=>70,'hidden'=>true))
             ->addColumn(array('label'=>'Photo Release','index'=>'photo_release', 'width'=>70,'hidden'=>true))
             ->addColumn(array('label'=>'Photo Stripping','index'=>'photo_stripping', 'width'=>70,'hidden'=>true))
+            ->addColumn(array('label'=>'No. Segel','index'=>'no_flag_bc','width'=>100,'align'=>'center','hidden'=>true))
+            ->addColumn(array('label'=>'Alasan Segel','index'=>'alasan_segel','width'=>150,'align'=>'center','hidden'=>true))
+            ->addColumn(array('label'=>'No. Lepas Segel','index'=>'no_unflag_bc','width'=>100,'align'=>'center','hidden'=>true))
+            ->addColumn(array('label'=>'Alasan Lepas Segel','index'=>'alasan_lepas_segel','width'=>150,'align'=>'center','hidden'=>true))
 //            ->addColumn(array('label'=>'No. POL','index'=>'NOPOL', 'width'=>120,'align'=>'center'))
 //            ->addColumn(array('label'=>'Kode Dokumen','index'=>'KODE_DOKUMEN', 'width'=>150))
 //            ->addColumn(array('label'=>'Shipper','index'=>'SHIPPER','width'=>160))
@@ -352,6 +441,27 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+<div id="view-info-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Informasi Segel (<span id='nobl_info'></span>)</h4>
+            </div>
+            <div class="modal-body"> 
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4><b>Segel (Lock)</b></h4>
+                        <div id="lock-info"></div>
+                        <hr />
+                        <h4><b>Lepas Segel (Unlock)</b></h4>
+                        <div id="unlock-info"></div>
+                    </div>
+                </div>
+            </div>    
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 @endsection
 
 @section('custom_css')
