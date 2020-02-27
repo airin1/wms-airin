@@ -4,8 +4,33 @@
     {{ 'Manifest Tally Sheet' }}
 @stop
 
-@section('content')
-        
+@section('content')      
+<style>
+    table, table tr, table tr td{
+        font-size: 10px;
+    }
+    table {
+        margin-bottom: 10px;
+    }
+    @media print {
+        body {
+            background: #FFF;
+            color: #000;
+        }
+        @page {
+            size: auto;   /* auto is the initial value */
+/*            margin-top: 114px;
+            margin-bottom: 90px;
+            margin-left: 38px;
+            margin-right: 75px;*/
+            font-weight: bold;
+        }
+        .print-btn {
+            display: none;
+        }
+    }
+</style>
+<a href="#" class="print-btn" type="button" onclick="window.print();">PRINT</a>        
     <div id="details" class="clearfix">
         <div id="title">TALLY SHEET STRIPPING</div>
         <table border="0" cellspacing="0" cellpadding="0">
