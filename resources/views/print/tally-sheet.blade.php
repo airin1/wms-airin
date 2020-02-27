@@ -113,9 +113,10 @@
             </tr>
         </thead>
         <tbody>
+            <?php $i = 1;?>
             @foreach($manifests as $manifest)
             <tr>
-                <td class="text-center">{{ $manifest->TMANIFEST_PK }}</td>
+                <td class="text-center">{{ $i }}</td>
                 <td>{{ $manifest->CONSIGNEE }}</td>
                 <td>{{ $manifest->MARKING }}</td>
                 <td class="text-center">{{ $manifest->QUANTITY.' '.$manifest->NAMAPACKING }}</td>
@@ -125,6 +126,7 @@
                 <td>{{ $manifest->NOTALLY }}<br/>{{ $manifest->NOHBL }}</td>
                 <td></td>
             </tr>
+            <?php $i++;?>
             @endforeach         
         </tbody>
     </table>
