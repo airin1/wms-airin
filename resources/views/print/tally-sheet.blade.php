@@ -44,12 +44,12 @@
                         <tr>
                             <td>No. Order</td>
                             <td class="padding-10 text-center">:</td>
-                            <td>000384772</td>
+                            <td>&nbsp;</td>
                         </tr>
                         <tr>
                             <td>Tangal</td>
                             <td class="padding-10 text-center">:</td>
-                            <td>10/1/2016</td>
+                            <td>{{ date("d/m/Y", strtotime($container->TGL_STRIPPING)) }}</td>
                         </tr>
                         <tr>
                             <td>Kapal</td>
@@ -64,7 +64,7 @@
                         <tr>
                             <td>Tgl.Tiba</td>
                             <td class="padding-10 text-center">:</td>
-                            <td>{{ date("d/m/Y", strtotime($container->VESSEL)) }}</td>
+                            <td>{{ date("d/m/Y", strtotime($container->ETA)) }}</td>
                         </tr>
                     </table>
                 </td>
