@@ -49,7 +49,7 @@
                         <tr>
                             <td>Tangal</td>
                             <td class="padding-10 text-center">:</td>
-                            <td>{{ date("d/m/Y", strtotime($container->TGL_STRIPPING)) }}</td>
+                            <td>{{ date("d/m/Y", strtotime($container->TGLSTRIPPING)) }}</td>
                         </tr>
                         <tr>
                             <td>Kapal</td>
