@@ -1,4 +1,4 @@
-@extends('print')
+@extends('print-with-noheader')
 
 @section('title')
     {{ 'Manifest Tally Sheet' }}
