@@ -1,4 +1,4 @@
-@extends('print-with-noheader')
+@extends('print')
 
 @section('title')
     {{ 'Surat Jalan' }}
