@@ -14,8 +14,22 @@
         $("#upload-title").html("Upload Photo HBL NO. "+rowdata.NOHBL);
     }
     
+    function readURL(input,tagid) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#'+tagid)
+                    .attr('src', e.target.result)
+                    .css('display','block');
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    
     $(document).ready(function(){
-        
+        $('img').attr('src', '#').css('display','none');
     });
 </script>
 <div class="box">
@@ -166,9 +180,31 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">Photo</label>
+                                <label class="col-sm-3 control-label">Photo 1</label>
                                 <div class="col-sm-8">
-                                    <input type="file" name="photos[]" class="form-control" multiple="true" required>
+                                    <img id="prevPhoto1" src="#" alt="Photo 1" style="display: none;width: 100%;margin-bottom: 10px;" />
+                                    <input type="file" name="photos[]" class="form-control" multiple="false" onchange="readURL(this,'prevPhoto1');">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Photo 2</label>
+                                <div class="col-sm-8">
+                                    <img id="prevPhoto2" src="#" alt="Photo 2" style="display: none;width: 100%;margin-bottom: 10px;" />
+                                    <input type="file" name="photos[]" class="form-control" multiple="false" onchange="readURL(this,'prevPhoto2');">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Photo 3</label>
+                                <div class="col-sm-8">
+                                    <img id="prevPhoto3" src="#" alt="Photo 3" style="display: none;width: 100%;margin-bottom: 10px;" />
+                                    <input type="file" name="photos[]" class="form-control" multiple="false" onchange="readURL(this,'prevPhoto3');">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Photo 4</label>
+                                <div class="col-sm-8">
+                                    <img id="prevPhoto4" src="#" alt="Photo 4" style="display: none;width: 100%;margin-bottom: 10px;" />
+                                    <input type="file" name="photos[]" class="form-control" multiple="false" onchange="readURL(this,'prevPhoto4');">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -218,6 +254,8 @@
         e.preventDefault();
         var rowid = $('#lclPhotoCargoGrid').jqGrid('getGridParam', 'selrow');
         if(rowid){
+            $('img').attr('src', '#').css('display','none');
+            $('input[type=file]').val("");
             $("#photo-modal").modal('show');
         }else{
             alert('HBL belum dipilih.');
