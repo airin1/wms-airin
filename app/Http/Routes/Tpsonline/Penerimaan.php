@@ -132,6 +132,10 @@ Route::group(['prefix' => 'tpsonline/penerimaan', 'namespace' => 'Tps'], functio
 //        'uses' => 'PenerimaanController@spjmGetXml'
         'uses' => 'SoapController@GetSPJM'
     ]);
+    Route::post('/spjm/get-xml/ondemand', [
+        'as' => 'tps-spjmOnDemand-get',
+        'uses' => 'SoapController@GetSPJM_OnDemand'
+    ]);
     
     //Dok Manual
     Route::get('/dok-manual', [
@@ -151,6 +155,10 @@ Route::group(['prefix' => 'tpsonline/penerimaan', 'namespace' => 'Tps'], functio
 //        'uses' => 'PenerimaanController@sppbPibGetXml'
         'uses' => 'SoapController@GetDokumenManual'
 //        'uses' => 'SoapController@demo'
+    ]);
+    Route::post('/dok-manual/get-xml/ondemand', [
+        'as' => 'tps-dokManualOnDemand-get',
+        'uses' => 'SoapController@GetDokumenManual_OnDemand'
     ]);
     
     //SPPB PIB
@@ -207,6 +215,10 @@ Route::group(['prefix' => 'tpsonline/penerimaan', 'namespace' => 'Tps'], functio
 //        'uses' => 'PenerimaanController@sppbBcGetXml'
 //        'uses' => 'SoapController@GetBC23Permit'
         'uses' => 'SoapController@GetBC23Permit_FASP'
+    ]);
+    Route::post('/sppb-bc/get-xml/ondemand', [
+        'as' => 'tps-sppbBcOndemand-get',
+        'uses' => 'SoapController@GetSppb_Bc23'
     ]);
     Route::get('/sppb-bc/print/{id}', [
         'as' => 'tps-sppbBc-print',
