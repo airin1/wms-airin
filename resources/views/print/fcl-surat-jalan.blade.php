@@ -140,7 +140,7 @@
                     <td colspan="3" style="height: 70px;">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td align="left" style="margin-left: -10px;display: block;">{{($container->KODE_GUDANG == 'ARN3') ? 'INDRA' : 'WATMASDEL'}}</td>
+                    <td align="left" style="display: block;">{{($container->KODE_GUDANG == 'ARN3') ? 'INDRA' : 'WATMASDEL'}}</td>
                     <td></td>
                     <td align="center">YANUAR ANDRES SUSILO</td>
                 </tr>
