@@ -279,7 +279,8 @@
             }
             
             $('#telp_ppjk').removeAttr('disabled');
-            
+            $('#NO_BL_AWB').removeAttr('disabled');
+                  
         });
         
         $('#btn-print-sj').click(function() {
