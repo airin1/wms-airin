@@ -23,7 +23,7 @@
                 <tr>
                     <td>Tgl. SPPB</td>
                     <td> : </td>
-                    <td>{{ date('Y-m-d',strtotime($sppb->TGL_SPPB)) }}</td>
+                    <td>{{ $sppb->TGL_SPPB }}</td>
                 </tr>
                 <tr>
                     <td>No. SPK</td>
@@ -48,7 +48,7 @@
                 <tr>
                     <td>Tgl. PIB</td>
                     <td> : </td>
-                    <td>{{ date('Y-m-d',strtotime($sppb->TGL_PIB)) }}</td>
+                    <td>{{ $sppb->TGL_PIB }}</td>
                 </tr>
                 <tr>
                     <td>Nama Importir</td>
@@ -124,7 +124,7 @@
                 <tr>
                     <td>Tgl. BC11</td>
                     <td> : </td>
-                    <td>{{ date('Y-m-d',strtotime($sppb->TGL_BC11)) }}</td>
+                    <td>{{ $sppb->TGL_BC11 }}</td>
                 </tr>
                 <tr>
                     <td>No. POS BC11</td>
@@ -139,7 +139,7 @@
                 <tr>
                     <td>Tgl. BL AWB</td>
                     <td> : </td>
-                    <td>{{ date('Y-m-d',strtotime($sppb->TGL_BL_AWB)) }}</td>
+                    <td>{{ $sppb->TGL_BL_AWB }}</td>
                 </tr>
                 <tr>
                     <td>No. MBL AWB</td>
@@ -149,7 +149,7 @@
                 <tr>
                     <td>Tgl. MBL AWB</td>
                     <td> : </td>
-                    <td>{{ date('Y-m-d',strtotime($sppb->TGL_MASTER_BL_AWB)) }}</td>
+                    <td>{{ $sppb->TGL_MASTER_BL_AWB }}</td>
                 </tr>
             </tbody>
         </table>
