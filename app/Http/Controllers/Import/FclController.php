@@ -2266,7 +2266,6 @@ UNZ+1+1709131341'\n";
         }else{
             $sppb = \App\Models\TpsSppbBc::where(array('NO_BL_AWB' => $container->NO_BL_AWB))
                     ->orWhere('NO_MASTER_BL_AWB', $container->NO_BL_AWB)
-                    ->orWhere()
                     ->first();
         }
         
