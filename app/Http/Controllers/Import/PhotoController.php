@@ -96,22 +96,24 @@ class PhotoController extends Controller
             
             $i = 1;
             foreach($files as $file){
-//                $filename = $file->getClientOriginalName();
-                $extension = $file->getClientOriginalExtension();
-                // create instance
-                $img = \Image::make($file)->orientate();
+                if($file){
+    //                $filename = $file->getClientOriginalName();
+                    $extension = $file->getClientOriginalExtension();
+                    // create instance
+                    $img = \Image::make($file)->orientate();
 
-                // resize the image to a width of 300 and constrain aspect ratio (auto height)
-                $img->resize(600, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
-                
-                $filename = $request->kegiatan.'_'.date('dmyHis').'_'.str_slug($container->NOCONTAINER).'_'.$i.'.'.$extension;
+                    // resize the image to a width of 300 and constrain aspect ratio (auto height)
+                    $img->resize(600, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                    });
 
-                $picture[] = $filename;
-//                $file->move($destinationPath, $filename);
-                $img->save($destinationPath.'/'.$filename);
-                $i++;
+                    $filename = $request->kegiatan.'_'.date('dmyHis').'_'.str_slug($container->NOCONTAINER).'_'.$i.'.'.$extension;
+
+                    $picture[] = $filename;
+    //                $file->move($destinationPath, $filename);
+                    $img->save($destinationPath.'/'.$filename);
+                    $i++;
+                }
             }
             // update to Database
             
@@ -175,22 +177,24 @@ class PhotoController extends Controller
             
             $i = 1;
             foreach($files as $file){
-//                $filename = $file->getClientOriginalName();
-                $extension = $file->getClientOriginalExtension();
-                // create instance
-                $img = \Image::make($file)->orientate();
+                if($file){
+    //                $filename = $file->getClientOriginalName();
+                    $extension = $file->getClientOriginalExtension();
+                    // create instance
+                    $img = \Image::make($file)->orientate();
 
-                // resize the image to a width of 300 and constrain aspect ratio (auto height)
-                $img->resize(600, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
-                
-                $filename = $request->kegiatan.'_'.date('dmyHis').'_'.str_slug($manifest->NOHBL).'_'.$i.'.'.$extension;
+                    // resize the image to a width of 300 and constrain aspect ratio (auto height)
+                    $img->resize(600, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                    });
 
-                $picture[] = $filename;
-//                $file->move($destinationPath, $filename);
-                $img->save($destinationPath.'/'.$filename);
-                $i++;
+                    $filename = $request->kegiatan.'_'.date('dmyHis').'_'.str_slug($manifest->NOHBL).'_'.$i.'.'.$extension;
+
+                    $picture[] = $filename;
+    //                $file->move($destinationPath, $filename);
+                    $img->save($destinationPath.'/'.$filename);
+                    $i++;
+                }
             }
             
             // update to Database
