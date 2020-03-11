@@ -2263,9 +2263,13 @@ UNZ+1+1709131341'\n";
             $sppb = \App\Models\TpsSppbPib::where(array('NO_BL_AWB' => $container->NO_BL_AWB))
                     ->orWhere('NO_MASTER_BL_AWB', $container->NO_BL_AWB)
                     ->first();
-        }else{
+        }elseif($kd_dok == 2){
             $sppb = \App\Models\TpsSppbBc::where(array('NO_BL_AWB' => $container->NO_BL_AWB))
                     ->orWhere('NO_MASTER_BL_AWB', $container->NO_BL_AWB)
+                    ->first();
+        }else{
+            $sppb = \App\Models\TpsDokPabean::select('NO_DOK_INOUT as NO_SPPB','TGL_DOK_INOUT as TGL_SPPB','NPWP_IMP')
+                    ->where(array('KD_DOK_INOUT' => $kd_dok, 'NO_BL_AWB' => $container->NO_BL_AWB))
                     ->first();
         }
         
