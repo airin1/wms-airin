@@ -66,7 +66,7 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Nama PPJK</label>
                         <div class="col-sm-8">
-                            <input type="text" name="NAMA_PPJK" class="form-control"  value="{{ $dokpabean->NM_PPJK }}" required readonly="readonly">
+                            <input type="text" name="NM_PPJK" class="form-control"  value="{{ $dokpabean->NM_PPJK }}" required readonly="readonly">
                         </div>
                     </div>
                     <div class="form-group">
@@ -82,7 +82,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">                    
+                <div class="col-md-6">               
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Nama IMP</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="NM_IMP" class="form-control"  value="{{ $dokpabean->NM_IMP }}" required readonly="readonly">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">NPWP IMP</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="NPWP_IMP" class="form-control"  value="{{ $dokpabean->NPWP_IMP }}" required readonly="readonly">
+                        </div>
+                    </div>
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Nama Angkut</label>
                         <div class="col-sm-8">
