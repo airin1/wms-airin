@@ -163,7 +163,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">No. Dokumen</label>
                                 <div class="col-sm-8">
-                                    <input type="number" class="form-control" name="no_dok" />
+                                    <input type="text" class="form-control" name="no_dok" />
                                 </div>
                             </div>
                             <div class="form-group">
