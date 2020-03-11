@@ -47,23 +47,6 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">No. Dokuman</label>
-                        <div class="col-sm-8">
-                            <input type="text" name="NO_DOK_INOUT" class="form-control"  value="{{ $dokpabean->NO_DOK_INOUT }}" required readonly="readonly">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">Tgl. Dokumen</label>
-                        <div class="col-sm-8">
-                            <div class="input-group date">
-                                <div class="input-group-addon">
-                                    <i class="fa fa-calendar"></i>
-                                </div>
-                                <input type="text" name="TGL_DOK_INOUT" class="form-control pull-right" required value="{{ $dokpabean->TGL_DOK_INOUT }}" readonly="readonly">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
                         <label class="col-sm-3 control-label">No. Daftar</label>
                         <div class="col-sm-8">
                             <input type="text" name="NO_DOK_INOUT" class="form-control"  value="{{ $dokpabean->NO_DAFTAR }}" required readonly="readonly">
