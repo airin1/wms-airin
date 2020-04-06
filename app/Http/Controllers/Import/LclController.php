@@ -939,7 +939,8 @@ class LclController extends Controller
         }
         
         if($manifest->release_bc == 'Y'){
-            $data['status_bc'] = 'RELEASE';
+//            $data['status_bc'] = 'RELEASE';
+            $data['status_bc'] = '';
             $this->changeBarcodeStatus($manifest->TMANIFEST_PK, $manifest->NOHBL, 'Manifest', 'active');
         }else{
             if($data['KD_DOK_INOUT'] > 1){
@@ -954,7 +955,8 @@ class LclController extends Controller
                     $data['jamrelease'] = NULL;
                     $this->changeBarcodeStatus($manifest->TMANIFEST_PK, $manifest->NOHBL, 'Manifest', 'hold');
                 }else{
-                    $data['status_bc'] = 'RELEASE';
+//                    $data['status_bc'] = 'RELEASE';
+                    $data['status_bc'] = '';
                     $this->changeBarcodeStatus($manifest->TMANIFEST_PK, $manifest->NOHBL, 'Manifest', 'active');
                 }
             }
@@ -970,6 +972,10 @@ class LclController extends Controller
         
         if($delete_photo == 'Y'){
             $data['photo_release'] = '';
+        }
+        
+        if($data['tglrelease']){
+            $data['status_bc'] = 'RELEASE';
         }
         
         $update = DBManifest::where('TMANIFEST_PK', $id)
@@ -2436,7 +2442,8 @@ class LclController extends Controller
     public function changeStatusBc($id)
     {
         $manifest = DBManifest::find($id);
-        $manifest->status_bc = 'RELEASE';
+//        $manifest->status_bc = 'RELEASE';
+        $manifest->status_bc = '';
         $manifest->release_bc = 'Y';
         $manifest->release_bc_date = date('Y-m-d H:i:s');
 //        $manifest->release_bc_uid = \Auth::getUser()->name;
@@ -2550,7 +2557,8 @@ class LclController extends Controller
         $manifest->flag_bc = 'N';
         
         if($manifest->release_bc == 'Y'){
-            $manifest->status_bc = 'RELEASE';
+//            $manifest->status_bc = 'RELEASE';
+            $manifest->status_bc = '';
             $this->changeBarcodeStatus($manifest->TMANIFEST_PK, $manifest->NOHBL, 'Manifest', 'active');
         }else{
             if($manifest->KD_DOK_INOUT > 1){
@@ -2559,7 +2567,8 @@ class LclController extends Controller
                 $manifest->jamrelease = NULL;
                 $this->changeBarcodeStatus($manifest->TMANIFEST_PK, $manifest->NOHBL, 'Manifest', 'hold');
             }else{
-                $manifest->status_bc = 'RELEASE';
+//                $manifest->status_bc = 'RELEASE';
+                $manifest->status_bc = '';
                 $this->changeBarcodeStatus($manifest->TMANIFEST_PK, $manifest->NOHBL, 'Manifest', 'active');
             }
         }

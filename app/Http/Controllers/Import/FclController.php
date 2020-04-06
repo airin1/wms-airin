@@ -805,7 +805,8 @@ class FclController extends Controller
         }
         
         if($container->release_bc == 'Y'){
-            $data['status_bc'] = 'RELEASE';
+//            $data['status_bc'] = 'RELEASE';
+            $data['status_bc'] = '';
             $this->changeBarcodeStatus($container->TCONTAINER_PK, $container->NOCONTAINER, 'Fcl', 'active');
         }else{
             if($data['KD_DOK_INOUT'] > 1){
@@ -820,7 +821,8 @@ class FclController extends Controller
                     $data['JAMRELEASE'] = NULL;
                     $this->changeBarcodeStatus($container->TCONTAINER_PK, $container->NOCONTAINER, 'Fcl', 'hold');
                 }else{
-                    $data['status_bc'] = 'RELEASE';
+//                    $data['status_bc'] = 'RELEASE';
+                    $data['status_bc'] = '';
                     $this->changeBarcodeStatus($container->TCONTAINER_PK, $container->NOCONTAINER, 'Fcl', 'active');
                 }
             }
@@ -832,9 +834,12 @@ class FclController extends Controller
         $data['JAMSURATJALAN'] = $data['JAMRELEASE'];
         $data['NAMAEMKL'] = '';
 //        $data['NOPOL'] = $data['NOPOL_OUT'];
-        
         $data['ID_CONSIGNEE'] = str_replace(array('.','-'), array('',''), $data['ID_CONSIGNEE']);
 
+        if($data['TGLRELEASE']){
+            $data['status_bc'] = 'RELEASE';
+        }
+        
         $update = DBContainer::where('TCONTAINER_PK', $id)
             ->update($data);
         
@@ -2408,7 +2413,8 @@ UNZ+1+1709131341'\n";
     public function changeStatusBc($id)
     { 
         $container = DBContainer::find($id);
-        $container->status_bc = 'RELEASE';
+//        $container->status_bc = 'RELEASE';
+        $container->status_bc = '';
         $container->release_bc = 'Y';
         $container->release_bc_date = date('Y-m-d H:i:s');
               
@@ -2520,7 +2526,8 @@ UNZ+1+1709131341'\n";
         $container = DBContainer::find($container_id);
         $container->flag_bc = 'N';
         if($container->release_bc == 'Y'){
-            $container->status_bc = 'RELEASE';
+//            $container->status_bc = 'RELEASE';
+            $container->status_bc = '';
         }else{
             if($container->KD_DOK_INOUT > 1){
                 $container->status_bc = 'HOLD';
@@ -2528,7 +2535,8 @@ UNZ+1+1709131341'\n";
                 $container->JAMRELEASE = NULL;
                 $this->changeBarcodeStatus($container->TCONTAINER_PK, $container->NOCONTAINER, 'Fcl', 'hold');
             }else{
-                $container->status_bc = 'RELEASE';
+//                $container->status_bc = 'RELEASE';
+                $container->status_bc = '';
                 $this->changeBarcodeStatus($container->TCONTAINER_PK, $container->NOCONTAINER, 'Fcl', 'active');
             }
         }

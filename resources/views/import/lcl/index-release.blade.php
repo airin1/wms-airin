@@ -598,6 +598,7 @@
                     ->addColumn(array('label'=>'Alasan Segel','index'=>'alasan_segel','width'=>150,'align'=>'center'))
                     ->addColumn(array('label'=>'Photo Release','index'=>'photo_release', 'width'=>70,'hidden'=>true))
                     ->addColumn(array('label'=>'Lokasi Tujuan','index'=>'LOKASI_TUJUAN', 'width'=>70,'hidden'=>true))
+                    ->addColumn(array('label'=>'Keterangan','index'=>'keterangan_release', 'width'=>150,'hidden'=>true))
                     ->addColumn(array('label'=>'Updated','index'=>'last_update', 'width'=>150, 'search'=>false,'hidden'=>true))
                     ->renderGrid()
                 }}
@@ -706,6 +707,7 @@
                     ->addColumn(array('label'=>'Alasan Segel','index'=>'alasan_segel','width'=>150,'align'=>'center','hidden'=>true))
                     ->addColumn(array('label'=>'Photo Release','index'=>'photo_release', 'width'=>70,'hidden'=>true))
                     ->addColumn(array('label'=>'Lokasi Tujuan','index'=>'LOKASI_TUJUAN', 'width'=>70,'hidden'=>true))
+                    ->addColumn(array('label'=>'Keterangan','index'=>'keterangan_release', 'width'=>150,'hidden'=>true))
                     ->addColumn(array('label'=>'Updated','index'=>'last_update', 'width'=>150, 'search'=>false,'hidden'=>true))
                     ->renderGrid()
                 }}
@@ -900,6 +902,12 @@
                         <label class="col-sm-3 control-label">Ref. Number</label>
                         <div class="col-sm-8">
                             <input type="text" id="REF_NUMBER_OUT" name="REF_NUMBER_OUT" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="form-group hide-kddoc">
+                        <label class="col-sm-3 control-label">Keterangan</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control" id="keterangan_release" name="keterangan_release"></textarea>
                         </div>
                     </div>
                 </div>

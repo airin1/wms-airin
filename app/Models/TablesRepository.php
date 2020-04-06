@@ -128,10 +128,10 @@ class TablesRepository extends EloquentRepositoryAbstract {
                             ->whereNotNull('TGL_SPPB');
                     break;
                     case 'release':
-//                        $Model = \DB::table('tcontainercy')
-//                            ->whereNotNull('TGLSURATJALAN')
-//                            ->whereNotNull('JAMSURATJALAN')
-//                            ;
+                        $Model = \DB::table('tcontainercy')
+                            ->whereNotNull('TGLMASUK')
+                            ->whereNotNull('JAMMASUK')
+                            ;
                     break;
                     case 'release-invoice':
                         $Model = \DB::table('tcontainercy')
@@ -328,13 +328,13 @@ class TablesRepository extends EloquentRepositoryAbstract {
                             ->whereNotNull('TGL_SPPB');
                     break;
                     case 'release':
-                        $Model = \DB::table('tmanifest');
+                        $Model = \DB::table('tmanifest')
 //                            ->select('tmanifest.*','tperusahaan.NPWP as NPWP_CONSIGNEE')
 //                            ->join('tperusahaan', 'tperusahaan.TPERUSAHAAN_PK', '=', 'tmanifest.TCONSIGNEE_FK');
 //                        $Model = \DB::table('tmanifest')
 //                            ->whereNotNull('TGLSURATJALAN')
 //                            ->whereNotNull('JAMSURATJALAN');
-//                            ->where('VALIDASI', 'Y');
+                            ->where('VALIDASI', 'Y');
                     break;
                     case 'hold':
                         if(isset($request['startdate']) || isset($request['enddate'])){
