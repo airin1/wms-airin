@@ -631,6 +631,7 @@
                     ->addColumn(array('label'=>'No. POL Out','index'=>'NOPOL_OUT', 'width'=>150,'hidden'=>true))
                     ->addColumn(array('label'=>'Photo Extra','index'=>'photo_release_extra', 'width'=>70,'hidden'=>true))
                     ->addColumn(array('label'=>'Ref. Number Out','index'=>'REF_NUMBER_OUT', 'width'=>150,'hidden'=>true))
+                    ->addColumn(array('label'=>'Keterangan','index'=>'keterangan_release', 'width'=>150,'hidden'=>true))
                     ->addColumn(array('label'=>'UID','index'=>'UID', 'width'=>150,'align'=>'center'))
                     ->addColumn(array('label'=>'Tgl. Entry','index'=>'TGLENTRY', 'width'=>150, 'search'=>false,'align'=>'center'))
                     ->addColumn(array('label'=>'Jam. Entry','index'=>'JAMENTRY', 'width'=>150, 'search'=>false, 'hidden'=>true))
@@ -716,6 +717,7 @@
                     ->addColumn(array('label'=>'No. POL Out','index'=>'NOPOL_OUT', 'width'=>150,'hidden'=>true))
                     ->addColumn(array('label'=>'Photo Extra','index'=>'photo_release_extra', 'width'=>70,'hidden'=>true))
                     ->addColumn(array('label'=>'Ref. Number Out','index'=>'REF_NUMBER_OUT', 'width'=>150,'hidden'=>true))
+                    ->addColumn(array('label'=>'Keterangan','index'=>'keterangan_release', 'width'=>150,'hidden'=>true))
                     ->addColumn(array('label'=>'UID','index'=>'UID', 'width'=>150,'align'=>'center'))
                     ->addColumn(array('label'=>'Tgl. Entry','index'=>'TGLENTRY', 'width'=>150, 'search'=>false,'align'=>'center'))
                     ->addColumn(array('label'=>'Jam. Entry','index'=>'JAMENTRY', 'width'=>150, 'search'=>false, 'hidden'=>true))
@@ -957,7 +959,13 @@
                         <label class="col-sm-3 control-label">Ref. Number</label>
                         <div class="col-sm-8">
                             <input type="text" id="REF_NUMBER_OUT" name="REF_NUMBER_OUT" class="form-control" required>
-                </div>
+                        </div>
+                    </div>
+                    <div class="form-group hide-kddoc">
+                        <label class="col-sm-3 control-label">Keterangan</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control" id="keterangan_release" name="keterangan_release"></textarea>
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6">
