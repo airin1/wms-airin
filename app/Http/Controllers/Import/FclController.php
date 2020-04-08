@@ -193,6 +193,7 @@ class FclController extends Controller
         $data['kode_doks'] = \App\Models\KodeDok::get(); 
 //        $data['perusahaans'] = DBPerusahaan::select('TPERUSAHAAN_PK as id', 'NAMAPERUSAHAAN as name')->get();
         $data['shippinglines'] = DBShippingline::select('TSHIPPINGLINE_PK as id','SHIPPINGLINE as name')->get();
+        $data['ppjk'] = \DB::table('tppjk')->get();
         
         return view('import.fcl.index-release')->with($data);
     }

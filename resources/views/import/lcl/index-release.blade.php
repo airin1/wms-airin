@@ -81,7 +81,7 @@
     $(document).ready(function()
     {
         $('#release-form').disabledFormGroup();
-        $('#btn-toolbar,#btn-sppb, #btn-photo').disabledButtonGroup();
+        $('#btn-toolbar,#btn-sppb, #btn-photo,#btn-ppjk').disabledButtonGroup();
         $('#btn-group-3').enableButtonGroup();
         $(".hide-kddoc").hide();
         $('#release_lokasi').removeAttr('disabled');
@@ -278,7 +278,7 @@
             }
             
             $('#telp_ppjk').removeAttr('disabled');
-            
+            $('#add-ppjk-btn').removeAttr('disabled');
         });
         
         $('#btn-invoice').click(function() {
@@ -377,7 +377,7 @@
             $('#lclReleaseGrid').jqGrid().trigger("reloadGrid");
             
             $('#release-form').disabledFormGroup();
-            $('#btn-toolbar,#btn-sppb, #btn-photo').disabledButtonGroup();
+            $('#btn-toolbar,#btn-sppb, #btn-photo, #btn-ppjk').disabledButtonGroup();
             $('#btn-group-3').enableButtonGroup();
             
             $('#release-form')[0].reset();
@@ -826,11 +826,25 @@
                         </div>
                     </div>
                     <div class="form-group">
+                        <label class="col-sm-3 control-label">PPJK</label>
+                        <div class="col-sm-6">
+                            <select class="form-control select2" id="telp_ppjk" name="telp_ppjk" style="width: 100%;" tabindex="-1" aria-hidden="true" >
+                                <option value="">Choose PPJK</option>
+                                @foreach($ppjk as $p)
+                                    <option value="{{ $p->name }} {{ $p->phone }}">{{ $p->name }} {{ $p->phone }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-sm-2" id="btn-ppjk">
+                            <button type="button" class="btn btn-info" id="add-ppjk-btn">Add PPJK</button>
+                        </div>
+                    </div>
+<!--                    <div class="form-group">
                         <label class="col-sm-3 control-label">Telp. PPJK</label>
                         <div class="col-sm-8">
                             <input type="text" id="telp_ppjk" name="telp_ppjk" class="form-control">
                         </div>
-                    </div>
+                    </div>-->
                 </div>
             </div>
             <hr />
@@ -1070,6 +1084,41 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal --> 
+<div id="ppjk-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Add New PPJK</h4>
+            </div>
+            <form class="form-horizontal" id="create-ppjk-form" action="{{ route('ppjk-store') }}" method="POST">
+                <div class="modal-body"> 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input name="_token" type="hidden" value="{{ csrf_token() }}">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Nama</label>
+                                <div class="col-sm-8">
+                                    <input type="text" name="name" class="form-control" required /> 
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Telepon</label>
+                                <div class="col-sm-8">
+                                    <input type="tel" name="phone" class="form-control" required /> 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 @endsection
 
 @section('custom_css')
@@ -1117,6 +1166,51 @@
     $("#jamrelease").mask("99:99:99");
     $(".datepicker").mask("9999-99-99");
     $("#ID_CONSIGNEE").mask("99.999.999.9-999.999");
+    
+        
+    $("#add-ppjk-btn").on("click", function(e){
+        e.preventDefault();
+        $("#ppjk-modal").modal('show');
+        return false;
+    });
+    
+    $("#create-ppjk-form").on("submit", function(){
+        console.log(JSON.stringify($(this).formToObject('')));
+        var url = $(this).attr('action');
+
+        $.ajax({
+            type: 'POST',
+            data: JSON.stringify($(this).formToObject('')),
+            dataType : 'json',
+            url: url,
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert('Something went wrong, please try again later.');
+            },
+            beforeSend:function()
+            {
+
+            },
+            success:function(json)
+            {
+//                console.log(json);
+
+                if(json.success) {
+                    $('#btn-toolbar').showAlertAfterElement('alert-success alert-custom', json.message, 5000);
+                    $("#telp_ppjk").append('<option value="'+json.data.name+' '+json.data.phone+'" selected="selected">'+json.data.name+' '+json.data.phone+'</option>');
+                    $("#telp_ppjk").trigger('change');
+                    $("#ppjk-modal").modal('hide');
+                } else {
+                    $('#btn-toolbar').showAlertAfterElement('alert-danger alert-custom', json.message, 5000);
+                }
+//                
+//                //Triggers the "Close" button funcionality.
+//                $('#btn-refresh').click();
+            }
+        });
+        
+        return false;
+    });
 </script>
 
 @endsection
