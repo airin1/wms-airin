@@ -210,7 +210,8 @@
             $('#KD_TPS_ASAL').val(rowdata.KD_TPS_ASAL);
             $('#TSHIPPINGLINE_FK').val(rowdata.TSHIPPINGLINE_FK).trigger('change');
             $('#telp_ppjk').val(rowdata.telp_ppjk).trigger('change');
-
+//            $("#telp_ppjk").append('<option value="'+rowdata.telp_ppjk+'" selected="selected">'+rowdata.telp_ppjk+'</option>').trigger('change');
+            
             $('#NO_SPPB').val(rowdata.NO_SPPB);
             $('#TGL_SPPB').val(rowdata.TGL_SPPB);
 
