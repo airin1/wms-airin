@@ -100,6 +100,7 @@
             $('#jenis_container').val(rowdata.jenis_container).trigger('change');
             $('#TCONSOLIDATOR_FK').val(rowdata.TCONSOLIDATOR_FK).trigger('change');
             $("#flag_bc").val(rowdata.flag_bc).trigger("change");
+            $("#KODE_GUDANG").val(rowdata.KODE_GUDANG).trigger("change");
             
             $('#upload-title').html('Upload Photo for '+rowdata.NOCONTAINER);
             $('#no_cont').val(rowdata.NOCONTAINER);
@@ -310,6 +311,7 @@
                     ->addColumn(array('label'=>'Callsign','index'=>'CALLSIGN', 'width'=>150,'align'=>'center'))
                     ->addColumn(array('label'=>'Voy','index'=>'VOY','width'=>80,'align'=>'center'))
                     ->addColumn(array('label'=>'Tujuan','index'=>'GUDANG_TUJUAN', 'width'=>80,'align'=>'center'))
+                    ->addColumn(array('label'=>'Lokasi','index'=>'KODE_GUDANG', 'width'=>80,'align'=>'center'))
                     ->addColumn(array('label'=>'Tgl. ETA','index'=>'ETA','width'=>120,'align'=>'center'))
                     ->addColumn(array('label'=>'TPS Asal','index'=>'KD_TPS_ASAL', 'width'=>80,'align'=>'center'))
                     ->addColumn(array('index'=>'TCONSOLIDATOR_FK','hidden'=>true))
@@ -394,6 +396,16 @@
                         <label class="col-sm-2 control-label">TPS Asal</label>
                         <div class="col-sm-3">
                             <input type="text" id="KD_TPS_ASAL" name="KD_TPS_ASAL" class="form-control" readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Lokasi Gudang</label>
+                        <div class="col-sm-8">
+                            <select class="form-control select2" id="KODE_GUDANG" name="KODE_GUDANG" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
+                                <option value="">Choose Lokasi Gudang</option>
+                                <option value="ARN1">ARN1</option>
+                                <option value="ARN3">ARN3</option>
+                            </select>
                         </div>
                     </div>
                 </div>

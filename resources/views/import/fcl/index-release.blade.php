@@ -463,18 +463,18 @@
             if(!manifestId) {alert('Please Select Row');return false;}               
 //            if(!confirm('Apakah anda yakin?')){return false;}    
             
-            if(cellValues.length > 1){
+//            if(cellValues.length > 1){
                 if(!confirm('Apakah anda yakin?')){return false;}   
                 window.open("{{ route('cetak-barcode', array('','','')) }}/"+manifestId+"/fcl/release","preview barcode","width=305,height=600,menubar=no,status=no,scrollbars=yes");
-            }else{
-                var rowdata = $('#fclReleaseGrid').getRowData(manifestId);
-                $('#barcode_no_cont').html(rowdata.NOCONTAINER);
-                $('#id_cont_barcode').val(rowdata.TCONTAINER_PK);
-                if(rowdata.LOKASI_TUJUAN){
-                    $('#release_lokasi').val(rowdata.GUDANG_TUJUAN).trigger("change");
-                }
-                $('#print-barcode-modal').modal('show');
-            }
+//            }else{
+//                var rowdata = $('#fclReleaseGrid').getRowData(manifestId);
+//                $('#barcode_no_cont').html(rowdata.NOCONTAINER);
+//                $('#id_cont_barcode').val(rowdata.TCONTAINER_PK);
+//                if(rowdata.LOKASI_TUJUAN){
+//                    $('#release_lokasi').val(rowdata.GUDANG_TUJUAN).trigger("change");
+//                }
+//                $('#print-barcode-modal').modal('show');
+//            }
             
 //            console.log(manifestId);
 //            window.open("{{ route('cetak-barcode', array('','','')) }}/"+manifestId+"/fcl/release","preview barcode","width=305,height=600,menubar=no,status=no,scrollbars=yes");

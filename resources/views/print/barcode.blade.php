@@ -55,7 +55,7 @@
                             <h5 style="margin: 10px;">TPS AIRIN (Barat)</h5>
                         @endif
                     @else
-                        @if($barcode->GUDANG_TUJUAN == 'ARN1')
+                        @if($barcode->KODE_GUDANG == 'ARN1')
                             <h5 style="margin: 10px;">TPS AIRIN (Utara)</h5>
                         @else
                             <h5 style="margin: 10px;">TPS AIRIN (Barat)</h5>

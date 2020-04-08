@@ -483,7 +483,7 @@ class BarcodeController extends Controller
                     $coaricontdetail->NO_VOY_FLIGHT = (!empty($container->VOY) ? $container->VOY : 0);
                     $coaricontdetail->CALL_SIGN = (!empty($container->CALL_SIGN) ? $container->CALL_SIGN : 0);
                     $coaricontdetail->TGL_TIBA = (!empty($container->ETA) ? date('Ymd', strtotime($container->ETA)) : '');
-                    $coaricontdetail->KD_GUDANG = $container->KODE_GUDANG;
+                    $coaricontdetail->KD_GUDANG = $container->GUDANG_TUJUAN;
                     $coaricontdetail->NO_CONT = $container->NOCONTAINER;
                     $coaricontdetail->UK_CONT = $container->SIZE;
                     $coaricontdetail->NO_SEGEL = $container->NO_SEAL;
@@ -678,7 +678,7 @@ class BarcodeController extends Controller
                     $codecocontdetail->NO_VOY_FLIGHT = (!empty($container->VOY) ? $container->VOY : 0);
                     $codecocontdetail->CALL_SIGN = (!empty($container->CALLSIGN) ? $container->CALLSIGN : 0);
                     $codecocontdetail->TGL_TIBA = (!empty($container->ETA) ? date('Ymd', strtotime($container->ETA)) : '');
-                    $codecocontdetail->KD_GUDANG = $container->KODE_GUDANG;
+                    $codecocontdetail->KD_GUDANG = $container->GUDANG_TUJUAN;
                     $codecocontdetail->NO_CONT = $container->NOCONTAINER;
                     $codecocontdetail->UK_CONT = $container->SIZE;
                     $codecocontdetail->NO_SEGEL = $container->NOSEGEL;
