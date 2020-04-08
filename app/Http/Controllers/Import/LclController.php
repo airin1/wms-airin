@@ -234,7 +234,8 @@ class LclController extends Controller
         ];        
         
         $data['kode_doks'] = \App\Models\KodeDok::get(); 
-        $data['perusahaans'] = DBPerusahaan::select('TPERUSAHAAN_PK as id', 'NAMAPERUSAHAAN as name')->get();
+//        $data['perusahaans'] = DBPerusahaan::select('TPERUSAHAAN_PK as id', 'NAMAPERUSAHAAN as name')->get();
+        $data['ppjk'] = \DB::table('tppjk')->get();
         
         return view('import.lcl.index-release')->with($data);
     }
