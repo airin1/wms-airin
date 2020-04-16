@@ -196,15 +196,15 @@ class SoapController extends DefaultController {
         $data = [
             'UserName' => $this->user, 
             'Password' => $this->password,
-            'KdGudang' => $this->kode,
             'No_plp' => $request->no_plp,
             'Tgl_plp' => date('dmY', strtotime($request->tgl_plp)),
+            'KdGudang' => $this->kode,
             'RefNumber' => $request->refnumber
         ];
         
         try{
             \SoapWrapper::service('TpsOnlineSoap', function ($service) use ($data) {        
-                $this->response = $service->call('GetResponPLP_onDemand', [$data])->GetResponPLP_onDemandResult;      
+                $this->response = $service->call('GetResponPlp_onDemands', [$data])->GetResponPlp_onDemandsResult;      
             });
         }catch (\SoapFault $exception){
             var_dump($exception);
