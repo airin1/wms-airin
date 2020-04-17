@@ -602,7 +602,7 @@ class LclController extends Controller
                 $data['PEL_MUAT'] = $joborder->PEL_MUAT;
                 $data['PEL_BONGKAR'] = $joborder->PEL_BONGKAR;
                 $data['PEL_TRANSIT'] = $joborder->PEL_TRANSIT;
-
+                $data['NOMBL'] = $joborder->NOMBL;
                 $data['NO_BC11'] = $joborder->TNO_BC11;
                 $data['TGL_BC11'] = $joborder->TTGL_BC11;
                 $data['NO_PLP'] = $joborder->TNO_PLP;
