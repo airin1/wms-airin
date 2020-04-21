@@ -209,6 +209,7 @@
             $('#TGL_SPPB').val(rowdata.TGL_SPPB);
             $('#bcf_consignee').val(rowdata.bcf_consignee).trigger('change');
             $('#telp_ppjk').val(rowdata.telp_ppjk).trigger('change');
+            $('#keterangan_release').val(rowdata.keterangan_release);
 //            $("#telp_ppjk").append('<option value="'+rowdata.telp_ppjk+'" selected="selected">'+rowdata.telp_ppjk+'</option>').trigger('change');
                         
             $('#upload-title').html('Upload Photo for '+rowdata.NOHBL);
