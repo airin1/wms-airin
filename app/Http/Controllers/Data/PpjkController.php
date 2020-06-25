@@ -17,7 +17,23 @@ class PpjkController extends Controller
      */
     public function index()
     {
-
+        if ( !$this->access->can('show.ppjk.index') ) {
+            return view('errors.no-access');
+        }
+        
+        // Create Roles Access
+        $this->insertRoleAccess(array('name' => 'Index PPJK', 'slug' => 'show.ppjk.index', 'description' => ''));
+        
+        $data['page_title'] = "PPJK";
+        $data['page_description'] = "";
+        $data['breadcrumbs'] = [
+            [
+                'action' => '',
+                'title' => 'PPJK'
+            ]
+        ];        
+        
+        return view('data.ppjk.index')->with($data);
     }
 
     /**

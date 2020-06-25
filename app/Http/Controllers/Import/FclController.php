@@ -853,6 +853,16 @@ class FclController extends Controller
                 $cont->save();
             }
             
+            // Update container dengan nomor bl yg sama.
+            DBContainer::where(array('NO_BL_AWB' => $cont->NO_BL_AWB, 'TGL_BL_AWB' => $cont->TGL_BL_AWB))->update(
+                        [
+                            'KODE_DOKUMEN' => $cont->KODE_DOKUMEN, 
+                            'KD_DOK_INOUT' => $cont->KD_DOK_INOUT,
+                            'NO_SPPB' => $cont->NO_SPPB,
+                            'TGL_SPPB' => $cont->TGL_SPPB
+                        ]
+                    );
+            
             return json_encode(array('success' => true, 'message' => 'Release successfully updated!'));
         }
         
