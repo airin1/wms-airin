@@ -389,6 +389,7 @@
                       <li><a href="{{ route('shippingline-index') }}">Shipping Line</a></li>
                       <li><a href="{{ route('eseal-index') }}">E-Seal</a></li>
                       <li><a href="{{ route('vessel-index') }}">Vessel</a></li>
+                      <li><a href="{{ route('ppjk-index') }}">PPJK</a></li>  
                     </ul>
                   </li>
                   <li class="treeview">
