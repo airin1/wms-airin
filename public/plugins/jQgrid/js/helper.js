@@ -273,8 +273,10 @@ $.fn.formToObject = function(removePrefix)
 			index = $(this).attr('id') || $(this).attr('name');
 		}
 
-		index = index.replace(removePrefix, '');
-		index =	index.replace(/-/g,'_');
+                if(typeof index == 'string'){        
+                    index = index.replace(removePrefix, '');
+                    index =	index.replace(/-/g,'_');
+                }
 
 		if($(this).is("input") && $(this).attr("type") == 'checkbox')
 		{

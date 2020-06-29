@@ -33,5 +33,8 @@ require_once 'Data/EsealRoutes.php';
 // Vessel Routes
 require_once 'Data/VesselRoutes.php';
 
-// Vessel Routes
+// PPJK Routes
 require_once 'Data/PpjkRoutes.php';
+
+// Location Routes
+require_once 'Data/LocationRoutes.php';
