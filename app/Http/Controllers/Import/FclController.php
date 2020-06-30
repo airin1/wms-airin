@@ -580,7 +580,7 @@ class FclController extends Controller
     {
         $data = $request->json()->all(); 
         $delete_photo = $data['delete_photo'];
-        unset($data['TCONTAINER_PK'], $data['delete_photo'], $data['_token']);
+        unset($data['TCONTAINER_PK'], $data['delete_photo'], $data['_token'], $data['undefined']);
         
         if(empty($data['TGLMASUK']) || $data['TGLMASUK'] == '0000-00-00'){
             $data['TGLMASUK'] = NULL;
@@ -597,10 +597,17 @@ class FclController extends Controller
             $data['ID_CONSOLIDATOR'] = str_replace(array('.','-'),array('',''),$namaconsolidator->NPWP);
         }
         
-        $location = \DB::table('location_fcl')->find($data['location_id']);
-        if($location){
-            $data['location_id'] = $location->id;
-            $data['location_name'] = $location->name;
+//        $location = \DB::table('location_fcl')->find($data['location_id']);
+//        if($location){
+//            $data['location_id'] = $location->id;
+//            $data['location_name'] = $location->name;
+//        }
+        
+        $locations = \DB::table('location_fcl')->whereIn('id', $data['location_id'])->pluck('name');
+        
+        if($locations){
+            $data['location_id'] = implode(',', $data['location_id']);
+            $data['location_name'] = implode(',', $locations);
         }
         
 //        $teus = DBContainer::select('TEUS')->where('TCONTAINER_PK', $id)->first();
