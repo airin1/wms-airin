@@ -390,7 +390,8 @@
                       <li><a href="{{ route('eseal-index') }}">E-Seal</a></li>
                       <li><a href="{{ route('vessel-index') }}">Vessel</a></li>
                       <li><a href="{{ route('ppjk-index') }}">PPJK</a></li> 
-                      <li><a href="{{ route('location-index') }}">Location</a></li> 
+                      <li><a href="{{ route('location-index') }}">Lokasi LCL</a></li> 
+                      <li><a href="{{ route('locationfcl-index') }}">Lokasi FCL</a></li> 
                     </ul>
                   </li>
                   <li class="treeview">

@@ -38,3 +38,6 @@ require_once 'Data/PpjkRoutes.php';
 
 // Location Routes
 require_once 'Data/LocationRoutes.php';
+
+// Location FCL Routes
+require_once 'Data/LocationFclRoutes.php';
