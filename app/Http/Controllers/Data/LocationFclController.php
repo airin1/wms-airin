@@ -33,7 +33,7 @@ class LocationFclController extends Controller
             ]
         ];        
         
-        return view('data.Location.indexfcl')->with($data);
+        return view('data.location.indexfcl')->with($data);
     }
 
     /**
