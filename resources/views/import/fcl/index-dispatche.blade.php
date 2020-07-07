@@ -34,7 +34,7 @@
             $('#JAM_DISPATCHE').val(rowdata.JAM_DISPATCHE);
             $('#TGL_KELUAR_TPK_ESEAL').val(rowdata.TGL_KELUAR_TPK_ESEAL);
             $('#JAM_KELUAR_TPK_ESEAL').val(rowdata.JAM_KELUAR_TPK_ESEAL);
-            
+            $('#jenis_container').val(rowdata.jenis_container).trigger('change');
             $('#ESEALCODE').val(rowdata.ESEALCODE).trigger('change');
             $('#RESPONSE_DISPATCHE').val(rowdata.RESPONSE_DISPATCHE);
             $('#STATUS_DISPATCHE').val(rowdata.STATUS_DISPATCHE);
@@ -187,7 +187,8 @@
                     ->setGridEvent('onSelectRow', 'onSelectRowEvent')
                     ->addColumn(array('key'=>true,'index'=>'TCONTAINER_PK','hidden'=>true))
                     ->addColumn(array('label'=>'No. Container','index'=>'NOCONTAINER','width'=>160,'editable' => true, 'editrules' => array('required' => true)))
-                    ->addColumn(array('label'=>'No. SPK','index'=>'NoJob','width'=>160))
+                    ->addColumn(array('label'=>'No. SPK','index'=>'NoJob','width'=>160,'hidden'=>true))
+                    ->addColumn(array('label'=>'Jenis Container','index'=>'jenis_container','width'=>150, 'align'=>'center'))
                     ->addColumn(array('label'=>'No. MBL','index'=>'NOMBL','width'=>160,'hidden'=>true))
                     ->addColumn(array('label'=>'Tgl. MBL','index'=>'TGL_MASTER_BL','width'=>150,'align'=>'center','hidden'=>true))
                     ->addColumn(array('label'=>'Consolidator','index'=>'NAMACONSOLIDATOR','width'=>250))
@@ -395,7 +396,32 @@
                     </div>
                 </div>
                 <div class="col-md-6"> 
-                                     
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Jenis Container</label>
+                        <div class="col-sm-8">
+                            <select class="form-control select2" id="jenis_container" name="jenis_container" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
+                                <option value="">Choose Jenis Container</option>
+                                <option value="Class BB Standar 3">Class BB Standar 3</option>
+                                <option value="Class BB Standar 8">Class BB Standar 8</option>
+                                <option value="Class BB Standar 9">Class BB Standar 9</option>
+                                <option value="Class BB Standar 4,1">Class BB Standar 4,1</option>
+                                <option value="Class BB Standar 6">Class BB Standar 6</option>
+                                <option value="Class BB Standar 2,2">Class BB Standar 2,2</option>
+                                <option value="Class BB High Class 2,1">Class BB High Class 2,1</option>
+                                <option value="Class BB High Class 5,1">Class BB High Class 5,1</option>
+                                <option value="Class BB High Class 6,1">Class BB High Class 6,1</option>
+                                <option value="Class BB High Class 5,2">Class BB High Class 5,2</option>
+                                <option value="REFFER RF">REFFER RF</option>
+                                <option value="REFFER RECOOLING">REFFER RECOOLING</option>
+                                <option value="FLAT TRACK RF">FLAT TRACK RF</option>
+                                <option value="FLAT TRACK OH">FLAT TRACK OH</option>
+                                <option value="FLAT TRACK OW">FLAT TRACK OW</option>
+                                <option value="FLAT TRACK OL">FLAT TRACK OL</option>
+                                <option value="DRY">DRY</option>
+                                <option value="OPEN TOP">OPEN TOP</option>
+                            </select>
+                        </div>
+                    </div>                    
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Tgl. Dispatche</label>
                         <div class="col-sm-4">

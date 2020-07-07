@@ -79,7 +79,7 @@
     $(document).ready(function()
     {
         $('#release-form').disabledFormGroup();
-        $('#btn-toolbar,#btn-sppb,#btn-photo,#btn-ppjk').disabledButtonGroup();
+        $('#btn-toolbar,#btn-sppb,#btn-photo,#btn-ppjk,#NOPOL_OUT').disabledButtonGroup();
         $('#btn-group-3').enableButtonGroup();
         $(".hide-kddoc").hide();
         $('#release_lokasi').removeAttr('disabled');
@@ -234,7 +234,7 @@
             @role('upload-fcl')
                 $('#btn-group-2,#btn-photo').enableButtonGroup();
             @else
-                $('#btn-group-2,#btn-sppb,#btn-photo,#btn-ppjk').enableButtonGroup();
+                $('#btn-group-2,#btn-sppb,#btn-photo,#btn-ppjk,#NOPOL_OUT').enableButtonGroup();
                 $('#release-form').enableFormGroup();
                 $('#btn-group-4').enableButtonGroup();
                 $('#btn-group-5').enableButtonGroup();
@@ -281,7 +281,7 @@
                 @endrole    
             }
             
-            $('#telp_ppjk').removeAttr('disabled');
+            $('#telp_ppjk,#NOPOL_OUT').removeAttr('disabled');
             $('#add-ppjk-btn').removeAttr('disabled');
             $('#NO_BL_AWB').removeAttr('disabled');
                   

@@ -81,7 +81,7 @@
     $(document).ready(function()
     {
         $('#release-form').disabledFormGroup();
-        $('#btn-toolbar,#btn-sppb, #btn-photo,#btn-ppjk').disabledButtonGroup();
+        $('#btn-toolbar,#btn-sppb, #btn-photo,#btn-ppjk,#NOPOL_RELEASE').disabledButtonGroup();
         $('#btn-group-3').enableButtonGroup();
         $(".hide-kddoc").hide();
         $('#release_lokasi').removeAttr('disabled');
@@ -279,7 +279,7 @@
                 @endrole  
             }
             
-            $('#telp_ppjk').removeAttr('disabled');
+            $('#telp_ppjk,#NOPOL_RELEASE').removeAttr('disabled');
             $('#add-ppjk-btn').removeAttr('disabled');
         });
         
