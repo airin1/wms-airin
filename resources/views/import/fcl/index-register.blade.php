@@ -135,7 +135,7 @@
             ->addColumn(array('key'=>true,'index'=>'TCONTAINER_PK','hidden'=>true))
 //            ->addColumn(array('index'=>'TCONSIGNEE_FK','hidden'=>true))  
             ->addColumn(array('label'=>'No. Job Order','index'=>'NOJOBORDER','width'=>160,'hidden'=>true))
-            ->addColumn(array('label'=>'No. SPK','index'=>'NOSPK','width'=>160,'hidden'=>true))
+            ->addColumn(array('label'=>'No. SPK','index'=>'NOSPK','width'=>160,'hidden'=>false))
             ->addColumn(array('label'=>'No. MBL','index'=>'NOMBL','width'=>160,'hidden'=>true))
             ->addColumn(array('label'=>'Tgl. MBL','index'=>'TGLMBL','width'=>150,'align'=>'center','hidden'=>true))
             ->addColumn(array('label'=>'Consolidator','index'=>'NAMACONSOLIDATOR','width'=>250,'hidden'=>true))
