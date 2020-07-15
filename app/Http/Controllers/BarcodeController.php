@@ -155,7 +155,7 @@ class BarcodeController extends Controller
     { 
         $ids = explode(',', $id);
         $model = '';
-        $expired = date('Y-m-d', strtotime('+2 day'));
+        $expired = date('Y-m-d', strtotime('+1 day'));
         
         switch ($type) {
             case 'fcl':
