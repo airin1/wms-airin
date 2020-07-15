@@ -296,5 +296,25 @@ class DefaultController extends BaseController
         fwrite($fp, $raw);
         fclose($fp);
     }
+    
+    public function stockUpdate()
+    {
+        $getStock = \DB::table('stock_lcl')->get();
+        
+        foreach ($getStock as $stock):
+            
+            // Update
+            \App\Models\Manifest::where(
+                    array(
+                        'NOCONTAINER' => $stock->nocontainer,
+                        'NOHBL' => $stock->nohbl,
+                        'tglrelease' => '2000-01-01'
+                    )
+                )->update(['tglrelease' => NULL, 'jamrelease' => NULL]);
+            
+        endforeach;
+        
+        return 'DONE';
+    }
    
 }

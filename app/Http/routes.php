@@ -136,3 +136,9 @@ Route::get('/capture/camera1', [
     'uses' => 'DefaultController@captureIpCamera',
     'as' => 'capture-camera1'
 ]);
+
+
+Route::get('/update-stock', [
+    'uses' => 'DefaultController@stockUpdate',
+    'as' => 'update-stock'
+]);
