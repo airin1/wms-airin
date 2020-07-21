@@ -1263,12 +1263,12 @@ UNZ+1+1709131341'\n";
         // Create Roles Access
         $this->insertRoleAccess(array('name' => 'Report Longstay Stock', 'slug' => 'show.fcl.report.longstay', 'description' => ''));
         
-        $data['page_title'] = "FCL Inventory Stock";
+        $data['page_title'] = "FCL Report Stock";
         $data['page_description'] = "";
         $data['breadcrumbs'] = [
             [
                 'action' => '',
-                'title' => 'FCL Inventory Stock'
+                'title' => 'FCL Report Stock'
             ]
         ]; 
         
@@ -2728,12 +2728,12 @@ UNZ+1+1709131341'\n";
     
     public function reportInventoryIndex()
     {
-        $data['page_title'] = "FCL Inventory";
+        $data['page_title'] = "FCL Report Stock";
         $data['page_description'] = "";
         $data['breadcrumbs'] = [
             [
                 'action' => '',
-                'title' => 'FCL Inventory'
+                'title' => 'FCL Report Stock'
             ]
         ];        
         

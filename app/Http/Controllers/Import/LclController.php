@@ -1126,14 +1126,14 @@ class LclController extends Controller
         }
         
         // Create Roles Access
-        $this->insertRoleAccess(array('name' => 'Report Stock LCL', 'slug' => 'show.lcl.report.stock', 'description' => ''));
+        $this->insertRoleAccess(array('name' => 'Report Cargo LCL', 'slug' => 'show.lcl.report.cargo', 'description' => ''));
         
-        $data['page_title'] = "LCL Report Stock";
+        $data['page_title'] = "LCL Report Cargo";
         $data['page_description'] = "";
         $data['breadcrumbs'] = [
             [
                 'action' => '',
-                'title' => 'LCL Report Stock'
+                'title' => 'LCL Report Cargo'
             ]
         ];        
         
@@ -1318,12 +1318,12 @@ class LclController extends Controller
         // Create Roles Access
         $this->insertRoleAccess(array('name' => 'Report Longstay Stock', 'slug' => 'show.lcl.report.longstay', 'description' => ''));
         
-        $data['page_title'] = "LCL Inventory Stock";
+        $data['page_title'] = "LCL Report Stock";
         $data['page_description'] = "";
         $data['breadcrumbs'] = [
             [
                 'action' => '',
-                'title' => 'LCL Inventory Stock'
+                'title' => 'LCL Report Stock'
             ]
         ];  
         
@@ -2746,12 +2746,12 @@ class LclController extends Controller
     
     public function reportStockIndex(Request $request)
     {
-        $data['page_title'] = "LCL Report Stock";
+        $data['page_title'] = "LCL Report Cargo";
         $data['page_description'] = "";
         $data['breadcrumbs'] = [
             [
                 'action' => '',
-                'title' => 'LCL Report Stock'
+                'title' => 'LCL Report Cargo'
             ]
         ];        
         
@@ -2787,12 +2787,12 @@ class LclController extends Controller
     
     public function reportInventoryIndex()
     {
-        $data['page_title'] = "LCL Inventory";
+        $data['page_title'] = "LCL Report Stock";
         $data['page_description'] = "";
         $data['breadcrumbs'] = [
             [
                 'action' => '',
-                'title' => 'LCL Inventory'
+                'title' => 'LCL Report Stock'
             ]
         ];        
         

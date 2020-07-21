@@ -69,12 +69,12 @@
     }
 </script>
 <div class="box">
-    <div class="box-header with-border">
+<!--    <div class="box-header with-border">
         <h3 class="box-title">Report Container LCL</h3>
-<!--        <div class="box-tools">
+        <div class="box-tools">
             <a href="{{ route('lcl-register-create') }}" type="button" class="btn btn-block btn-info btn-sm"><i class="fa fa-plus"></i> Add New</a>
-        </div>-->
-    </div>
+        </div>
+    </div>-->
     <div class="box-body table-responsive">
         <div class="row" style="margin-bottom: 30px;margin-right: 0;">
             <div class="col-md-8">
