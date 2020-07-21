@@ -66,9 +66,9 @@
     }
 </script>
 <div class="box">
-    <div class="box-header with-border">
-        <h3 class="box-title">FCL Inventory</h3>
-    </div>
+<!--    <div class="box-header with-border">
+        <h3 class="box-title">FCL Stock</h3>
+    </div>-->
     <div class="box-body table-responsive">
         <div class="row" style="margin-bottom: 30px;margin-right: 0;">
             <div class="col-md-8">
