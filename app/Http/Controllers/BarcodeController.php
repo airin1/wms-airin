@@ -89,6 +89,21 @@ class BarcodeController extends Controller
         return back()->with('success', 'Gate Pass has been deleted.'); 
     }
     
+    public function cancel(Request $request)
+    {
+        $sid = $request->id;
+        $ids = explode(',', $sid);
+
+        $update = \App\Models\Barcode::whereIn('id',$ids)->update(['cancel' => true]);
+        
+        if($update){
+            return json_encode(array('success' => true, 'message' => 'Gate pass has canceled.'));
+        } 
+        
+        return json_encode(array('success' => false, 'message' => 'Something wrong, please try again.'));
+
+    }
+    
     public function setRfid(Request $request)
     {
         $model = '';
@@ -360,57 +375,60 @@ class BarcodeController extends Controller
                     if($model->status_bc == 'HOLD' || $model->flag_bc == 'Y'):
                         return 'Status BC is HOLD or FLAGING, please unlock!!!';
                     endif;
+                        
+                        if($data_barcode->cancel == false){
                     
-                        if($data_barcode->ref_type == 'Manifest'){
-                            if($data_barcode->time_out){
-                            $model->tglrelease = date('Y-m-d', strtotime($data_barcode->time_out));
-                            $model->jamrelease = date('H:i:s', strtotime($data_barcode->time_out));
-                            $model->UIDRELEASE = 'Autogate';
-                            $model->TGLSURATJALAN = date('Y-m-d', strtotime($data_barcode->time_out));
-                            $model->JAMSURATJALAN = date('H:i:s', strtotime($data_barcode->time_out));
-                            $model->tglfiat = date('Y-m-d', strtotime($data_barcode->time_out));
-                            $model->jamfiat = date('H:i:s', strtotime($data_barcode->time_out));
-                            $model->NAMAEMKL = 'Autogate';
-                            $model->UIDSURATJALAN = 'Autogate';
-                            }
-                            if($tipe == 'in'){
-                                $model->photo_release_in = $filename;
+                            if($data_barcode->ref_type == 'Manifest'){
+                                if($data_barcode->time_out){
+                                $model->tglrelease = date('Y-m-d', strtotime($data_barcode->time_out));
+                                $model->jamrelease = date('H:i:s', strtotime($data_barcode->time_out));
+                                $model->UIDRELEASE = 'Autogate';
+                                $model->TGLSURATJALAN = date('Y-m-d', strtotime($data_barcode->time_out));
+                                $model->JAMSURATJALAN = date('H:i:s', strtotime($data_barcode->time_out));
+                                $model->tglfiat = date('Y-m-d', strtotime($data_barcode->time_out));
+                                $model->jamfiat = date('H:i:s', strtotime($data_barcode->time_out));
+                                $model->NAMAEMKL = 'Autogate';
+                                $model->UIDSURATJALAN = 'Autogate';
+                                }
+                                if($tipe == 'in'){
+                                    $model->photo_release_in = $filename;
+                                }else{
+                                    $model->photo_release_out = $filename;
+                                }
+                                if($model->save()){
+                                    return $model->NOHBL.' '.$data_barcode->ref_type.' '.$data_barcode->ref_action.' Updated';
+                                }else{
+                                    return 'Something wrong!!! Cannot store to database';
+                                }
                             }else{
-                                $model->photo_release_out = $filename;
-                            }
-                            if($model->save()){
-                                return $model->NOHBL.' '.$data_barcode->ref_type.' '.$data_barcode->ref_action.' Updated';
-                            }else{
-                                return 'Something wrong!!! Cannot store to database';
-                            }
-                        }else{
-                            
-                            if($data_barcode->time_out){
-                            $model->TGLRELEASE = date('Y-m-d', strtotime($data_barcode->time_out));
-                            $model->JAMRELEASE = date('H:i:s', strtotime($data_barcode->time_out));
-                            $model->UIDKELUAR = 'Autogate';
-                            $model->TGLFIAT = date('Y-m-d', strtotime($data_barcode->time_out));
-                            $model->JAMFIAT = date('H:i:s', strtotime($data_barcode->time_out));
-                            $model->TGLSURATJALAN = date('Y-m-d', strtotime($data_barcode->time_out));
-                            $model->JAMSURATJALAN = date('H:i:s', strtotime($data_barcode->time_out));
-                            }
-                            if($tipe == 'in'){
-                                $model->photo_release_in = $filename;
-                            }else{
-                                $model->photo_release_out = $filename;
-                            }
-                            if($model->save()){
-                                // Check Coari Exist
-//                                if($ref_number_out){
-                                    return $model->NOCONTAINER.' '.$data_barcode->ref_type.' '.$data_barcode->ref_action.' Updated';
-//                                }else{
-//                                    $codeco_id = $this->uploadTpsOnlineCodecoCont($data_barcode->ref_type,$data_barcode->ref_id);
-////                                    return $model->NOCONTAINER.' '.$data_barcode->ref_type.' '.$data_barcode->ref_action.' XML Codeco Created';
-////                                    return $codeco_id;
-//                                    return redirect()->route('tps-codecoCont-upload', $codeco_id);
-//                                }
-                            }else{
-                                return 'Something wrong!!! Cannot store to database';
+
+                                if($data_barcode->time_out){
+                                $model->TGLRELEASE = date('Y-m-d', strtotime($data_barcode->time_out));
+                                $model->JAMRELEASE = date('H:i:s', strtotime($data_barcode->time_out));
+                                $model->UIDKELUAR = 'Autogate';
+                                $model->TGLFIAT = date('Y-m-d', strtotime($data_barcode->time_out));
+                                $model->JAMFIAT = date('H:i:s', strtotime($data_barcode->time_out));
+                                $model->TGLSURATJALAN = date('Y-m-d', strtotime($data_barcode->time_out));
+                                $model->JAMSURATJALAN = date('H:i:s', strtotime($data_barcode->time_out));
+                                }
+                                if($tipe == 'in'){
+                                    $model->photo_release_in = $filename;
+                                }else{
+                                    $model->photo_release_out = $filename;
+                                }
+                                if($model->save()){
+                                    // Check Coari Exist
+    //                                if($ref_number_out){
+                                        return $model->NOCONTAINER.' '.$data_barcode->ref_type.' '.$data_barcode->ref_action.' Updated';
+    //                                }else{
+    //                                    $codeco_id = $this->uploadTpsOnlineCodecoCont($data_barcode->ref_type,$data_barcode->ref_id);
+    ////                                    return $model->NOCONTAINER.' '.$data_barcode->ref_type.' '.$data_barcode->ref_action.' XML Codeco Created';
+    ////                                    return $codeco_id;
+    //                                    return redirect()->route('tps-codecoCont-upload', $codeco_id);
+    //                                }
+                                }else{
+                                    return 'Something wrong!!! Cannot store to database';
+                                }
                             }
                         }
 //                    }else{

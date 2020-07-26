@@ -31,4 +31,9 @@ Route::group(['prefix' => 'barcode'], function(){
         'as' => 'set-rfid',
         'uses' => 'BarcodeController@setRfid'
     ]);
+    
+    Route::post('/cancel', [
+        'as' => 'barcode-cancel',
+        'uses' => 'BarcodeController@cancel'
+    ]);
 });

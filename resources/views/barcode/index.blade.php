@@ -41,7 +41,14 @@
             edt = '';
         for(var i=0;i < ids.length;i++){ 
             var cl = ids[i];
-
+            
+            rowdata = $('#barcodeGrid').getRowData(cl);
+            if(rowdata.cancel == true) {
+                $("#" + cl).find("td").css("color", "#FF0000");
+            } else {
+                
+            }
+            
             edt = '<a href="{{ route("barcode-view",'') }}/'+cl+'"><i class="fa fa-pencil"></i></a> ';
             prn = '<a href="#" onclick="rePrint('+cl+')"><i class="fa fa-print"></i></a> ';
             del = '<a href="{{ route("barcode-delete",'') }}/'+cl+'" onclick="if (confirm(\'Are You Sure want to Delete this data ?\')){return true; }else{return false; };"><i class="fa fa-close"></i></a> ';
@@ -55,14 +62,60 @@
         window.open("{{ route('cetak-barcode', array('','','')) }}/"+rowdata.ref_id+"/"+rowdata.ref_type.toLowerCase()+"/"+rowdata.ref_action+"","preview barcode","width=305,height=600,menubar=no,status=no,scrollbars=yes");
     }
     
+    $(document).ready(function(){
+        $('#cancel-barcode-btn').click(function() {
+            var $grid = $("#barcodeGrid"), selIds = $grid.jqGrid("getGridParam", "selarrrow"), i, n,
+                cellValues = [];
+            for (i = 0, n = selIds.length; i < n; i++) {
+                cellValues.push($grid.jqGrid("getCell", selIds[i], "id"));
+            }
+
+            var barcodeId = cellValues.join(",");
+
+            if(!barcodeId) {alert('Please Select Row');return false;}               
+
+            if(!confirm('Apakah anda yakin ingin membatalkan gate pass?')){return false;}   
+            
+            $.ajax({
+                type: 'POST',
+                data: 
+                {
+                    'id' : barcodeId,
+                    '_token' : '{{ csrf_token() }}'
+                },
+                dataType : 'json',
+                url: '{{route("barcode-cancel")}}',
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    alert('Something went wrong, please try again later.');
+                },
+                beforeSend:function()
+                {
+
+                },
+                success:function(json)
+                {
+                    if(json.success) {
+                        $('#btn-toolbar').showAlertAfterElement('alert-success alert-custom', json.message, 5000);
+                    } else {
+                        $('#btn-toolbar').showAlertAfterElement('alert-danger alert-custom', json.message, 5000);
+                    }
+
+                     $('#barcodeGrid').jqGrid().trigger("reloadGrid");
+                }
+            });
+           
+            
+        });
+    });
+    
 </script>
 <div class="box">
     <div class="box-header with-border" style="padding: 13px;">
         <h3 class="box-title">Gate Pass Lists</h3>
-<!--        <div class="box-tools pull-right">
-            <button class="btn btn-success" id="create-billing-btn"><i class="fa fa-plus"></i>&nbsp; Create Billing</button>
-            <button class="btn btn-info" id="inquiry-btn"><i class="fa fa-info"></i>&nbsp; Inquiry</button>
-        </div>-->
+        <div class="box-tools pull-right">
+            <button class="btn btn-danger" id="cancel-barcode-btn"><i class="fa fa-remove"></i>&nbsp; Batal</button>
+        </div>
     </div>
     <div class="box-body table-responsive">
         {{
@@ -80,6 +133,7 @@
             ->setGridOption('sortorder','desc')
             ->setGridOption('rownumbers', true)
             ->setGridOption('height', '400')
+            ->setGridOption('multiselect', true)
             ->setGridOption('rowList',array(50,100,200))
             ->setGridOption('useColSpanStyle', true)
             ->setNavigatorOptions('navigator', array('viewtext'=>'view'))
@@ -98,6 +152,7 @@
             ->addColumn(array('label'=>'Created','index'=>'created_at','width'=>150,'align'=>'center'))
             ->addColumn(array('label'=>'Expired','index'=>'expired','width'=>150,'align'=>'center'))
             ->addColumn(array('label'=>'Status','index'=>'status','width'=>100,'align'=>'center'))
+            ->addColumn(array('label'=>'Cancel','index'=>'cancel','hidden'=>true))
             ->addColumn(array('label'=>'UID','index'=>'uid','width'=>150,'align'=>'center'))
         
             ->renderGrid()
