@@ -2298,6 +2298,10 @@ UNZ+1+1709131341'\n";
             $sppb = \App\Models\TpsDokManual::select('NO_DOK_INOUT as NO_SPPB','TGL_DOK_INOUT as TGL_SPPB','ID_CONSIGNEE as NPWP_IMP')
                     ->where(array('KD_DOK_INOUT' => $kd_dok, 'NO_BL_AWB' => $container->NO_BL_AWB))
                     ->first();
+            if($sppb){
+                $tgl_sppb = explode('/', $sppb->TGL_SPPB);
+                $sppb->TGL_SPPB = $tgl_sppb[2].'-'.$tgl_sppb[1].'-'.$tgl_sppb[0];
+            }
         }
         
         if($sppb){
