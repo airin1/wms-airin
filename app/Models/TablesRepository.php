@@ -238,6 +238,7 @@ class TablesRepository extends EloquentRepositoryAbstract {
                 
             }elseif(isset($request['report'])){
                 $Model = \DB::table('tcontainercy')
+                        ->where('KODE_GUDANG', 'like', $request['gd'])
                         ->select(\DB::raw('*, timestampdiff(DAY, now(), TGLMASUK) as timeSinceUpdate'));
             }else{
                 
