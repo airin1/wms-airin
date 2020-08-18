@@ -217,20 +217,26 @@ class Controller extends BaseController
     
     public function updateYorByTeus()
     {
-        $teus_count = \App\Models\Containercy::whereNotNull('TGLMASUK')
+        $gudang = array('ARN1','ARN3');
+        
+        foreach ($gudang as $gd):
+            $teus_count = \App\Models\Containercy::whereNotNull('TGLMASUK')
                                 ->whereNull('TGLRELEASE')
+                                ->where('KODE_GUDANG', $gd)
                                 ->sum('TEUS');
         
-        $yor = \App\Models\SorYor::where('type', 'yor')->first();
+            $yor = \App\Models\SorYor::where('type', 'yor')->where('gudang', $gd)->first();
+
+            $k_trisi = $teus_count*1000;
+            $k_kosong = ($yor->kapasitas_default*1000) - $k_trisi;       
+            $tot_sor = ($k_trisi / ($yor->kapasitas_default*1000)) * 100;
+
+            $yor->kapasitas_terisi = (float)($k_trisi/1000);
+            $yor->kapasitas_kosong = (float)($k_kosong/1000);
+            $yor->total = $tot_sor;
+            $yor->save();
+        endforeach;
         
-        $k_trisi = $teus_count*1000;
-        $k_kosong = ($yor->kapasitas_default*1000) - $k_trisi;       
-        $tot_sor = ($k_trisi / ($yor->kapasitas_default*1000)) * 100;
-        
-        $yor->kapasitas_terisi = (float)($k_trisi/1000);
-        $yor->kapasitas_kosong = (float)($k_kosong/1000);
-        $yor->total = $tot_sor;
-        $yor->save();
         
         return true;
     }
