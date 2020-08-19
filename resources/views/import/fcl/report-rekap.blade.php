@@ -514,7 +514,7 @@
         </div>
     </div>
 </div>
-<div class="box">
+<!--<div class="box">
     <div class="box-header with-border">
         <h3 class="box-title">Report YOR ({{ date('d F Y') }})</h3>
     </div>
@@ -544,7 +544,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 
 <div id="create-report-modal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
