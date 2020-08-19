@@ -1272,12 +1272,12 @@ UNZ+1+1709131341'\n";
         
     }
     
-    public function reportLongstay()
+    public function reportLongstay(Request $request)
     {
         if ( !$this->access->can('show.fcl.report.longstay') ) {
             return view('errors.no-access');
         }
-        
+         
         // Create Roles Access
         $this->insertRoleAccess(array('name' => 'Report Longstay Stock', 'slug' => 'show.fcl.report.longstay', 'description' => ''));
         
@@ -1289,6 +1289,26 @@ UNZ+1+1709131341'\n";
                 'title' => 'FCL Report Stock'
             ]
         ]; 
+        
+        if($request->gd) {
+            $gd = $request->gd;
+        } else {
+            $gd = '%';
+        }
+        
+        $this->updateYorByTeus();
+        if($gd == '%'){
+            $data['yor'] = \App\Models\SorYor::select(
+                    \DB::raw('SUM(kapasitas_default) as kapasitas_default'),
+                    \DB::raw('SUM(kapasitas_terisi) as kapasitas_terisi'),
+                    \DB::raw('SUM(kapasitas_kosong) as kapasitas_kosong'),
+                    \DB::raw('SUM(total) as total'))
+                    ->where('type', 'yor')
+                    ->first();
+        }else{
+            $data['yor'] = \App\Models\SorYor::where('type', 'yor')->where('gudang', $gd)->first();
+        }
+        $data['gd'] = $gd;
         
         return view('import.fcl.report-longstay')->with($data);
     }

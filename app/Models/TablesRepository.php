@@ -212,6 +212,7 @@ class TablesRepository extends EloquentRepositoryAbstract {
                             
                             $Model = \DB::table('tcontainercy')
                                 ->select(\DB::raw('*, timestampdiff(DAY, now(), TGLMASUK) as timeSinceUpdate'))
+                                ->where('KODE_GUDANG', 'like', $request['gd'])
     //                            ->whereRaw('tmanifest.tglmasuk < DATE_SUB(now(), INTERVAL 1 MONTH)')
                                 ->whereNotNull('TGLMASUK')
                                 ->whereNull('TGLRELEASE')
@@ -221,6 +222,7 @@ class TablesRepository extends EloquentRepositoryAbstract {
                         }else{
                             $Model = \DB::table('tcontainercy')
                                 ->select(\DB::raw('*, timestampdiff(DAY, now(), TGLMASUK) as timeSinceUpdate'))
+                                ->where('KODE_GUDANG', 'like', $request['gd'])
     //                            ->whereRaw('tcontainercy.TGLMASUK < DATE_SUB(now(), INTERVAL 1 MONTH)')
                                 ->whereNotNull('TGLMASUK')
                                 ->whereNull('TGLRELEASE');

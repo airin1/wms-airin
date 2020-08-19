@@ -104,12 +104,30 @@
                     <button id="searchByDateBtn" class="btn btn-default">Search</button>
                 </div>
             </div>
+            <div class="col-md-4">
+                <div class="col-xs-12" style="padding: 0;">Pilih Gudang</div>
+                <div class="col-xs-12">&nbsp;</div>
+                <form action="{{ route('fcl-report-longstay') }}" method="GET">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <select class="form-control select2" id="gd" name="gd" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                                <option value="%" @if($gd == '%') {{ 'selected' }} @endif>Semua Gudang</option>
+                                <option value="ARN1" @if($gd == 'ARN1') {{ 'selected' }} @endif>Gudang Utara (ARN1)</option>   
+                                <option value="ARN3" @if($gd == 'ARN3') {{ 'selected' }} @endif>Gudang Barat (ARN3)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" id="changeWarehouse" class="btn btn-info">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
         {{
             GridRender::setGridId("fcllongstayGrid")
             ->enableFilterToolbar()
             ->setGridOption('mtype', 'POST')
-            ->setGridOption('url', URL::to('/container/grid-data-cy?module=longstay&report=1&_token='.csrf_token()))
+            ->setGridOption('url', URL::to('/container/grid-data-cy?module=longstay&report=1&gd='.$gd.'&_token='.csrf_token()))
             ->setGridOption('rowNum', 20)
             ->setGridOption('shrinkToFit', true)
             ->setGridOption('sortname','TCONTAINER_PK')
@@ -150,7 +168,37 @@
         }}
     </div>
 </div>
-
+<div class="box">
+    <div class="box-header with-border">
+        <h3 class="box-title">Report YOR ({{ date('d F Y') }})</h3>
+    </div>
+    <div class="box-body table-responsive">
+        <div class="row" style="margin-bottom: 30px;margin-right: 0;">
+            <div class="col-sm-4">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>KAPASITAS TERISI</th>
+                            <td align="right">{{ number_format($yor->kapasitas_terisi,'2','.',',') }} TEUS</td>
+                        </tr>
+                        <tr>
+                            <th>KAPASITAS LAPANGAN</th>
+                            <td align="right">{{ number_format($yor->kapasitas_default,'2','.',',') }} TEUS</td>
+                        </tr>
+                        <tr>
+                            <th>KAPASITAS KOSONG</th>
+                            <td align="right">{{ number_format($yor->kapasitas_kosong,'2','.',',') }} TEUS</td>
+                        </tr>
+                        <tr>
+                            <th>YOR (%)</th>
+                            <td align="right">{{ number_format($yor->total,'2','.',',') }} %</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('custom_css')
