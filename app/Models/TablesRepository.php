@@ -34,6 +34,7 @@ class TablesRepository extends EloquentRepositoryAbstract {
             }elseif(isset($request['startdate']) || isset($request['enddate'])){
                 
                 $Model = \DB::table('tcontainer')
+                        ->where('LOKASI_GUDANG', 'like', $request['gd'])
 //                        ->leftjoin('tdepomty', 'tcontainer.TUJUAN_MTY', '=', 'tdepomty.TDEPOMTY_PK')
                         ->where('TGLENTRY', '>=',date('Y-m-d 00:00:00',strtotime($request['startdate'])))
                         ->where('TGLENTRY', '<=',date('Y-m-d 23:59:59',strtotime($request['enddate'])));
@@ -75,6 +76,7 @@ class TablesRepository extends EloquentRepositoryAbstract {
                 
             }else{
                 $Model = \DB::table('tcontainer')
+                        ->where('LOKASI_GUDANG', 'like', $request['gd'])
 //                        ->leftjoin('tdepomty', 'tcontainer.TUJUAN_MTY', '=', 'tdepomty.TDEPOMTY_PK')
                         ;
             }
@@ -392,6 +394,7 @@ class TablesRepository extends EloquentRepositoryAbstract {
                             ->whereNotNull('tglmasuk')
                             ->whereNotNull('tglstripping')
                             ->whereNull('tglrelease')
+                            ->where('LOKASI_GUDANG', 'like', $request['gd'])
 //                            ->orWhere('tglrelease','0000-00-00')
                             ->where($request['by'], '>=',$start_date)
                             ->where($request['by'], '<=',$end_date);
@@ -401,8 +404,10 @@ class TablesRepository extends EloquentRepositoryAbstract {
     //                            ->whereRaw('tmanifest.tglmasuk < DATE_SUB(now(), INTERVAL 1 MONTH)')
                                 ->whereNotNull('tglmasuk')
                                 ->whereNotNull('tglstripping')
-                                ->whereNull('tglrelease');
+                                ->whereNull('tglrelease')
+                                ->where('LOKASI_GUDANG', 'like', $request['gd'])
     //                            ->orWhere('tglrelease','0000-00-00')
+                                    ;
                         }
                     break;
                     case 'release-invoice':
@@ -426,6 +431,7 @@ class TablesRepository extends EloquentRepositoryAbstract {
                 
             }elseif(isset($request['report'])){
                 $Model = \DB::table('tmanifest')
+                        ->where('LOKASI_GUDANG', 'like', $request['gd'])
                         ->select(\DB::raw('*, timestampdiff(DAY, now(), tglmasuk) as timeSinceUpdate'));   
             }else{
                 

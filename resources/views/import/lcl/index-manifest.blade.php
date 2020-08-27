@@ -42,7 +42,7 @@
             GridRender::setGridId("lclManifestGrid")
             ->enableFilterToolbar()
             ->setGridOption('mtype', 'POST')
-            ->setGridOption('url', URL::to('/lcl/register/grid-data?_token='.csrf_token()))
+            ->setGridOption('url', URL::to('/lcl/register/grid-data?gd=%&_token='.csrf_token()))
             ->setGridOption('rowNum', 25)
             ->setGridOption('shrinkToFit', true)
             ->setGridOption('sortname','TGLENTRY')

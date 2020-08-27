@@ -173,21 +173,25 @@ class Controller extends BaseController
     
     public function updateSorByMeas()
     {
-        $meas_count = \App\Models\Manifest::whereNotNull('tglmasuk')
-                                ->whereNotNull('tglstripping')
-                                ->whereNull('tglrelease')
-                                ->sum('MEAS');
-        
-        $sor = \App\Models\SorYor::where('type', 'sor')->first();
-        
-        $k_trisi = $meas_count*1000;
-        $k_kosong = ($sor->kapasitas_default*1000) - $k_trisi;       
-        $tot_sor = ($k_trisi / ($sor->kapasitas_default*1000)) * 100;
-        
-        $sor->kapasitas_terisi = (float)($k_trisi/1000);
-        $sor->kapasitas_kosong = (float)($k_kosong/1000);
-        $sor->total = $tot_sor;
-        $sor->save();
+        $gudang = array('ARN1','ARN3');
+        foreach ($gudang as $gd):
+            $meas_count = \App\Models\Manifest::whereNotNull('tglmasuk')
+                                    ->whereNotNull('tglstripping')
+                                    ->whereNull('tglrelease')
+                                    ->where('LOKASI_GUDANG', $gd)
+                                    ->sum('MEAS');
+
+            $sor = \App\Models\SorYor::where('type', 'sor')->where('gudang', $gd)->first();
+
+            $k_trisi = $meas_count*1000;
+            $k_kosong = ($sor->kapasitas_default*1000) - $k_trisi;       
+            $tot_sor = ($k_trisi / ($sor->kapasitas_default*1000)) * 100;
+
+            $sor->kapasitas_terisi = (float)($k_trisi/1000);
+            $sor->kapasitas_kosong = (float)($k_kosong/1000);
+            $sor->total = $tot_sor;
+            $sor->save();
+        endforeach;
         
         return true;
     }

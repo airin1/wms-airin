@@ -110,12 +110,30 @@
                     <button id="searchByDateBtn" class="btn btn-default">Search</button>
                 </div>
             </div>
+            <div class="col-md-4">
+                <div class="col-xs-12" style="padding: 0;">Pilih Gudang</div>
+                <div class="col-xs-12">&nbsp;</div>
+                <form action="{{ route('lcl-report-container') }}" method="GET">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <select class="form-control select2" id="gd" name="gd" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                                <option value="%" @if($gd == '%') {{ 'selected' }} @endif>Semua Gudang</option>
+                                <option value="ARN1" @if($gd == 'ARN1') {{ 'selected' }} @endif>Gudang Utara (ARN1)</option>   
+                                <option value="ARN3" @if($gd == 'ARN3') {{ 'selected' }} @endif>Gudang Barat (ARN3)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" id="changeWarehouse" class="btn btn-info">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
         {{
             GridRender::setGridId("lclContainerReportGrid")
             ->enableFilterToolbar()
             ->setGridOption('mtype', 'POST')
-            ->setGridOption('url', URL::to('/container/grid-data?_token='.csrf_token()))
+            ->setGridOption('url', URL::to('/container/grid-data?gd='.$gd.'&_token='.csrf_token()))
             ->setGridOption('rowNum', 20)
             ->setGridOption('shrinkToFit', true)
             ->setGridOption('sortname','TCONTAINER_PK')
@@ -176,6 +194,7 @@
         <h3 class="box-title">Total Penarikan Bulanan</h3>
         <form action="{{ route('lcl-report-container') }}" method="GET">
             <div class="row">
+                <input type="hidden" name="gd" value="{{$gd}}" />
                 <div class="col-md-2">
                     <select class="form-control select2" id="by" name="month" style="width: 100%;" tabindex="-1" aria-hidden="true">
                         <option value="01" @if($month == '01') {{ 'selected' }} @endif>Januari</option>

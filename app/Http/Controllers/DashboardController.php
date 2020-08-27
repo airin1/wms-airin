@@ -88,7 +88,14 @@ class DashboardController extends Controller
         
 //        $data['countlclmanifest'] = \App\Models\Manifest::whereNotNull('tglmasuk')->whereNotNull('tglstripping')->whereNull('tglrelease')->count();
         
-        $data['sor'] = \App\Models\SorYor::where('type', 'sor')->first();
+//        $data['sor'] = \App\Models\SorYor::where('type', 'sor')->first();
+        $data['sor'] = \App\Models\SorYor::select(
+            \DB::raw('SUM(kapasitas_default) as kapasitas_default'),
+            \DB::raw('SUM(kapasitas_terisi) as kapasitas_terisi'),
+            \DB::raw('SUM(kapasitas_kosong) as kapasitas_kosong'),
+            \DB::raw('SUM(total) as total'))
+            ->where('type', 'sor')
+            ->first();
 //        $data['yor'] = \App\Models\SorYor::where('type', 'yor')->first();
         $data['yor'] = \App\Models\SorYor::select(
             \DB::raw('SUM(kapasitas_default) as kapasitas_default'),
