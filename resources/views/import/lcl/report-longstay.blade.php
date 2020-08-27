@@ -130,18 +130,36 @@
                     <button id="searchByDateBtn" class="btn btn-default">Search</button>
                 </div>
             </div>
+            <div class="col-md-4">
+                <div class="col-xs-12" style="padding: 0;">Pilih Gudang</div>
+                <div class="col-xs-12">&nbsp;</div>
+                <form action="{{ route('lcl-report-longstay') }}" method="GET">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <select class="form-control select2" id="gd" name="gd" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                                <option value="%" @if($gd == '%') {{ 'selected' }} @endif>Semua Gudang</option>
+                                <option value="ARN1" @if($gd == 'ARN1') {{ 'selected' }} @endif>Gudang Utara (ARN1)</option>   
+                                <option value="ARN3" @if($gd == 'ARN3') {{ 'selected' }} @endif>Gudang Barat (ARN3)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="submit" id="changeWarehouse" class="btn btn-info">Submit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
         {{
             GridRender::setGridId("lcllongstayGrid")
             ->enableFilterToolbar()
             ->setGridOption('mtype', 'POST')
-            ->setGridOption('url', URL::to('/lcl/manifest/grid-data?module=longstay&_token='.csrf_token()))
+            ->setGridOption('url', URL::to('/lcl/manifest/grid-data?module=longstay&gd='.$gd.'&_token='.csrf_token()))
             ->setGridOption('rowNum', 50)
             ->setGridOption('shrinkToFit', true)
             ->setGridOption('sortname','TMANIFEST_PK')
             ->setGridOption('sortorder','DESC')
             ->setGridOption('rownumbers', true)
-            ->setGridOption('height', '320')
+            ->setGridOption('height', '395')
             ->setGridOption('rowList',array(50,100,200,500))
             ->setGridOption('useColSpanStyle', true)
 //            ->setGridOption('footerrow', true)
@@ -183,7 +201,42 @@
         }}
     </div>
 </div>
-
+<div class="box">
+    <div class="box-header with-border">
+        <h3 class="box-title">Report SOR ({{ date('d F Y') }})</h3>
+    </div>
+    <div class="box-body table-responsive">
+        <div class="row" style="margin-bottom: 30px;margin-right: 0;">
+            <div class="col-sm-4">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>KAPASITAS TERISI</th>
+                            <td align="right">{{ number_format($sor->kapasitas_terisi,'2','.',',') }} CBM</td>
+                        </tr>
+                        <tr>
+                            <th>KAPASITAS GUDANG</th>
+                            <td align="right">{{ number_format($sor->kapasitas_default,'2','.',',') }} CBM</td>
+                        </tr>
+                        <tr>
+                            <th>KAPASITAS KOSONG</th>
+                            <td align="right">{{ number_format($sor->kapasitas_kosong,'2','.',',') }} CBM</td>
+                        </tr>
+                        <tr>
+                            <th>SOR (%)</th>
+                            <td align="right">{{ number_format($sor->total,'2','.',',') }} %</td>
+                        </tr>
+                        <tr>
+                            <th>SUM MEAS</th>
+                            <td align="right">{{ number_format($meas,'4','.',',') }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+        </div>
+    </div>
+</div>
 @endsection
 
 @section('custom_css')
