@@ -189,7 +189,7 @@
                     GridRender::setGridId("lclDispatcheGrid")
                     ->enableFilterToolbar()
                     ->setGridOption('mtype', 'POST')
-                    ->setGridOption('url', URL::to('/container/grid-data?_token='.csrf_token()))
+                    ->setGridOption('url', URL::to('/container/grid-data?gd=%&_token='.csrf_token()))
                     ->setGridOption('rowNum', 20)
                     ->setGridOption('shrinkToFit', true)
                     ->setGridOption('sortname','TCONTAINER_PK')
