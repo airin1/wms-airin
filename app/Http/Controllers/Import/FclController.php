@@ -1065,15 +1065,15 @@ class FclController extends Controller
     
     public function reportHarianCetak($date, $type, $gd)
     {
+        if($gd == 'all'){
+            $gd = '%';
+        } 
+        
         // MASUK
         $data['in'] = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('TGLMASUK', $date)->orderBy('JAMMASUK', 'DESC')->get();
         
         // KELUAR
-        $data['out'] = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('TGLRELEASE', $date)->orderBy('JAMRELEASE', 'DESC')->get();
-        
-        if($gd == 'all'){
-            $gd = '%';
-        }
+        $data['out'] = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('TGLRELEASE', $date)->orderBy('JAMRELEASE', 'DESC')->get();  
         
         // BY DOKUMEN
         $bc20 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 1)->where('TGLRELEASE', $date)->count();
