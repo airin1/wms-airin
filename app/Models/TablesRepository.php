@@ -241,9 +241,21 @@ class TablesRepository extends EloquentRepositoryAbstract {
                 }
                 
             }elseif(isset($request['report'])){
+                if(isset($request['date'])){
+                    if($request['type'] == 'in'){
                 $Model = \DB::table('tcontainercy')
-                        ->where('KODE_GUDANG', 'like', $request['gd'])
+                            ->where('KODE_GUDANG', 'like', $request['gd'])
+                            ->where('TGLMASUK', $request['date']);
+                    }elseif($request['type'] == 'out'){
+                        $Model = \DB::table('tcontainercy')
+                            ->where('KODE_GUDANG', 'like', $request['gd'])
+                            ->where('TGLRELEASE', $request['date']);
+                    } 
+                }else{
+                    $Model = \DB::table('tcontainercy')
+                        ->where('KODE_GUDANG', 'like', $request['gd'])    
                         ->select(\DB::raw('*, timestampdiff(DAY, now(), TGLMASUK) as timeSinceUpdate'));
+                }
             }else{
                 
             }
@@ -430,9 +442,24 @@ class TablesRepository extends EloquentRepositoryAbstract {
                         ->where($request['by'], '<=',$end_date);
                 
             }elseif(isset($request['report'])){
+                if(isset($request['date'])){
+                    if($request['type'] == 'in'){
                 $Model = \DB::table('tmanifest')
-                        ->where('LOKASI_GUDANG', 'like', $request['gd'])
-                        ->select(\DB::raw('*, timestampdiff(DAY, now(), tglmasuk) as timeSinceUpdate'));   
+                            ->where('LOKASI_GUDANG', 'like', $request['gd'])
+                            ->where('tglstripping', $request['date']);
+                    }elseif($request['type'] == 'out'){
+                        $Model = \DB::table('tmanifest')
+                            ->where('LOKASI_GUDANG', 'like', $request['gd'])
+                            ->where('tglrelease', $request['date']);
+                    } 
+            }else{
+                    $Model = \DB::table('tmanifest')
+    //                        ->leftjoin('billing_invoice', 'billing_invoice.manifest_id','=','tmanifest.TMANIFEST_PK')
+                            ->select(\DB::raw('*, timestampdiff(DAY, now(), tglmasuk) as timeSinceUpdate'))
+                            ->where('LOKASI_GUDANG', 'like', $request['gd'])
+                            ->whereNotNull('tglmasuk')
+                            ->whereNotNull('tglstripping');   
+                }
             }else{
                 
             }
