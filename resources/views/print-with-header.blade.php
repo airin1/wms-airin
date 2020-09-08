@@ -9,10 +9,9 @@
     <body>
         <div>
             <div>
-                <h2 class="name">PT. PRIMANATA JASA PERSADA</h2>
-                <div>Jl. Enggano No. 40 E Jakarta 14310 - Indonesia</div>
-                <div>Tel. (021) 43932076-77, (021) 43909872-73 &nbsp;Fax. (021) 43932087</div>
-                <div>Email : <a href="mailto:primanatajp@yahoo.co.id">primanatajp@yahoo.co.id</a></div>
+                <h2 class="name">PT. AIRIN INDONESIA AIR & MARINE SUPPLY</h2>
+                <div>Jl. Cilincing Raya No. 33 Tanjung Priok Jakarta Utara</div>
+                <div>Tel. 4301831 - 33 ( Hunting ), 4350762 Fax. 4350760, 4358524</div>
                 <hr />
             </div>
         </div>

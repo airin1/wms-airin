@@ -1020,7 +1020,7 @@ class FclController extends Controller
     }
     
     // REPORT
-    public function reportHarian()
+    public function reportHarian(Request $request)
     {
         if ( !$this->access->can('show.fcl.report.harian') ) {
             return view('errors.no-access');
@@ -1029,16 +1029,65 @@ class FclController extends Controller
         // Create Roles Access
         $this->insertRoleAccess(array('name' => 'Report Harian FCL', 'slug' => 'show.fcl.report.harian', 'description' => ''));
         
-        $data['page_title'] = "FCL Report Delivery Harian";
+        $data['page_title'] = "FCL Laporan Harian";
         $data['page_description'] = "";
         $data['breadcrumbs'] = [
             [
                 'action' => '',
-                'title' => 'FCL Report Delivery Harian'
+                'title' => 'FCL Laporan Harian'
             ]
         ];        
         
+        if($request->gd) {
+            $gd = $request->gd;
+        } else {
+            $gd = '%';
+        }
+        
+        if($request->date){
+            $data['date'] = $request->date;
+        }else{
+            $data['date'] = date('Y-m-d');
+        }
+        
+        // BY DOKUMEN
+        $bc20 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 1)->where('TGLRELEASE', $data['date'])->count();
+        $bc23 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 2)->where('TGLRELEASE', $data['date'])->count();
+        $bc12 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 4)->where('TGLRELEASE', $data['date'])->count();
+        $bc15 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 27)->where('TGLRELEASE', $data['date'])->count();
+        $bc11 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 41)->where('TGLRELEASE', $data['date'])->count();
+        $data['countbydoc'] = array('BC 1.2' => $bc12, 'BC 1.6' => $bc11,'BC 2.0' => $bc20, 'BC 2.3' => $bc23, 'PPRP' => $bc15);
+        
+        $data['gd'] = $gd;
+        
         return view('import.fcl.report-harian')->with($data);
+    }
+    
+    public function reportHarianCetak($date, $type, $gd)
+    {
+        // MASUK
+        $data['in'] = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('TGLMASUK', $date)->orderBy('JAMMASUK', 'DESC')->get();
+        
+        // KELUAR
+        $data['out'] = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('TGLRELEASE', $date)->orderBy('JAMRELEASE', 'DESC')->get();
+        
+        if($gd == 'all'){
+            $gd = '%';
+        }
+        
+        // BY DOKUMEN
+        $bc20 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 1)->where('TGLRELEASE', $date)->count();
+        $bc23 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 2)->where('TGLRELEASE', $date)->count();
+        $bc12 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 4)->where('TGLRELEASE', $date)->count();
+        $bc15 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 27)->where('TGLRELEASE', $date)->count();
+        $bc11 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 41)->where('TGLRELEASE', $date)->count();
+        $data['countbydoc'] = array('BC 1.2' => $bc12, 'BC 1.6' => $bc11,'BC 2.0' => $bc20, 'BC 2.3' => $bc23, 'PPRP' => $bc15);
+
+        $data['date'] = $date;
+        $data['type'] = $type;
+        $data['gd'] = $gd;
+        
+        return view('print.fcl-report-harian')->with($data);
     }
     
     public function reportRekap(Request $request)
