@@ -1050,12 +1050,6 @@ class FclController extends Controller
             $data['date'] = date('Y-m-d');
         }
         
-        // BY PLP
-        $totplp = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('SIZE', 20)->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
-        $fourty = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('SIZE', 40)->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
-        $teus = ($twenty*1)+($fourty*2);
-        $data['countbyplp'] = array('twenty' => $twenty, 'fourty' => $fourty, 'total' => $twenty+$fourty, 'teus' => $teus);
-        
         // BY DOKUMEN
         $bc20 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 1)->where('TGLRELEASE', $data['date'])->count();
         $bc23 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 2)->where('TGLRELEASE', $data['date'])->count();
