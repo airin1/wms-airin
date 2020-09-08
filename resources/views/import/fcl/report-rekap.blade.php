@@ -287,9 +287,9 @@
                     <div class="row">
                         <div class="col-md-8">
                             <select class="form-control select2" id="gd" name="gd" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                                <option value="%" @if($gd == '%') {{ 'selected' }} @endif>Semua Gudang</option>
-                                <option value="ARN1" @if($gd == 'ARN1') {{ 'selected' }} @endif>Gudang Utara (ARN1)</option>   
-                                <option value="ARN3" @if($gd == 'ARN3') {{ 'selected' }} @endif>Gudang Barat (ARN3)</option>
+                                <option value="%" @if($gd == '%') {{ 'selected' }} @endif>Semua Lapangan</option>
+                                <option value="ARN1" @if($gd == 'ARN1') {{ 'selected' }} @endif>Lapangan Utara (ARN1)</option>   
+                                <option value="ARN3" @if($gd == 'ARN3') {{ 'selected' }} @endif>Lapangan Barat (ARN3)</option>
                             </select>
                         </div>
                         <div class="col-md-4">
