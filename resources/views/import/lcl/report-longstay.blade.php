@@ -178,7 +178,7 @@
             ->addColumn(array('label'=>'VOY','index'=>'VOY','width'=>100,'align'=>'center'))
             ->addColumn(array('label'=>'No. Container','index'=>'NOCONTAINER', 'width'=>150,'align'=>'center'))
             ->addColumn(array('label'=>'Size','index'=>'SIZE', 'width'=>100,'align'=>'center'))
-            ->addColumn(array('label'=>'Kode Gudang','index'=>'LOKASI_GUDANG', 'width'=>100,'align'=>'center'))
+            ->addColumn(array('label'=>'Gudang','index'=>'LOKASI_GUDANG', 'width'=>100,'align'=>'center'))
             ->addColumn(array('label'=>'Weight','index'=>'WEIGHT', 'width'=>100,'align'=>'center'))
             ->addColumn(array('label'=>'Meas','index'=>'MEAS', 'width'=>100,'align'=>'center'))
 //            ->addColumn(array('label'=>'Teus','index'=>'TEUS', 'width'=>100,'align'=>'center','hidden'=>true))
