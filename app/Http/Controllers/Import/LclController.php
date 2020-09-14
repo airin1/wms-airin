@@ -1323,9 +1323,9 @@ class LclController extends Controller
         }
         
         // Masuk
-        $julmah_bl_masuk = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('tglstripping', $request->date)->count();
+        $julmah_bl_masuk = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('tglstripping', $data['date'])->count();
         $bl_ins = DBManifest::select(\DB::raw('SUM(QUANTITY) as qty'),\DB::raw('SUM(WEIGHT) as kgs'),\DB::raw('SUM(MEAS) as m3'))
-                ->where('tglstripping', $request->date)
+                ->where('tglstripping', $data['date'])
                 ->where('LOKASI_GUDANG', 'like', $gd)
                 ->get();
         $data_bl_in = array();
@@ -1337,9 +1337,9 @@ class LclController extends Controller
         endforeach;
         
         // Keluar
-        $julmah_bl_keluar = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('tglrelease', $request->date)->count();
+        $julmah_bl_keluar = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('tglrelease', $data['date'])->count();
         $bl_out = DBManifest::select(\DB::raw('SUM(QUANTITY) as qty'),\DB::raw('SUM(WEIGHT) as kgs'),\DB::raw('SUM(MEAS) as m3'))
-                ->where('tglrelease', $request->date)
+                ->where('tglrelease', $data['date'])
                 ->where('LOKASI_GUDANG', 'like', $gd)
                 ->get();
         $data_bl_out = array();
@@ -1350,12 +1350,12 @@ class LclController extends Controller
             $data_bl_out['Measurement'] = $out->m3;
         endforeach;
         
-        $bc20 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 1)->where('tglrelease', $request->date)->count();
-        $bc23 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 2)->where('tglrelease', $request->date)->count();
-        $bc12 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 4)->where('tglrelease', $request->date)->count();
-        $bc15 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 9)->where('tglrelease', $request->date)->count();
-        $bc11 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 41)->where('tglrelease', $request->date)->count();
-        $bcf26 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 5)->where('tglrelease', $request->date)->count();
+        $bc20 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 1)->where('tglrelease', $data['date'])->count();
+        $bc23 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 2)->where('tglrelease', $data['date'])->count();
+        $bc12 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 4)->where('tglrelease', $data['date'])->count();
+        $bc15 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 9)->where('tglrelease', $data['date'])->count();
+        $bc11 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 41)->where('tglrelease', $data['date'])->count();
+        $bcf26 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 5)->where('tglrelease', $data['date'])->count();
         $data['countbydoc'] = array('BC 2.0' => $bc20, 'BC 2.3' => $bc23, 'BC 1.2' => $bc12, 'BC 1.5' => $bc15, 'BC 1.6' => $bc11, 'BCF 2.6' => $bcf26);
 
         $data['sum_bl_in'] = $data_bl_in;
