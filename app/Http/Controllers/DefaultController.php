@@ -299,18 +299,33 @@ class DefaultController extends BaseController
     
     public function stockUpdate()
     {
-        $getStock = \DB::table('stock_lcl')->get();
+//        $getStock = \DB::table('stock_lcl')->get();
+//        
+//        foreach ($getStock as $stock):
+//            
+//            // Update
+//            \App\Models\Manifest::where(
+//                    array(
+//                        'NOCONTAINER' => $stock->nocontainer,
+//                        'NOHBL' => $stock->nohbl,
+//                        'tglrelease' => '2000-01-01'
+//                    )
+//                )->update(['tglrelease' => NULL, 'jamrelease' => NULL]);
+//            
+//        endforeach;
+        
+        $getStock = \DB::table('stock_fcl')->get();
         
         foreach ($getStock as $stock):
             
             // Update
-            \App\Models\Manifest::where(
+            \App\Models\Containercy::where(
                     array(
                         'NOCONTAINER' => $stock->nocontainer,
-                        'NOHBL' => $stock->nohbl,
-                        'tglrelease' => '2000-01-01'
+//                        'NO_PLP' => $stock->no_plp,
+                        'TGLRELEASE' => '2000-01-01'
                     )
-                )->update(['tglrelease' => NULL, 'jamrelease' => NULL]);
+                )->update(['TGLRELEASE' => NULL, 'TGLRELEASE' => NULL]);
             
         endforeach;
         
