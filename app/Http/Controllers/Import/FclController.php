@@ -1057,7 +1057,7 @@ class FclController extends Controller
         $pprp = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 27)->where('TGLRELEASE', $data['date'])->count();
         $bc15 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 9)->where('TGLRELEASE', $data['date'])->count();
         $bc11 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 41)->where('TGLRELEASE', $data['date'])->count();
-        $data['countbydoc'] = array('BC 1.2' => $bc12, 'BC 1.6' => $bc11,'BC 1.5' => $bc15, 'BC 2.0' => $bc20, 'BC 2.3' => $bc23, 'PPRP' => $pprp);
+        $data['countbydoc'] = array('BC 1.2' => $bc12,'BC 1.5' => $bc15, 'BC 1.6' => $bc11, 'BC 2.0' => $bc20, 'BC 2.3' => $bc23, 'PPRP' => $pprp);
         
         $data['gd'] = $gd;
         
@@ -1083,7 +1083,7 @@ class FclController extends Controller
         $pprp = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 27)->where('TGLRELEASE', $date)->count();
         $bc15 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 9)->where('TGLRELEASE', $date)->count();
         $bc11 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 41)->where('TGLRELEASE', $date)->count();
-        $data['countbydoc'] = array('BC 1.2' => $bc12, 'BC 1.6' => $bc11,'BC 1.5' => $bc15, 'BC 2.0' => $bc20, 'BC 2.3' => $bc23, 'PPRP' => $pprp);
+        $data['countbydoc'] = array('BC 1.2' => $bc12,'BC 1.5' => $bc15, 'BC 1.6' => $bc11, 'BC 2.0' => $bc20, 'BC 2.3' => $bc23, 'PPRP' => $pprp);
 
         $data['date'] = $date;
         $data['type'] = $type;
