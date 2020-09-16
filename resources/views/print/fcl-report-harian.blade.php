@@ -68,9 +68,9 @@
                         <th rowspan="2">TYPE</th>
                         <th rowspan="2">EX-KAPAL</th>
                         <th rowspan="2">TANGGAL<br />TIBA</th>
-                        <th rowspan="2">TANGGAL<br />OB</th>
+                        <th rowspan="2">TANGGAL<br />PLP</th>
                         <th rowspan="2">CONSIGNEE</th>
-                        <th rowspan="2">OPERATOR<br />OB</th>
+                        <th rowspan="2">OPERATOR<br />PLP</th>
                         <th colspan="2">PEMASUKAN PLP</th>
                         <th rowspan="2">TPS ASAL</th>
                         <th colspan="2">BC 1.1</th>
@@ -157,9 +157,9 @@
                         <th rowspan="2">TYPE</th>
                         <th rowspan="2">EX-KAPAL</th>
                         <th rowspan="2">TANGGAL<br />TIBA</th>
-                        <th rowspan="2">TANGGAL<br />OB</th>
+                        <th rowspan="2">TANGGAL<br />PLP</th>
                         <th rowspan="2">CONSIGNEE</th>
-                        <th rowspan="2">OPERATOR<br />OB</th>
+                        <th rowspan="2">OPERATOR<br />PLP</th>
                         <th colspan="3">DOK PENGELUARAN</th>
                         <th rowspan="2">TPS ASAL</th>
                         <th colspan="2">BC 1.1</th>
