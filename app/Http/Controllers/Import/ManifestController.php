@@ -102,6 +102,7 @@ class ManifestController extends Controller
         $data['NOMBL'] = $container->NOMBL;  
         $data['TGL_MASTER_BL'] = $container->TGL_MASTER_BL;
         $data['LOKASI_GUDANG'] = $container->LOKASI_GUDANG;
+        $data['LOKASI_TUJUAN'] = $container->LOKASI_GUDANG;
         $data['NO_BC11'] = $container->NO_BC11;
         $data['TGL_BC11'] = $container->TGL_BC11;
         $data['NO_PLP'] = $container->NO_PLP;

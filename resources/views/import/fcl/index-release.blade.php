@@ -100,22 +100,29 @@
             }else{
                 $(".hide-kddoc").hide();
             }
-            if($this == 1){
+//            if($this == 1){
+//                @role('super-admin')
+//                    
+//                @else
+//                    $('#NO_SPPB').attr('disabled','disabled');
+//                    $('#TGL_SPPB').attr('disabled','disabled');
+//                @endrole
+//            }else{
+//                if($this == ''){
+//                    $('#NO_SPPB').attr('disabled','disabled');
+//                    $('#TGL_SPPB').attr('disabled','disabled');
+//                }else{
+//                    $('#NO_SPPB').removeAttr('disabled');
+//                    $('#TGL_SPPB').removeAttr('disabled');
+//                }
+//            }
                 @role('super-admin')
-                    
+                    $('#NO_SPPB').removeAttr('disabled');
+                    $('#TGL_SPPB').removeAttr('disabled');
                 @else
                     $('#NO_SPPB').attr('disabled','disabled');
                     $('#TGL_SPPB').attr('disabled','disabled');
                 @endrole
-            }else{
-                if($this == ''){
-                    $('#NO_SPPB').attr('disabled','disabled');
-                    $('#TGL_SPPB').attr('disabled','disabled');
-                }else{
-                $('#NO_SPPB').removeAttr('disabled');
-                $('#TGL_SPPB').removeAttr('disabled');
-            }
-            }
         });
         
         $('#get-sppb-btn').click(function(){
@@ -240,30 +247,40 @@
                 $('#btn-group-5').enableButtonGroup();
             @endrole
 
-            if(rowdata.KD_DOK_INOUT == 1){
+//            if(rowdata.KD_DOK_INOUT == 1){
                 @role('super-admin')
-                    
+                    $('#NO_SPPB').removeAttr('disabled');
+                    $('#TGL_SPPB').removeAttr('disabled');
                 @else
                     $('#NO_SPPB').attr('disabled','disabled');
                     $('#TGL_SPPB').attr('disabled','disabled');
                 @endrole
-            }
+//            }
             
             if(!rowdata.TGLRELEASE && !rowdata.JAMRELEASE) {
                 
             }else{
                 @role('super-admin')
-
+                    $('#TGLRELEASE').removeAttr('disabled');
+                    $('#JAMRELEASE').removeAttr('disabled');
+                    $('#NOPOL_OUT').removeAttr('disabled');
                 @else
-//                    $('#TGLRELEASE').attr('disabled','disabled');
-//                    $('#JAMRELEASE').attr('disabled','disabled');
+                    $('#TGLRELEASE').attr('disabled','disabled');
+                    $('#JAMRELEASE').attr('disabled','disabled');
                 @endrole
             }
             
             if(rowdata.status_bc == 'HOLD'){
-                $('#TGLRELEASE').attr('disabled','disabled');
-                $('#JAMRELEASE').attr('disabled','disabled');
-                $('#NOPOL_OUT').attr('disabled','disabled');
+                @role('super-admin')
+                    $('#TGLRELEASE').removeAttr('disabled');
+                    $('#JAMRELEASE').removeAttr('disabled');
+                    $('#NOPOL_OUT').removeAttr('disabled');
+                @else
+                    $('#TGLRELEASE').attr('disabled','disabled');
+                    $('#JAMRELEASE').attr('disabled','disabled');
+                    $('#NOPOL_OUT').attr('disabled','disabled');
+                @endrole
+                
             }else{
 //                $('#TGLRELEASE').removeAttr('disabled');
 //                $('#JAMRELEASE').removeAttr('disabled');
@@ -275,10 +292,8 @@
                 $('#btn-group-5').disabledButtonGroup();
                 $('#btn-sppb,#btn-photo').disabledButtonGroup();
                 $('#release-form').disabledFormGroup();
-                @role('super-admin')
-                @else
-//                    $('#btn-group-2').disabledButtonGroup();
-                @endrole    
+//                $('#btn-group-2').disabledFormGroup();
+                
             }
             
             $('#telp_ppjk,#NOPOL_OUT').removeAttr('disabled');

@@ -110,22 +110,29 @@
                 $(".hide-kddoc").hide();
             }
             
-            if($this == 1){
+//            if($this == 1){
+//                @role('super-admin')
+//                    
+//                @else
+//                    $('#NO_SPPB').attr('disabled','disabled');
+//                    $('#TGL_SPPB').attr('disabled','disabled');
+//                @endrole
+//            }else{
+//                if($this == ''){
+//                    $('#NO_SPPB').attr('disabled','disabled');
+//                    $('#TGL_SPPB').attr('disabled','disabled');
+//                }else{
+//                    $('#NO_SPPB').removeAttr('disabled');
+//                    $('#TGL_SPPB').removeAttr('disabled');
+//                }   
+//            }
                 @role('super-admin')
-                    
+                    $('#NO_SPPB').removeAttr('disabled');
+                    $('#TGL_SPPB').removeAttr('disabled');
                 @else
                     $('#NO_SPPB').attr('disabled','disabled');
                     $('#TGL_SPPB').attr('disabled','disabled');
                 @endrole
-            }else{
-                if($this == ''){
-                    $('#NO_SPPB').attr('disabled','disabled');
-                    $('#TGL_SPPB').attr('disabled','disabled');
-                }else{
-                    $('#NO_SPPB').removeAttr('disabled');
-                    $('#TGL_SPPB').removeAttr('disabled');
-                }
-            }
         });
         
         $('#get-sppb-btn').click(function(){
@@ -238,20 +245,24 @@
                 $('#btn-group-5').enableButtonGroup();
             @endrole
             
-            if(rowdata.KD_DOK_INOUT == 1){
+            
+//            if(rowdata.KD_DOK_INOUT == 1){
                 @role('super-admin')
-                    
+                    $('#NO_SPPB').removeAttr('disabled');
+                    $('#TGL_SPPB').removeAttr('disabled');
                 @else
                     $('#NO_SPPB').attr('disabled','disabled');
                     $('#TGL_SPPB').attr('disabled','disabled');
                 @endrole
-            }
+//            }
             
             if(!rowdata.tglrelease && !rowdata.jamrelease) {
 
             }else{ 
                 @role('super-admin')
-
+                    $('#tglrelease').removeAttr('disabled');
+                    $('#jamrelease').removeAttr('disabled');
+                    $('#NOPOL_RELEASE').removeAttr('disabled');
                 @else
                     $('#tglrelease').attr('disabled','disabled');
                     $('#jamrelease').attr('disabled','disabled');
@@ -259,9 +270,16 @@
             }
   
             if(rowdata.status_bc == 'HOLD'){
+                @role('super-admin')
+                    $('#tglrelease').removeAttr('disabled');
+                    $('#jamrelease').removeAttr('disabled');
+                    $('#NOPOL_RELEASE').removeAttr('disabled');
+                @else
                 $('#tglrelease').attr('disabled','disabled');
                 $('#jamrelease').attr('disabled','disabled');
                 $('#NOPOL_RELEASE').attr('disabled','disabled');
+                @endrole
+                
             }else{
 //                $('#tglrelease').removeAttr('disabled');
 //                $('#jamrelease').removeAttr('disabled');
@@ -381,6 +399,7 @@
             $('#release-form').disabledFormGroup();
             $('#btn-toolbar,#btn-sppb, #btn-photo, #btn-ppjk').disabledButtonGroup();
             $('#btn-group-3').enableButtonGroup();
+            $(".hide-kddoc,#btn-group-7,#btn-group-8").hide();
             
             $('#release-form')[0].reset();
             $('.select2').val(null).trigger("change");
@@ -617,6 +636,7 @@
                     ->setGridOption('rowNum', 20)
                     ->setGridOption('shrinkToFit', true)
                     ->setGridOption('sortname','TMANIFEST_PK')
+                    ->setGridOption('sortorder','DESC')
                     ->setGridOption('rownumbers', true)
                     ->setGridOption('rownumWidth', 50)
                     ->setGridOption('multiselect', true)
