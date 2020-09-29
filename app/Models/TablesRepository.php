@@ -445,18 +445,33 @@ class TablesRepository extends EloquentRepositoryAbstract {
                 if(isset($request['date'])){
                     if($request['type'] == 'in'){
                 $Model = \DB::table('tmanifest')
-                            ->where('LOKASI_GUDANG', 'like', $request['gd'])
+//                            ->where('LOKASI_GUDANG', 'like', $request['gd'])
+                            ->where(function ($query) use ($request) {
+                                $query->where('LOKASI_GUDANG', 'like', $request['gd'])
+                                ->whereNull('LOKASI_TUJUAN')
+                                ->orWhere('LOKASI_TUJUAN', 'like', $request['gd']);
+                            })
                             ->where('tglstripping', $request['date']);
                     }elseif($request['type'] == 'out'){
                         $Model = \DB::table('tmanifest')
-                            ->where('LOKASI_GUDANG', 'like', $request['gd'])
+//                            ->where('LOKASI_GUDANG', 'like', $request['gd'])
+                            ->where(function ($query) use ($request) {
+                                $query->where('LOKASI_GUDANG', 'like', $request['gd'])
+                                ->whereNull('LOKASI_TUJUAN')
+                                ->orWhere('LOKASI_TUJUAN', 'like', $request['gd']);
+                            })
                             ->where('tglrelease', $request['date']);
                     } 
             }else{
                     $Model = \DB::table('tmanifest')
     //                        ->leftjoin('billing_invoice', 'billing_invoice.manifest_id','=','tmanifest.TMANIFEST_PK')
                             ->select(\DB::raw('*, timestampdiff(DAY, now(), tglmasuk) as timeSinceUpdate'))
-                            ->where('LOKASI_GUDANG', 'like', $request['gd'])
+//                            ->where('LOKASI_GUDANG', 'like', $request['gd'])
+                            ->where(function ($query) use ($request) {
+                                $query->where('LOKASI_GUDANG', 'like', $request['gd'])
+                                ->whereNull('LOKASI_TUJUAN')
+                                ->orWhere('LOKASI_TUJUAN', 'like', $request['gd']);
+                            })
                             ->whereNotNull('tglmasuk')
                             ->whereNotNull('tglstripping');   
                 }

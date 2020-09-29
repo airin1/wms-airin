@@ -1150,13 +1150,37 @@ class LclController extends Controller
         } else {
             $gd = '%';
         }
-        
-        $bc20 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 1)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
-        $bc23 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 2)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
-        $bc12 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 4)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
-        $bc15 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 9)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
-        $bc11 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 20)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
-        $bcf26 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 5)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
+
+        $bc20 = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_DOK_INOUT', 1)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
+        $bc23 = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_DOK_INOUT', 2)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
+        $bc12 = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_DOK_INOUT', 4)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
+        $bc15 = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_DOK_INOUT', 9)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
+        $bc11 = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_DOK_INOUT', 20)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
+        $bcf26 = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_DOK_INOUT', 5)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
         $data['countbydoc'] = array('BC 2.0' => $bc20, 'BC 2.3' => $bc23, 'BC 1.2' => $bc12, 'BC 1.5' => $bc15, 'BC 1.1' => $bc11, 'BCF 2.6' => $bcf26);
         
         $data['month'] = $month;
@@ -1236,38 +1260,128 @@ class LclController extends Controller
         }
         
 //        BY PLP
-        $twenty = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->where('SIZE', 20)->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
-        $fourty = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->where('SIZE', 40)->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $twenty = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('SIZE', 20)->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $fourty = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('SIZE', 40)->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+                
         $teus = ($twenty*1)+($fourty*2);
         $data['countbysize'] = array('twenty' => $twenty, 'fourty' => $fourty, 'total' => $twenty+$fourty, 'teus' => $teus);
         
-        $jict = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->where('KD_TPS_ASAL', 'JICT')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
-        $koja = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->where('KD_TPS_ASAL', 'KOJA')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
-        $mal = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->where('KD_TPS_ASAL', 'MAL0')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
-        $nct1 = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->where('KD_TPS_ASAL', 'NCT1')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
-        $pldc = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->where('KD_TPS_ASAL', 'PLDC')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $jict = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_TPS_ASAL', 'JICT')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $koja = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_TPS_ASAL', 'KOJA')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $mal = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_TPS_ASAL', 'MAL0')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $nct1 = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_TPS_ASAL', 'NCT1')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $pldc = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_TPS_ASAL', 'PLDC')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
         
-        $fc = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->whereIn('TCONSOLIDATOR_FK', array(1,4))->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
-        $me = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->whereIn('TCONSOLIDATOR_FK', array(13,16))->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
-        $ap = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->whereIn('TCONSOLIDATOR_FK', array(10,12))->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
-        $da = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->whereIn('TCONSOLIDATOR_FK', array(24))->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $fc = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->whereIn('TCONSOLIDATOR_FK', array(1,4))->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $me = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->whereIn('TCONSOLIDATOR_FK', array(13,16))->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $ap = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->whereIn('TCONSOLIDATOR_FK', array(10,12))->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $da = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->whereIn('TCONSOLIDATOR_FK', array(24))->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
         
 //        BY GATEIN
-        $twentyg = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->where('SIZE', 20)->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
-        $fourtyg = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->where('SIZE', 40)->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $twentyg = DBContainer::wherewhere(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('SIZE', 20)->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $fourtyg = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('SIZE', 40)->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+                
         $teusg = ($twentyg*1)+($fourtyg*2);
         $data['countbysizegatein'] = array('twenty' => $twentyg, 'fourty' => $fourtyg, 'total' => $twentyg+$fourtyg, 'teus' => $teusg);
         
-        $jictg = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->where('KD_TPS_ASAL', 'JICT')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
-        $kojag = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->where('KD_TPS_ASAL', 'KOJA')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
-        $malg = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->where('KD_TPS_ASAL', 'MAL0')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
-        $nct1g = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->where('KD_TPS_ASAL', 'NCT1')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
-        $pldcg = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->where('KD_TPS_ASAL', 'PLDC')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $jictg = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_TPS_ASAL', 'JICT')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $kojag = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_TPS_ASAL', 'KOJA')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $malg = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_TPS_ASAL', 'MAL0')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $nct1g = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_TPS_ASAL', 'NCT1')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $pldcg = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_TPS_ASAL', 'PLDC')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
         
-        $fcg = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->whereIn('TCONSOLIDATOR_FK', array(1,4))->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
-        $meg = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->whereIn('TCONSOLIDATOR_FK', array(13,16))->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
-        $apg = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->whereIn('TCONSOLIDATOR_FK', array(10,12))->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
-        $dae = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->whereIn('TCONSOLIDATOR_FK', array(24))->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $fcg = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->whereIn('TCONSOLIDATOR_FK', array(1,4))->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $meg = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->whereIn('TCONSOLIDATOR_FK', array(13,16))->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $apg = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->whereIn('TCONSOLIDATOR_FK', array(10,12))->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $dae = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->whereIn('TCONSOLIDATOR_FK', array(24))->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
         
         $data['countbytps'] = array('JICT' => array($jict, $jictg), 'KOJA' => array($koja, $kojag), 'MAL0' => array($mal, $malg), 'NCT1' => array($nct1, $nct1g), 'PLDC' => array($pldc, $pldcg));
         $data['countbyconsolidator'] = array('FBI/CPL' => array($fc, $fcg), 'MKT/ECU' => array($me, $meg), 'ARJAKA/PELOPOR' => array($ap, $apg), 'DAEHAN' => array($da, $dae));
@@ -1323,10 +1437,19 @@ class LclController extends Controller
         }
         
         // Masuk
-        $julmah_bl_masuk = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('tglstripping', $data['date'])->count();
+        $julmah_bl_masuk = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('tglstripping', $data['date'])->count();
         $bl_ins = DBManifest::select(\DB::raw('SUM(QUANTITY) as qty'),\DB::raw('SUM(WEIGHT) as kgs'),\DB::raw('SUM(MEAS) as m3'))
                 ->where('tglstripping', $data['date'])
-                ->where('LOKASI_GUDANG', 'like', $gd)
+//                ->where('LOKASI_GUDANG', 'like', $gd)
+                ->where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })
                 ->get();
         $data_bl_in = array();
         $data_bl_in['Jumlah B/L'] = $julmah_bl_masuk;
@@ -1337,10 +1460,19 @@ class LclController extends Controller
         endforeach;
         
         // Keluar
-        $julmah_bl_keluar = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('tglrelease', $data['date'])->count();
+        $julmah_bl_keluar = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('tglrelease', $data['date'])->count();
         $bl_out = DBManifest::select(\DB::raw('SUM(QUANTITY) as qty'),\DB::raw('SUM(WEIGHT) as kgs'),\DB::raw('SUM(MEAS) as m3'))
                 ->where('tglrelease', $data['date'])
-                ->where('LOKASI_GUDANG', 'like', $gd)
+//                ->where('LOKASI_GUDANG', 'like', $gd)
+                ->where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })
                 ->get();
         $data_bl_out = array();
         $data_bl_out['Jumlah B/L'] = $julmah_bl_keluar;
@@ -1349,13 +1481,37 @@ class LclController extends Controller
             $data_bl_out['Weight'] = $out->kgs;
             $data_bl_out['Measurement'] = $out->m3;
         endforeach;
-        
-        $bc20 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 1)->where('tglrelease', $data['date'])->count();
-        $bc23 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 2)->where('tglrelease', $data['date'])->count();
-        $bc12 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 4)->where('tglrelease', $data['date'])->count();
-        $bc15 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 9)->where('tglrelease', $data['date'])->count();
-        $bc11 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 41)->where('tglrelease', $data['date'])->count();
-        $bcf26 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 5)->where('tglrelease', $data['date'])->count();
+                
+        $bc20 = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_DOK_INOUT', 1)->where('tglrelease', $data['date'])->count();
+        $bc23 = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_DOK_INOUT', 2)->where('tglrelease', $data['date'])->count();
+        $bc12 = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_DOK_INOUT', 4)->where('tglrelease', $data['date'])->count();
+        $bc15 = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_DOK_INOUT', 9)->where('tglrelease', $data['date'])->count();
+        $bc11 = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_DOK_INOUT', 41)->where('tglrelease', $data['date'])->count();
+        $bcf26 = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_DOK_INOUT', 5)->where('tglrelease', $data['date'])->count();
         $data['countbydoc'] = array('BC 2.0' => $bc20, 'BC 2.3' => $bc23, 'BC 1.2' => $bc12, 'BC 1.5' => $bc15, 'BC 1.6' => $bc11, 'BCF 2.6' => $bcf26);
 
         $data['sum_bl_in'] = $data_bl_in;
@@ -1373,10 +1529,19 @@ class LclController extends Controller
         }
         
         // Data Pemasukan
-        $data['in'] = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('tglstripping', $date)->get();
+        $data['in'] = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('tglstripping', $date)->get();
         $julmah_bl_masuk = DBManifest::where('tglstripping', $date)->count();
         $bl_ins = DBManifest::select(\DB::raw('SUM(QUANTITY) as qty'),\DB::raw('SUM(WEIGHT) as kgs'),\DB::raw('SUM(MEAS) as m3'))
-                ->where('LOKASI_GUDANG', 'like', $gd)
+//                ->where('LOKASI_GUDANG', 'like', $gd)
+                ->where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })
                 ->where('tglstripping', $date)
                 ->get();
         $data_bl_in = array();
@@ -1389,11 +1554,20 @@ class LclController extends Controller
         $data['sum_bl_in'] = $data_bl_in;
         
         // Data Pengeluaran
-        $data['out'] = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('tglrelease', $date)->get();
+        $data['out'] = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('tglrelease', $date)->get();
         $julmah_bl_keluar = DBManifest::where('tglrelease', $date)->count();
         $bl_out = DBManifest::select(\DB::raw('SUM(QUANTITY) as qty'),\DB::raw('SUM(WEIGHT) as kgs'),\DB::raw('SUM(MEAS) as m3'))
                 ->where('tglrelease', $date)
-                ->where('LOKASI_GUDANG', 'like', $gd)
+//                ->where('LOKASI_GUDANG', 'like', $gd)
+                ->where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })
                 ->get();
         $data_bl_out = array();
         $data_bl_out['Jumlah B/L'] = $julmah_bl_keluar;
@@ -1404,12 +1578,37 @@ class LclController extends Controller
         endforeach;
         $data['sum_bl_out'] = $data_bl_out;
         
-        $bc20 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 1)->where('tglrelease', $date)->count();
-        $bc23 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 2)->where('tglrelease', $date)->count();
-        $bc12 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 4)->where('tglrelease', $date)->count();
-        $bc15 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 9)->where('tglrelease', $date)->count();
-        $bc11 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 41)->where('tglrelease', $date)->count();
-        $bcf26 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 5)->where('tglrelease', $date)->count();
+        $bc20 = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_DOK_INOUT', 1)->where('tglrelease', $date)->count();
+        $bc23 = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_DOK_INOUT', 2)->where('tglrelease', $date)->count();
+        $bc12 = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_DOK_INOUT', 4)->where('tglrelease', $date)->count();
+        $bc15 = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_DOK_INOUT', 9)->where('tglrelease', $date)->count();
+        $bc11 = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_DOK_INOUT', 41)->where('tglrelease', $date)->count();
+        $bcf26 = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_DOK_INOUT', 5)->where('tglrelease', $date)->count();
+                
         $data['countbydoc'] = array('BC 2.0' => $bc20, 'BC 2.3' => $bc23, 'BC 1.2' => $bc12, 'BC 1.5' => $bc15, 'BC 1.6' => $bc11, 'BCF 2.6' => $bcf26);
         
         $data['date'] = $date;
@@ -1489,7 +1688,12 @@ class LclController extends Controller
             $data['meas'] = DBManifest::whereNotNull('tglmasuk')
                                 ->whereNotNull('tglstripping')
                                 ->whereNull('tglrelease')
-                                ->where('LOKASI_GUDANG', $gd)
+//                                ->where('LOKASI_GUDANG', $gd)
+                                ->where(function ($query) use ($gd) {
+                                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                                    ->whereNull('LOKASI_TUJUAN')
+                                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                                })
                                 ->sum('MEAS');
         }
         $data['gd'] = $gd;
@@ -2266,6 +2470,7 @@ class LclController extends Controller
                             $data['NOMBL'] = $container->NOMBL;  
                             $data['TGL_MASTER_BL'] = $container->TGL_MASTER_BL;
                             $data['LOKASI_GUDANG'] = $container->LOKASI_GUDANG;
+                            $data['LOKASI_TUJUAN'] = $container->LOKASI_GUDANG;
                             $data['NO_BC11'] = $container->NO_BC11;
                             $data['TGL_BC11'] = $container->TGL_BC11;
                             $data['NO_PLP'] = $container->NO_PLP;
@@ -2441,6 +2646,7 @@ class LclController extends Controller
                         $data['NOMBL'] = $container->NOMBL;  
                         $data['TGL_MASTER_BL'] = $container->TGL_MASTER_BL;
                         $data['LOKASI_GUDANG'] = $container->LOKASI_GUDANG;
+                        $data['LOKASI_TUJUAN'] = $container->LOKASI_GUDANG;
                         $data['NO_BC11'] = $container->NO_BC11;
                         $data['TGL_BC11'] = $container->TGL_BC11;
                         $data['NO_PLP'] = $container->NO_PLP;
@@ -2876,16 +3082,45 @@ class LclController extends Controller
         }
         
 //        BY PLP
-        $twenty = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->where('SIZE', 20)->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
-        $fourty = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->where('SIZE', 40)->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $twenty = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('SIZE', 20)->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $fourty = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('SIZE', 40)->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+                
         $teus = ($twenty*1)+($fourty*2);
         $data['countbysize'] = array('twenty' => $twenty, 'fourty' => $fourty, 'total' => $twenty+$fourty, 'teus' => $teus);
         
-        $jict = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->where('KD_TPS_ASAL', 'JICT')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
-        $koja = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->where('KD_TPS_ASAL', 'KOJA')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
-        $mal = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->where('KD_TPS_ASAL', 'MAL0')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
-        $nct1 = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->where('KD_TPS_ASAL', 'NCT1')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
-        $pldc = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->where('KD_TPS_ASAL', 'PLDC')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $jict = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_TPS_ASAL', 'JICT')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $koja = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_TPS_ASAL', 'KOJA')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $mal = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_TPS_ASAL', 'MAL0')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $nct1 = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_TPS_ASAL', 'NCT1')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
+        $pldc = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_TPS_ASAL', 'PLDC')->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
         
         $fc = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->whereIn('TCONSOLIDATOR_FK', array(1,4))->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
         $me = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->whereIn('TCONSOLIDATOR_FK', array(13,16))->whereRaw('MONTH(TGL_PLP) = '.$month)->whereRaw('YEAR(TGL_PLP) = '.$year)->count();
@@ -2898,16 +3133,52 @@ class LclController extends Controller
         $teusg = ($twentyg*1)+($fourtyg*2);
         $data['countbysizegatein'] = array('twenty' => $twentyg, 'fourty' => $fourtyg, 'total' => $twentyg+$fourtyg, 'teus' => $teusg);
         
-        $jictg = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->where('KD_TPS_ASAL', 'JICT')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
-        $kojag = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->where('KD_TPS_ASAL', 'KOJA')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
-        $malg = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->where('KD_TPS_ASAL', 'MAL0')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
-        $nct1g = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->where('KD_TPS_ASAL', 'NCT1')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
-        $pldcg = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->where('KD_TPS_ASAL', 'PLDC')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $jictg = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_TPS_ASAL', 'JICT')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $kojag = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_TPS_ASAL', 'KOJA')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $malg = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_TPS_ASAL', 'MAL0')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $nct1g = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_TPS_ASAL', 'NCT1')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $pldcg = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_TPS_ASAL', 'PLDC')->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
         
-        $fcg = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->whereIn('TCONSOLIDATOR_FK', array(1,4))->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
-        $meg = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->whereIn('TCONSOLIDATOR_FK', array(13,16))->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
-        $apg = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->whereIn('TCONSOLIDATOR_FK', array(10,12))->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
-        $dae = DBContainer::where('LOKASI_GUDANG', 'like', $gd)->whereIn('TCONSOLIDATOR_FK', array(24))->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $fcg = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->whereIn('TCONSOLIDATOR_FK', array(1,4))->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $meg = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->whereIn('TCONSOLIDATOR_FK', array(13,16))->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $apg = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->whereIn('TCONSOLIDATOR_FK', array(10,12))->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
+        $dae = DBContainer::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->whereIn('TCONSOLIDATOR_FK', array(24))->whereRaw('MONTH(TGLMASUK) = '.$month)->whereRaw('YEAR(TGLMASUK) = '.$year)->count();
         
         $data['countbytps'] = array('JICT' => array($jict, $jictg), 'KOJA' => array($koja, $kojag), 'MAL0' => array($mal, $malg), 'NCT1' => array($nct1, $nct1g), 'PLDC' => array($pldc, $pldcg));
         $data['countbyconsolidator'] = array('FBI/CPL' => array($fc, $fcg), 'MKT/ECU' => array($me, $meg), 'ARJAKA/PELOPOR' => array($ap, $apg), 'DAEHAN' => array($da, $dae));
@@ -2950,12 +3221,36 @@ class LclController extends Controller
             $gd = '%';
         }
         
-        $bc20 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 1)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
-        $bc23 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 2)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
-        $bc12 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 4)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
-        $bc15 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 9)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
-        $bc11 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 20)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
-        $bcf26 = DBManifest::where('LOKASI_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 5)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
+        $bc20 = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_DOK_INOUT', 1)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
+        $bc23 = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_DOK_INOUT', 2)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
+        $bc12 = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_DOK_INOUT', 4)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
+        $bc15 = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_DOK_INOUT', 9)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
+        $bc11 = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_DOK_INOUT', 20)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
+        $bcf26 = DBManifest::where(function ($query) use ($gd) {
+                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                    ->whereNull('LOKASI_TUJUAN')
+                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                })->where('KD_DOK_INOUT', 5)->whereRaw('MONTH(tglmasuk) = '.$month)->whereRaw('YEAR(tglmasuk) = '.$year)->count();
         $data['countbydoc'] = array('BC 2.0' => $bc20, 'BC 2.3' => $bc23, 'BC 1.2' => $bc12, 'BC 1.5' => $bc15, 'BC 1.1' => $bc11, 'BCF 2.6' => $bcf26);
         
         $data['month'] = $month;
@@ -3002,7 +3297,12 @@ class LclController extends Controller
             $data['meas'] = DBManifest::whereNotNull('tglmasuk')
                                 ->whereNotNull('tglstripping')
                                 ->whereNull('tglrelease')
-                                ->where('LOKASI_GUDANG', $gd)
+//                                ->where('LOKASI_GUDANG', $gd)
+                                ->where(function ($query) use ($gd) {
+                                    $query->where('LOKASI_GUDANG', 'like', $gd)
+                                    ->whereNull('LOKASI_TUJUAN')
+                                    ->orWhere('LOKASI_TUJUAN', 'like', $gd);
+                                })
                                 ->sum('MEAS');
         }
         $data['gd'] = $gd;

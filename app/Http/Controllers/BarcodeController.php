@@ -193,6 +193,10 @@ class BarcodeController extends Controller
                     $refdata = \App\Models\Manifest::find($ref_id);
                     $ref_number = $refdata->NOHBL;
                     $ref_status = ($refdata->status_bc == 'HOLD') ? 'hold' : 'active';
+                    if($location){
+                        $refdata->LOKASI_TUJUAN = $location;
+                        $refdata->save();
+                    }
                 }elseif($type == 'lcl'){
                     $refdata = \App\Models\Container::find($ref_id);
                     $ref_number = $refdata->NOCONTAINER;
