@@ -345,12 +345,7 @@
                             <input type="text" id="VOY" name="VOY" class="form-control" readonly>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">Weight</label>
-                        <div class="col-sm-8">
-                            <input type="text" id="WEIGHT" name="WEIGHT" class="form-control">
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
             <hr />
@@ -374,28 +369,11 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-4 control-label">Status Dispatche</label>
-                        <div class="col-sm-2">
-                            <input type="text" id="STATUS_DISPATCHE" name="STATUS_DISPATCHE" class="form-control" required readonly>
-                        </div>
-                        <div class="col-sm-2">
-                            <input type="text" id="KODE_DISPATCHE" name="KODE_DISPATCHE" class="form-control" required readonly>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">Response Dispatche</label>
+                        <label class="col-sm-3 control-label">Weight</label>
                         <div class="col-sm-8">
-                            <input type="text" id="RESPONSE_DISPATCHE" name="RESPONSE_DISPATCHE" class="form-control" required readonly>
+                            <input type="text" id="WEIGHT" name="WEIGHT" class="form-control">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-4 control-label">DO ID</label>
-                        <div class="col-sm-8">
-                            <input type="text" id="DO_ID" name="DO_ID" class="form-control" required readonly>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6"> 
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Jenis Container</label>
                         <div class="col-sm-8">
@@ -422,7 +400,11 @@
                                 <option value="OPEN TOP">OPEN TOP</option>
                             </select>
                         </div>
-                    </div>                    
+                    </div>     
+                    
+                </div>
+                <div class="col-md-6"> 
+                                   
                     <div class="form-group">
                         <label class="col-sm-3 control-label">Tgl. Dispatche</label>
                         <div class="col-sm-4">
@@ -464,7 +446,27 @@
                             </div>
                         </div>
                     </div>
-                    
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Status Dispatche</label>
+                        <div class="col-sm-2">
+                            <input type="text" id="STATUS_DISPATCHE" name="STATUS_DISPATCHE" class="form-control" required readonly>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="text" id="KODE_DISPATCHE" name="KODE_DISPATCHE" class="form-control" required readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Response Dispatche</label>
+                        <div class="col-sm-7">
+                            <input type="text" id="RESPONSE_DISPATCHE" name="RESPONSE_DISPATCHE" class="form-control" required readonly>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">DO ID</label>
+                        <div class="col-sm-7">
+                            <input type="text" id="DO_ID" name="DO_ID" class="form-control" required readonly>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>  
