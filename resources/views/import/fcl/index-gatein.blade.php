@@ -584,6 +584,7 @@
                                 <option value="Class BB Standar 4,2">Class BB Standar 4,2</option>    
                                 <option value="Class BB Standar 6">Class BB Standar 6</option>
                                 <option value="Class BB Standar 2,2">Class BB Standar 2,2</option>
+                                <option value="Class BB Standar 2,3">Class BB Standar 2,3</option>    
                                 <option value="Class BB High Class 2,1">Class BB High Class 2,1</option>
                                 <option value="Class BB High Class 5,1">Class BB High Class 5,1</option>
                                 <option value="Class BB High Class 6,1">Class BB High Class 6,1</option>
