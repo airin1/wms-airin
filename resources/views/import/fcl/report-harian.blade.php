@@ -196,9 +196,19 @@
                             <th style="text-align: center;">YOR %</th>
                         </tr>
                         <?php
-                            $akhir_20 = $stok['awal'][0]->total+$stok['masuk'][0]->total-$stok['keluar'][0]->total;
-                            $akhir_40 = $stok['awal'][1]->total+$stok['masuk'][1]->total-$stok['keluar'][1]->total;
-                            $akhir_45 = $stok['awal'][2]->total+$stok['masuk'][2]->total-$stok['keluar'][2]->total;
+                            $stok_awal_20 = ($stok['awal'][0]) ? $stok['awal'][0]->total : 0;
+                            $stok_awal_40 = ($stok['awal'][1]) ? $stok['awal'][1]->total : 0;
+                            $stok_awal_45 = ($stok['awal'][2]) ? $stok['awal'][2]->total : 0;
+                            $stok_masuk_20 = ($stok['masuk'][0]) ? $stok['masuk'][0]->total : 0;
+                            $stok_masuk_40 = ($stok['masuk'][1]) ? $stok['masuk'][1]->total : 0;
+                            $stok_masuk_45 = ($stok['masuk'][2]) ? $stok['masuk'][2]->total : 0;
+                            $stok_keluar_20 = ($stok['keluar'][0]) ? $stok['keluar'][0]->total : 0;
+                            $stok_keluar_40 = ($stok['keluar'][1]) ? $stok['keluar'][1]->total : 0;
+                            $stok_keluar_45 = ($stok['keluar'][2]) ? $stok['keluar'][2]->total : 0;
+                        
+                            $akhir_20 = $stok_awal_20+$stok_masuk_20-$stok_keluar_20;
+                            $akhir_40 = $stok_awal_40+$stok_masuk_40-$stok_keluar_40;
+                            $akhir_45 = $stok_awal_45+$stok_masuk_45-$stok_keluar_45;
                             $akhir_total = $akhir_20+$akhir_40+$akhir_45;
                             $akhir_teus = $akhir_20+($akhir_40*2)+($akhir_45*2);
                             
@@ -207,28 +217,28 @@
                         ?>
                         <tr>
                             <th>Stock Awal</th>
-                            <td align="center">{{ $stok['awal'][0]->total }}</td>
-                            <td align="center">{{ $stok['awal'][1]->total }}</td>
-                            <td align="center">{{ $stok['awal'][2]->total }}</td>
-                            <td align="center">{{ $stok['awal'][0]->total+$stok['awal'][1]->total+$stok['awal'][2]->total}}</td>
-                            <td align="center">{{ ($stok['awal'][0]->total)+($stok['awal'][1]->total*2)+($stok['awal'][2]->total*2) }}</td>
+                            <td align="center">{{ $stok_awal_20 }}</td>
+                            <td align="center">{{ $stok_awal_40 }}</td>
+                            <td align="center">{{ $stok_awal_40 }}</td>
+                            <td align="center">{{ $stok_awal_20+$stok_awal_40+$stok_awal_45}}</td>
+                            <td align="center">{{ ($stok_awal_20)+($stok_awal_40*2)+($stok_awal_45*2) }}</td>
                             <th rowspan="4" align="center" style="text-align: center;vertical-align: middle;">{{ number_format($tot_sor,'2',',','.') }}</th>
                         </tr>
                         <tr>
                             <th>Cont Masuk</th>
-                            <td align="center">{{ $stok['masuk'][0]->total }}</td>
-                            <td align="center">{{ $stok['masuk'][1]->total }}</td>
-                            <td align="center">{{ $stok['masuk'][2]->total }}</td>
-                            <td align="center">{{ $stok['masuk'][0]->total+$stok['masuk'][1]->total+$stok['masuk'][2]->total}}</td>
-                            <td align="center">{{ ($stok['masuk'][0]->total)+($stok['masuk'][1]->total*2)+($stok['masuk'][2]->total*2) }}</td>
+                            <td align="center">{{ $stok_masuk_20 }}</td>
+                            <td align="center">{{ $stok_masuk_40 }}</td>
+                            <td align="center">{{ $stok_masuk_45 }}</td>
+                            <td align="center">{{ $stok_masuk_20+$stok_masuk_40+$stok_masuk_45}}</td>
+                            <td align="center">{{ ($stok_masuk_20)+($stok_masuk_40*2)+($stok_masuk_45*2) }}</td>
                         </tr>
                         <tr>
                             <th>Cont Keluar</th>
-                            <td align="center">{{ $stok['keluar'][0]->total }}</td>
-                            <td align="center">{{ $stok['keluar'][1]->total }}</td>
-                            <td align="center">{{ $stok['keluar'][2]->total }}</td>
-                            <td align="center">{{ $stok['keluar'][0]->total+$stok['keluar'][1]->total+$stok['keluar'][2]->total}}</td>
-                            <td align="center">{{ ($stok['keluar'][0]->total)+($stok['keluar'][1]->total*2)+($stok['keluar'][2]->total*2) }}</td>
+                            <td align="center">{{ $stok_keluar_20 }}</td>
+                            <td align="center">{{ $stok_keluar_40 }}</td>
+                            <td align="center">{{ $stok_keluar_45 }}</td>
+                            <td align="center">{{ $stok_keluar_20+$stok_keluar_40+$stok_keluar_45}}</td>
+                            <td align="center">{{ ($stok_keluar_20)+($stok_keluar_40*2)+($stok_keluar_45*2) }}</td>
                         </tr>
                         <tr>
                             <th>Stock Akhir</th>
