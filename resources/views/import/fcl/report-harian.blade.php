@@ -87,7 +87,28 @@
             ->addColumn(array('label'=>'Jam Masuk','index'=>'JAMMASUK', 'width'=>100,'align'=>'center'))
             ->renderGrid()
         }}
-        <br /><hr /><br />
+        <br />
+        <div class="row" style="margin-bottom: 30px;margin-right: 0;">
+            <div class="col-sm-4">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>No.</th>
+                            <th>Jenis Dokumen</th>
+                            <th>Dok</th>
+                            <th>Box</th>
+                        </tr>
+                        <tr>
+                            <th style="text-align: center;">1</th>
+                            <td align="center">PLP</td>
+                            <td align="center">{{ $countbyplp[0] }}</td>
+                            <td align="center">{{ $countbyplp[1] }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <hr />
         <div class="row" style="margin-bottom: 30px;margin-right: 0;">
             <div class="col-md-12">
                 <button class="btn btn-info pull-right" id="btn-print-out"><i class="fa fa-print"></i> Cetak Laporan Pengeluaran</button>
@@ -162,9 +183,67 @@
                     </tbody>
                 </table>
             </div>
+            <div class="col-sm-6">
+                <table class="table table-bordered">
+                    <tbody>
+                        <tr>
+                            <th>Keterangan</th>
+                            <th style="text-align: center;">20'</th>
+                            <th style="text-align: center;">40'</th>
+                            <th style="text-align: center;">45'</th>
+                            <th style="text-align: center;">Total</th>
+                            <th style="text-align: center;">Teus</th>
+                            <th style="text-align: center;">YOR %</th>
+                        </tr>
+                        <?php
+                            $akhir_20 = $stok['awal'][0]->total+$stok['masuk'][0]->total-$stok['keluar'][0]->total;
+                            $akhir_40 = $stok['awal'][1]->total+$stok['masuk'][1]->total-$stok['keluar'][1]->total;
+                            $akhir_45 = $stok['awal'][2]->total+$stok['masuk'][2]->total-$stok['keluar'][2]->total;
+                            $akhir_total = $akhir_20+$akhir_40+$akhir_45;
+                            $akhir_teus = $akhir_20+($akhir_40*2)+($akhir_45*2);
+                            
+                            $k_trisi = $akhir_teus*1000;
+                            $k_kosong = ($yor->kapasitas_default*1000) - $k_trisi;       
+                            $tot_sor = ($k_trisi / ($yor->kapasitas_default*1000)) * 100;
+                        ?>
+                        <tr>
+                            <th>Stock Awal</th>
+                            <td align="center">{{ $stok['awal'][0]->total }}</td>
+                            <td align="center">{{ $stok['awal'][1]->total }}</td>
+                            <td align="center">{{ $stok['awal'][2]->total }}</td>
+                            <td align="center">{{ $stok['awal'][0]->total+$stok['awal'][1]->total+$stok['awal'][2]->total}}</td>
+                            <td align="center">{{ ($stok['awal'][0]->total)+($stok['awal'][1]->total*2)+($stok['awal'][2]->total*2) }}</td>
+                            <th rowspan="4" align="center" style="text-align: center;vertical-align: middle;">{{ number_format($tot_sor,'2',',','.') }}</th>
+                        </tr>
+                        <tr>
+                            <th>Cont Masuk</th>
+                            <td align="center">{{ $stok['masuk'][0]->total }}</td>
+                            <td align="center">{{ $stok['masuk'][1]->total }}</td>
+                            <td align="center">{{ $stok['masuk'][2]->total }}</td>
+                            <td align="center">{{ $stok['masuk'][0]->total+$stok['masuk'][1]->total+$stok['masuk'][2]->total}}</td>
+                            <td align="center">{{ ($stok['masuk'][0]->total)+($stok['masuk'][1]->total*2)+($stok['masuk'][2]->total*2) }}</td>
+                        </tr>
+                        <tr>
+                            <th>Cont Keluar</th>
+                            <td align="center">{{ $stok['keluar'][0]->total }}</td>
+                            <td align="center">{{ $stok['keluar'][1]->total }}</td>
+                            <td align="center">{{ $stok['keluar'][2]->total }}</td>
+                            <td align="center">{{ $stok['keluar'][0]->total+$stok['keluar'][1]->total+$stok['keluar'][2]->total}}</td>
+                            <td align="center">{{ ($stok['keluar'][0]->total)+($stok['keluar'][1]->total*2)+($stok['keluar'][2]->total*2) }}</td>
+                        </tr>
+                        <tr>
+                            <th>Stock Akhir</th>
+                            <th style="text-align: center;">{{$akhir_20}}</th>
+                            <th style="text-align: center;">{{$akhir_40}}</th>
+                            <th style="text-align: center;">{{$akhir_45}}</th>
+                            <th style="text-align: center;">{{$akhir_total}}</th>
+                            <th style="text-align: center;">{{$akhir_teus}}</th>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-    
 </div>
 @endsection
 

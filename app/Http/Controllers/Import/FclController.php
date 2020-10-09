@@ -1050,6 +1050,19 @@ class FclController extends Controller
             $data['date'] = date('Y-m-d');
         }
         
+        // BY PLP
+        $byplps = DBContainer::select('SIZE', \DB::raw('count(*) as total'))
+                ->where('KODE_GUDANG', 'like', $gd)->where('TGLMASUK', $data['date'])
+                ->groupBy('NO_PLP')
+                ->get();
+        $cont_in = 0;
+        
+        foreach ($byplps as $byplp):
+            $cont_in += $byplp->total;
+        endforeach;
+         
+        $data['countbyplp'] = array(count($byplps), $cont_in);
+
         // BY DOKUMEN
         $bc20 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 1)->where('TGLRELEASE', $data['date'])->count();
         $bc23 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 2)->where('TGLRELEASE', $data['date'])->count();
@@ -1058,6 +1071,49 @@ class FclController extends Controller
         $bc15 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 9)->where('TGLRELEASE', $data['date'])->count();
         $bc11 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 41)->where('TGLRELEASE', $data['date'])->count();
         $data['countbydoc'] = array('BC 1.2' => $bc12,'BC 1.5' => $bc15, 'BC 1.6' => $bc11, 'BC 2.0' => $bc20, 'BC 2.3' => $bc23, 'PPRP' => $pprp);
+        
+        // YOR
+        $awal = DBContainer::select('SIZE', \DB::raw('count(*) as total'))
+                ->where('KODE_GUDANG', 'like', $gd)
+                ->where('TGLMASUK', '<', $data['date'])
+                ->where(function($query) use ($data){
+                    $query->whereNull('TGLRELEASE')
+                        ->orWhere('TGLRELEASE','>=', $data['date'])
+                            ;
+                })
+                ->groupBy('SIZE')
+                ->orderBy('SIZE','ASC')
+                ->get();
+
+        $masuk = DBContainer::select('SIZE', \DB::raw('count(*) as total'))
+                ->where('KODE_GUDANG', 'like', $gd)->where('TGLMASUK', $data['date'])
+                ->groupBy('SIZE')
+                ->orderBy('SIZE','ASC')
+                ->get();
+
+        $keluar = DBContainer::select('SIZE', \DB::raw('count(*) as total'))
+                ->where('KODE_GUDANG', 'like', $gd)->where('TGLRELEASE', $data['date'])
+                ->groupBy('SIZE')
+                ->orderBy('SIZE','ASC')
+                ->get();
+
+        $data['stok'] = array(
+            'awal' => $awal,
+            'masuk' => $masuk,
+            'keluar' => $keluar
+        );
+        
+        if($gd == '%'){
+            $data['yor'] = \App\Models\SorYor::select(
+                \DB::raw('SUM(kapasitas_default) as kapasitas_default'),
+                \DB::raw('SUM(kapasitas_terisi) as kapasitas_terisi'),
+                \DB::raw('SUM(kapasitas_kosong) as kapasitas_kosong'),
+                \DB::raw('SUM(total) as total'))
+                ->where('type', 'yor')
+                ->first();
+        }else{
+            $data['yor'] = \App\Models\SorYor::where('type', 'yor')->where('gudang', $gd)->first();
+        }       
         
         $data['gd'] = $gd;
         
@@ -1076,6 +1132,19 @@ class FclController extends Controller
         // KELUAR
         $data['out'] = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('TGLRELEASE', $date)->orderBy('JAMRELEASE', 'DESC')->get();  
         
+        // BY PLP
+        $byplps = DBContainer::select('SIZE', \DB::raw('count(*) as total'))
+                ->where('KODE_GUDANG', 'like', $gd)->where('TGLMASUK', $date)
+                ->groupBy('NO_PLP')
+                ->get();
+        $cont_in = 0;
+        
+        foreach ($byplps as $byplp):
+            $cont_in += $byplp->total;
+        endforeach;
+         
+        $data['countbyplp'] = array(count($byplps), $cont_in);
+        
         // BY DOKUMEN
         $bc20 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 1)->where('TGLRELEASE', $date)->count();
         $bc23 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 2)->where('TGLRELEASE', $date)->count();
@@ -1084,7 +1153,50 @@ class FclController extends Controller
         $bc15 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 9)->where('TGLRELEASE', $date)->count();
         $bc11 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 41)->where('TGLRELEASE', $date)->count();
         $data['countbydoc'] = array('BC 1.2' => $bc12,'BC 1.5' => $bc15, 'BC 1.6' => $bc11, 'BC 2.0' => $bc20, 'BC 2.3' => $bc23, 'PPRP' => $pprp);
+        
+        // YOR
+        $awal = DBContainer::select('SIZE', \DB::raw('count(*) as total'))
+                ->where('KODE_GUDANG', 'like', $gd)
+                ->where('TGLMASUK', '<', $date)
+                ->where(function($query) use ($date){
+                    $query->whereNull('TGLRELEASE')
+                        ->orWhere('TGLRELEASE','>=', $date)
+                            ;
+                })
+                ->groupBy('SIZE')
+                ->orderBy('SIZE','ASC')
+                ->get();
 
+        $masuk = DBContainer::select('SIZE', \DB::raw('count(*) as total'))
+                ->where('KODE_GUDANG', 'like', $gd)->where('TGLMASUK', $date)
+                ->groupBy('SIZE')
+                ->orderBy('SIZE','ASC')
+                ->get();
+
+        $keluar = DBContainer::select('SIZE', \DB::raw('count(*) as total'))
+                ->where('KODE_GUDANG', 'like', $gd)->where('TGLRELEASE', $date)
+                ->groupBy('SIZE')
+                ->orderBy('SIZE','ASC')
+                ->get();
+
+        $data['stok'] = array(
+            'awal' => $awal,
+            'masuk' => $masuk,
+            'keluar' => $keluar
+        );
+        
+        if($gd == '%'){
+            $data['yor'] = \App\Models\SorYor::select(
+                \DB::raw('SUM(kapasitas_default) as kapasitas_default'),
+                \DB::raw('SUM(kapasitas_terisi) as kapasitas_terisi'),
+                \DB::raw('SUM(kapasitas_kosong) as kapasitas_kosong'),
+                \DB::raw('SUM(total) as total'))
+                ->where('type', 'yor')
+                ->first();
+        }else{
+            $data['yor'] = \App\Models\SorYor::where('type', 'yor')->where('gudang', $gd)->first();
+        }   
+        
         $data['date'] = $date;
         $data['type'] = $type;
         $data['gd'] = $gd;
