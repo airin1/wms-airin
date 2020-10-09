@@ -196,15 +196,15 @@
                             <th style="text-align: center;">YOR %</th>
                         </tr>
                         <?php
-                            $stok_awal_20 = ($stok['awal'][0]) ? $stok['awal'][0]->total : 0;
-                            $stok_awal_40 = ($stok['awal'][1]) ? $stok['awal'][1]->total : 0;
-                            $stok_awal_45 = ($stok['awal'][2]) ? $stok['awal'][2]->total : 0;
-                            $stok_masuk_20 = ($stok['masuk'][0]) ? $stok['masuk'][0]->total : 0;
-                            $stok_masuk_40 = ($stok['masuk'][1]) ? $stok['masuk'][1]->total : 0;
-                            $stok_masuk_45 = ($stok['masuk'][2]) ? $stok['masuk'][2]->total : 0;
-                            $stok_keluar_20 = ($stok['keluar'][0]) ? $stok['keluar'][0]->total : 0;
-                            $stok_keluar_40 = ($stok['keluar'][1]) ? $stok['keluar'][1]->total : 0;
-                            $stok_keluar_45 = ($stok['keluar'][2]) ? $stok['keluar'][2]->total : 0;
+                            $stok_awal_20 = (isset($stok['awal'][0])) ? $stok['awal'][0]->total : 0;
+                            $stok_awal_40 = (isset($stok['awal'][1])) ? $stok['awal'][1]->total : 0;
+                            $stok_awal_45 = (isset($stok['awal'][2])) ? $stok['awal'][2]->total : 0;
+                            $stok_masuk_20 = (isset($stok['masuk'][0])) ? $stok['masuk'][0]->total : 0;
+                            $stok_masuk_40 = (isset($stok['masuk'][1])) ? $stok['masuk'][1]->total : 0;
+                            $stok_masuk_45 = (isset($stok['masuk'][2])) ? $stok['masuk'][2]->total : 0;
+                            $stok_keluar_20 = (isset($stok['keluar'][0])) ? $stok['keluar'][0]->total : 0;
+                            $stok_keluar_40 = (isset($stok['keluar'][1])) ? $stok['keluar'][1]->total : 0;
+                            $stok_keluar_45 = (isset($stok['keluar'][2])) ? $stok['keluar'][2]->total : 0;
                         
                             $akhir_20 = $stok_awal_20+$stok_masuk_20-$stok_keluar_20;
                             $akhir_40 = $stok_awal_40+$stok_masuk_40-$stok_keluar_40;
