@@ -219,7 +219,7 @@
                             <th>Stock Awal</th>
                             <td align="center">{{ $stok_awal_20 }}</td>
                             <td align="center">{{ $stok_awal_40 }}</td>
-                            <td align="center">{{ $stok_awal_40 }}</td>
+                            <td align="center">{{ $stok_awal_45 }}</td>
                             <td align="center">{{ $stok_awal_20+$stok_awal_40+$stok_awal_45}}</td>
                             <td align="center">{{ ($stok_awal_20)+($stok_awal_40*2)+($stok_awal_45*2) }}</td>
                             <th rowspan="4" align="center" style="text-align: center;vertical-align: middle;">{{ number_format($tot_sor,'2',',','.') }}</th>
