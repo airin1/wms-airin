@@ -202,9 +202,8 @@
                             $akhir_total = $akhir_20+$akhir_40+$akhir_45;
                             $akhir_teus = $akhir_20+($akhir_40*2)+($akhir_45*2);
                             
-                            $k_trisi = $akhir_teus*1000;
-                            $k_kosong = ($yor->kapasitas_default*1000) - $k_trisi;       
-                            $tot_sor = ($k_trisi / ($yor->kapasitas_default*1000)) * 100;
+                            $k_trisi = $akhir_teus;     
+                            $tot_sor = ($k_trisi / ($yor->kapasitas_default)) * 100;
                         ?>
                         <tr>
                             <th>Stock Awal</th>
