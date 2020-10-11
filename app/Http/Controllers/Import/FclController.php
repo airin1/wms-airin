@@ -1074,12 +1074,14 @@ class FclController extends Controller
         
         // YOR
         $awal = DBContainer::select('SIZE', \DB::raw('count(*) as total'))
-                ->where('KODE_GUDANG', 'like', $gd)
                 ->where('TGLMASUK', '<', $data['date'])
                 ->where(function($query) use ($data){
                     $query->whereNull('TGLRELEASE')
-                        ->orWhere('TGLRELEASE','>=', $data['date'])
-                            ;
+                        ->orWhere('TGLRELEASE','>=', $data['date']);
+                })
+                ->where(function($query) use ($gd){
+                    $query->whereNotNull('KODE_GUDANG')
+                        ->where('KODE_GUDANG', 'like', $gd);
                 })
                 ->groupBy('SIZE')
                 ->orderBy('SIZE','ASC')
