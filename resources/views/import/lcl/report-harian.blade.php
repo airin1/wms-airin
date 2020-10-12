@@ -87,12 +87,22 @@
             <div class="col-sm-4">
                 <table class="table table-bordered">
                     <tbody>
-                        @foreach($sum_bl_in as $key=>$value)
                         <tr>
-                            <th>{{ $key }}</th>
-                            <td align="center">{{ $value }}</td>
+                            <th>Jumlah B/L</th>
+                            <td align="center">{{ $bl_in[0]->Jumlah }}</td>
                         </tr>
-                        @endforeach
+                        <tr>
+                            <th>Quantity</th>
+                            <td align="center">{{ $bl_in[0]->Quantity }}</td>
+                        </tr>
+                        <tr>
+                            <th>Weight</th>
+                            <td align="center">{{ $bl_in[0]->Weight }}</td>
+                        </tr>
+                        <tr>
+                            <th>Measurement</th>
+                            <td align="center">{{ $bl_in[0]->Meas }}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -147,15 +157,54 @@
         }}
         <br />
         <div class="row" style="margin-bottom: 30px;margin-right: 0;">
-            <div class="col-sm-4">
+            <div class="col-sm-6">
                 <table class="table table-bordered">
-                    <tbody>
-                        @foreach($sum_bl_out as $key=>$value)
+                    <thead>
                         <tr>
-                            <th>{{ $key }}</th>
-                            <td align="center">{{ $value }}</td>
+                            <th>Keterangan</th>
+                            <th>Jumlah</th>
+                            <th>Quantity</th>
+                            <th>Weight</th>
+                            <th>Measurement</th>
+                            <th>SOR %</th>
                         </tr>
-                        @endforeach
+                    
+                    </thead>
+                    <tbody>
+                        <?php 
+                            $meas_count = $bl_awal[0]->Meas+$bl_in[0]->Meas-$bl_out[0]->Meas;
+                            $k_trisi = $meas_count*1000;     
+                            $tot_sor = ($k_trisi / ($sor->kapasitas_default*1000)) * 100;
+                        ?>
+                        <tr>
+                            <th>Stok Awal</th>
+                            <td style="text-align: center;">{{ $bl_awal[0]->Jumlah }}</td>
+                            <td style="text-align: center;">{{ $bl_awal[0]->Quantity }}</td>
+                            <td style="text-align: center;">{{ $bl_awal[0]->Weight }}</td>
+                            <td style="text-align: center;">{{ $bl_awal[0]->Meas }}</td>
+                            <td rowspan="4" style="text-align: center;vertical-align: middle;">{{ number_format($tot_sor,'2',',','.') }}</td>
+                        </tr>
+                        <tr>
+                            <th>Masuk</th>
+                            <td style="text-align: center;">{{ $bl_in[0]->Jumlah }}</td>
+                            <td style="text-align: center;">{{ $bl_in[0]->Quantity }}</td>
+                            <td style="text-align: center;">{{ $bl_in[0]->Weight }}</td>
+                            <td style="text-align: center;">{{ $bl_in[0]->Meas }}</td>
+                        </tr>
+                        <tr>
+                            <th>Keluar</th>
+                            <td style="text-align: center;">{{ $bl_out[0]->Jumlah }}</td>
+                            <td style="text-align: center;">{{ $bl_out[0]->Quantity }}</td>
+                            <td style="text-align: center;">{{ $bl_out[0]->Weight }}</td>
+                            <td style="text-align: center;">{{ $bl_out[0]->Meas }}</td>
+                        </tr>
+                        <tr>
+                            <th>Stok Akhir</th>
+                            <td style="text-align: center;">{{ $bl_awal[0]->Jumlah+$bl_in[0]->Jumlah-$bl_out[0]->Jumlah }}</td>
+                            <td style="text-align: center;">{{ $bl_awal[0]->Quantity+$bl_in[0]->Quantity-$bl_out[0]->Quantity }}</td>
+                            <td style="text-align: center;">{{ $bl_awal[0]->Weight+$bl_in[0]->Weight-$bl_out[0]->Weight }}</td>
+                            <td style="text-align: center;">{{ $bl_awal[0]->Meas+$bl_in[0]->Meas-$bl_out[0]->Meas }}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
