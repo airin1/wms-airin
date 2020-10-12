@@ -252,26 +252,30 @@
             <div class="table-responsive" style="max-width: 300px;">
               <p>RINCIAN JENIS DOKUMEN KELUAR</p>
               <table border="1" cellspacing="0" cellpadding="0">
-                  <thead>
+                  <tbody>
                       <tr>
                         <th>No.</th>
                         <th>Jenis Dokumen</th>
-                        <th>Jumlah</th>
+                        <th>Doc</th>
+                        <th>Box</th>
                       </tr>
                         <?php $sumdoc = 0;$i = 1;?>
                         @foreach($countbydoc as $key=>$value)
                         <tr>
                             <td style="text-align: center;border-top: none;border-bottom: none;">{{$i}}</td>
                             <td style="border-top: none;border-bottom: none;">{{ $key }}</td>
-                            <td style="text-align: center;border-top: none;border-bottom: none;">{{ $value }}</td>
+                            <td style="text-align: center;border-top: none;border-bottom: none;">{{ $value['dok'] }}</td>
+                            <td style="text-align: center;border-top: none;border-bottom: none;">{{ $value['box'] }}</td>
                         </tr>
-                        <?php $sumdoc += $value;$i++;?>
+                        <?php $sumdoc += $value['dok'];$sumbox += $value['box'];$i++;?>
                         @endforeach
                         <tr>
                             <th colspan="2">Jumlah Total</th>
                             <th align="center" style="text-align: center;">{{$sumdoc}}</th>
+                            <th align="center" style="text-align: center;">{{$sumbox}}</th>
                         </tr>
-                  </thead>
+                  </tbody>
+                  
               </table>
           </div>
         </div>

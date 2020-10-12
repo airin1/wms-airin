@@ -1064,13 +1064,57 @@ class FclController extends Controller
         $data['countbyplp'] = array(count($byplps), $cont_in);
 
         // BY DOKUMEN
-        $bc20 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 1)->where('TGLRELEASE', $data['date'])->count();
         $bc23 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 2)->where('TGLRELEASE', $data['date'])->count();
+        $dok23 = DBContainer::select('NO_SPPB', 'KD_DOK_INOUT', \DB::raw('count(*) as total'))
+                ->where('KODE_GUDANG', 'like', $gd)
+                ->where('KD_DOK_INOUT', 2)
+                ->where('TGLRELEASE', $data['date'])
+                ->groupBy('NO_SPPB')
+                ->get();
         $bc12 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 4)->where('TGLRELEASE', $data['date'])->count();
+        $dok12 = DBContainer::select('NO_SPPB', 'KD_DOK_INOUT', \DB::raw('count(*) as total'))
+                ->where('KODE_GUDANG', 'like', $gd)
+                ->where('KD_DOK_INOUT', 4)
+                ->where('TGLRELEASE', $data['date'])
+                ->groupBy('NO_SPPB')
+                ->get();
         $pprp = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 27)->where('TGLRELEASE', $data['date'])->count();
+        $dokpprp = DBContainer::select('NO_SPPB', 'KD_DOK_INOUT', \DB::raw('count(*) as total'))
+                ->where('KODE_GUDANG', 'like', $gd)
+                ->where('KD_DOK_INOUT', 27)
+                ->where('TGLRELEASE', $data['date'])
+                ->groupBy('NO_SPPB')
+                ->get();
         $bc15 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 9)->where('TGLRELEASE', $data['date'])->count();
+        $dok15 = DBContainer::select('NO_SPPB', 'KD_DOK_INOUT', \DB::raw('count(*) as total'))
+                ->where('KODE_GUDANG', 'like', $gd)
+                ->where('KD_DOK_INOUT', 9)
+                ->where('TGLRELEASE', $data['date'])
+                ->groupBy('NO_SPPB')
+                ->get();
         $bc11 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 41)->where('TGLRELEASE', $data['date'])->count();
-        $data['countbydoc'] = array('BC 1.2' => $bc12,'BC 1.5' => $bc15, 'BC 1.6' => $bc11, 'BC 2.0' => $bc20, 'BC 2.3' => $bc23, 'PPRP' => $pprp);
+        $dok11 = DBContainer::select('NO_SPPB', 'KD_DOK_INOUT', \DB::raw('count(*) as total'))
+                ->where('KODE_GUDANG', 'like', $gd)
+                ->where('KD_DOK_INOUT', 41)
+                ->where('TGLRELEASE', $data['date'])
+                ->groupBy('NO_SPPB')
+                ->get();
+        $bc20 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 1)->where('TGLRELEASE', $data['date'])->count();
+        $dok20 = DBContainer::select('NO_SPPB', 'KD_DOK_INOUT', \DB::raw('count(*) as total'))
+                ->where('KODE_GUDANG', 'like', $gd)
+                ->where('KD_DOK_INOUT', 1)
+                ->where('TGLRELEASE', $data['date'])
+                ->groupBy('NO_SPPB')
+                ->get();
+
+        $data['countbydoc'] = array(
+            'BC 1.2' => array('dok' => count($dok12), 'box' => $bc12),
+            'BC 1.5' => array('dok' => count($dok15), 'box' => $bc15),
+            'BC 1.6' => array('dok' => count($dok11), 'box' => $bc11), 
+            'BC 2.0' => array('dok' => count($dok20), 'box' => $bc20),
+            'BC 2.3' => array('dok' => count($dok23), 'box' => $bc23), 
+            'PPRP' => array('dok' => count($dokpprp), 'box' => $pprp)
+        );
         
         // YOR
         $awal = DBContainer::select('SIZE', \DB::raw('count(*) as total'))
@@ -1148,13 +1192,57 @@ class FclController extends Controller
         $data['countbyplp'] = array(count($byplps), $cont_in);
         
         // BY DOKUMEN
-        $bc20 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 1)->where('TGLRELEASE', $date)->count();
         $bc23 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 2)->where('TGLRELEASE', $date)->count();
+        $dok23 = DBContainer::select('NO_SPPB', 'KD_DOK_INOUT', \DB::raw('count(*) as total'))
+                ->where('KODE_GUDANG', 'like', $gd)
+                ->where('KD_DOK_INOUT', 2)
+                ->where('TGLRELEASE', $date)
+                ->groupBy('NO_SPPB')
+                ->get();
         $bc12 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 4)->where('TGLRELEASE', $date)->count();
+        $dok12 = DBContainer::select('NO_SPPB', 'KD_DOK_INOUT', \DB::raw('count(*) as total'))
+                ->where('KODE_GUDANG', 'like', $gd)
+                ->where('KD_DOK_INOUT', 4)
+                ->where('TGLRELEASE', $date)
+                ->groupBy('NO_SPPB')
+                ->get();
         $pprp = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 27)->where('TGLRELEASE', $date)->count();
+        $dokpprp = DBContainer::select('NO_SPPB', 'KD_DOK_INOUT', \DB::raw('count(*) as total'))
+                ->where('KODE_GUDANG', 'like', $gd)
+                ->where('KD_DOK_INOUT', 27)
+                ->where('TGLRELEASE', $date)
+                ->groupBy('NO_SPPB')
+                ->get();
         $bc15 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 9)->where('TGLRELEASE', $date)->count();
+        $dok15 = DBContainer::select('NO_SPPB', 'KD_DOK_INOUT', \DB::raw('count(*) as total'))
+                ->where('KODE_GUDANG', 'like', $gd)
+                ->where('KD_DOK_INOUT', 9)
+                ->where('TGLRELEASE', $date)
+                ->groupBy('NO_SPPB')
+                ->get();
         $bc11 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 41)->where('TGLRELEASE', $date)->count();
-        $data['countbydoc'] = array('BC 1.2' => $bc12,'BC 1.5' => $bc15, 'BC 1.6' => $bc11, 'BC 2.0' => $bc20, 'BC 2.3' => $bc23, 'PPRP' => $pprp);
+        $dok11 = DBContainer::select('NO_SPPB', 'KD_DOK_INOUT', \DB::raw('count(*) as total'))
+                ->where('KODE_GUDANG', 'like', $gd)
+                ->where('KD_DOK_INOUT', 41)
+                ->where('TGLRELEASE', $date)
+                ->groupBy('NO_SPPB')
+                ->get();
+        $bc20 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 1)->where('TGLRELEASE', $date)->count();
+        $dok20 = DBContainer::select('NO_SPPB', 'KD_DOK_INOUT', \DB::raw('count(*) as total'))
+                ->where('KODE_GUDANG', 'like', $gd)
+                ->where('KD_DOK_INOUT', 1)
+                ->where('TGLRELEASE', $date)
+                ->groupBy('NO_SPPB')
+                ->get();
+
+        $data['countbydoc'] = array(
+            'BC 1.2' => array('dok' => count($dok12), 'box' => $bc12),
+            'BC 1.5' => array('dok' => count($dok15), 'box' => $bc15),
+            'BC 1.6' => array('dok' => count($dok11), 'box' => $bc11), 
+            'BC 2.0' => array('dok' => count($dok20), 'box' => $bc20),
+            'BC 2.3' => array('dok' => count($dok23), 'box' => $bc23), 
+            'PPRP' => array('dok' => count($dokpprp), 'box' => $pprp)
+        );
         
         // YOR
         $awal = DBContainer::select('SIZE', \DB::raw('count(*) as total'))
