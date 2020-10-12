@@ -165,20 +165,23 @@
                         <tr>
                             <th>No.</th>
                             <th>Jenis Dokumen</th>
-                            <th>Jumlah</th>
+                            <th>Doc</th>
+                            <th>Box</th>
                         </tr>
-                        <?php $sumdoc = 0;$i = 1;?>
+                        <?php $sumdoc = 0;$sumbox = 0;$i = 1;?>
                         @foreach($countbydoc as $key=>$value)
                         <tr>
                             <th style="text-align: center;">{{$i}}</th>
                             <th>{{ $key }}</th>
-                            <td align="center">{{ $value }}</td>
+                            <td align="center">{{ $value['dok'] }}</td>
+                            <td align="center">{{ $value['box'] }}</td>
                         </tr>
-                        <?php $sumdoc += $value;$i++;?>
+                        <?php $sumdoc += $value['dok'];$sumbox += $value['box'];$i++;?>
                         @endforeach
                         <tr>
                             <th colspan="2">Jumlah Total</th>
                             <th align="center" style="text-align: center;">{{$sumdoc}}</th>
+                            <th align="center" style="text-align: center;">{{$sumbox}}</th>
                         </tr>
                     </tbody>
                 </table>
