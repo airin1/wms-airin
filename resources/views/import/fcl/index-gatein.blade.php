@@ -305,31 +305,29 @@
         //            ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>80, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
                     ->addColumn(array('key'=>true,'index'=>'TCONTAINER_PK','hidden'=>true))
                     ->addColumn(array('label'=>'Photo','index'=>'action', 'width'=>120, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
-                    ->addColumn(array('label'=>'No. Joborder','index'=>'NoJob','width'=>150))
-                    ->addColumn(array('label'=>'No. Container','index'=>'NOCONTAINER','width'=>150))
-                    ->addColumn(array('label'=>'Jenis Container','index'=>'jenis_container','width'=>150, 'align'=>'center'))
+                    ->addColumn(array('label'=>'Vessel','index'=>'VESSEL', 'width'=>150))                    
+                    ->addColumn(array('label'=>'No. Container','index'=>'NOCONTAINER','width'=>150))                   
                     ->addColumn(array('label'=>'Size','index'=>'SIZE', 'width'=>80,'align'=>'center'))
-                    ->addColumn(array('label'=>'Vessel','index'=>'VESSEL', 'width'=>150))
+                    ->addColumn(array('label'=>'Jenis Container','index'=>'jenis_container','width'=>150, 'align'=>'center'))
+                    ->addColumn(array('label'=>'Lapangan','index'=>'KODE_GUDANG', 'width'=>80,'align'=>'center'))
+                    ->addColumn(array('label'=>'Tgl. Masuk','index'=>'TGLMASUK','width'=>120,'align'=>'center'))
+                    ->addColumn(array('label'=>'Jam Masuk','index'=>'JAMMASUK','width'=>120,'align'=>'center'))                   
+                    ->addColumn(array('label'=>'No. SPK','index'=>'NOSPK','width'=>150))
+                    ->addColumn(array('label'=>'TPS Asal','index'=>'KD_TPS_ASAL', 'width'=>80,'align'=>'center'))    
+            
                     ->addColumn(array('label'=>'Callsign','index'=>'CALLSIGN', 'width'=>150,'align'=>'center'))
                     ->addColumn(array('label'=>'Voy','index'=>'VOY','width'=>80,'align'=>'center'))
-                    ->addColumn(array('label'=>'Tujuan','index'=>'GUDANG_TUJUAN', 'width'=>80,'align'=>'center'))
-                    ->addColumn(array('label'=>'Lokasi','index'=>'KODE_GUDANG', 'width'=>80,'align'=>'center'))
-                    ->addColumn(array('label'=>'Tgl. ETA','index'=>'ETA','width'=>120,'align'=>'center'))
-                    ->addColumn(array('label'=>'TPS Asal','index'=>'KD_TPS_ASAL', 'width'=>80,'align'=>'center'))
+                    ->addColumn(array('label'=>'Tujuan','index'=>'GUDANG_TUJUAN', 'width'=>80,'align'=>'center'))             
+                    ->addColumn(array('label'=>'Tgl. ETA','index'=>'ETA','width'=>120,'align'=>'center'))                    
                     ->addColumn(array('index'=>'TCONSOLIDATOR_FK','hidden'=>true))
                     ->addColumn(array('label'=>'Consolidator','index'=>'NAMACONSOLIDATOR','width'=>250,'hidden'=>true))
                     ->addColumn(array('label'=>'No. BC11','index'=>'NO_BC11','width'=>120,'hidden'=>false))
                     ->addColumn(array('label'=>'Tgl. BC11','index'=>'TGL_BC11','width'=>120,'hidden'=>false))
                     ->addColumn(array('label'=>'No. PLP','index'=>'NO_PLP','width'=>120,'hidden'=>false))
-                    ->addColumn(array('label'=>'Tgl. PLP','index'=>'TGL_PLP','width'=>120,'hidden'=>false))
-                    
+                    ->addColumn(array('label'=>'Tgl. PLP','index'=>'TGL_PLP','width'=>120,'hidden'=>false))                   
                     ->addColumn(array('index'=>'location_id', 'width'=>150,'hidden'=>true))
                     ->addColumn(array('label'=>'Location','index'=>'location_name','width'=>200, 'align'=>'center'))
-                    
-        //            ->addColumn(array('label'=>'Teus','index'=>'TEUS', 'width'=>80,'align'=>'center'))
-                    ->addColumn(array('label'=>'No. Seal','index'=>'NO_SEAL', 'width'=>120,'align'=>'right','hidden'=>true))
-                    ->addColumn(array('label'=>'Tgl. Masuk','index'=>'TGLMASUK','width'=>120,'align'=>'center'))
-                    ->addColumn(array('label'=>'Jam Masuk','index'=>'JAMMASUK','width'=>120,'align'=>'center'))
+                    ->addColumn(array('label'=>'No. Seal','index'=>'NO_SEAL', 'width'=>120,'align'=>'right','hidden'=>true))                    
                     ->addColumn(array('label'=>'Tgl. Keluar TPK','index'=>'TGLKELUAR_TPK','hidden'=>false,'align'=>'center'))
                     ->addColumn(array('label'=>'Jam Keluar TPK','index'=>'JAMKELUAR_TPK','hidden'=>false,'align'=>'center'))
                     ->addColumn(array('label'=>'Perkiraan Keluar','index'=>'P_TGLKELUAR','hidden'=>true))
@@ -344,8 +342,6 @@
                     ->addColumn(array('label'=>'Alasan Segel','index'=>'alasan_segel','width'=>150,'align'=>'center'))
         //            ->addColumn(array('label'=>'UID','index'=>'UID', 'width'=>150))
                     ->addColumn(array('label'=>'Tgl. Entry','index'=>'TGLENTRY', 'width'=>150,'align'=>'center'))
-//                    ->addColumn(array('label'=>'Updated','index'=>'last_update', 'width'=>150, 'search'=>false))
-        //            ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>80, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
                     ->renderGrid()
                 }}
                 
@@ -381,7 +377,7 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label">No. SPK</label>
                         <div class="col-sm-8">
-                            <input type="text" id="NoJob" name="NoJob" class="form-control" readonly>
+                            <input type="text" id="NOSPK" name="NOSPK" class="form-control" readonly>
                         </div>
                     </div>
                     <div class="form-group">
