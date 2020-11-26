@@ -1078,10 +1078,10 @@ class FclController extends Controller
                 ->where('TGLRELEASE', $data['date'])
                 ->groupBy('NO_SPPB')
                 ->get();
-        $pprp = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 27)->where('TGLRELEASE', $data['date'])->count();
+        $pprp = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 14)->where('TGLRELEASE', $data['date'])->count();
         $dokpprp = DBContainer::select('NO_SPPB', 'KD_DOK_INOUT', \DB::raw('count(*) as total'))
                 ->where('KODE_GUDANG', 'like', $gd)
-                ->where('KD_DOK_INOUT', 27)
+                ->where('KD_DOK_INOUT', 14)
                 ->where('TGLRELEASE', $data['date'])
                 ->groupBy('NO_SPPB')
                 ->get();
@@ -1206,10 +1206,10 @@ class FclController extends Controller
                 ->where('TGLRELEASE', $date)
                 ->groupBy('NO_SPPB')
                 ->get();
-        $pprp = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 27)->where('TGLRELEASE', $date)->count();
+        $pprp = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 14)->where('TGLRELEASE', $date)->count();
         $dokpprp = DBContainer::select('NO_SPPB', 'KD_DOK_INOUT', \DB::raw('count(*) as total'))
                 ->where('KODE_GUDANG', 'like', $gd)
-                ->where('KD_DOK_INOUT', 27)
+                ->where('KD_DOK_INOUT', 14)
                 ->where('TGLRELEASE', $date)
                 ->groupBy('NO_SPPB')
                 ->get();
