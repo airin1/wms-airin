@@ -406,7 +406,7 @@ class TablesRepository extends EloquentRepositoryAbstract {
                             ->whereNotNull('tglmasuk')
                             ->whereNotNull('tglstripping')
                             ->whereNull('tglrelease')
-                            ->where('LOKASI_GUDANG', 'like', $request['gd'])
+                            ->where('LOKASI_TUJUAN', 'like', $request['gd'])
 //                            ->orWhere('tglrelease','0000-00-00')
                             ->where($request['by'], '>=',$start_date)
                             ->where($request['by'], '<=',$end_date);
@@ -417,7 +417,7 @@ class TablesRepository extends EloquentRepositoryAbstract {
                                 ->whereNotNull('tglmasuk')
                                 ->whereNotNull('tglstripping')
                                 ->whereNull('tglrelease')
-                                ->where('LOKASI_GUDANG', 'like', $request['gd'])
+                                ->where('LOKASI_TUJUAN', 'like', $request['gd'])
     //                            ->orWhere('tglrelease','0000-00-00')
                                     ;
                         }
