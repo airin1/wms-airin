@@ -42,7 +42,7 @@
                 <tr>
                     <td align="right">PIB</td>
                     <td align="left">{{$container->NO_DAFTAR_PABEAN}}</td>
-                    <td align="right">{{($container->TGL_DAFTAR_PABEAN != NULL || $container->TGL_DAFTAR_PABEAN != '0000-00-00') ? date('d-M-Y', strtotime($container->TGL_DAFTAR_PABEAN)) : ''}}</td>
+                    <td align="right">{{($container->TGL_DAFTAR_PABEAN != '0000-00-00') ? date('d-M-Y', strtotime($container->TGL_DAFTAR_PABEAN)) : ''}}</td>
                 </tr>
                 <tr>
                     <td></td>
@@ -88,7 +88,7 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td>&nbsp;</td>
+                            <td>{{$container->bcf_consignee}}</td>
                         </tr>
                         <tr>
                             <td></td>
