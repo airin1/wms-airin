@@ -425,12 +425,12 @@ class InvoiceController extends Controller
             return view('errors.no-access');
         }
         
-        $data['page_title'] = "Daftar Tarif NCT1";
+        $data['page_title'] = "Daftar Tarif";
         $data['page_description'] = "";
         $data['breadcrumbs'] = [
             [
                 'action' => '',
-                'title' => 'Daftar Tarif NCT1'
+                'title' => 'Daftar Tarif'
             ]
         ];        
         

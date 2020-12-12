@@ -587,6 +587,7 @@
                                 <option value="Class BB High Class 5,2">Class BB High Class 5,2</option>
                                 <option value="REFFER RF">REFFER RF</option>
                                 <option value="REFFER RECOOLING">REFFER RECOOLING</option>
+                                <option value="REFFER BB 2.2">REFFER BB 2.2</option>
                                 <option value="FLAT TRACK RF">FLAT TRACK RF</option>
                                 <option value="FLAT TRACK OH">FLAT TRACK OH</option>
                                 <option value="FLAT TRACK OW">FLAT TRACK OW</option>

@@ -628,7 +628,7 @@
                                 </span>
                               </a>
                               <ul class="treeview-menu">
-                                  <li><a href="{{route('invoice-tarif-nct-index')}}">Data Tarif NCT1</a></li>
+                                  <li><a href="{{route('invoice-tarif-nct-index')}}">Data Tarif</a></li>
                                   <li><a href="{{route('invoice-release-nct-index')}}">Data Release/Gate Out</a></li>
                                   <li><a href="{{route('invoice-nct-index')}}">Data Invoice</a></li>
                               </ul>

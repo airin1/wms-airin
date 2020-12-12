@@ -199,15 +199,61 @@
                             <th style="text-align: center;">YOR %</th>
                         </tr>
                         <?php
-                            $stok_awal_20 = (isset($stok['awal'][0])) ? $stok['awal'][0]->total : 0;
-                            $stok_awal_40 = (isset($stok['awal'][1])) ? $stok['awal'][1]->total : 0;
-                            $stok_awal_45 = (isset($stok['awal'][2])) ? $stok['awal'][2]->total : 0;
-                            $stok_masuk_20 = (isset($stok['masuk'][0])) ? $stok['masuk'][0]->total : 0;
-                            $stok_masuk_40 = (isset($stok['masuk'][1])) ? $stok['masuk'][1]->total : 0;
-                            $stok_masuk_45 = (isset($stok['masuk'][2])) ? $stok['masuk'][2]->total : 0;
-                            $stok_keluar_20 = (isset($stok['keluar'][0])) ? $stok['keluar'][0]->total : 0;
-                            $stok_keluar_40 = (isset($stok['keluar'][1])) ? $stok['keluar'][1]->total : 0;
-                            $stok_keluar_45 = (isset($stok['keluar'][2])) ? $stok['keluar'][2]->total : 0;
+                            $stok_awal_20 = 0;
+                            $stok_awal_40 = 0;
+                            $stok_awal_45 = 0;
+                            $stok_masuk_20 = 0;
+                            $stok_masuk_40 = 0;
+                            $stok_masuk_45 = 0;
+                            $stok_keluar_20 = 0;
+                            $stok_keluar_40 = 0;
+                            $stok_keluar_45 = 0;
+
+                            if(isset($stok['awal'])):
+                                foreach ($stok['awal'] as $s_awal):
+                                    if($s_awal->SIZE == 20){
+                                        $stok_awal_20 = $s_awal->total;
+                                    }elseif($s_awal->SIZE == 40){
+                                        $stok_awal_40 = $s_awal->total;
+                                    }elseif($s_awal->SIZE == 45){
+                                        $stok_awal_45 = $s_awal->total;
+                                    }
+                                endforeach;
+                            endif;
+
+                            if(isset($stok['masuk'])):
+                                foreach ($stok['masuk'] as $s_masuk):
+                                    if($s_masuk->SIZE == 20){
+                                        $stok_masuk_20 = $s_masuk->total;
+                                    }elseif($s_masuk->SIZE == 40){
+                                        $stok_masuk_40 = $s_masuk->total;
+                                    }elseif($s_masuk->SIZE == 45){
+                                        $stok_masuk_45 = $s_masuk->total;
+                                    }
+                                endforeach;
+                            endif;
+
+                            if(isset($stok['keluar'])):
+                                foreach ($stok['keluar'] as $s_keluar):
+                                    if($s_keluar->SIZE == 20){
+                                        $stok_keluar_20 = $s_keluar->total;
+                                    }elseif($s_keluar->SIZE == 40){
+                                        $stok_keluar_40 = $s_keluar->total;
+                                    }elseif($s_keluar->SIZE == 45){
+                                        $stok_keluar_45 = $s_keluar->total;
+                                    }
+                                endforeach;
+                            endif;
+
+//                            $stok_awal_20 = (isset($stok['awal'][0])) ? $stok['awal'][0]->total : 0;
+//                            $stok_awal_40 = (isset($stok['awal'][1])) ? $stok['awal'][1]->total : 0;
+//                            $stok_awal_45 = (isset($stok['awal'][2])) ? $stok['awal'][2]->total : 0;
+//                            $stok_masuk_20 = (isset($stok['masuk'][0])) ? $stok['masuk'][0]->total : 0;
+//                            $stok_masuk_40 = (isset($stok['masuk'][1])) ? $stok['masuk'][1]->total : 0;
+//                            $stok_masuk_45 = (isset($stok['masuk'][2])) ? $stok['masuk'][2]->total : 0;
+//                            $stok_keluar_20 = (isset($stok['keluar'][0])) ? $stok['keluar'][0]->total : 0;
+//                            $stok_keluar_40 = (isset($stok['keluar'][1])) ? $stok['keluar'][1]->total : 0;
+//                            $stok_keluar_45 = (isset($stok['keluar'][2])) ? $stok['keluar'][2]->total : 0;
                         
                             $akhir_20 = $stok_awal_20+$stok_masuk_20-$stok_keluar_20;
                             $akhir_40 = $stok_awal_40+$stok_masuk_40-$stok_keluar_40;

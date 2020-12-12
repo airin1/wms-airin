@@ -1148,7 +1148,7 @@ class FclController extends Controller
             'masuk' => $masuk,
             'keluar' => $keluar
         );
-        
+//        return $data['stok'];
         if($gd == '%'){
             $data['yor'] = \App\Models\SorYor::select(
                 \DB::raw('SUM(kapasitas_default) as kapasitas_default'),
@@ -1802,7 +1802,8 @@ UNZ+1+1709131341'\n";
         );
         $reffer = array(
             'REFFER RF',
-            'REFFER RECOOLING'
+            'REFFER RECOOLING',
+            'REFFER BB 2.2'
         );
         
         $ft = array(
@@ -1834,6 +1835,7 @@ UNZ+1+1709131341'\n";
 //            $consignee = DBPerusahaan::where('TPERUSAHAAN_PK', $data['TCONSIGNEE_FK'])->first();
             
 //            Detect Jenis Container
+            $tps_asal = ($data['KD_TPS_ASAL'] == 'NCT1') ? 'NPCT1' : $data['KD_TPS_ASAL'];
             $jenis_cont = $data['jenis_container'];
             
             if(in_array($jenis_cont, $std)){
@@ -1880,8 +1882,7 @@ UNZ+1+1709131341'\n";
                 // Insert Invoice Detail
                 if(count($container20) > 0) {
                     
-                    $tarif20 = \App\Models\InvoiceTarifNct::where(array('type' => $type, 'size' => 20))->get();
-                    
+                    $tarif20 = \App\Models\InvoiceTarifNct::where(array('type' => $type, 'size' => 20))->whereIn('lokasi_sandar', array($tps_asal,'AIRIN'))->get();
                     foreach ($tarif20 as $t20) :
                         
                         $invoice_penumpukan = new \App\Models\InvoiceNctPenumpukan;                      
@@ -1891,7 +1892,7 @@ UNZ+1+1709131341'\n";
                         $invoice_penumpukan->size = 20;
                         $invoice_penumpukan->qty = count($container20);
                         
-                        if($t20->lokasi_sandar == 'NPCT1') {
+                        if($t20->lokasi_sandar == $tps_asal) {
                             
                             // GERAKAN
                             $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
@@ -1950,7 +1951,7 @@ UNZ+1+1709131341'\n";
                             $invoice_penumpukan->masa3 = ($invoice_penumpukan->hari_masa3 * $t20->masa3 * 6) * count($container20);
                             $invoice_penumpukan->masa4 = ($invoice_penumpukan->hari_masa4 * $t20->masa4 * 9) * count($container20);
                             
-                        } else {
+                        } elseif($t20->lokasi_sandar == 'AIRIN') {
                             
                             // GERAKAN
                             // Check Behandle
@@ -2058,7 +2059,7 @@ UNZ+1+1709131341'\n";
                 
                 if(count($container40) > 0) {
 
-                    $tarif40 = \App\Models\InvoiceTarifNct::where(array('type' => $type, 'size' => 40))->get();
+                    $tarif40 = \App\Models\InvoiceTarifNct::where(array('type' => $type, 'size' => 40))->whereIn('lokasi_sandar', array($tps_asal,'AIRIN'))->get();
 
                     foreach ($tarif40 as $t40) :
                         
@@ -2069,7 +2070,7 @@ UNZ+1+1709131341'\n";
                         $invoice_penumpukan->size = 40;
                         $invoice_penumpukan->qty = count($container40);
                         
-                        if($t40->lokasi_sandar == 'NPCT1') {
+                        if($t40->lokasi_sandar == $tps_asal) {
                             // GERAKAN
                             $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
                         
@@ -2126,7 +2127,7 @@ UNZ+1+1709131341'\n";
                             $invoice_penumpukan->masa3 = ($invoice_penumpukan->hari_masa3 * $t40->masa3 * 6) * count($container40);
                             $invoice_penumpukan->masa4 = ($invoice_penumpukan->hari_masa4 * $t40->masa4 * 9) * count($container40);
                             
-                        } else {
+                        } elseif($t40->lokasi_sandar == 'AIRIN') {
                             // GERAKAN
 //                          // Check Behandle
                             $count_behandle = 0;
@@ -2233,7 +2234,7 @@ UNZ+1+1709131341'\n";
                 
                 if(count($container45) > 0) {
 
-                    $tarif45 = \App\Models\InvoiceTarifNct::where(array('type' => $type, 'size' => 45))->get();
+                    $tarif45 = \App\Models\InvoiceTarifNct::where(array('type' => $type, 'size' => 45))->whereIn('lokasi_sandar', array($tps_asal,'AIRIN'))->get();
 
                     foreach ($tarif45 as $t45) :
                         
@@ -2244,7 +2245,7 @@ UNZ+1+1709131341'\n";
                         $invoice_penumpukan->size = 45;
                         $invoice_penumpukan->qty = count($container45);
                         
-                        if($t45->lokasi_sandar == 'NPCT1') {
+                        if($t45->lokasi_sandar == $tps_asal) {
                             // GERAKAN
                             $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
                         
@@ -2301,7 +2302,7 @@ UNZ+1+1709131341'\n";
                             $invoice_penumpukan->masa3 = ($invoice_penumpukan->hari_masa3 * $t45->masa3 * 6) * count($container45);
                             $invoice_penumpukan->masa4 = ($invoice_penumpukan->hari_masa4 * $t45->masa4 * 9) * count($container45);
                             
-                        } else {
+                        } elseif($t45->lokasi_sandar == 'AIRIN') {
                             // GERAKAN
                             $count_behandle = 0;
                             foreach ($container45 as $c_45):
@@ -2413,7 +2414,7 @@ UNZ+1+1709131341'\n";
                 $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
                         
                 $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
-                $invoice_gerakan->lokasi_sandar = 'NPCT1';
+                $invoice_gerakan->lokasi_sandar = $tps_asal;
                 $invoice_gerakan->size = 0;
                 $invoice_gerakan->qty = count($container20)+count($container40)+count($container45); 
                 $invoice_gerakan->jenis_gerakan = $key;
