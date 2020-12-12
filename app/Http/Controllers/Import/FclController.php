@@ -1148,7 +1148,7 @@ class FclController extends Controller
             'masuk' => $masuk,
             'keluar' => $keluar
         );
-        
+//        return $data['stok'];
         if($gd == '%'){
             $data['yor'] = \App\Models\SorYor::select(
                 \DB::raw('SUM(kapasitas_default) as kapasitas_default'),
@@ -1802,7 +1802,8 @@ UNZ+1+1709131341'\n";
         );
         $reffer = array(
             'REFFER RF',
-            'REFFER RECOOLING'
+            'REFFER RECOOLING',
+            'REFFER BB 2.2'
         );
         
         $ft = array(
