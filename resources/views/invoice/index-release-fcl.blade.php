@@ -163,6 +163,7 @@
                     ->setFilterToolbarOptions(array('autosearch'=>true))
                     ->setGridEvent('onSelectRow', 'onSelectRowEvent')
                     ->addColumn(array('key'=>true,'index'=>'TCONTAINER_PK','hidden'=>true))
+                    ->addColumn(array('label'=>'TPS Asal','index'=>'KD_TPS_ASAL','width'=>100,'align'=>'center'))
                     ->addColumn(array('label'=>'Vessel','index'=>'VESSEL','width'=>150))
                     ->addColumn(array('label'=>'VOY','index'=>'VOY','width'=>120,'align'=>'center'))
                     ->addColumn(array('label'=>'No. BL AWB','index'=>'NO_BL_AWB', 'width'=>150,'align'=>'center'))
@@ -343,13 +344,13 @@
 @section('custom_js')
 
 <script src="{{ asset("/bower_components/AdminLTE/plugins/datepicker/bootstrap-datepicker.js") }}"></script>
-<script src="{{ asset("/bower_components/AdminLTE/plugins/bootstrap-switch/bootstrap-switch.min.js") }}"></script>
+{{--<script src="{{ asset("/bower_components/AdminLTE/plugins/bootstrap-switch/bootstrap-switch.min.js") }}"></script>--}}
 <script type="text/javascript">
 //    $.fn.bootstrapSwitch.defaults.size = 'mini';
-    $.fn.bootstrapSwitch.defaults.onColor = 'danger';
-    $.fn.bootstrapSwitch.defaults.onText = 'Yes';
-    $.fn.bootstrapSwitch.defaults.offText = 'No';
-    $("input[type='checkbox']").bootstrapSwitch();
+//     $.fn.bootstrapSwitch.defaults.onColor = 'danger';
+//     $.fn.bootstrapSwitch.defaults.onText = 'Yes';
+//     $.fn.bootstrapSwitch.defaults.offText = 'No';
+//     $("input[type='checkbox']").bootstrapSwitch();
 
     $('.datepicker').datepicker({
         autoclose: true,
