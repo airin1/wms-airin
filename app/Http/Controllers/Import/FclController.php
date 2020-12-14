@@ -1803,7 +1803,9 @@ UNZ+1+1709131341'\n";
         $reffer = array(
             'REFFER RF',
             'REFFER RECOOLING',
-            'REFFER BB 2.2'
+            'REEFER RECOOLING BB 2.2',
+            'REEFER RF',
+            'REEFER RECOOLING',
         );
         
         $ft = array(
