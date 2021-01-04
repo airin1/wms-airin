@@ -138,7 +138,7 @@ class InvoiceController extends Controller
             else:
                 $data['ppn'] = $data['sub_total']*10/100;
             endif;
-            $data['materai'] = ($data['sub_total'] > 1000000) ? '6000' : '3000';
+            $data['materai'] = ($data['sub_total'] > 5000000) ? '10000' : '0';
             $data['total'] = $data['sub_total'] + $data['ppn'] + $data['materai'];           
             $data['terbilang'] = ucwords($this->terbilang($data['total']))." Rupiah";
 
@@ -959,12 +959,12 @@ class InvoiceController extends Controller
             $update_nct->administrasi = (count($container20)+count($container40)+count($container45)) * 20000;
             $update_nct->total_non_ppn = $total_penumpukan + $total_gerakan + $update_nct->dg_surcharge + $update_nct->administrasi;	
             $update_nct->ppn = $update_nct->total_non_ppn * 10/100;	
-            if(($update_nct->total_non_ppn+$update_nct->ppn) >= 1000000){ 
-                $materai = 6000;
-            }elseif(($update_nct->total_non_ppn+$update_nct->ppn) < 300000) {
-                $materai = 0;
+            if(($update_nct->total_non_ppn+$update_nct->ppn) >= 5000000){
+                $materai = 10000;
+//            }elseif(($update_nct->total_non_ppn+$update_nct->ppn) < 300000) {
+//                $materai = 0;
             }else{
-                $materai = 3000;
+                $materai = 0;
             }
             $update_nct->materai = $materai;	
             $update_nct->total = $update_nct->total_non_ppn+$update_nct->ppn+$update_nct->materai;	
