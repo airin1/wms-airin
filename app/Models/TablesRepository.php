@@ -137,7 +137,7 @@ class TablesRepository extends EloquentRepositoryAbstract {
                     break;
                     case 'release-invoice':
                         $Model = \DB::table('tcontainercy')
-                            ->whereIn('KD_TPS_ASAL', array('NCT1','NPCT1','KOJA'))
+                            ->whereIn('KD_TPS_ASAL', array('NCT1','NPCT1','KOJA','MAL0'))
                             ->whereNotNull('TGLMASUK')
                             ->whereNotNull('JAMMASUK')
 //                            ->whereNotNull('TGLRELEASE')
