@@ -30,10 +30,20 @@ Route::group(['prefix' => 'tpsonline/report', 'namespace' => 'Tps'], function(){
         'as' => 'tps-gagal-get',
         'uses' => 'SoapController@CekDataGagalKirim'
     ]);
+	
+	
+	Route::get('/reject/grid-data', function()
+    {
+        GridEncoder::encodeRequestedData(new \App\Models\TpsTablesRepository(new App\Models\TpsReject(),Illuminate\Support\Facades\Request::all()) ,Illuminate\Support\Facades\Request::all());
+    });
+
+	
     Route::get('/grid-data', function()
     {
         GridEncoder::encodeRequestedData(new \App\Models\TpsTablesRepository(new App\Models\TpsDataKirim(),Illuminate\Support\Facades\Request::all()) ,Illuminate\Support\Facades\Request::all());
     });
+	
+		
     Route::post('/crud', function()
     {
         $Eloquent = new \App\Models\Eloquent\EloquentTpsGudang();

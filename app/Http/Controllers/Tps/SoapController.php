@@ -1667,8 +1667,33 @@ class SoapController extends DefaultController {
             $this->response = $service->call('GetRejectData', [$data])->GetRejectDataResult;      
         });
         
-        var_dump($this->response);
+        //var_dump($this->response);
+       
+       libxml_use_internal_errors(true);
+        $xml = simplexml_load_string($this->response);
+        if(!$xml || !$xml->children()){
+           return back()->with('error', $this->response);
+        }
         
+        $ob = array();
+        foreach($xml->children() as $child) {
+            $reject[] = $child;
+        }
+        
+        // INSERT DATA       
+        foreach ($reject as $data):
+            $rejectinsert = new \App\Models\TpsReject;
+            foreach ($data as $key=>$value):
+                //if($key == 'KODE_KANTOR' || $key == 'kode_kantor'){ $key='KD_KANTOR'; }
+                $rejectinsert->$key = $value;
+            endforeach;
+            $rejectinsert->save();
+        endforeach;
+        
+        return back()->with('success', 'Get data reject has been success.');
+
+
+	   
     }
     
     public function CekDataGagalKirim(Request $request)
