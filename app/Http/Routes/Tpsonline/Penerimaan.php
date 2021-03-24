@@ -280,7 +280,7 @@ Route::group(['prefix' => 'tpsonline/penerimaan', 'namespace' => 'Tps'], functio
   
     Route::post('/dok-npe/get-xml/ondemand', [
         'as' => 'tps-dokNPEOnDemand-get',
-        'uses' => 'SoapController@GetDokumenNPE_OnDemand'
+        'uses' => 'SoapController@GetEkspor_NPE'
     ]);
 	
 	
