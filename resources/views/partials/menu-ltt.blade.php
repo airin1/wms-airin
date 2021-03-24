@@ -559,6 +559,7 @@
                           <li><a href="{{ route('tps-sppbPib-index') }}">Data SPPB</a></li>
                           <li><a href="{{ route('tps-sppbBc-index') }}">Data SPPB BC23</a></li>
                           <li><a href="{{ route('tps-infoNomorBc-index') }}">Info Nomor BC11</a></li>
+						  <li><a href="{{ route('tps-dokNPE-index') }}">Data Dok NPE</a></li>
 						
                         </ul>
                       </li>

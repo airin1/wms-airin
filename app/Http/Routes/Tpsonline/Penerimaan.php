@@ -261,4 +261,33 @@ Route::group(['prefix' => 'tpsonline/penerimaan', 'namespace' => 'Tps'], functio
 //        'uses' => 'PenerimaanController@sppbBcGetXml'
         'uses' => 'SoapController@GetInfoNomorBc'
     ]);
+	
+	
+	
+	//Dok NPE
+    Route::get('/dok-npe', [
+        'as' => 'tps-dokNPE-index',
+        'uses' => 'PenerimaanController@dokNPEIndex'
+    ]);
+    Route::get('/dok-npe/edit/{id}', [
+        'as' => 'tps-doknpe-edit',
+        'uses' => 'PenerimaanController@dokNPEEdit'
+    ]);
+    Route::post('/dok-npe/grid-data', function()
+    {
+        GridEncoder::encodeRequestedData(new \App\Models\TpsTablesRepository(new App\Models\TpsDokNPE(),Illuminate\Support\Facades\Request::all()) ,Illuminate\Support\Facades\Request::all());
+    });
+  
+    Route::post('/dok-npe/get-xml/ondemand', [
+        'as' => 'tps-dokNPEOnDemand-get',
+        'uses' => 'SoapController@GetDokumenNPE_OnDemand'
+    ]);
+	
+	
+	
+	
+	
+	
+	
+	
 });

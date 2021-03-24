@@ -53,7 +53,7 @@
                 GridRender::setGridId("tpsRejectGrid")
                 ->enableFilterToolbar()
                 ->setGridOption('url', URL::to('/tpsonline/report/reject/grid-data'))
-//  //            ->setGridOption('editurl',URL::to('/tpsonline/report/crud'))
+//             ->setGridOption('editurl',URL::to('/tpsonline/report/crud'))
                 ->setGridOption('rowNum', 20)
                 ->setGridOption('shrinkToFit', true)
                 ->setGridOption('sortname','tps_getdatareject_pk')
