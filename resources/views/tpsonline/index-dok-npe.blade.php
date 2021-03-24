@@ -99,25 +99,15 @@
             ->addColumn(array('key'=>true,'index'=>'TPS_DOKNPEXML_PK','hidden'=>true))
 
             ->addColumn(array('label'=>'Kode Kantor','index'=>'KD_KANTOR','width'=>120,'align'=>'center'))
-            ->addColumn(array('label'=>'Kode Dok','index'=>'KD_DOK_INOUT','width'=>80,'align'=>'center'))
-            ->addColumn(array('label'=>'No. Dok','index'=>'NO_DOK_INOUT','width'=>250,'align'=>'center'))
-            ->addColumn(array('label'=>'Tgl. Dok','index'=>'TGL_DOK_INOUT','width'=>120,'align'=>'center'))
-            ->addColumn(array('index'=>'ID_CONSIGNEE','width'=>160,'hidden'=>true))
-            ->addColumn(array('label'=>'Consignee','index'=>'CONSIGNEE','width'=>350))
-            ->addColumn(array('label'=>'NPWP PPJK','index'=>'NPWP_PPJK','width'=>120,'align'=>'center'))
-            ->addColumn(array('label'=>'Nama PPJK','index'=>'NAMA_PPJK','width'=>120,'align'=>'center'))
-            ->addColumn(array('label'=>'Nama Angkut','index'=>'NM_ANGKUT','width'=>160,'align'=>'center'))
-            ->addColumn(array('label'=>'VOY','index'=>'NO_VOY_FLIGHT','width'=>80,'align'=>'center'))
-            ->addColumn(array('label'=>'Kode Gudang','index'=>'KD_GUDANG','width'=>100,'align'=>'center'))
-            ->addColumn(array('label'=>'Jumlah Cont','index'=>'JML_CONT','width'=>100,'align'=>'center'))
-            ->addColumn(array('label'=>'No. BC11','index'=>'NO_BC11','width'=>120,'align'=>'center'))
-            ->addColumn(array('label'=>'Tgl. BC11','index'=>'TGL_BC11','width'=>120,'align'=>'center'))
-            ->addColumn(array('label'=>'Tgl. POS BC11','index'=>'NO_POS_BC11','width'=>160,'align'=>'center'))
-            ->addColumn(array('label'=>'No. BL AWB','index'=>'NO_BL_AWB','width'=>120,'align'=>'center'))
-            ->addColumn(array('label'=>'Tgl. BL AWB','index'=>'TGL_BL_AWB','width'=>120,'align'=>'center'))
-            ->addColumn(array('label'=>'FL Segel','index'=>'FL_SEGEL','width'=>80,'align'=>'center'))
-            ->addColumn(array('label'=>'Tgl. Upload','index'=>'TGL_UPLOAD','width'=>100,'align'=>'center'))
-            ->addColumn(array('label'=>'Jam. Upload','index'=>'JAM_UPLOAD','width'=>80,'align'=>'center'))
+            ->addColumn(array('label'=>'No NPE','index'=>'NONPE','width'=>80,'align'=>'center'))
+            ->addColumn(array('label'=>'No. Daftar','index'=>'NO_DAFTAR','width'=>250,'align'=>'center'))
+            ->addColumn(array('label'=>'Tgl. Daftar','index'=>'TGL_DAFTAR','width'=>120,'align'=>'center'))
+            ->addColumn(array('index'=>'ID Consigne ','index'=>'NPWP_EKS','width'=>160,'hidden'=>true))
+            ->addColumn(array('label'=>'Consignee','index'=>'NAMA_EKS','width'=>350))
+            ->addColumn(array('label'=>'Status Segel','index'=>'FL_SEGEL','width'=>120,'align'=>'center'))
+            ->addColumn(array('label'=>'No Container','index'=>'NO_CONT','width'=>120,'align'=>'center'))
+            ->addColumn(array('label'=>'Size','index'=>'SIZE','width'=>160,'align'=>'center'))
+       
 
             ->renderGrid()
         }}
@@ -155,7 +145,7 @@
 							<div class="form-group">
                                 <label class="col-sm-3 control-label">Kode Kantor</label>
                                 <div class="col-sm-8">
-                                    <input type="text" class="form-control" name="kd_kantor" />
+                                    <input type="text" class="form-control" name="kd_kantor" value="040300" />
                                 </div>
                             </div>
                           

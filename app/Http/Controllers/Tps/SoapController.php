@@ -1687,6 +1687,8 @@ class SoapController extends DefaultController {
                 //if($key == 'KODE_KANTOR' || $key == 'kode_kantor'){ $key='KD_KANTOR'; }
                 $rejectinsert->$key = $value;
             endforeach;
+			$rejectinsert->tgl_upload = date('Y-m-d');
+			$rejectinsert->jam_upload = date('H:i:s');
             $rejectinsert->save();
         endforeach;
         
@@ -1836,6 +1838,93 @@ class SoapController extends DefaultController {
         var_dump($this->response);
     }
     
+	//On Deman NPE
+	
+	public function GetEkspor_NPE(Request $request)
+    {
+        \SoapWrapper::add(function ($service) {
+            $service
+                ->name('GetEkspor_NPE')
+                ->wsdl($this->wsdl)
+                ->trace(true)                                                                                                  
+//                ->certificate()                                                 
+//                ->cache(WSDL_CACHE_NONE)                                        
+                ->options([
+                    'stream_context' => stream_context_create([
+                        'ssl' => array(
+                            'verify_peer' => false,
+                            'verify_peer_name' => false,
+                            'allow_self_signed' => true
+                        )
+                    ])
+                ]);                                                     
+        });
+        
+        $data = [
+            'UserName' => $this->user, 
+            'Password' => $this->password,
+            'npwp' => $request->npwp,
+            'NoDok' => $request->no_dok,
+            'kd_kantor' =>$request->kd_kantor
+        ];
+        
+        // Using the added service
+        \SoapWrapper::service('GetEkspor_NPE', function ($service) use ($data) {        
+            $this->response = $service->call('GetEkspor_NPE', [$data])->GetEkspor_NPEResult;      
+        });
+        
+        libxml_use_internal_errors(true);
+        $xml = simplexml_load_string($this->response);
+        if(!$xml || !$xml->children()){
+           return back()->with('error', $this->response);
+        }
+        
+        $docmanual_id = 0;
+        foreach ($xml->children() as $data):  
+            foreach ($data as $key=>$value):
+                if($key == 'HEADER' || $key == 'header'){           
+                    $docmanual = new \App\Models\TpsDokNPE;
+                    foreach ($value as $keyh=>$valueh):
+                        if($keyh == 'kd_kantor' || $keyh == 'KD_KANTOR'){ $KD_KANTOR=$valueh; }
+                        if($keyh == 'no_daftar' || $keyh == 'NO_DAFTAR'){ $NO_DAFTAR=$valueh; }
+                        if($keyh == 'tgl_daftar' || $keyh == 'TGL_DAFTAR'){ $TGL_DAFTAR=$valueh; }
+                        if($keyh == 'nonpe' || $keyh == 'NONPE'){ $NONPE=$valueh; }
+                        if($keyh == 'tglnpe' || $keyh == 'TGLNPE'){ $TGLNPE=$valueh; }
+                        if($keyh == 'npwp_eks' || $keyh == 'NPWP_EKS'){ $NPWP_EKS=$valueh; }
+                        if($keyh == 'nama_eks' || $keyh == 'NAMA_EKS'){ $NAMA_EKS=$valueh; }
+                        if($keyh == 'fl_segel' || $keyh == 'FL_SEGEL'){ $FL_SEGEL=$valueh; }
+                        
+						//$docmanual->$keyh = $valueh;
+                    endforeach;
+                   
+                }elseif($key == 'DETIL' || $key == 'detil'){
+                    foreach ($value as $key1=>$value1):
+                            foreach ($value1 as $keyk=>$valuek):
+                                $docmanual->$keyk = $valuek;
+                            endforeach;
+                            $docmanual->KD_KANTOR=$KD_KANTOR;
+							$docmanual->NO_DAFTAR=$NO_DAFTAR;
+							$docmanual->TGL_DAFTAR=$TGL_DAFTAR;
+							$docmanual->NONPE=$NONPE;
+							$docmanual->TGLNPE=$TGLNPE;
+							$docmanual->NPWP_EKS= $NPWP_EKS;
+							$docmanual->NAMA_EKS=$NAMA_EKS;
+							$docmanual->FL_SEGEL=$FL_SEGEL;
+							$docmanual->TGL_UPLOAD = date('Y-m-d');
+							$docmanual->JAM_UPLOAD = date('H:i:s');
+							
+							$docmanual->save();
+                        
+                    endforeach;  
+                }
+            endforeach;
+        endforeach;
+    
+        return back()->with('success', 'Get Dokumen NPE has been success.');
+        
+    }
+	
+	
     public function postCoarriCodeco_Container()
     {
         

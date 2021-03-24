@@ -233,6 +233,31 @@ class PenerimaanController extends Controller
         return view('tpsonline.index-infonomor-bc')->with($data);
     }
     
+	
+	public function dokNPEIndex()
+    {
+        if ( !$this->access->can('show.tps.npe.index') ) {
+            return view('errors.no-access');
+        }
+        
+        // Create Roles Access
+        //$this->insertRoleAccess(array('name' => 'Index TPS OB LCL', 'slug' => 'show.tps.obLcl.index', 'description' => ''));
+        
+        $data['page_title'] = "TPS NPE";
+        $data['page_description'] = "";
+        $data['breadcrumbs'] = [
+            [
+                'action' => '',
+                'title' => 'TPS NPE'
+            ]
+        ];        
+        
+        return view('tpsonline.index-dok-npe')->with($data);
+    }
+	
+	
+	
+	
     /**
      * Show the form for creating a new resource.
      *
@@ -547,6 +572,10 @@ class PenerimaanController extends Controller
         
     }
     
+	
+	
+	
+	
     public function responBatalPlpGetXml()
     {
         
@@ -727,6 +756,8 @@ class PenerimaanController extends Controller
         
     }
     
+	
+	
     public function rejectGetXml()
     {
         
