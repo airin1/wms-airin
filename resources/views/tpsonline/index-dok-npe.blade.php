@@ -49,10 +49,7 @@
                 <div class="col-xs-3">
                     <select class="form-control select2" id="by" name="by" style="width: 100%;" tabindex="-1" aria-hidden="true">
                         <option value="TGL_UPLOAD">Tgl. Upload</option>
-                        <option value="TGL_DOK_INOUT">Tgl. Dok. In/Out</option>
-                        <option value="TGL_BC11">Tgl. BC11</option>    
-                        <option value="TGL_BL_AWB">Tgl. BL AWB</option>
-                    </select>
+                   </select>
                 </div>
                 <div class="col-xs-3">
                     <div class="input-group date">

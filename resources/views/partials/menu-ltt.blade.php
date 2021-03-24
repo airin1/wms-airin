@@ -658,6 +658,11 @@
                           <i class="fa fa-barcode"></i> Gate Pass (Autogate)
                       </a>
                   </li>
+				   <li class="treeview">
+                      <a href="http://203.173.92.178:8989/nle/">
+                          <i class="fa fa-barcode"></i> NLE
+                      </a>
+                  </li>
                   <li class="treeview">
                       <a href="#">
                         <i class="fa fa-users"></i>
