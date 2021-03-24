@@ -72,14 +72,14 @@
                 ->setFilterToolbarOptions(array('autosearch'=>true))
                 ->addColumn(array('key'=>true,'index'=>'tps_getdatareject_pk','hidden'=>true))
         
-                ->addColumn(array('label'=>'Tgl. Upload','index'=>'tgl_upload', 'width'=>120, 'editable' => true, 'editrules' => array('required' => true)))
-                ->addColumn(array('label'=>'Jam Upload','index'=>'jam_upload', 'width'=>120, 'editable' => true, 'editrules' => array('required' => true)))
+     //           ->addColumn(array('label'=>'Tgl. Upload','index'=>'tgl_upload', 'width'=>120, 'editable' => true, 'editrules' => array('required' => true)))
+     //           ->addColumn(array('label'=>'Jam Upload','index'=>'jam_upload', 'width'=>120, 'editable' => true, 'editrules' => array('required' => true)))
                 ->addColumn(array('label'=>'REF Number','index'=>'ref_number', 'width'=>200, 'editable' => true, 'editrules' => array('required' => true)))
                 ->addColumn(array('label'=>'No. Container','index'=>'no_cont', 'width'=>250, 'editable' => true, 'editrules' => array('required' => true)))
                 ->addColumn(array('label'=>'Uraian Reject','index'=>'ur_reject', 'width'=>200, 'editable' => true, 'editrules' => array('required' => true)))
                 ->addColumn(array('label'=>'Tgl. Reject','index'=>'tgl_reject', 'width'=>120, 'editable' => true, 'editrules' => array('required' => true)))
-                ->addColumn(array('label'=>'Updated','index'=>'lastupdate', 'width'=>120, 'editable' => true, 'editrules' => array('required' => true)))
-                ->addColumn(array('label'=>'UID','index'=>'uid', 'width'=>120, 'editable' => true, 'editrules' => array('required' => true)))
+     //           ->addColumn(array('label'=>'Updated','index'=>'lastupdate', 'width'=>120, 'editable' => true, 'editrules' => array('required' => true)))
+     //           ->addColumn(array('label'=>'UID','index'=>'uid', 'width'=>120, 'editable' => true, 'editrules' => array('required' => true)))
         
                 ->renderGrid()
             }}
