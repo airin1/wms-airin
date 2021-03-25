@@ -96,14 +96,14 @@
             ->addColumn(array('key'=>true,'index'=>'TPS_DOKNPE_PK','hidden'=>true))
 
             ->addColumn(array('label'=>'Kode Kantor','index'=>'KD_KANTOR','width'=>120,'align'=>'center'))
-            ->addColumn(array('label'=>'No NPE','index'=>'NONPE','width'=>80,'align'=>'center'))
-            ->addColumn(array('label'=>'No. Daftar','index'=>'NO_DAFTAR','width'=>250,'align'=>'center'))
-            ->addColumn(array('label'=>'Tgl. Daftar','index'=>'TGL_DAFTAR','width'=>120,'align'=>'center'))
-            ->addColumn(array('index'=>'ID Consigne ','index'=>'NPWP_EKS','width'=>160,'hidden'=>true))
+            ->addColumn(array('label'=>'No NPE','index'=>'NONPE','width'=>200,'align'=>'center'))
+            ->addColumn(array('label'=>'No. Daftar','index'=>'NO_DAFTAR','width'=>150,'align'=>'center'))
+            ->addColumn(array('label'=>'Tgl. Daftar','index'=>'TGL_DAFTAR','width'=>180,'align'=>'center'))
+            ->addColumn(array('index'=>'ID Consigne ','index'=>'NPWP_EKS','width'=>200,'hidden'=>true))
             ->addColumn(array('label'=>'Consignee','index'=>'NAMA_EKS','width'=>350))
-            ->addColumn(array('label'=>'Status Segel','index'=>'FL_SEGEL','width'=>120,'align'=>'center'))
+            ->addColumn(array('label'=>'Status Segel','index'=>'FL_SEGEL','width'=>60,'align'=>'center'))
             ->addColumn(array('label'=>'No Container','index'=>'NO_CONT','width'=>120,'align'=>'center'))
-            ->addColumn(array('label'=>'Size','index'=>'SIZE','width'=>160,'align'=>'center'))
+            ->addColumn(array('label'=>'Size','index'=>'SIZE','width'=>60,'align'=>'center'))
        
 
             ->renderGrid()
