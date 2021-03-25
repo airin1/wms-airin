@@ -1899,12 +1899,9 @@ class SoapController extends DefaultController {
                    
                 }elseif($key == 'DETIL' || $key == 'detil'){
 					 $docmanual = new \App\Models\TpsDokNPE;
-					  foreach($data->children() as $child) {
-						$cont[] = $child;
-					  }
-					 
-                    foreach ($cont as $key1=>$value1):
+                    foreach ($value as $key1):
                        if($key1 == 'CONT' || $key1 == 'cont'){
+						  foreach ($key1 as $key2=>$value1):
 						    foreach ($value1 as $keyk=>$valuek):
                                 $docmanual->$keyk = $valuek;
                             endforeach;
@@ -1920,7 +1917,7 @@ class SoapController extends DefaultController {
 							$docmanual->JAM_UPLOAD = date('H:i:s');
 							
 							$docmanual->save();
-                        
+                        endforeach; 
 					   }
 					endforeach;  
                 }
