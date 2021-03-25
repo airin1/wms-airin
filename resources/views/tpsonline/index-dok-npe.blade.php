@@ -82,7 +82,7 @@
             ->setGridOption('url', URL::to('/tpsonline/penerimaan/dok-npe/grid-data'))
             ->setGridOption('rowNum', 100)
             ->setGridOption('shrinkToFit', true)
-            ->setGridOption('sortname','TPS_DOKNPEXML_PK')
+            ->setGridOption('sortname','TPS_DOKNPE_PK')
             ->setGridOption('rownumbers', true)
             ->setGridOption('height', '295')
             ->setGridOption('rownumWidth', 50)
@@ -93,7 +93,7 @@
             ->setFilterToolbarOptions(array('autosearch'=>true))
             ->setGridEvent('gridComplete', 'gridCompleteEvent')
             ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>80, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
-            ->addColumn(array('key'=>true,'index'=>'TPS_DOKNPEXML_PK','hidden'=>true))
+            ->addColumn(array('key'=>true,'index'=>'TPS_DOKNPE_PK','hidden'=>true))
 
             ->addColumn(array('label'=>'Kode Kantor','index'=>'KD_KANTOR','width'=>120,'align'=>'center'))
             ->addColumn(array('label'=>'No NPE','index'=>'NONPE','width'=>80,'align'=>'center'))
