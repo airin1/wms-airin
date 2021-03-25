@@ -273,7 +273,7 @@ Route::group(['prefix' => 'tpsonline/penerimaan', 'namespace' => 'Tps'], functio
         'as' => 'tps-doknpe-edit',
         'uses' => 'PenerimaanController@dokNPEEdit'
     ]);
-    Route::post('/dok-npe/grid-data', function()
+    Route::get('/dok-npe/grid-data', function()
     {
         GridEncoder::encodeRequestedData(new \App\Models\TpsTablesRepository(new App\Models\TpsDokNPE(),Illuminate\Support\Facades\Request::all()) ,Illuminate\Support\Facades\Request::all());
     });
