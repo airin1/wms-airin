@@ -79,7 +79,7 @@
             GridRender::setGridId("tpsDokNPEGrid")
             ->enableFilterToolbar()
             ->setGridOption('mtype', 'POST')
-            ->setGridOption('url', URL::to('/tpsonline/penerimaan/dok-npe/grid-data))
+            ->setGridOption('url', URL::to('/tpsonline/penerimaan/dok-npe/grid-data'))
             ->setGridOption('rowNum', 100)
             ->setGridOption('shrinkToFit', true)
             ->setGridOption('sortname','TPS_DOKNPEXML_PK')
