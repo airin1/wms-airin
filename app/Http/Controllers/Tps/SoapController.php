@@ -1883,7 +1883,7 @@ class SoapController extends DefaultController {
         foreach ($xml->children() as $data):  
             foreach ($data as $key=>$value):
                 if($key == 'HEADER' || $key == 'header'){           
-                    $docmanual = new \App\Models\TpsDokNPE;
+                   
                     foreach ($value as $keyh=>$valueh):
                         if($keyh == 'kd_kantor' || $keyh == 'KD_KANTOR'){ $KD_KANTOR=$valueh; }
                         if($keyh == 'no_daftar' || $keyh == 'NO_DAFTAR'){ $NO_DAFTAR=$valueh; }
@@ -1898,6 +1898,7 @@ class SoapController extends DefaultController {
                     endforeach;
                    
                 }elseif($key == 'DETIL' || $key == 'detil'){
+					 $docmanual = new \App\Models\TpsDokNPE;
                     foreach ($value as $key1=>$value1):
                             foreach ($value1 as $keyk=>$valuek):
                                 $docmanual->$keyk = $valuek;
