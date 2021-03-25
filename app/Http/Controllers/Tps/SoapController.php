@@ -1899,7 +1899,11 @@ class SoapController extends DefaultController {
                    
                 }elseif($key == 'DETIL' || $key == 'detil'){
 					 $docmanual = new \App\Models\TpsDokNPE;
-                    foreach ($value as $key1=>$value1):
+					  foreach($data->children() as $child) {
+						$cont[] = $child;
+					  }
+					 
+                    foreach ($cont as $key1=>$value1):
                        if($key1 == 'CONT' || $key1 == 'cont'){
 						    foreach ($value1 as $keyk=>$valuek):
                                 $docmanual->$keyk = $valuek;
