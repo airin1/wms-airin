@@ -1861,11 +1861,11 @@ class SoapController extends DefaultController {
         });
         
         $data = [
-            'UserName' => $this->user, 
-            'Password' => $this->password,
-            'npwp' => $request->npwp,
-            'NoDok' => $request->no_dok,
-            'kd_kantor' =>$request->kd_kantor
+            'UserName' 	=> $this->user, 
+            'Password' 	=> $this->password,
+			'No_PE' 	=> $request->no_dok,
+            'npwp' 	    => $request->npwp,           
+            'kdKantor' 	=>$request->kd_kantor
         ];
         
         // Using the added service
