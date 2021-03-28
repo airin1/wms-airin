@@ -1898,25 +1898,39 @@ class SoapController extends DefaultController {
                     endforeach;
                    
                 }elseif($key == 'DETIL' || $key == 'detil'){
-					 $docmanual = new \App\Models\TpsDokNPE;
+					$docmanual = new \App\Models\TpsDokNPE;
                     foreach ($value as $key1=>$value1):
-                       if($key1 == 'CONT' || $key1 == 'Cont'){
-						    foreach ($value1 as $keyk=>$valuek):
-                                $docmanual->$keyk = $valuek;
-                            endforeach;
-                            $docmanual->KD_KANTOR=$KD_KANTOR;
-							$docmanual->NO_DAFTAR=$NO_DAFTAR;
-							$docmanual->TGL_DAFTAR=$TGL_DAFTAR;
-							$docmanual->NONPE=$NONPE;
-							$docmanual->TGLNPE=$TGLNPE;
-							$docmanual->NPWP_EKS= $NPWP_EKS;
-							$docmanual->NAMA_EKS=$NAMA_EKS;
-							$docmanual->FL_SEGEL=$FL_SEGEL;
-							$docmanual->TGL_UPLOAD = date('Y-m-d');
-							$docmanual->JAM_UPLOAD = date('H:i:s');
-							
-							$docmanual->save();
-                        
+                       if($key1 == 'CONT' || $key1 == 'cont'){
+					       foreach ($value1 as $keyk=>$valuek):
+						      if($keyk == 'SERI_CONT' || $keyk == 'seri_cont'){ $SERI_CONT=$valuek; }
+						      if($keyk == 'NO_CONT' || $keyk == 'no_cont'){ $NO_CONT=$valuek; }
+						      if($keyk == 'SIZE' || $keyk == 'size'){ $SIZE=$valuek; }
+						      
+						      //$docmanual->$keyk = $valuek;
+                            /*
+                             * SELECT `TPS_DOKNPE_PK`, `KD_KANTOR`, `NO_DAFTAR`, `NONPE`, `TGL_DAFTAR`, 
+                             * `TGLNPE`, `NPWP_EKS`, `NAMA_EKS`, `FL_SEGEL`, `SERI_CONT`, `NO_CONT`, `SIZE`, 
+                             * `TGL_UPLOAD`, `JAM_UPLOAD` FROM `tps_doknpexml` WHERE 1
+                             */
+                              $docmanual->KD_KANTOR= $KD_KANTOR;
+    						  $docmanual->NO_DAFTAR= $NO_DAFTAR;
+    						  $docmanual->NONPE= $NONPE;
+    						  $docmanual->TGL_DAFTAR= $TGL_DAFTAR;
+    						  $docmanual->TGLNPE= $TGLNPE;
+    						  $docmanual->NPWP_EKS= $NPWP_EKS;
+    						  $docmanual->NAMA_EKS= $NAMA_EKS;
+    						  $docmanual->FL_SEGEL= $FL_SEGEL;
+    						  //container
+    						  $docmanual->SERI_CONT= $SERI_CONT;
+    						  $docmanual->NO_CONT= $NO_CONT;
+    						  $docmanual->SIZE= $SIZE;
+    						  //-_-
+    						  $docmanual->TGL_UPLOAD = date('Y-m-d');
+    						  $docmanual->JAM_UPLOAD = date('H:i:s');
+    							
+    						  $docmanual->save();
+    							
+							endforeach;
 					   }
 					endforeach;  
                 }
