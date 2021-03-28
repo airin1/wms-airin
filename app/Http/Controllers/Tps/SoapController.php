@@ -1901,10 +1901,16 @@ class SoapController extends DefaultController {
 					$docmanual = new \App\Models\TpsDokNPE;
                     foreach ($value as $key1=>$value1):
                        if($key1 == 'CONT' || $key1 == 'cont'){
-					       foreach ($value1 as $keyk=>$valuek):
+					       //reset
+                           $SERI_CONT = '';
+                           $NO_CONT = '';
+                           $SIZE = '';
+                           
+                           foreach ($value1 as $keyk=>$valuek):
 						      if($keyk == 'SERI_CONT' || $keyk == 'seri_cont'){ $SERI_CONT=$valuek; }
 						      if($keyk == 'NO_CONT' || $keyk == 'no_cont'){ $NO_CONT=$valuek; }
 						      if($keyk == 'SIZE' || $keyk == 'size'){ $SIZE=$valuek; }
+						   endforeach;
 						      
 						      //$docmanual->$keyk = $valuek;
                             /*
@@ -1933,7 +1939,6 @@ class SoapController extends DefaultController {
     							
     						  $docmanual->save();
 						      }
-							endforeach;
 					   }
 					endforeach;  
                 }
