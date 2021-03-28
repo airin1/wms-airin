@@ -1912,6 +1912,9 @@ class SoapController extends DefaultController {
                              * `TGLNPE`, `NPWP_EKS`, `NAMA_EKS`, `FL_SEGEL`, `SERI_CONT`, `NO_CONT`, `SIZE`, 
                              * `TGL_UPLOAD`, `JAM_UPLOAD` FROM `tps_doknpexml` WHERE 1
                              */
+						      if ( !empty($SERI_CONT)
+						          && !empty($NO_CONT)
+						          && !empty($SIZE) ) {
                               $docmanual->KD_KANTOR= $KD_KANTOR;
     						  $docmanual->NO_DAFTAR= $NO_DAFTAR;
     						  $docmanual->NONPE= $NONPE;
@@ -1929,7 +1932,7 @@ class SoapController extends DefaultController {
     						  $docmanual->JAM_UPLOAD = date('H:i:s');
     							
     						  $docmanual->save();
-    							
+						      }
 							endforeach;
 					   }
 					endforeach;  
