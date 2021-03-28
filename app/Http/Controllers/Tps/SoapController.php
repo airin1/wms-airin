@@ -1898,9 +1898,10 @@ class SoapController extends DefaultController {
                     endforeach;
                    
                 }elseif($key == 'DETIL' || $key == 'detil'){
-					$docmanual = new \App\Models\TpsDokNPE;
+					
                     foreach ($value as $key1=>$value1):
-                       if($key1 == 'CONT' || $key1 == 'cont'){
+                        $docmanual = new \App\Models\TpsDokNPE;
+                        if($key1 == 'CONT' || $key1 == 'cont'){
 					       //reset
                            $SERI_CONT = '';
                            $NO_CONT = '';
@@ -1939,7 +1940,7 @@ class SoapController extends DefaultController {
     							
     						  $docmanual->save();
 						      }
-					   }
+		              }
 					endforeach;  
                 }
             endforeach;
