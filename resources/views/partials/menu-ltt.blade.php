@@ -152,6 +152,7 @@
                       <li><a href="{{ route('tps-sppbPib-index') }}">Data SPPB</a></li>
                       <li><a href="{{ route('tps-sppbBc-index') }}">Data SPPB BC23</a></li>
                       <li><a href="{{ route('tps-infoNomorBc-index') }}">Info Nomor BC11</a></li>
+					 
                     </ul>
                   </li>
                   <li class="treeview">
@@ -558,6 +559,8 @@
                           <li><a href="{{ route('tps-sppbPib-index') }}">Data SPPB</a></li>
                           <li><a href="{{ route('tps-sppbBc-index') }}">Data SPPB BC23</a></li>
                           <li><a href="{{ route('tps-infoNomorBc-index') }}">Info Nomor BC11</a></li>
+						  <li><a href="{{ route('tps-dokNPE-index') }}">Data Dok NPE</a></li>
+						
                         </ul>
                       </li>
                       <li class="treeview">
@@ -588,6 +591,7 @@
                                   <li><a href="{{ route('tps-codecoContFcl-index') }}">Codeco Cont FCL</a></li>
                                   <li><a href="{{ route('tps-codecoContBuangMty-index') }}">Codeco Cont Buang MTY</a></li>
                                   <li><a href="{{ route('tps-codecoKms-index') }}">Codeco KMS</a></li>
+								  <li><a href="{{ route('tps-reject-index') }}">Info Data Reject</a></li>
                               </ul>
                           </li>
                           <li><a href="{{ route('tps-realisasiBongkarMuat-index') }}">Realisasi Bongkar Muat</a></li>
@@ -652,6 +656,11 @@
                   <li class="treeview">
                       <a href="{{route('barcode-index')}}">
                           <i class="fa fa-barcode"></i> Gate Pass (Autogate)
+                      </a>
+                  </li>
+				   <li class="treeview">
+                      <a href="http://203.173.92.178:8989/nle/">
+                          <i class="fa fa-barcode"></i> NLE
                       </a>
                   </li>
                   <li class="treeview">

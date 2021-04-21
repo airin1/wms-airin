@@ -1884,8 +1884,18 @@ UNZ+1+1709131341'\n";
                 // Insert Invoice Detail
                 if(count($container20) > 0) {
                     
-                    $tarif20 = \App\Models\InvoiceTarifNct::where(array('type' => $type, 'size' => 20))->whereIn('lokasi_sandar', array($tps_asal,'AIRIN'))->get();
-                    foreach ($tarif20 as $t20) :
+					//cek berlaku tarif 
+                    if($data['ETA']<'2021-04-15'){
+					  $tarif20 = \App\Models\InvoiceTarifNct::where(array('type' => $type, 'size' => 20))->whereIn('lokasi_sandar', array($tps_asal,'AIRIN'))->get();
+                      $hr4=9;
+					}
+					else
+					{
+					  $tarif20 = \App\Models\InvoiceTarifNctNew::where(array('type' => $type, 'size' => 20))->whereIn('lokasi_sandar', array($tps_asal,'AIRIN'))->get();
+	                  $hr4=6;
+					}
+
+				   foreach ($tarif20 as $t20) :
                         
                         $invoice_penumpukan = new \App\Models\InvoiceNctPenumpukan;                      
 
@@ -1951,7 +1961,7 @@ UNZ+1+1709131341'\n";
                             $invoice_penumpukan->masa1 = ($invoice_penumpukan->hari_masa2 * $t20->masa1) * count($container20);
                             $invoice_penumpukan->masa2 = ($invoice_penumpukan->hari_masa2 * $t20->masa2 * 3) * count($container20);
                             $invoice_penumpukan->masa3 = ($invoice_penumpukan->hari_masa3 * $t20->masa3 * 6) * count($container20);
-                            $invoice_penumpukan->masa4 = ($invoice_penumpukan->hari_masa4 * $t20->masa4 * 9) * count($container20);
+                            $invoice_penumpukan->masa4 = ($invoice_penumpukan->hari_masa4 * $t20->masa4 * $hr4) * count($container20);
                             
                         } elseif($t20->lokasi_sandar == 'AIRIN') {
                             
@@ -2060,9 +2070,19 @@ UNZ+1+1709131341'\n";
                 }
                 
                 if(count($container40) > 0) {
+                    
+					//cek tarif 40
+					if($data['ETA']<'2021-04-15'){
+                     $tarif40 = \App\Models\InvoiceTarifNct::where(array('type' => $type, 'size' => 40))->whereIn('lokasi_sandar', array($tps_asal,'AIRIN'))->get();
+                     $hr4=9;
+					}
+					else
+					{
+					 $tarif40 = \App\Models\InvoiceTarifNctNew::where(array('type' => $type, 'size' => 40))->whereIn('lokasi_sandar', array($tps_asal,'AIRIN'))->get();
+                     $hr4=6;
 
-                    $tarif40 = \App\Models\InvoiceTarifNct::where(array('type' => $type, 'size' => 40))->whereIn('lokasi_sandar', array($tps_asal,'AIRIN'))->get();
-
+					}
+					 
                     foreach ($tarif40 as $t40) :
                         
                         $invoice_penumpukan = new \App\Models\InvoiceNctPenumpukan;
@@ -2127,7 +2147,7 @@ UNZ+1+1709131341'\n";
                             $invoice_penumpukan->masa1 = ($invoice_penumpukan->hari_masa1 * $t40->masa1) * count($container40);
                             $invoice_penumpukan->masa2 = ($invoice_penumpukan->hari_masa2 * $t40->masa2 * 3) * count($container40);
                             $invoice_penumpukan->masa3 = ($invoice_penumpukan->hari_masa3 * $t40->masa3 * 6) * count($container40);
-                            $invoice_penumpukan->masa4 = ($invoice_penumpukan->hari_masa4 * $t40->masa4 * 9) * count($container40);
+                            $invoice_penumpukan->masa4 = ($invoice_penumpukan->hari_masa4 * $t40->masa4 * $hr4) * count($container40);
                             
                         } elseif($t40->lokasi_sandar == 'AIRIN') {
                             // GERAKAN
@@ -2235,9 +2255,17 @@ UNZ+1+1709131341'\n";
                 }
                 
                 if(count($container45) > 0) {
-
-                    $tarif45 = \App\Models\InvoiceTarifNct::where(array('type' => $type, 'size' => 45))->whereIn('lokasi_sandar', array($tps_asal,'AIRIN'))->get();
-
+                    
+					//cek tarif 45
+					if($data['ETA']<'2021-04-15'){
+						$tarif45 = \App\Models\InvoiceTarifNct::where(array('type' => $type, 'size' => 45))->whereIn('lokasi_sandar', array($tps_asal,'AIRIN'))->get();
+					    $hr4=9;
+					}
+					else
+					{
+						$tarif45 = \App\Models\InvoiceTarifNctNew::where(array('type' => $type, 'size' => 45))->whereIn('lokasi_sandar', array($tps_asal,'AIRIN'))->get();
+					    $hr4=6;
+					}
                     foreach ($tarif45 as $t45) :
                         
                         $invoice_penumpukan = new \App\Models\InvoiceNctPenumpukan;
@@ -2302,7 +2330,7 @@ UNZ+1+1709131341'\n";
                             $invoice_penumpukan->masa1 = ($invoice_penumpukan->hari_masa1 * $t45->masa1) * count($container45);
                             $invoice_penumpukan->masa2 = ($invoice_penumpukan->hari_masa2 * $t45->masa2 * 3) * count($container45);
                             $invoice_penumpukan->masa3 = ($invoice_penumpukan->hari_masa3 * $t45->masa3 * 6) * count($container45);
-                            $invoice_penumpukan->masa4 = ($invoice_penumpukan->hari_masa4 * $t45->masa4 * 9) * count($container45);
+                            $invoice_penumpukan->masa4 = ($invoice_penumpukan->hari_masa4 * $t45->masa4 * $hr4) * count($container45);
                             
                         } elseif($t45->lokasi_sandar == 'AIRIN') {
                             // GERAKAN
@@ -2409,9 +2437,15 @@ UNZ+1+1709131341'\n";
                 }
                 
             }
-            
-            $nct_gerakan = array('Pas Truck' => 9091, 'Gate Pass Admin' => 20000, 'Cost Recovery' => 75000);
-            
+            //cek tarif 45
+		    if($data['ETA']<'2021-04-15'){
+              $nct_gerakan = array('Pas Truck' => 9091, 'Gate Pass Admin' => 20000, 'Cost Recovery' => 75000);
+            }
+			else
+			{
+				$nct_gerakan = array('Pas Truck' => 9091, 'Gate Pass Admin' => 20000, 'Cost Recovery' => 0);
+			}	
+			
             foreach($nct_gerakan as $key=>$value):
                 $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
                         
