@@ -1816,9 +1816,10 @@ UNZ+1+1709131341'\n";
             'FLAT TRACK OL'
         );
         
-        $container20 = DBContainer::where('size', 20)->whereIn('TCONTAINER_PK', $ids)->get();
-        $container40 = DBContainer::where('size', 40)->whereIn('TCONTAINER_PK', $ids)->get();
-        $container45 = DBContainer::where('size', 45)->whereIn('TCONTAINER_PK', $ids)->get();
+		//sort by tgl masuk asc
+        $container20 = DBContainer::where('size', 20)->whereIn('TCONTAINER_PK', $ids)->orderBy('TGLMASUK','DESC')->get();
+        $container40 = DBContainer::where('size', 40)->whereIn('TCONTAINER_PK', $ids)->orderBy('TGLMASUK','DESC')->get();
+        $container45 = DBContainer::where('size', 45)->whereIn('TCONTAINER_PK', $ids)->orderBy('TGLMASUK','DESC')->get();
         
         if($container20 || $container40 || $container45) {
             
