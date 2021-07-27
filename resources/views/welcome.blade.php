@@ -16,9 +16,17 @@
             <!-- small box -->
             <div class="small-box bg-aqua">
                 <div class="inner">
-                    <h3>{{ number_format($sor->total,'2',',','.') }}<sup style="font-size: 20px">%</sup></h3>
+				  
+				  <div class=”col-md-1″>
+                    <h3>{{ number_format($sorarn1->total,'2',',','.') }}<sup style="font-size: 20px">%</sup></h3>
 
-                    <p>LCL SOR %</p>
+                    <p>LCL SOR AIRIN UTARA (ARN1) %</p>
+				 </div>
+				 <div class=”col-md-1″>
+                    <h3>{{ number_format($sorarn3->total,'2',',','.') }}<sup style="font-size: 20px">%</sup></h3>
+
+                    <p>LCL SOR AIRIN BARAT (ARN3) %</p>
+				 </div>
                 </div>
                 <div class="icon">
                     <i class="ion ion-pie-graph"></i>
@@ -33,9 +41,16 @@
           <!-- small box -->
             <div class="small-box bg-green">
                 <div class="inner">
-                    <h3>{{ number_format($yor->total,'2',',','.') }}<sup style="font-size: 20px">%</sup></h3>
+				   <div class=”col-md-1″>
+                    <h3>{{ number_format($yorarn1->total,'2',',','.') }}<sup style="font-size: 20px">%</sup></h3>
 
-                    <p>FCL YOR %</p>
+                    <p>FCL YOR AIRIN UTARA (ARN1) %</p>
+				  </div>
+				  <div class=”col-md-1″>
+                    <h3>{{ number_format($yorarn3->total,'2',',','.') }}<sup style="font-size: 20px">%</sup></h3>
+
+                    <p>FCL YOR AIRIN BARAT (ARN3) %</p>
+				  </div>	
                 </div>
                 <div class="icon">
                     <i class="ion ion-stats-bars"></i>

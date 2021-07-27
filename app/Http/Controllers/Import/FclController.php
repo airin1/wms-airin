@@ -266,6 +266,7 @@ class FclController extends Controller
         $data['vessels'] = DBVessel::select('tvessel_pk as id','vesselname as name','vesselcode as code','callsign')->get();
         $data['shippinglines'] = DBShippingline::select('TSHIPPINGLINE_PK as id','SHIPPINGLINE as name')->get();
         $data['lokasisandars'] = DBLokasisandar::select('TLOKASISANDAR_PK as id','NAMALOKASISANDAR as name')->get();
+        $data['ppjk'] = \DB::table('tppjk')->get();
         
         return view('import.fcl.create-register')->with($data);
     }
@@ -318,7 +319,11 @@ class FclController extends Controller
             return back()->withErrors($validator)->withInput();
         }
         
-        $data = $request->except(['_token']); 
+        //sng:20210705
+        $telp_ppjk = $request['telp_ppjk'];
+        //-_-
+        
+        $data = $request->except(['_token','telp_ppjk']); 
         $data['TGLENTRY'] = date('Y-m-d');
         $data['TGLMBL'] = (!empty($data['TGLMBL'])) ? date('Y-m-d', strtotime($data['TGLMBL'])) : '0000-00-00';
         $data['ETA'] = (!empty($data['ETA'])) ? date('Y-m-d', strtotime($data['ETA'])) : '0000-00-00';
@@ -396,6 +401,9 @@ class FclController extends Controller
             $data['GUDANG_TUJUAN'] = $joborder->GUDANG_TUJUAN;
             $data['CALLSIGN'] = $joborder->CALLSIGN;
             $data['UID'] = \Auth::getUser()->name;
+            //sng:20210705
+            $data['telp_ppjk'] = $telp_ppjk;
+            //-_-
             
             $container_insert_id = DBContainer::insertGetId($data);
             
@@ -461,6 +469,9 @@ class FclController extends Controller
         $jobid = DBContainer::select('TJOBORDER_FK as id')->where('TCONTAINER_PK',$id)->first();
         
         $data['joborder'] = DBJoborder::find($jobid->id);
+        //sng:20210720
+        $data['ppjk'] = \DB::table('tppjk')->get();
+        //-_-
         
         return view('import.fcl.edit-register')->with($data);
     }
@@ -484,7 +495,11 @@ class FclController extends Controller
             return view('errors.no-access');
         }
         
-        $data = $request->except(['_token']); 
+        //sng:20210705
+        $telp_ppjk = $request['telp_ppjk'];
+        //-_-
+        
+        $data = $request->except(['_token','telp_ppjk']);
         $data['TGLMBL'] = (!empty($data['TGLMBL'])) ? date('Y-m-d', strtotime($data['TGLMBL'])) : '0000-00-00';
         $data['ETA'] = (!empty($data['ETA'])) ? date('Y-m-d', strtotime($data['ETA'])) : '0000-00-00';
         $data['ETD'] = (!empty($data['ETD'])) ? date('Y-m-d', strtotime($data['ETD'])) : '0000-00-00';
@@ -561,6 +576,10 @@ class FclController extends Controller
             $data['KD_TPS_ASAL'] = $joborder->KD_TPS_ASAL;
             $data['GUDANG_TUJUAN'] = $joborder->GUDANG_TUJUAN;
             $data['CALLSIGN'] = $joborder->CALLSIGN;           
+            
+            //sng:20210705
+            $data['telp_ppjk'] = $telp_ppjk;
+            //-_-
             
             $updateContainer = DBContainer::where('TJOBORDER_FK', $id)
                     ->update($data);

@@ -1018,14 +1018,19 @@ class PenerimaanController extends Controller
     public function sppbBcPrint($id)
     {
         $data['sppb'] = \App\Models\TpsSppbBc::find($id);
-        
+        $data['tpsbckms'] = \App\Models\TpsSppbBcKms::where('TPS_SPPBXML_FK', $id)->get();
+		$data['tpsbccon'] = \App\Models\TpsSppbBcCont::where('TPS_SPPBXML_FK', $id)->get();
+
         return view('print.sppb-bc')->with($data);
     }
     
     public function sppbPibPrint($id)
     {
         $data['sppb'] = \App\Models\TpsSppbPib::find($id);
-        
-        return view('print.sppb-pib')->with($data);
+		$data['tpskms'] = \App\Models\TpsSppbPibKms::where('TPS_SPPBXML_FK', $id)->get();
+		$data['tpscon'] = \App\Models\TpsSppbPibCont::where('TPS_SPPBXML_FK', $id)->get();
+      
+
+		return view('print.sppb-pib')->with($data);
     }
 }

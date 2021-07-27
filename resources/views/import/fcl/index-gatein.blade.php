@@ -577,7 +577,8 @@
                                 <option value="Class BB Standar 8">Class BB Standar 8</option>
                                 <option value="Class BB Standar 9">Class BB Standar 9</option>
                                 <option value="Class BB Standar 4,1">Class BB Standar 4,1</option>
-                                <option value="Class BB Standar 4,2">Class BB Standar 4,2</option>    
+                                <option value="Class BB Standar 4,2">Class BB Standar 4,2</option>   
+								<option value="Class BB Standar 4,3">Class BB Standar 4,3</option>   
                                 <option value="Class BB Standar 6">Class BB Standar 6</option>
                                 <option value="Class BB Standar 2,2">Class BB Standar 2,2</option>
                                 <option value="Class BB Standar 2,3">Class BB Standar 2,3</option>    

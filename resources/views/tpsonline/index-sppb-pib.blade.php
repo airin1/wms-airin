@@ -209,7 +209,7 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">NPWP Importir</label>
                                 <div class="col-sm-8">
-                                    <input type="number" class="form-control" name="npwp_imp" />
+                                    <input type="text" class="form-control" name="npwp_imp" />
                                 </div>
                             </div>
                         </div>
