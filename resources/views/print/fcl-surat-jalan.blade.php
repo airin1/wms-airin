@@ -142,7 +142,7 @@
                 <tr>
                     <td align="left" style="display: block;">{{($container->KODE_GUDANG == 'ARN3') ? 'INDRA' : 'WATMASDEL'}}</td>
                     <td></td>
-                    <td align="center">YANUAR ANDRES SUSILO</td>
+                    <td align="center">TONY NOVRIADI BUDIHARJO</td>
                 </tr>
             </table>
         </div>
