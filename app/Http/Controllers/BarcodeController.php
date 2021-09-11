@@ -93,13 +93,37 @@ class BarcodeController extends Controller
     {
         $sid = $request->id;
         $ids = explode(',', $sid);
-
-        $update = \App\Models\Barcode::whereIn('id',$ids)->update(['cancel' => true]);
+   
+        $barcode = \App\Models\Barcode::find($sid);
+		//$ref_id  = $barcode->ref_id;
+         
+        
+       
+		
+		if($barcode->ref_type=='Fcl'){
+			 $container = \App\Models\Containercy::find($barcode->ref_id);
+			if($barcode->ref_action == 'get'){			  
+	          $container->TGLMASUK = NULL;
+			  $container->JAMMASUK = NULL;
+			  $container->UIDMASUK = '';
+              $container->save();
+			}	
+			if($barcode->ref_action == 'release'){			  
+	          $container->TGLRELEASE = NULL;
+			  $container->JAMRELEASE = NULL;			
+              $container->save();
+			}	
+		}	
+		$update = \App\Models\Barcode::whereIn('id',$ids)->update(['cancel' => true]);
         
         if($update){
             return json_encode(array('success' => true, 'message' => 'Gate pass has canceled.'));
         } 
-        
+         if($container->save()){
+			  return json_encode(array('success' => true, 'message' => 'Gate pass has canceled.'));
+		 }	 
+
+		
         return json_encode(array('success' => false, 'message' => 'Something wrong, please try again.'));
 
     }

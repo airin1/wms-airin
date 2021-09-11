@@ -10,6 +10,11 @@ Route::group(['prefix' => 'lcl', 'namespace' => 'Import'], function(){
     {
         GridEncoder::encodeRequestedData(new \App\Models\TablesRepository(new App\Models\Manifest(),Illuminate\Support\Facades\Request::all()) ,Illuminate\Support\Facades\Request::all());
     });
+	Route::post('/manifest/grid-data-mty', function()
+    {
+        GridEncoder::encodeRequestedData(new \App\Models\TablesRepository(new App\Models\Container(),Illuminate\Support\Facades\Request::all()) ,Illuminate\Support\Facades\Request::all());
+    });
+	
     Route::post('/manifest/crud', function()
     {
         $Eloquent = new \App\Models\Eloquent\EloquentManifest();

@@ -1810,8 +1810,8 @@ UNZ+1+1709131341'\n";
             'Class BB Standar 8',
             'Class BB Standar 9',
             'Class BB Standar 4,1',
-            'Class BB Standar 4,2',
-            'Class BB Standar 4,3',
+			'Class BB Standar 4,2',
+			'Class BB Standar 4,3',
             'Class BB Standar 6',
             'Class BB Standar 2,2'
         );
@@ -2629,41 +2629,92 @@ UNZ+1+1709131341'\n";
         $container_id = $request->id;  
         $kd_dok = $request->kd_dok;
         $container = DBContainer::find($container_id);
-        
+	      
         $sppb = '';
-        
+        $sppbcont='';
+		$nopib='';
+		$tglpib='';
         if($kd_dok == 1){
+			
             $sppb = \App\Models\TpsSppbPib::where(array('NO_BL_AWB' => $container->NO_BL_AWB))
                     ->orWhere('NO_MASTER_BL_AWB', $container->NO_BL_AWB)
                     ->first();
+					
+			if($sppb){
+			$sppbcont= \App\Models\TpsSppbPibCont::where('CAR',$sppb->CAR)
+			->where('NO_CONT', $container->NOCONTAINER)
+			->first();  	
+			
+			
+            $nopib= $sppb->NO_PIB;
+			$tglpib= date('Y-m-d', strtotime($sppb->TGL_PIB));
+		    }
         }elseif($kd_dok == 2){
             $sppb = \App\Models\TpsSppbBc::where(array('NO_BL_AWB' => $container->NO_BL_AWB))
                     ->orWhere('NO_MASTER_BL_AWB', $container->NO_BL_AWB)
                     ->first();
+					
+			if($sppb){
+			$sppbcont= \App\Models\TpsSppbBcCont::where('CAR',$sppb->CAR)
+			->where('NO_CONT', $container->NOCONTAINER)
+			->first();  
+			
+            $nopib= $sppb->NO_PIB;
+			$tglpib= date('Y-m-d', strtotime($sppb->TGL_PIB));		
+			}
         }elseif($kd_dok == 41){
-            $sppb = \App\Models\TpsDokPabean::select('NO_DOK_INOUT as NO_SPPB','TGL_DOK_INOUT as TGL_SPPB','NPWP_IMP')
+            $sppb = \App\Models\TpsDokPabean::select('NO_DOK_INOUT as NO_SPPB','TGL_DOK_INOUT as TGL_SPPB','NPWP_IMP','CAR')
                     ->where(array('KD_DOK_INOUT' => $kd_dok, 'NO_BL_AWB' => $container->NO_BL_AWB))
                     ->first();
+			
+			if($sppb){
+			$sppbcont= \App\Models\TpsDokPabeanCont::where('CAR',$sppb->CAR)
+			->where('NO_CONT', $container->NOCONTAINER)
+			->first();  		
+             
+			$arraysppb = explode('/', $sppb->NO_SPPB);
+			$nopib= $arraysppb[0];
+			$tglpib= date('Y-m-d', strtotime($sppb->TGL_SPPB));
+			}
         }else{
-            $sppb = \App\Models\TpsDokManual::select('NO_DOK_INOUT as NO_SPPB','TGL_DOK_INOUT as TGL_SPPB','ID_CONSIGNEE as NPWP_IMP')
+            $sppb = \App\Models\TpsDokManual::select('NO_DOK_INOUT as NO_SPPB','TGL_DOK_INOUT as TGL_SPPB','ID_CONSIGNEE as NPWP_IMP','ID')
                     ->where(array('KD_DOK_INOUT' => $kd_dok, 'NO_BL_AWB' => $container->NO_BL_AWB))
                     ->first();
+					
+			if($sppb){
+			$sppbcont= \App\Models\TpsDokManualCont::where('ID',$sppb->ID)
+			->where('NO_CONT', $container->NOCONTAINER)
+			->first();  		
+		    }
+			
             if($sppb){
                 $tgl_sppb = explode('/', $sppb->TGL_SPPB);
                 $sppb->TGL_SPPB = $tgl_sppb[2].'-'.$tgl_sppb[1].'-'.$tgl_sppb[0];
-            }
+            
+			
+			$arraysppb = explode('/', $sppb->NO_SPPB);
+			$nopib= $arraysppb[0];
+			$tglpib= date('Y-m-d', strtotime($sppb->TGL_SPPB));
+			}
         }
         
         if($sppb){
+		   if($sppbcont){
             $arraysppb = explode('/', $sppb->NO_SPPB);
             $datasppb = array(
 //                'NO_SPPB' => $arraysppb[0],
                 'NO_SPPB' => $sppb->NO_SPPB,
                 'TGL_SPPB' => date('Y-m-d', strtotime($sppb->TGL_SPPB)),
+				'NO_PIB' => $nopib,
+                'TGL_PIB' => $tglpib,
                 'NPWP' => $sppb->NPWP_IMP
             );
+			
             return json_encode(array('success' => true, 'message' => 'Get Data SPPB has been success.', 'data' => $datasppb));
-        }else{
+           }else{
+			    return json_encode(array('success' => false, 'message' => 'No container Beda dangan SPPB.'));
+		   }
+		}else{
             return json_encode(array('success' => false, 'message' => 'Data SPPB Tidak ditemukan.'));
         }
         
@@ -2794,7 +2845,8 @@ UNZ+1+1709131341'\n";
         $container->status_bc = '';
         $container->release_bc = 'Y';
         $container->release_bc_date = date('Y-m-d H:i:s');
-              
+        $container->release_bc_uid = \Auth::getUser()->name;     
+		
         if($container->save()){
             $this->changeBarcodeStatus($container->TCONTAINER_PK, $container->NOCONTAINER, 'Fcl', 'active');
             return json_encode(array('success' => true, 'message' => 'Status has been Change!'));

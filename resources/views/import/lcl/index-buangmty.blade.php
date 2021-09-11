@@ -15,11 +15,17 @@
             del = ''; 
         for(var i=0;i < ids.length;i++){ 
             var cl = ids[i];
-            
+            rowdata = $('#lclMtyHoldGrid').getRowData(cl);
+			 
             edt = '<a href="{{ route("lcl-manifest-edit",'') }}/'+cl+'"><i class="fa fa-pencil"></i></a> ';
             del = '<a href="{{ route("lcl-manifest-delete",'') }}/'+cl+'" onclick="if (confirm(\'Are You Sure ?\')){return true; }else{return false; };"><i class="fa fa-close"></i></a>';
             jQuery("#lclBuangmtyGrid").jqGrid('setRowData',ids[i],{action:edt+' '+del}); 
-        } 
+           rowdata = $('#lclBuangmtyGrid').getRowData(cl);
+		   if(rowdata.status_bc == '') {
+                $("#" + cl).find("td").css("background-color", "#ffe500");
+            }
+		
+		} 
     }
     
     function onSelectRowEvent()
@@ -215,6 +221,7 @@
         //            ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>80, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
                     ->addColumn(array('key'=>true,'index'=>'TCONTAINER_PK','hidden'=>true))
                     ->addColumn(array('label'=>'No. Container','index'=>'NOCONTAINER','width'=>150))
+					->addColumn(array('label'=>'Status BC','index'=>'status_bc', 'width'=>80,'align'=>'center'))   
                     ->addColumn(array('label'=>'No. Joborder','index'=>'NoJob','width'=>150))
                     ->addColumn(array('label'=>'Tgl. ETA','index'=>'ETA','align'=>'center','width'=>120))
                     ->addColumn(array('label'=>'Consolidator','index'=>'NAMACONSOLIDATOR','width'=>250))

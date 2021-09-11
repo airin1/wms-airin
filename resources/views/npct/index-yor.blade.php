@@ -27,6 +27,25 @@
         $('#create-report-btn').on("click", function(){
             $('#create-yor-modal').modal('show');
         });
+		
+		$('#btn-edit').on("click", function(){
+           	 //Gets the selected row id.
+            rowid = $('#npctYorGrid').jqGrid('getGridParam', 'selrow');
+            rowdata = $('#npctYorGrid').getRowData(rowid);
+
+            if(rowid){
+             $('#edit-yor-modal').modal('show');
+		     //populateFormFields(rowdata, '');
+            $('#edit-yor-modal #id').val(rowid);
+            $('#edit-yor-modal #warehouse_code').val(rowdata.warehouse_code);
+			$('#edit-yor-modal #warehouse_type').val(rowdata.warehouse_type);
+			$('#edit-yor-modal #yor').val(rowdata.yor);
+			$('#edit-yor-modal #capacity').val(rowdata.capacity);
+			
+            }else{
+                alert('Please select data first.');
+            }
+        });
         
     });
     
@@ -35,8 +54,11 @@
     <div class="box-header with-border">
         <h3 class="box-title">Laporan Data YOR</h3>
         <div class="box-tools">
-            <button class="btn btn-block btn-danger btn-sm" id="create-report-btn"><i class="fa fa-plus"></i> Create Report</button>
+          	<button class="btn  btn-danger btn-sm" id="create-report-btn"><i class="fa fa-plus"></i> Create Report</button>
+            <button class="btn btn-info btn-sm" id="btn-edit"><i class="fa fa-repeat"></i> Update  YOR</button>   
         </div>
+		
+		
     </div>
     <div class="box-body table-responsive">
         {{
@@ -138,6 +160,61 @@
                 <div class="modal-footer">
                   <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                   <button type="submit" class="btn btn-primary">Create Report</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div id="edit-yor-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Data YOR</h4>
+            </div>
+            <form id="edit-invoice-form" class="form-horizontal" action="{{ route("yor-edit-report") }}" method="POST" enctype="multipart/form-data">
+                <div class="modal-body"> 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input name="_token" type="hidden" value="{{ csrf_token() }}" />
+                            <input id="id" name="id" type="hidden">
+                            <div class="form-group">
+                                <label for="roles" class="col-sm-3 control-label">Kode Gudang</label>
+                                <div class="col-sm-8">
+								 <input type="text" class="form-control" id="warehouse_code"   name="warehouse_code" readonly />
+                                  
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="roles" class="col-sm-3 control-label">Tipe</label>
+                                <div class="col-sm-8">
+                                   <input type="text" class="form-control" id="warehouse_type"   name="warehouse_type" readonly />
+								 
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">YOR</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="yor"   name="yor" required />
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Kapasitas</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="capacity"  name="capacity" required />
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Save Report</button>
                 </div>
             </form>
         </div><!-- /.modal-content -->

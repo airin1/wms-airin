@@ -59,8 +59,26 @@
     {
         $('#btn-renew').on("click", function(){
             rowid = $('#fclInvoicesGrid').jqGrid('getGridParam', 'selrow');
+		
             if(rowid){
-                $('#renew-invoice-modal').modal('show');
+				
+				rowdata = $('#fclInvoicesGrid').getRowData(rowid);
+                var cont = rowdata.no_container;  
+				  
+	
+				$('#renew-invoice-modal').modal('show');
+	
+				
+			    var container =  cont.toString().split(",");
+				$("#renew-invoice-modal #container_no").empty();
+                for (var i = 1; i < container.length+1; i++) {
+				  $("#renew-invoice-modal #container_no").append('<option value="'+container[i-1]+'" selected="selected">'+container[i-1]+'</option>').trigger('change');
+				   //alert('berhasil' + container[i-1]);
+				
+				
+				}
+				
+				
             }else{
                 alert('Please select data first.');
             }
@@ -136,6 +154,7 @@
             ->addColumn(array('label'=>'Perpanjang','index'=>'renew','width'=>80,'align'=>'center'))
             ->addColumn(array('label'=>'No. Faktur','index'=>'no_invoice','width'=>200,'align'=>'center'))           
             ->addColumn(array('label'=>'No. SPK','index'=>'no_spk','width'=>120,'align'=>'center'))
+			->addColumn(array('label'=>'Container','index'=>'no_container','width'=>120,'align'=>'center'))
             ->addColumn(array('label'=>'Consignee','index'=>'consignee','width'=>350,'align'=>'left'))
             ->addColumn(array('label'=>'NPWP','index'=>'npwp','width'=>160,'align'=>'center','hidden'=>true))
             ->addColumn(array('label'=>'Alamat','index'=>'alamat','width'=>120, 'align'=>'center','hidden'=>true))
@@ -176,9 +195,28 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Reff No. Faktur</label>
                                 <div class="col-sm-6">
-                                    <input type="text" class="form-control" name="no_faktur_renew" value="" required />
+                                    <input type="text" class="form-control" id= "no_faktur_renew" name="no_faktur_renew" value="" required />
                                 </div>
                             </div>
+							 <div class="form-group">
+                                <label class="col-sm-3 control-label">Tgl. DO</label>
+                                <div class="col-sm-6">
+                                    <div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" name="tgl_do" class="form-control pull-right datepicker" required>
+                                    </div>
+                                </div>
+                            </div>
+							<div class="form-group">
+								 <label class="col-sm-3 control-label">Select Container</label>
+								 <div class="col-sm-6">
+								   <select class="form-control" id="container_no" name="container_no[]"  multiple="multiple">								
+								   </select>
+								</div>
+							</div>
+							
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Tgl. Perpanjang</label>
                                 <div class="col-sm-6">

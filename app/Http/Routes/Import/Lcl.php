@@ -117,6 +117,12 @@ Route::group(['prefix' => 'lcl', 'namespace' => 'Import'], function(){
         'as' => 'lcl-change-status',
         'uses' => 'LclController@changeStatusBc'
     ]);
+	Route::get('/report/longstay/change-status-mty/{id}', [
+        'as' => 'lcl-change-status-mty',
+        'uses' => 'LclController@changeStatusBcmty'
+    ]);
+	
+	
     Route::get('/report/longstay/change-status-flag/{id}', [
         'as' => 'lcl-change-status-flag',
         'uses' => 'LclController@changeStatusFlag'
@@ -134,6 +140,11 @@ Route::group(['prefix' => 'lcl', 'namespace' => 'Import'], function(){
     Route::get('/bc/hold', [
         'as' => 'lcl-hold-index',
         'uses' => 'LclController@holdIndex'
+    ]);
+	
+	 Route::get('/bc/mtyhold', [
+        'as' => 'lcl-mtyhold-index',
+        'uses' => 'LclController@mtyholdIndex'
     ]);
     Route::get('/bc/segel', [
         'as' => 'lcl-segel-index',

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Import;
 
 use Illuminate\Http\Request;
 
+
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -2163,30 +2164,60 @@ class LclController extends Controller
         $manifest = DBManifest::find($manifest_id);
    
         $sppb = '';
+		$sppbkms = '';
         
         if($kd_dok == 1){
-            $sppb = \App\Models\TpsSppbPib::where(array('NO_BL_AWB' => $manifest->NOHBL))
-                    ->orWhere('NO_MASTER_BL_AWB', $manifest->NOHBL)
+            $sppb = \App\Models\TpsSppbPib::where(array('NO_BL_AWB' => $manifest->NOHBL,'JML_CONT'=> 0))
+                    ->orWhere('NO_MASTER_BL_AWB', $manifest->NOHBL,'JML_CONT', 0)					
                     ->first();
+					
+			if($sppb){
+			$sppbkms= \App\Models\TpsSppbPibKms::where('CAR',$sppb->CAR)
+			->where('JML_KMS', $manifest->QUANTITY)
+			->first();  
+            }			
+		
         }elseif($kd_dok == 2){
-            $sppb = \App\Models\TpsSppbBc::where(array('NO_BL_AWB' => $manifest->NOHBL))
-                    ->orWhere('NO_MASTER_BL_AWB', $manifest->NOHBL)
+            $sppb = \App\Models\TpsSppbBc::where(array('NO_BL_AWB' => $manifest->NOHBL,'JML_CONT'=> 0))
+                    ->orWhere('NO_MASTER_BL_AWB', $manifest->NOHBL,'JML_CONT', 0)
                     ->first();
+			
+			if($sppb){		
+			 $sppbkms= \App\Models\TpsSppbBcKms::where('CAR',$sppb->CAR)
+			->where('JML_KMS', $manifest->QUANTITY)
+			->first();
+            }			
+		
         }elseif($kd_dok == 41){
-            $sppb = \App\Models\TpsDokPabean::select('NO_DOK_INOUT as NO_SPPB','TGL_DOK_INOUT as TGL_SPPB','NPWP_IMP')
+            $sppb = \App\Models\TpsDokPabean::select('NO_DOK_INOUT as NO_SPPB','TGL_DOK_INOUT as TGL_SPPB','NPWP_IMP','CAR')
+                    ->where(array('KD_DOK_INOUT' => $kd_dok, 'NO_BL_AWB' => $manifest->NOHBL,'JML_CONT'=> 0))
+                    ->first();
+        
+			if($sppb){
+			$sppbkms= \App\Models\TpsDokPabeanKms::where('CAR',$sppb->CAR)
+			->where('JML_KMS', $manifest->QUANTITY)
+			->first();  	
+            }
+		
+		}else{
+            $sppb = \App\Models\TpsDokManual::select('NO_DOK_INOUT as NO_SPPB','TGL_DOK_INOUT as TGL_SPPB','ID_CONSIGNEE as NPWP_IMP','ID')
                     ->where(array('KD_DOK_INOUT' => $kd_dok, 'NO_BL_AWB' => $manifest->NOHBL))
                     ->first();
-        }else{
-            $sppb = \App\Models\TpsDokManual::select('NO_DOK_INOUT as NO_SPPB','TGL_DOK_INOUT as TGL_SPPB','ID_CONSIGNEE as NPWP_IMP')
-                    ->where(array('KD_DOK_INOUT' => $kd_dok, 'NO_BL_AWB' => $manifest->NOHBL))
-                    ->first();
-            if($sppb){
+           
+			if($sppb){
+			$sppbkms= \App\Models\TpsDokManualKms::where('ID',$sppb->ID)
+			->where('JML_KMS', $manifest->QUANTITY)
+			->first();
+            } 
+			
+		   if($sppb){
                 $tgl_sppb = explode('/', $sppb->TGL_SPPB);
                 $sppb->TGL_SPPB = $tgl_sppb[2].'-'.$tgl_sppb[1].'-'.$tgl_sppb[0];
             }
         }
         
         if($sppb){
+		  if($sppbkms){
             $arraysppb = explode('/', $sppb->NO_SPPB);
             $datasppb = array(
                 'NO_SPPB' => $arraysppb[0],
@@ -2194,7 +2225,10 @@ class LclController extends Controller
                 'NPWP' => $sppb->NPWP_IMP
             );
             return json_encode(array('success' => true, 'message' => 'Get Data SPPB has been success.', 'data' => $datasppb));
-        }else{
+		  }else{
+			   return json_encode(array('success' => false, 'message' => 'Jumlah Kemasan berbeda dengan  SPPB .'));
+		  } 
+		}else{
             return json_encode(array('success' => false, 'message' => 'Data SPPB Tidak ditemukan.'));
         }
         
@@ -2761,7 +2795,7 @@ class LclController extends Controller
         $manifest->status_bc = '';
         $manifest->release_bc = 'Y';
         $manifest->release_bc_date = date('Y-m-d H:i:s');
-//        $manifest->release_bc_uid = \Auth::getUser()->name;
+        $manifest->release_bc_uid = \Auth::getUser()->name;
         
         if($manifest->save()){
             $this->changeBarcodeStatus($manifest->TMANIFEST_PK, $manifest->NOHBL, 'Manifest', 'active');
@@ -2771,6 +2805,29 @@ class LclController extends Controller
         return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
     }
     
+	public function changeStatusBcmty($id)
+    {
+       $container = DBContainer::find($id);
+	   $container->status_bc = 'RELEASE';
+      //  $container->status_bc = '';
+        $container->release_bc = 'Y';
+        $container->release_bc_date = date('Y-m-d H:i:s');
+        $container->release_bc_uid = \Auth::getUser()->name;    
+	
+        $host = gethostbyaddr($_SERVER[‘REMOTE_ADDR’]);
+		$ip =  GetHostByName($REMOTE_ADDR);
+		$container->release_host =$host;
+		$container->release_ip_host=$ip;
+		
+        if($container->save()){
+            $this->changeBarcodeStatus($container->TCONTAINER_PK, $container->NOCONTAINER, 'Lcl', 'active');
+            return json_encode(array('success' => true, 'message' => 'Status has been Change!'));
+        }
+        
+        return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
+    }
+	
+	
     public function changeStatusFlag($id)
     {
         $manifest = DBManifest::find($id);
@@ -2959,6 +3016,21 @@ class LclController extends Controller
         
         return view('import.lcl.bc-hold')->with($data);
     }
+	
+	  public function mtyholdIndex()
+    {
+        $data['page_title'] = "LCL MTY Dokumen HOLD";
+        $data['page_description'] = "";
+        $data['breadcrumbs'] = [
+            [
+                'action' => '',
+                'title' => 'LCL MTY Dokumen HOLD'
+            ]
+        ];        
+        
+        return view('import.lcl.bc-mtyhold')->with($data);
+    }
+	
     
     public function segelIndex()
     {

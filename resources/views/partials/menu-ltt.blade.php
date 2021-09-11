@@ -222,6 +222,7 @@
                                 </ul>
                             </li>
                             <li><a href="{{route('lcl-hold-index')}}">Dokumen HOLD</a></li>
+							<li><a href="{{route('lcl-mtyhold-index')}}">Dokumen MTY HOLD</a></li>
                             <!--<li><a href="{{route('lcl-segel-index')}}">Segel Merah</a></li>-->
                             <li class="treeview">
                                 <a href="#">

@@ -171,6 +171,8 @@
                         var datasppb = json.data; 
                         $('#NO_SPPB').val(datasppb.NO_SPPB);
                         $('#TGL_SPPB').val(datasppb.TGL_SPPB);
+						$('#NO_DAFTAR_PABEAN').val(datasppb.NO_PIB);
+                        $('#TGL_DAFTAR_PABEAN').val(datasppb.TGL_PIB);
                         $('#ID_CONSIGNEE').val(datasppb.NPWP);
                     } else {
                       $('#btn-toolbar').showAlertAfterElement('alert-danger alert-custom', json.message, 5000);

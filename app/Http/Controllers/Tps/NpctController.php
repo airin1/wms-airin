@@ -250,6 +250,25 @@ class NpctController extends Controller
         
         return back()->withInput();
     }
+	
+	public function yorEditReport(Request $request)
+    {
+		$data = \App\Models\NpctYor::find($request->id);
+		
+        $data->yor=$request->yor;	
+        $data->capacity= $request->capacity;	
+		$data->save();
+        
+        if($data){
+            return back()->with('success', 'YOR Report has been Edited.');
+        }
+        
+        return back()->withInput();
+    }
+	
+	
+	
+	
     
     public function yorUpload($id)
     {

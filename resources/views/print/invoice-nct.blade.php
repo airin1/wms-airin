@@ -521,7 +521,7 @@ table tfoot tr td:first-child {
             <table class="table">
                 <tr>
                     <td>Pengajuan Keberatan :</td>
-                    <td style="text-align: center;">{{ date("l, d F Y") }}</td>
+                    <td style="text-align: center;">{{ date("l, d F Y H:i") }}</td>
                 </tr>
                 <tr>
                     <td>

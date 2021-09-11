@@ -117,6 +117,7 @@ Route::group(['prefix' => 'invoice', 'namespace' => 'Invoice'], function(){
             'uses'=> 'InvoiceController@invoiceNctRenew'
         ]);
         
+		
         // TARIF
         Route::get('/tarif', [
             'as' => 'invoice-tarif-nct-index',

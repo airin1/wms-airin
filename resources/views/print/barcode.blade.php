@@ -73,12 +73,21 @@
                 </p>
                 <p style="font-size: 13px;">
                     {{$barcode->VESSEL}} - VOYAGE {{$barcode->VOY}}
-                </p>
-                <p style="font-size: 13px;">
+                </p>                 
+				<p style="font-size: 13px;">
+				@if(strtoupper($barcode->ref_action) != 'RELEASE')
                     NO. PLP {{$barcode->NO_PLP}}<br />
                     TGL. PLP {{date('d/m/Y', strtotime($barcode->TGL_PLP))}}<br /><br />
                     Lokasi : {{$barcode->location_name}}
+				@else
+				    NO. DOC {{$barcode->NO_SPPB}}<br />
+				    JNS. DOC {{$barcode->KODE_DOKUMEN}}<br /> 
+                    TGL. DOC {{date('d/m/Y', strtotime($barcode->TGL_SPPB))}}<br /><br />
+                    Lokasi : {{$barcode->location_name}}
+			
+				@endif	
                 </p>
+								
                 <!--<span style="font-size:10px;">{{'EXPIRED - '.date('d/m/Y', strtotime($barcode->expired))}}</span>-->
             </div>
         </div>

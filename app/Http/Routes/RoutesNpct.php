@@ -14,6 +14,12 @@ Route::group(['prefix' => 'npct', 'namespace' => 'Tps'], function(){
         'as' => 'yor-create-report',
         'uses' => 'NpctController@yorCreateReport'
     ]);
+	
+	Route::post('/yor/edit-report',[
+        'as' => 'yor-edit-report',
+        'uses' => 'NpctController@yorEditReport'
+    ]);
+	
     Route::get('/yor/upload/{id}',[
         'as' => 'yor-upload',
         'uses' => 'NpctController@yorUpload'

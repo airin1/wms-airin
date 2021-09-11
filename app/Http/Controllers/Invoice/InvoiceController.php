@@ -464,8 +464,17 @@ class InvoiceController extends Controller
     {
 
         $invoice = \App\Models\InvoiceNct::find($request->invoice_id);
-        $no_cont = explode(',', $invoice->no_container);
-        
+        //$no_cont = explode(',', $invoice->no_container);
+ 
+	 
+	   //check select container
+		$i=0; 
+		foreach ($request->container_no as $container)
+		{  		
+		  $no_cont[$i]=trim($container);
+          ++$i;		   
+		}
+		
         // array jenis container
         $std = array(
             'DRY'
@@ -475,6 +484,8 @@ class InvoiceController extends Controller
             'Class BB Standar 8',
             'Class BB Standar 9',
             'Class BB Standar 4,1',
+			'Class BB Standar 4,2',
+			'Class BB Standar 4,3',
             'Class BB Standar 6',
             'Class BB Standar 2,2'
         );
@@ -497,16 +508,30 @@ class InvoiceController extends Controller
             'FLAT TRACK OL'
         );
         
-        $container20 = DBContainer::where('size', 20)->whereIn('NOCONTAINER', $no_cont)->get();
-        $container40 = DBContainer::where('size', 40)->whereIn('NOCONTAINER', $no_cont)->get();
-        $container45 = DBContainer::where('size', 45)->whereIn('NOCONTAINER', $no_cont)->get();
+        //$container20 = DBContainer::where('size', 20)->whereIn('NOCONTAINER', $no_cont)->get();
+        //$container40 = DBContainer::where('size', 40)->whereIn('NOCONTAINER', $no_cont)->get();
+        //$container45 = DBContainer::where('size', 45)->whereIn('NOCONTAINER', $no_cont)->get();
         
+		$container20 = DBContainer::where('size', 20)->whereIn('NOCONTAINER', $no_cont)->orderBy('TGLMASUK','DESC')->get();
+        $container40 = DBContainer::where('size', 40)->whereIn('NOCONTAINER', $no_cont)->orderBy('TGLMASUK','DESC')->get();
+        $container45 = DBContainer::where('size', 45)->whereIn('NOCONTAINER', $no_cont)->orderBy('TGLMASUK','DESC')->get();
+
         
         if($container20 || $container40 || $container45) {
             
-            $data = (count($container20) > 0 ? $container20['0'] : $container40['0']);
-//            $consignee = DBPerusahaan::where('TPERUSAHAAN_PK', $data['TCONSIGNEE_FK'])->first();
-            
+            //$data = (count($container20) > 0 ? $container20['0'] : $container40['0']);
+			if(count($container20) > 0){
+                $data = $container20['0'];
+            }elseif(count($container40) > 0){
+                $data = $container40['0'];
+            }else{
+                $data = $container45['0'];
+            }
+			
+			
+			//            $consignee = DBPerusahaan::where('TPERUSAHAAN_PK', $data['TCONSIGNEE_FK'])->first();\
+
+			
 //            Detect Jenis Container
             $jenis_cont = $data['jenis_container'];
             
@@ -542,11 +567,18 @@ class InvoiceController extends Controller
             $invoice_nct->vessel = $data['VESSEL'];	
             $invoice_nct->voy = $data['VOY'];	
 //            $invoice_nct->no_do = $request->no_do;	
-            $invoice_nct->tgl_do = $invoice->tgl_do;
+//            $invoice_nct->tgl_do = $invoice->tgl_do;
+			$invoice_nct->tgl_do = $request->tgl_do;	
             $invoice_nct->no_bl = $invoice->no_bl;	
             $invoice_nct->eta = $data['ETA'];	
             $invoice_nct->gateout_terminal = $data['TGLMASUK'];	
-            $invoice_nct->gateout_tps = $data['TGLRELEASE'];	
+            //$invoice_nct->gateout_tps = $data['TGLRELEASE'];	
+			if($invoice->renew=='Y'){
+			  $invoice_nct->gateout_tps = $invoice->renew_date;	
+			}else{
+			   $invoice_nct->gateout_tps = $invoice->gateout_tps;					
+			}	
+		
             $invoice_nct->uid = \Auth::getUser()->name;	
             
             if($invoice_nct->save()) {
@@ -619,8 +651,13 @@ class InvoiceController extends Controller
                             // PENUMPUKAN
                             $date1 = date_create($data['TGLMASUK']);
 //                            $date2 = date_create($data['TGLRELEASE']);
-                            $date2 = date_create(date('Y-m-d',strtotime($data['TGLRELEASE']. '+1 days')));
-                            $diff = date_diff($date1, $date2);
+                            //$date2 = date_create(date('Y-m-d',strtotime($data['TGLRELEASE']. '+1 days')));
+							if($invoice->renew=='Y'){
+								$date2= date_create(date('Y-m-d',strtotime($invoice->renew_date. '+1 days')));
+							}else{
+								$date2= date_create(date('Y-m-d',strtotime($invoice->gateout_tps. '+1 days')));
+							}									
+							$diff = date_diff($date1, $date2);
                             $hari = $diff->format("%a");
                             
                             // HARI TERMINAL
@@ -630,7 +667,14 @@ class InvoiceController extends Controller
                             $hari_terminal = $difft->format("%a");
                             
                             // PERPANJANGAN
-                            $date1p = date_create($data['TGLRELEASE']);
+                            //$date1p = date_create($data['TGLRELEASE']);
+							if($invoice->renew=='Y'){
+								$date1p= date_create(date('Y-m-d',strtotime($invoice->renew_date. '+1 days')));
+							}else{
+								$date1p= date_create(date('Y-m-d',strtotime($invoice->gateout_tps. '+1 days')));
+							}		
+							
+							
                             $date2p = date_create(date('Y-m-d',strtotime($request->renew_date. '+1 days')));
                             $diffp = date_diff($date1p, $date2p);
                             $hari_perpanjang = $diffp->format("%a");
@@ -644,7 +688,8 @@ class InvoiceController extends Controller
                             
                             $hari_masa2 = abs($hari_perpanjang - $hari_masa1);
                             
-                            $invoice_penumpukan->startdate = $data['TGLRELEASE'];
+                            //$invoice_penumpukan->startdate = $data['TGLRELEASE'];
+							$invoice_penumpukan->startdate = $date1p;
                             $invoice_penumpukan->enddate = $request->renew_date;
                             $invoice_penumpukan->lama_timbun = $hari_perpanjang;        
                             $invoice_penumpukan->tarif_dasar = $t20->masa1;
@@ -733,8 +778,13 @@ class InvoiceController extends Controller
                             // PENUMPUKAN
                             $date1 = date_create($data['TGLMASUK']);
 //                            $date2 = date_create($data['TGLRELEASE']);
-                            $date2 = date_create(date('Y-m-d',strtotime($data['TGLRELEASE']. '+1 days')));
-                            $diff = date_diff($date1, $date2);
+                            //$date2 = date_create(date('Y-m-d',strtotime($data['TGLRELEASE']. '+1 days')));
+                            if($invoice->renew=='Y'){
+								$date2= date_create(date('Y-m-d',strtotime($invoice->renew_date. '+1 days')));
+							}else{
+								$date2= date_create(date('Y-m-d',strtotime($invoice->gateout_tps. '+1 days')));
+							}		
+							$diff = date_diff($date1, $date2);
                             $hari = $diff->format("%a");
                             
                             // HARI TERMINAL
@@ -744,8 +794,13 @@ class InvoiceController extends Controller
                             $hari_terminal = $difft->format("%a");
                             
                             // PERPANJANGAN
-                            $date1p = date_create($data['TGLRELEASE']);
-                            $date2p = date_create(date('Y-m-d',strtotime($request->renew_date. '+1 days')));
+                            //$date1p = date_create($data['TGLRELEASE']);
+							if($invoice->renew=='Y'){
+								$date1p= date_create(date('Y-m-d',strtotime($invoice->renew_date. '+1 days')));
+							}else{
+								$date1p= date_create(date('Y-m-d',strtotime($invoice->gateout_tps. '+1 days')));
+							}		
+							$date2p = date_create(date('Y-m-d',strtotime($request->renew_date. '+1 days')));
                             $diffp = date_diff($date1p, $date2p);
                             $hari_perpanjang = $diffp->format("%a");
                             
@@ -757,8 +812,10 @@ class InvoiceController extends Controller
                             }
                             
                             $hari_masa2 = abs($hari_perpanjang - $hari_masa1);
-                            
-                            $invoice_penumpukan->startdate = $data['TGLRELEASE'];
+                           	
+                            //$invoice_penumpukan->startdate = $data['TGLRELEASE'];
+																				
+							$invoice_penumpukan->startdate = $date1p;
                             $invoice_penumpukan->enddate = $request->renew_date;
                             $invoice_penumpukan->lama_timbun = $hari_perpanjang;  
                             $invoice_penumpukan->tarif_dasar = $t40->masa1;
@@ -847,8 +904,13 @@ class InvoiceController extends Controller
                             // PENUMPUKAN
                             $date1 = date_create($data['TGLMASUK']);
 //                            $date2 = date_create($data['TGLRELEASE']);
-                            $date2 = date_create(date('Y-m-d',strtotime($data['TGLRELEASE']. '+1 days')));
-                            $diff = date_diff($date1, $date2);
+                            //$date2 = date_create(date('Y-m-d',strtotime($data['TGLRELEASE']. '+1 days')));
+                            if($invoice->renew=='Y'){
+								$date2= date_create(date('Y-m-d',strtotime($invoice->renew_date. '+1 days')));
+							}else{
+								$date2= date_create(date('Y-m-d',strtotime($invoice->gateout_tps. '+1 days')));
+							}		
+							$diff = date_diff($date1, $date2);
                             $hari = $diff->format("%a");
                             
                             // HARI TERMINAL
@@ -858,7 +920,12 @@ class InvoiceController extends Controller
                             $hari_terminal = $difft->format("%a");
                             
                             // PERPANJANGAN
-                            $date1p = date_create($data['TGLRELEASE']);
+                            //$date1p = date_create($data['TGLRELEASE']);
+							if($invoice->renew=='Y'){
+								$date1p= date_create(date('Y-m-d',strtotime($invoice->renew_date. '+1 days')));
+							}else{
+								$date1p= date_create(date('Y-m-d',strtotime($invoice->gateout_tps. '+1 days')));
+							}		
                             $date2p = date_create(date('Y-m-d',strtotime($request->renew_date. '+1 days')));
                             $diffp = date_diff($date1p, $date2p);
                             $hari_perpanjang = $diffp->format("%a");
@@ -872,7 +939,8 @@ class InvoiceController extends Controller
                             
                             $hari_masa2 = abs($hari_perpanjang - $hari_masa1);
                             
-                            $invoice_penumpukan->startdate = $data['TGLRELEASE'];
+                            //$invoice_penumpukan->startdate = $data['TGLRELEASE'];
+							$invoice_penumpukan->startdate = $date1p;
                             $invoice_penumpukan->enddate = $request->renew_date;
                             $invoice_penumpukan->lama_timbun = $hari_perpanjang;  
                             $invoice_penumpukan->tarif_dasar = $t45->masa1;
