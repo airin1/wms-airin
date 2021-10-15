@@ -149,6 +149,16 @@
                         <div class="col-md-12">
                             <input name="_token" type="hidden" value="{{ csrf_token() }}">
                             <div class="form-group">
+							<label class="col-sm-3 control-label">Lokasi Gudang</label>
+							  <div class="col-sm-8">
+							   <select class="form-control select2" id="KODE_GUDANG" name="KODE_GUDANG" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
+                                 <option value="">Choose Lokasi Gudang</option>
+                                 <option value="ARN1">ARN1</option>
+                                 <option value="ARN3">ARN3</option>
+                               </select>
+                              </div>
+                            </div>							
+							<div class="form-group">
                                 <label class="col-sm-3 control-label">NO. PLP</label>
                                 <div class="col-sm-8">
                                     <input type="text" class="form-control" name="no_plp" />

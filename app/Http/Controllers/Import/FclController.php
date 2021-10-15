@@ -1854,6 +1854,7 @@ UNZ+1+1709131341'\n";
             
 //            $tgl_release = $data['TGLRELEASE'];
             $tgl_release = $request->tgl_release;
+			//$jam_reefer = $request->JAMRFR;
             
 //            $data = (count($container20) > 0 ? $container20['0'] : $container40['0']);
 //            $consignee = DBPerusahaan::where('TPERUSAHAAN_PK', $data['TCONSIGNEE_FK'])->first();
@@ -1940,13 +1941,20 @@ UNZ+1+1709131341'\n";
                             $invoice_gerakan->total = $invoice_gerakan->qty * $t20->lift_on;
                             $invoice_gerakan->save();
                             
-                            if($t20->recooling){
+                           //kalkulasi Reefer Shif
+						    $daterfr1 = date_create(date('Y-m-d',strtotime($data['ETA'])));
+                            $daterfr2 = date_create(date('Y-m-d',strtotime($data['TGLMASUK']. '+1 days')));                          
+							$diffrfr = date_diff($daterfr1 , $daterfr2);
+						    $harirfr = ($diffrfr->format("%a") * 24)/8;
+						
+
+						   if($t20->recooling){
                                 $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
                                 $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
                                 $invoice_gerakan->lokasi_sandar = $t20->lokasi_sandar;
                                 $invoice_gerakan->size = 20;
-                                $invoice_gerakan->qty = count($container20); 
-                                $invoice_gerakan->jenis_gerakan = 'Recooling';
+                                $invoice_gerakan->qty = count($container20)*$harirfr; 
+								$invoice_gerakan->jenis_gerakan = 'Recooling';
                                 $invoice_gerakan->tarif_dasar = $t20->recooling;
                                 $invoice_gerakan->total = $invoice_gerakan->qty * $t20->recooling;
                                 $invoice_gerakan->save();
@@ -1957,7 +1965,7 @@ UNZ+1+1709131341'\n";
                                 $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
                                 $invoice_gerakan->lokasi_sandar = $t20->lokasi_sandar;
                                 $invoice_gerakan->size = 20;
-                                $invoice_gerakan->qty = count($container20); 
+                                $invoice_gerakan->qty = count($container20)*$harirfr; 
                                 $invoice_gerakan->jenis_gerakan = 'Monitoring';
                                 $invoice_gerakan->tarif_dasar = $t20->monitoring;
                                 $invoice_gerakan->total = $invoice_gerakan->qty * $t20->monitoring;
@@ -2021,13 +2029,22 @@ UNZ+1+1709131341'\n";
                                 
                                 $invoice_gerakan->save();
                             endforeach;
+							
+							
+							//kalkulasi Reefer AIRN Shif
+						  
+						    $daterfr1 = date_create(date('Y-m-d',strtotime($data['TGLMASUK'])));
+                            $daterfr2 = date_create(date('Y-m-d',strtotime($tgl_release. '+1 days')));                          
+							$diffrfr = date_diff($daterfr1 , $daterfr2);
+						    $harirfr = (($diffrfr->format("%a") * 24)/8)-1;
+							
                             
                             if($t20->recooling){
                                 $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
                                 $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
                                 $invoice_gerakan->lokasi_sandar = $t20->lokasi_sandar;
                                 $invoice_gerakan->size = 20;
-                                $invoice_gerakan->qty = count($container20); 
+                                $invoice_gerakan->qty = count($container20) *$harirfr; 
                                 $invoice_gerakan->jenis_gerakan = 'Recooling';
                                 $invoice_gerakan->tarif_dasar = $t20->recooling;
                                 $invoice_gerakan->total = $invoice_gerakan->qty * $t20->recooling;
@@ -2039,7 +2056,7 @@ UNZ+1+1709131341'\n";
                                 $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
                                 $invoice_gerakan->lokasi_sandar = $t20->lokasi_sandar;
                                 $invoice_gerakan->size = 20;
-                                $invoice_gerakan->qty = count($container20); 
+                                $invoice_gerakan->qty = count($container20)*$harirfr; 
                                 $invoice_gerakan->jenis_gerakan = 'Monitoring';
                                 $invoice_gerakan->tarif_dasar = $t20->monitoring;
                                 $invoice_gerakan->total = $invoice_gerakan->qty * $t20->monitoring;
@@ -2127,24 +2144,34 @@ UNZ+1+1709131341'\n";
                             $invoice_gerakan->total = $invoice_gerakan->qty * $t40->lift_on;
                             $invoice_gerakan->save();
 
-                            if($t40->recooling){
+                           	//kalkulasi Reefer Shif
+						    $daterfr1 = date_create(date('Y-m-d',strtotime($data['ETA'])));
+                            $daterfr2 = date_create(date('Y-m-d',strtotime($data['TGLMASUK']. '+1 days')));                          
+							$diffrfr = date_diff($daterfr1 , $daterfr2);
+						    $harirfr = ($diffrfr->format("%a") * 24)/8;				
+
+
+
+						   if($t40->recooling){
                                 $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
                                 $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
                                 $invoice_gerakan->lokasi_sandar = $t40->lokasi_sandar;
                                 $invoice_gerakan->size = 40;
-                                $invoice_gerakan->qty = count($container40); 
+                                $invoice_gerakan->qty = count($container40)* $harirfr; 
                                 $invoice_gerakan->jenis_gerakan = 'Recooling';
                                 $invoice_gerakan->tarif_dasar = $t40->recooling;
                                 $invoice_gerakan->total = $invoice_gerakan->qty * $t40->recooling;
                                 $invoice_gerakan->save();
                             }
+							
+						
                             
                             if($t40->monitoring){
                                 $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
                                 $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
                                 $invoice_gerakan->lokasi_sandar = $t40->lokasi_sandar;
                                 $invoice_gerakan->size = 40;
-                                $invoice_gerakan->qty = count($container40); 
+                                $invoice_gerakan->qty = count($container40)* $harirfr; 
                                 $invoice_gerakan->jenis_gerakan = 'Monitoring';
                                 $invoice_gerakan->tarif_dasar = $t40->monitoring;
                                 $invoice_gerakan->total = $invoice_gerakan->qty * $t40->monitoring;
@@ -2206,13 +2233,20 @@ UNZ+1+1709131341'\n";
                                 
                                 $invoice_gerakan->save();
                             endforeach;
+							
+							//kalkulasi Reefer AIRN Shif
+							$daterfr1 = date_create(date('Y-m-d',strtotime($data['TGLMASUK'])));
+                            $daterfr2 = date_create(date('Y-m-d',strtotime($tgl_release. '+1 days')));                          
+							$diffrfr = date_diff($daterfr1 , $daterfr2);
+						    $harirfr = (($diffrfr->format("%a") * 24)/8)-1;
+
                             
                             if($t40->recooling){
                                 $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
                                 $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
                                 $invoice_gerakan->lokasi_sandar = $t40->lokasi_sandar;
                                 $invoice_gerakan->size = 40;
-                                $invoice_gerakan->qty = count($container40); 
+                                $invoice_gerakan->qty = count($container40)*$harirfr; 
                                 $invoice_gerakan->jenis_gerakan = 'Recooling';
                                 $invoice_gerakan->tarif_dasar = $t40->recooling;
                                 $invoice_gerakan->total = $invoice_gerakan->qty * $t40->recooling;
@@ -2224,7 +2258,7 @@ UNZ+1+1709131341'\n";
                                 $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
                                 $invoice_gerakan->lokasi_sandar = $t40->lokasi_sandar;
                                 $invoice_gerakan->size = 40;
-                                $invoice_gerakan->qty = count($container40); 
+                                $invoice_gerakan->qty = count($container40)*$harirfr; 
                                 $invoice_gerakan->jenis_gerakan = 'Monitoring';
                                 $invoice_gerakan->tarif_dasar = $t40->monitoring;
                                 $invoice_gerakan->total = $invoice_gerakan->qty * $t40->monitoring;
@@ -2310,12 +2344,18 @@ UNZ+1+1709131341'\n";
                             $invoice_gerakan->total = $invoice_gerakan->qty * $t45->lift_on;
                             $invoice_gerakan->save();
 
+							//kalkulasi Reefer Shif
+							$daterfr1 = date_create(date('Y-m-d',strtotime($data['ETA'])));
+                            $daterfr2 = date_create(date('Y-m-d',strtotime($data['TGLMASUK']. '+1 days')));                          
+							$diffrfr = date_diff($daterfr1 , $daterfr2);
+						    $harirfr = ($diffrfr->format("%a") * 24)/8;
+							
                             if($t45->recooling){
                                 $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
                                 $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
                                 $invoice_gerakan->lokasi_sandar = $t45->lokasi_sandar;
                                 $invoice_gerakan->size = 45;
-                                $invoice_gerakan->qty = count($container45); 
+                                $invoice_gerakan->qty = count($container45)*$harirfr; 
                                 $invoice_gerakan->jenis_gerakan = 'Recooling';
                                 $invoice_gerakan->tarif_dasar = $t45->recooling;
                                 $invoice_gerakan->total = $invoice_gerakan->qty * $t45->recooling;
@@ -2327,7 +2367,7 @@ UNZ+1+1709131341'\n";
                                 $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
                                 $invoice_gerakan->lokasi_sandar = $t45->lokasi_sandar;
                                 $invoice_gerakan->size = 45;
-                                $invoice_gerakan->qty = count($container45); 
+                                $invoice_gerakan->qty = count($container45)*$harirfr; 
                                 $invoice_gerakan->jenis_gerakan = 'Monitoring';
                                 $invoice_gerakan->tarif_dasar = $t45->monitoring;
                                 $invoice_gerakan->total = $invoice_gerakan->qty * $t45->monitoring;
@@ -2388,13 +2428,19 @@ UNZ+1+1709131341'\n";
                                 
                                 $invoice_gerakan->save();
                             endforeach;
-                            
+                         
+  						    //kalkulasi Reefer AIRN Shif
+							$daterfr1 = date_create(date('Y-m-d',strtotime($data['TGLMASUK'])));
+                            $daterfr2 = date_create(date('Y-m-d',strtotime($tgl_release. '+1 days')));                          
+							$diffrfr = date_diff($daterfr1 , $daterfr2);
+						    $harirfr = (($diffrfr->format("%a") * 24)/8)-1;
+
                             if($t45->recooling){
                                 $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
                                 $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
                                 $invoice_gerakan->lokasi_sandar = $t45->lokasi_sandar;
                                 $invoice_gerakan->size = 45;
-                                $invoice_gerakan->qty = count($container45); 
+                                $invoice_gerakan->qty = count($container45)* $harirfr; 
                                 $invoice_gerakan->jenis_gerakan = 'Recooling';
                                 $invoice_gerakan->tarif_dasar = $t45->recooling;
                                 $invoice_gerakan->total = $invoice_gerakan->qty * $t45->recooling;
@@ -2406,7 +2452,7 @@ UNZ+1+1709131341'\n";
                                 $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
                                 $invoice_gerakan->lokasi_sandar = $t45->lokasi_sandar;
                                 $invoice_gerakan->size = 45;
-                                $invoice_gerakan->qty = count($container45); 
+                                $invoice_gerakan->qty = count($container45)* $harirfr; 
                                 $invoice_gerakan->jenis_gerakan = 'Monitoring';
                                 $invoice_gerakan->tarif_dasar = $t45->monitoring;
                                 $invoice_gerakan->total = $invoice_gerakan->qty * $t45->monitoring;

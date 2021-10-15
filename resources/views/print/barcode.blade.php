@@ -1,7 +1,7 @@
 @foreach($barcodes as $barcode)
     
-    @if($barcode->ref_type == 'Manifest')
-        <div style="margin: 20px 0">
+    @if($barcode->ref_type == 'Manifest')        
+	    <div style="margin: 20px 0">
             <div style="text-align: center;margin: 0 auto;">
                 <span style="font-size:12px;">{{strtoupper($barcode->ref_action).' - '.date('d/m/Y H:i')}}</span>
                 <h3 style="margin: 10px;">GATE PASS</h3>
@@ -91,6 +91,6 @@
                 <!--<span style="font-size:10px;">{{'EXPIRED - '.date('d/m/Y', strtotime($barcode->expired))}}</span>-->
             </div>
         </div>
-        <div style="display:block; page-break-before:always;"></div>
+       
     @endif
 @endforeach

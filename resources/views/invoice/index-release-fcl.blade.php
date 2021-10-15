@@ -36,12 +36,25 @@
             var containerId = cellValues.join(",");
             if(!containerId) {alert('Please Select Row');return false;}
             
+			//var jenis_container = $grid.jqGrid("getCell", selIds[0], "jenis_container");
+            //alert (jenis_container.substring(0, 6) );
+			
             $('#create-invoice-modal').modal('show');
             
             var consignee_id = $grid.jqGrid("getCell", selIds[0], "TCONSIGNEE_FK");
+			
             var url = '{{route("getSingleDataPerusahaan")}}';
-
-            $.ajax({
+           
+            
+		   //if(jenis_container.substring(0, 6) == 'REEFER')
+			//{
+			//	$('#JAMRFR').attr('readonly', false);
+			//}	
+		   //else { $('#JAMRFR').attr('readonly', true);}	
+	    
+            
+			
+			$.ajax({
                 type: 'GET',
                 data: 
                 {
@@ -65,7 +78,7 @@
             $('#npwp').val($grid.jqGrid("getCell", selIds[0], "ID_CONSIGNEE"));
             $('#no_bl_awb').val($grid.jqGrid("getCell", selIds[0], "NO_BL_AWB"));
             $('#container_id_selected').val(containerId);
-            
+          
         });
         
         $('#create-invoice-form').on("submit", function(){
@@ -262,6 +275,10 @@
                                     </div>
                                 </div>
                             </div>
+							
+							
+							
+							
 <!--                            <div class="form-group">
                                 <label class="col-sm-3 control-label">No. Pajak</label>
                                 <div class="col-sm-6">

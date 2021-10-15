@@ -198,7 +198,8 @@ class SoapController extends DefaultController {
             'Password' => $this->password,
             'No_plp' => $request->no_plp,
             'Tgl_plp' => date('dmY', strtotime($request->tgl_plp)),
-            'KdGudang' => $this->kode,
+			'KdGudang' => $request->KODE_GUDANG,			
+			//'KdGudang' => $this->kode,
             'RefNumber' => $request->refnumber
         ];
         
