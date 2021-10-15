@@ -91,6 +91,6 @@
                 <!--<span style="font-size:10px;">{{'EXPIRED - '.date('d/m/Y', strtotime($barcode->expired))}}</span>-->
             </div>
         </div>
-       
+        <div style="display:block; page-break-before:always;"></div>
     @endif
 @endforeach
