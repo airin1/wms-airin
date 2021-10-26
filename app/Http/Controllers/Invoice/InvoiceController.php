@@ -497,7 +497,11 @@ class InvoiceController extends Controller
         );
         $reffer = array(
             'REFFER RF',
-            'REFFER RECOOLING'
+            'REFFER RECOOLING',
+            'REEFER RECOOLING BB 2.2',
+			'REEFER RECOOLING BB 4.2',
+            'REEFER RF',
+            'REEFER RECOOLING'
         );
         
         $ft = array(

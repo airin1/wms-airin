@@ -1825,8 +1825,9 @@ UNZ+1+1709131341'\n";
             'REFFER RF',
             'REFFER RECOOLING',
             'REEFER RECOOLING BB 2.2',
+			'REEFER RECOOLING BB 4.2',
             'REEFER RF',
-            'REEFER RECOOLING',
+            'REEFER RECOOLING'
         );
         
         $ft = array(

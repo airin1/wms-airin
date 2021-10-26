@@ -589,6 +589,7 @@
                                 <option value="REEFER RF">REEFER RF</option>
                                 <option value="REEFER RECOOLING">REEFER RECOOLING</option>
                                 <option value="REEFER RECOOLING BB 2.2">REEFER RECOOLING BB 2.2</option>
+								<option value="REEFER RECOOLING BB 4.2">REEFER RECOOLING BB 4.2</option>
                                 <option value="FLAT TRACK RF">FLAT TRACK RF</option>
                                 <option value="FLAT TRACK OH">FLAT TRACK OH</option>
                                 <option value="FLAT TRACK OW">FLAT TRACK OW</option>
