@@ -375,7 +375,7 @@
                     <td>&nbsp;</td>
                 </tr>
                 <tr>
-                    <td style="text-align: center;"><b>YANUAR ANDRES SUSILO</b><br />Plt. Manager TPS</td>
+                    <td style="text-align: center;"><b>YANUAR ANDRES SUSILO</b><br />Manager TPS</td>
                     <td style="text-align: center;"><b>RINI ELVIRA</b><br />Staf Adm. Lapangan TPS</td>
                 </tr>
             </table>

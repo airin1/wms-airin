@@ -420,7 +420,7 @@ table tfoot tr td:first-child {
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <!--<td><b>SIGIT MARET HARYADI</b><br />Manager TPS</td>-->
-            <td><b>YANUAR ANDRES SUSILO</b><br />Pj. Manager TPS</td>
+            <td><b>YANUAR ANDRES SUSILO</b><br />Manager TPS</td>
         </tr>
     </table>
     </div>

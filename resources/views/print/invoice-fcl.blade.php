@@ -487,7 +487,7 @@ table tfoot tr td:first-child {
                 <tr>
                     <td>&nbsp;</td>
                     <!--<td style="text-align: center;"><b>SIGIT MARET HARYADI</b><br />Manager TPS</td>-->
-                    <td style="text-align: center;"><b>YANUAR ANDRES SUSILO</b><br />Pj. Manager TPS</td>
+                    <td style="text-align: center;"><b>YANUAR ANDRES SUSILO</b><br />Manager TPS</td>
                 </tr>
             </table>
         </div>
