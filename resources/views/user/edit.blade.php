@@ -4,6 +4,7 @@
 
 @include('partials.form-alert')
 
+
 <div class="box box-default">
     <div class="box-header with-border">
       <h3 class="box-title">Form User</h3>
@@ -49,11 +50,11 @@
                     <div class="form-group">
                       <label for="roles" class="col-sm-3 control-label">Roles</label>
                       <div class="col-sm-8">
-                            <select class="form-control select2 select2-hidden-accessible" name="role_id" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
+                            <select class="form-control select2 select2-hidden-accessible" name="role_id" id="role_id" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
                                 <option value="">Choose Roles</option>
                                 @foreach($roles as $role)
                                     <option value="{{ $role->id }}" @if($user->role_id == $role->id){{ 'selected' }}@endif>{{ $role->name }}</option>
-                                @endforeach
+							   @endforeach
                             </select>
                         </div>
                     </div>
@@ -92,7 +93,10 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
 <script type="text/javascript">
   $('select').select2();
-  
-</script>
-
+  @role('super-admin')		
+	$('#role_id').removeAttr('disabled');			 
+  @else 
+    $('#role_id').attr('disabled','disabled');
+  @endrole
+</script>	 
 @endsection
