@@ -52,7 +52,7 @@
           </a>
         </li>
         @role('bea-cukai')
-            @if(\Auth::getUser()->username == 'bcgaters')
+            @if(\Auth::getUser()->username != 'bcgaters1')
             <li class="treeview">
                 <a href="#">
                   <i class="fa fa-th"></i> <span>Import LCL</span>
