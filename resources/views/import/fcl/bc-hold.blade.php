@@ -34,12 +34,37 @@
                 vi = '<button style="margin:5px;" class="btn btn-default btn-xs" disabled><i class="fa fa-photo"></i> Not Found</button>';
             }
             
-            @if(Auth::getUser()->username == 'bcgaters') 
-                jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});
-            @else
-                jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi});
+			//  bcuser = ['bcgaters','ardin','damang','septian','faizal','haidar','agni'];
+			
+			@if(Auth::getUser()->username == 'bcgaters') 
+                jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});            
+			@else
+				@if(Auth::getUser()->username == 'ardin') 
+				 jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
+			    @else
+					@if(Auth::getUser()->username == 'damang') 
+				         jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
+			        @else
+						@if(Auth::getUser()->username == 'septian') 
+				           jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
+			            @else
+							 @if(Auth::getUser()->username == 'faizal') 
+				               jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
+			                 @else
+								 @if(Auth::getUser()->username == 'haidar') 
+				                    jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
+			                     @else   
+									 @if(Auth::getUser()->username == 'agni') 
+				                       jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
+			                         @else   
+                                        jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi});
+									 @endif
+								 @endif
+						     @endif
+          	            @endif  
+					@endif              
+          	    @endif
             @endif
-            
         } 
     }
     

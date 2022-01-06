@@ -45,6 +45,42 @@
             @else
                 jQuery("#lclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi}); 
             @endif
+			
+			@if(Auth::getUser()->username == 'bcgaters') 
+                jQuery("#lclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});            
+			@else
+				@if(Auth::getUser()->username == 'ardin') 
+				 jQuery("#lclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
+			    @else
+					@if(Auth::getUser()->username == 'damang') 
+				         jQuery("#lclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
+			        @else
+						@if(Auth::getUser()->username == 'septian') 
+				           jQuery("#lclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
+			            @else
+							 @if(Auth::getUser()->username == 'faizal') 
+				               jQuery("#lclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
+			                 @else
+								 @if(Auth::getUser()->username == 'haidar') 
+				                    jQuery("#lclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
+			                     @else   
+									 @if(Auth::getUser()->username == 'agni') 
+				                       jQuery("#lclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
+			                         @else   
+                                        jQuery("#lclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi});
+									 @endif
+								 @endif
+						     @endif
+          	            @endif  
+					@endif              
+          	    @endif
+            @endif
+			
+			
+			
+			
+			
+			
         } 
     
     }
