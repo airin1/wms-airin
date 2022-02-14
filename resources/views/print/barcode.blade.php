@@ -27,9 +27,9 @@
                     {{$barcode->CONSIGNEE}}                   
                 </p>
                 <p style="font-size: 13px;">
-                    NO. POS {{$barcode->NO_POS_BC11}}<br />
-                    NO. BC11 {{$barcode->NO_BC11}}<br />
-                    TGL. BC11 {{date('d/m/Y', strtotime($barcode->TGL_BC11))}}<br /><br />
+                    NO. DOC {{$barcode->NO_SPPB}}<br />
+				    JNS. DOC {{$barcode->KODE_DOKUMEN}}<br /> 
+                    TGL. DOC {{date('d/m/Y', strtotime($barcode->TGL_SPPB))}}<br /><br />
                     Lokasi : {{$barcode->location_name}}
                 </p>
                 <!--<span style="font-size:10px;">{{'EXPIRED - '.date('d/m/Y', strtotime($barcode->expired))}}</span>-->
