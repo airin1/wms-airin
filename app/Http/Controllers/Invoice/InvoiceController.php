@@ -498,8 +498,18 @@ class InvoiceController extends Controller
         $reffer = array(
             'REFFER RF',
             'REFFER RECOOLING',
+			'REEFER RECOOLING BB 2.1',
             'REEFER RECOOLING BB 2.2',
+			'REEFER RECOOLING BB 2.3',
 			'REEFER RECOOLING BB 4.2',
+			'REEFER RECOOLING BB 4.3',
+			'REEFER RECOOLING BB 5.1',
+			'REEFER RECOOLING BB 5.2',
+			'REEFER RECOOLING BB 6',
+			'REEFER RECOOLING BB 6.1',
+			'REEFER RECOOLING BB 3',
+			'REEFER RECOOLING BB 8',
+			'REEFER RECOOLING BB 9',
             'REEFER RF',
             'REEFER RECOOLING'
         );
