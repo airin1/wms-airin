@@ -84,6 +84,71 @@
         $('#create-invoice-form').on("submit", function(){
             if(!confirm('Apakah anda yakin?')){return false;}
         });
+		
+		$('#btn-invoice-tpp').on("click", function(){
+            
+            
+            var $grid = $("#fclReleaseGrid"), selIds = $grid.jqGrid("getGridParam", "selarrrow"), i, n,
+                cellValues = [];
+            for (i = 0, n = selIds.length; i < n; i++) {
+                cellValues.push($grid.jqGrid("getCell", selIds[i], "TCONTAINER_PK"));
+            }
+            
+            var containerId = cellValues.join(",");
+            if(!containerId) {alert('Please Select Row');return false;}
+            
+			//var jenis_container = $grid.jqGrid("getCell", selIds[0], "jenis_container");
+            //alert (jenis_container.substring(0, 6) );
+			
+            $('#create-invoice-tpp-modal').modal('show');
+            
+            var consignee_id = $grid.jqGrid("getCell", selIds[0], "TCONSIGNEE_FK");
+			
+            var url = '{{route("getSingleDataPerusahaan")}}';
+           
+            
+		   //if(jenis_container.substring(0, 6) == 'REEFER')
+			//{
+			//	$('#JAMRFR').attr('readonly', false);
+			//}	
+		   //else { $('#JAMRFR').attr('readonly', true);}	
+	    
+            
+			
+			$.ajax({
+                type: 'GET',
+                data: 
+                {
+                    'id' : consignee_id
+                },
+                dataType : 'json',
+                url: url,
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                    alert('Something went wrong, please try again later.');
+                },
+                success:function(json)
+                {      
+                    console.log(json);
+                    $('#create-invoice-tpp-modal #alamat').val(json.ALAMAT);
+                }
+            });
+            
+            $('#create-invoice-tpp-modal #consignee_id').val(consignee_id);
+            $('#create-invoice-tpp-modal #consignee').val($grid.jqGrid("getCell", selIds[0], "CONSIGNEE"));
+            $('#create-invoice-tpp-modal #npwp').val($grid.jqGrid("getCell", selIds[0], "ID_CONSIGNEE"));
+            $('#create-invoice-tpp-modal #no_bl_awb').val($grid.jqGrid("getCell", selIds[0], "NO_BL_AWB"));
+            $('#create-invoice-tpp-modal #container_id_selected').val(containerId);
+          
+        });
+        
+        $('#create-invoice-tpp-form').on("submit", function(){
+            if(!confirm('Apakah anda yakin?')){return false;}
+        });
+		
+		
+		
+		
         
 //        $('#btn-invoice').click(function() {
 //            
@@ -149,8 +214,10 @@
         <h3 class="box-title">FCL Delivery Release</h3>
         <div class="box-tools" id="btn-toolbar">
             <div id="btn-group-4">
-                <button class="btn btn-info btn-sm" id="btn-invoice"><i class="fa fa-print"></i> Create Invoice</button>
+                 <button class="btn btn-info btn-sm" id="btn-invoice-tpp"><i class="fa fa-print"></i> Create Invoice TPP</button>
+			     <button class="btn btn-info btn-sm" id="btn-invoice"><i class="fa fa-print"></i> Create Invoice</button>
             </div>
+		
         </div>
     </div>
     <div class="box-body">
@@ -161,8 +228,9 @@
                     GridRender::setGridId("fclReleaseGrid")
                     ->enableFilterToolbar()
                     ->setGridOption('mtype', 'POST')
-                    ->setGridOption('url', URL::to('/container/grid-data-cy?module=release-invoice&_token='.csrf_token()))
-                    ->setGridOption('rowNum', 50)
+                   ->setGridOption('url', URL::to('/container/grid-data-cy?&_token='.csrf_token()))
+                 //   ->setGridOption('url', URL::to('/container/grid-data-cy?module=release-invoice&_token='.csrf_token()))
+					->setGridOption('rowNum', 50)
                     ->setGridOption('shrinkToFit', true)
                     ->setGridOption('sortname','TCONTAINER_PK')
                     ->setGridOption('sortorder','DESC')
@@ -344,6 +412,119 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<div id="create-invoice-tpp-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Please Insert All Field</h4>
+            </div>
+            <form id="create-invoice-tpp-form" class="form-horizontal" action="{{ route("fcl-delivery-release-invoice-nct-tpp") }}" method="POST" enctype="multipart/form-data">
+                <div class="modal-body"> 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input name="_token" type="hidden" value="{{ csrf_token() }}" />
+                            <input name="id" type="hidden" id="container_id_selected" />
+                            <input name="consignee_id" type="hidden" id="consignee_id" />
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">No. Faktur</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" name="no_invoice" value="-" required />
+                                </div>
+                            </div>
+							       <div class="form-group">
+                        <label class="col-sm-3 control-label">Jenis Invoice TPP</label>
+                        <div class="col-sm-8">
+                            <select class="form-control select2" id="jenis_tpp" name="jenis_tpp" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
+                                <option value="Keluar TPS AIRIN">Keluar TPS AIRIN</option>
+                                <option value="Keluar TPS TPP">Keluar TPS TPP</option>
+                             </select>
+                        </div>
+                    </div>
+							
+							
+							
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Tgl. Release</label>
+                                <div class="col-sm-6">
+                                    <div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" name="tgl_release" class="form-control pull-right datepicker" required>
+                                    </div>
+                                </div>
+                            </div>
+							
+<!--                            <div class="form-group">
+                                <label class="col-sm-3 control-label">No. Pajak</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" name="no_pajak" />
+                                </div>
+                            </div>-->
+<!--                            <div class="form-group">
+                                <label class="col-sm-3 control-label">No. DO</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" name="no_do" required />
+                                </div>
+                            </div>-->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Tgl. DO</label>
+                                <div class="col-sm-6">
+                                    <div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input type="text" name="tgl_do" class="form-control pull-right datepicker" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">No. B/L</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" name="no_bl" id="no_bl_awb" required />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Consignee</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" name="consignee" id="consignee" />
+                                </div>
+                            </div>
+<!--                            <div class="form-group">
+                                <label class="col-sm-3 control-label">NPWP Consignee</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" name="npwp" id="npwp" />
+                                </div>
+                            </div>-->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Alamat</label>
+                                <div class="col-sm-6">
+                                    <textarea class="form-control" name="alamat" id="alamat"></textarea>
+                                </div>
+                            </div>
+                            
+<!--                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Behandle</label>
+                                <div class="col-sm-5">
+                                    <input type="checkbox" name="behandle" value="1" />
+                                </div>
+                            </div>-->
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
+                  <button type="submit" class="btn btn-primary">Create Invoice</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
 
 @endsection
 

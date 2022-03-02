@@ -1824,22 +1824,29 @@ UNZ+1+1709131341'\n";
         $reffer = array(
             'REFFER RF',
             'REFFER RECOOLING',
-			'REEFER RECOOLING BB 2.1',
-            'REEFER RECOOLING BB 2.2',
-			'REEFER RECOOLING BB 2.3',
-			'REEFER RECOOLING BB 4.2',
-			'REEFER RECOOLING BB 4.3',
-			'REEFER RECOOLING BB 5.1',
-			'REEFER RECOOLING BB 5.2',
-			'REEFER RECOOLING BB 6',
-			'REEFER RECOOLING BB 6.1',
-			'REEFER RECOOLING BB 3',
-			'REEFER RECOOLING BB 8',
-			'REEFER RECOOLING BB 9',
             'REEFER RF',
             'REEFER RECOOLING'
         );
         
+		$refferlow = array(
+            'REEFER RECOOLING BB 2.2',
+			'REEFER RECOOLING BB 4.1',
+			'REEFER RECOOLING BB 4.2',
+			'REEFER RECOOLING BB 4.3',
+			'REEFER RECOOLING BB 6',
+			'REEFER RECOOLING BB 3',
+			'REEFER RECOOLING BB 8',
+			'REEFER RECOOLING BB 9',
+        );
+	
+		$refferhigh = array(
+            'REEFER RECOOLING BB 2.1',
+			'REEFER RECOOLING BB 5.1',
+			'REEFER RECOOLING BB 5.2',
+			'REEFER RECOOLING BB 6.1',
+       );
+	
+		
         $ft = array(
             'OPEN TOP',
             'FLAT TRACK RF',
@@ -1882,6 +1889,10 @@ UNZ+1+1709131341'\n";
                 $type = 'High';
             }else if(in_array($jenis_cont, $reffer)){
                 $type = 'Reffer';
+			}else if(in_array($jenis_cont, $refferlow)){
+                $type = 'RefferLow';
+			}else if(in_array($jenis_cont, $refferhigh)){
+                $type = 'RefferHigh';	
             }else if(in_array($jenis_cont, $ft)){
                 $type = 'Flatrack';
             }else{
@@ -2574,7 +2585,7 @@ UNZ+1+1709131341'\n";
             if($type == 'Reffer'){
                 $update_nct->dg_surcharge = ($total_penumpukan_tps + $total_gerakan_tps)*15/100;
                 $update_nct->surcharge = 15;
-            }elseif($type == 'Low' || $type == 'High'){
+            }elseif($type == 'Low' || $type == 'High' || $type == 'RefferLow' || $type == 'RefferHigh'){
                 $update_nct->dg_surcharge = ($total_penumpukan_tps + $total_gerakan_tps)*25/100;
                 $update_nct->surcharge = 25;
             }else{
@@ -2606,6 +2617,882 @@ UNZ+1+1709131341'\n";
         return back()->with('error', 'Something went wrong, please try again later.');
 //        return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
     }
+  
+  //Relasde Invoice TPP
+   public function releaseCreateInvoicetpp(Request $request)
+    {
+        $ids = explode(',', $request->id);
+        
+		$jenis_tpp = $request->jenis_tpp;
+        // Update Perusahaan
+        DBPerusahaan::where('TPERUSAHAAN_PK',$request->consignee_id)->update(['ALAMAT' => $request->alamat]);
+        
+//        array jenis container
+        $std = array(
+            'DRY'
+        );
+        $low = array(
+            'Class BB Standar 3',
+            'Class BB Standar 8',
+            'Class BB Standar 9',
+            'Class BB Standar 4,1',
+			'Class BB Standar 4,2',
+			'Class BB Standar 4,3',
+            'Class BB Standar 6',
+            'Class BB Standar 2,2'
+        );
+        $high = array(
+            "Class BB High Class 2,1",
+            "Class BB High Class 5,1",
+            "Class BB High Class 6,1",
+            "Class BB High Class 5,2"
+        );
+        $reffer = array(
+            'REFFER RF',
+            'REFFER RECOOLING',
+            'REEFER RF',
+            'REEFER RECOOLING'
+        );
+        
+		$refferlow = array(
+            'REEFER RECOOLING BB 2.2',
+			'REEFER RECOOLING BB 4.1',
+			'REEFER RECOOLING BB 4.2',
+			'REEFER RECOOLING BB 4.3',
+			'REEFER RECOOLING BB 6',
+			'REEFER RECOOLING BB 3',
+			'REEFER RECOOLING BB 8',
+			'REEFER RECOOLING BB 9',
+        );
+	
+		$refferhigh = array(
+            'REEFER RECOOLING BB 2.1',
+			'REEFER RECOOLING BB 5.1',
+			'REEFER RECOOLING BB 5.2',
+			'REEFER RECOOLING BB 6.1',
+       );
+	
+		
+        $ft = array(
+            'OPEN TOP',
+            'FLAT TRACK RF',
+            'FLAT TRACK OH',
+            'FLAT TRACK OW',
+            'FLAT TRACK OL'
+        );
+        
+		//sort by tgl masuk asc
+        $container20 = DBContainer::where('size', 20)->whereIn('TCONTAINER_PK', $ids)->orderBy('TGLMASUK','DESC')->get();
+        $container40 = DBContainer::where('size', 40)->whereIn('TCONTAINER_PK', $ids)->orderBy('TGLMASUK','DESC')->get();
+        $container45 = DBContainer::where('size', 45)->whereIn('TCONTAINER_PK', $ids)->orderBy('TGLMASUK','DESC')->get();
+        
+        if($container20 || $container40 || $container45) {
+            
+            if(count($container20) > 0){
+                $data = $container20['0'];
+            }elseif(count($container40) > 0){
+                $data = $container40['0'];
+            }else{
+                $data = $container45['0'];
+            }
+            
+//            $tgl_release = $data['TGLRELEASE'];
+            $tgl_release = $request->tgl_release;
+			//$jam_reefer = $request->JAMRFR;
+            
+//            $data = (count($container20) > 0 ? $container20['0'] : $container40['0']);
+//            $consignee = DBPerusahaan::where('TPERUSAHAAN_PK', $data['TCONSIGNEE_FK'])->first();
+            
+//            Detect Jenis Container
+            $tps_asal = ($data['KD_TPS_ASAL'] == 'NCT1') ? 'NPCT1' : $data['KD_TPS_ASAL'];
+            $jenis_cont = $data['jenis_container'];
+            
+            if(in_array($jenis_cont, $std)){
+                $type = 'Standar';
+            }else if(in_array($jenis_cont, $low)){
+                $type = 'Low';
+            }else if(in_array($jenis_cont, $high)){
+                $type = 'High';
+            }else if(in_array($jenis_cont, $reffer)){
+                $type = 'Reffer';
+			}else if(in_array($jenis_cont, $refferlow)){
+                $type = 'RefferLow';
+			}else if(in_array($jenis_cont, $refferhigh)){
+                $type = 'RefferHigh';	
+            }else if(in_array($jenis_cont, $ft)){
+                $type = 'Flatrack';
+            }else{
+                return back()->with('error', 'Container type '.$jenis_cont.' not detected.');
+            }
+            
+            $no_faktur = $request->no_invoice.'/FKT/IMS/TPS/'.$this->romawi(date('n')).'/'.date('Y');
+            
+            // Create Invoice Header
+            $invoice_nct = new \App\Models\InvoiceNct;
+//            $invoice_nct->container_id
+//            $invoice_nct->no_container	
+            $invoice_nct->no_spk = $data['NOSPK'];
+            $invoice_nct->jenis_container = $jenis_cont;
+            $invoice_nct->kd_gudang = $data['GUDANG_TUJUAN'];
+            $invoice_nct->no_invoice = $no_faktur;	
+//            $invoice_nct->no_pajak = $request->no_pajak;	
+            $invoice_nct->consignee = $request->consignee;	
+            $invoice_nct->npwp = $request->npwp;
+            $invoice_nct->alamat = $request->alamat;	
+            $invoice_nct->consignee_id = $request->consignee_id;	
+            $invoice_nct->vessel = $data['VESSEL'];	
+            $invoice_nct->voy = $data['VOY'];	
+//            $invoice_nct->no_do = $request->no_do;	
+            $invoice_nct->tgl_do = $request->tgl_do;
+            $invoice_nct->no_bl = $request->no_bl;	
+            $invoice_nct->eta = $data['ETA'];	
+            $invoice_nct->gateout_terminal = $data['TGLMASUK'];	
+            $invoice_nct->gateout_tps = $tgl_release;	
+            $invoice_nct->uid = \Auth::getUser()->name;	
+            
+            if($invoice_nct->save()) {
+                 
+                // Insert Invoice Detail
+                if(count($container20) > 0) {
+                    
+					//cek berlaku tarif 
+                    if($data['ETA']<'2021-04-15'){
+					  $tarif20 = \App\Models\InvoiceTarifNct::where(array('type' => $type, 'size' => 20))->whereIn('lokasi_sandar', array($tps_asal,'AIRIN'))->get();
+                      $hr4=9;
+					}
+					else
+					{
+					  $tarif20 = \App\Models\InvoiceTarifNctNew::where(array('type' => $type, 'size' => 20))->whereIn('lokasi_sandar', array($tps_asal,'AIRIN'))->get();
+	                  $hr4=6;
+					}
+
+				   foreach ($tarif20 as $t20) :
+  
+                        $invoice_penumpukan = new \App\Models\InvoiceNctPenumpukan;                      
+                         if($t20->lokasi_sandar == $tps_asal) {
+                          if($jenis_tpp=='Keluar TPS AIRIN') {
+   
+							// GERAKAN
+                            $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                        
+                            $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                            $invoice_gerakan->lokasi_sandar = $t20->lokasi_sandar;
+                            $invoice_gerakan->size = 20;
+                            $invoice_gerakan->qty = count($container20); 
+                            $invoice_gerakan->jenis_gerakan = 'Lift On Terminal';
+                            $invoice_gerakan->tarif_dasar = $t20->lift_on;
+                            $invoice_gerakan->total = $invoice_gerakan->qty * $t20->lift_on;
+                            $invoice_gerakan->save();
+                            
+                           //kalkulasi Reefer Shif
+						    $daterfr1 = date_create(date('Y-m-d',strtotime($data['ETA'])));
+                            $daterfr2 = date_create(date('Y-m-d',strtotime($data['TGLMASUK']. '+1 days')));                          
+							$diffrfr = date_diff($daterfr1 , $daterfr2);
+						    $harirfr = ($diffrfr->format("%a") * 24)/8;
+						
+
+						   if($t20->recooling){
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t20->lokasi_sandar;
+                                $invoice_gerakan->size = 20;
+                                $invoice_gerakan->qty = count($container20)*$harirfr; 
+								$invoice_gerakan->jenis_gerakan = 'Recooling';
+                                $invoice_gerakan->tarif_dasar = $t20->recooling;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $t20->recooling;
+                                $invoice_gerakan->save();
+                            }
+                            
+                            if($t20->monitoring){
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t20->lokasi_sandar;
+                                $invoice_gerakan->size = 20;
+                                $invoice_gerakan->qty = count($container20)*$harirfr; 
+                                $invoice_gerakan->jenis_gerakan = 'Monitoring';
+                                $invoice_gerakan->tarif_dasar = $t20->monitoring;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $t20->monitoring;
+                                $invoice_gerakan->save();
+                            }
+						  }
+						   if($jenis_tpp=='Keluar TPS TPP') {
+							
+							$invoice_penumpukan->invoice_nct_id = $invoice_nct->id;
+							$invoice_penumpukan->lokasi_sandar = $t20->lokasi_sandar;
+							$invoice_penumpukan->size = 20;
+							$invoice_penumpukan->qty = count($container20);
+
+                            // PENUMPUKAN
+                            $date1 = date_create($data['ETA']);
+                            $date2 = date_create(date('Y-m-d',strtotime($data['TGLMASUK']. '+1 days')));
+                            $diff = date_diff($date1, $date2);
+                            $hari = $diff->format("%a");
+                            
+                            $invoice_penumpukan->startdate = $data['ETA'];
+                            $invoice_penumpukan->enddate = $data['TGLMASUK'];
+                            $invoice_penumpukan->lama_timbun = $hari;
+                            $invoice_penumpukan->tarif_dasar = $t20->masa2;
+                            
+                            $invoice_penumpukan->hari_masa1 = ($hari > 0) ? 1 : 0;
+                            $invoice_penumpukan->hari_masa2 = ($hari > 1) ? 1 : 0;
+                            $invoice_penumpukan->hari_masa3 = ($hari > 2) ? 1 : 0;
+                            $invoice_penumpukan->hari_masa4 = ($hari > 3) ? $hari - 3 : 0;
+                            
+                            $invoice_penumpukan->masa1 = ($invoice_penumpukan->hari_masa2 * $t20->masa1) * count($container20);
+                            $invoice_penumpukan->masa2 = ($invoice_penumpukan->hari_masa2 * $t20->masa2 * 3) * count($container20);
+                            $invoice_penumpukan->masa3 = ($invoice_penumpukan->hari_masa3 * $t20->masa3 * 6) * count($container20);
+                            $invoice_penumpukan->masa4 = ($invoice_penumpukan->hari_masa4 * $t20->masa4 * $hr4) * count($container20);
+						  }   
+                        
+						} elseif($t20->lokasi_sandar == 'AIRIN') {
+                          
+						  if($jenis_tpp=='Keluar TPS AIRIN') {
+                            // GERAKAN
+                            // Check Behandle
+                            $count_behandle = 0;
+                            foreach ($container20 as $c_20):
+                                if($c_20->BEHANDLE == 'Y'){
+                                    $count_behandle++;
+                                }
+                            endforeach;
+//                            if($request->behandle) {
+                            if($count_behandle > 0){
+                                $jenis = array('Lift On/Off' => $t20->lift_off,'Paket PLP' => $t20->paket_plp,'Behandle' => $t20->behandle);
+                            }else{
+                                $jenis = array('Lift On/Off' => $t20->lift_off,'Paket PLP' => $t20->paket_plp);
+                            }
+                              
+                            foreach ($jenis as $key=>$value):
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                        
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t20->lokasi_sandar;
+                                $invoice_gerakan->size = 20;
+                                if($key == 'Lift On/Off'){
+                                    $invoice_gerakan->qty = count($container20)*2;
+                                }elseif($key == 'Behandle'){
+                                    $invoice_gerakan->qty = $count_behandle;
+                                }else{
+                                    $invoice_gerakan->qty = count($container20);
+                                } 
+                                $invoice_gerakan->jenis_gerakan = $key;
+                                $invoice_gerakan->tarif_dasar = $value;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $value;
+                                
+                                $invoice_gerakan->save();
+                            endforeach;
+							
+							
+							//kalkulasi Reefer AIRN Shif
+						  
+						    $daterfr1 = date_create(date('Y-m-d',strtotime($data['TGLMASUK'])));
+                            $daterfr2 = date_create(date('Y-m-d',strtotime($tgl_release. '+1 days')));                          
+							$diffrfr = date_diff($daterfr1 , $daterfr2);
+						    $harirfr = (($diffrfr->format("%a") * 24)/8)-1;
+							
+                            
+                            if($t20->recooling){
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t20->lokasi_sandar;
+                                $invoice_gerakan->size = 20;
+                                $invoice_gerakan->qty = count($container20) *$harirfr; 
+                                $invoice_gerakan->jenis_gerakan = 'Recooling';
+                                $invoice_gerakan->tarif_dasar = $t20->recooling;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $t20->recooling;
+                                $invoice_gerakan->save();
+                            }
+                            
+                            if($t20->monitoring){
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t20->lokasi_sandar;
+                                $invoice_gerakan->size = 20;
+                                $invoice_gerakan->qty = count($container20)*$harirfr; 
+                                $invoice_gerakan->jenis_gerakan = 'Monitoring';
+                                $invoice_gerakan->tarif_dasar = $t20->monitoring;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $t20->monitoring;
+                                $invoice_gerakan->save();
+                            }
+                          }
+						  if($jenis_tpp=='Keluar TPS TPP') {
+						    $invoice_penumpukan->invoice_nct_id = $invoice_nct->id;
+                            $invoice_penumpukan->lokasi_sandar = $t20->lokasi_sandar;
+							$invoice_penumpukan->size = 20;
+							$invoice_penumpukan->qty = count($container20);
+
+						  
+                            // PENUMPUKAN
+                            $date1 = date_create($data['TGLMASUK']);
+//                            $date2 = date_create($data['TGLRELEASE']);
+                            $date2 = date_create(date('Y-m-d',strtotime($tgl_release. '+1 days')));
+                            $diff = date_diff($date1, $date2);
+                            $hari = $diff->format("%a");
+                            
+                            // HARI TERMINAL
+                            $date1t = date_create($data['ETA']);
+                            $date2t = date_create(date('Y-m-d',strtotime($data['TGLMASUK']. '+1 days')));
+                            $difft = date_diff($date1t, $date2t);
+                            $hari_terminal = $difft->format("%a");
+                            
+                            // Perhitungan Masa 1
+                            if($hari_terminal >= 10){
+                                $hari_masa1 = 0;
+                            }else{  
+                                $hari_masa1 = min(abs(10-$hari_terminal),$hari);
+                            }
+                            
+                            $hari_masa2 = abs($hari - $hari_masa1);
+                            
+                            $invoice_penumpukan->startdate = $data['TGLMASUK'];
+                            $invoice_penumpukan->enddate = $tgl_release;
+                            $invoice_penumpukan->lama_timbun = $hari;        
+                            $invoice_penumpukan->tarif_dasar = $t20->masa1;
+                            $invoice_penumpukan->hari_masa1 = $hari_masa1;
+                            $invoice_penumpukan->hari_masa2 = $hari_masa2;
+                            $invoice_penumpukan->hari_masa3 = 0;
+                            $invoice_penumpukan->hari_masa4 = 0;
+                            
+                            $invoice_penumpukan->masa1 = ($invoice_penumpukan->hari_masa1 * $t20->masa1 * 2) * count($container20);
+                            $invoice_penumpukan->masa2 = ($invoice_penumpukan->hari_masa2 * $t20->masa2 * 3) * count($container20);
+                            $invoice_penumpukan->masa3 = ($invoice_penumpukan->hari_masa3 * $t20->masa3) * count($container20);
+                            $invoice_penumpukan->masa4 = ($invoice_penumpukan->hari_masa4 * $t20->masa4) * count($container20);
+                        }
+					}
+ 
+                        $invoice_penumpukan->total = array_sum(array($invoice_penumpukan->masa1,$invoice_penumpukan->masa2,$invoice_penumpukan->masa3,$invoice_penumpukan->masa4)); 
+
+                        $invoice_penumpukan->save();
+                        
+                    endforeach;
+                    
+                }
+                
+                if(count($container40) > 0) {
+                    
+					//cek tarif 40
+					if($data['ETA']<'2021-04-15'){
+                     $tarif40 = \App\Models\InvoiceTarifNct::where(array('type' => $type, 'size' => 40))->whereIn('lokasi_sandar', array($tps_asal,'AIRIN'))->get();
+                     $hr4=9;
+					}
+					else
+					{
+					 $tarif40 = \App\Models\InvoiceTarifNctNew::where(array('type' => $type, 'size' => 40))->whereIn('lokasi_sandar', array($tps_asal,'AIRIN'))->get();
+                     $hr4=6;
+
+					}
+					 
+                    foreach ($tarif40 as $t40) :
+                        $invoice_penumpukan = new \App\Models\InvoiceNctPenumpukan;
+                         if($t40->lokasi_sandar == $tps_asal) {
+						  if($jenis_tpp=='Keluar TPS AIRIN') {
+	
+						 
+                            // GERAKAN
+                            $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                        
+                            $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                            $invoice_gerakan->lokasi_sandar = $t40->lokasi_sandar;
+                            $invoice_gerakan->size = 40;
+                            $invoice_gerakan->qty = count($container40); 
+                            $invoice_gerakan->jenis_gerakan = 'Lift On Terminal';
+                            $invoice_gerakan->tarif_dasar = $t40->lift_on;
+                            $invoice_gerakan->total = $invoice_gerakan->qty * $t40->lift_on;
+                            $invoice_gerakan->save();
+
+                           	//kalkulasi Reefer Shif
+						    $daterfr1 = date_create(date('Y-m-d',strtotime($data['ETA'])));
+                            $daterfr2 = date_create(date('Y-m-d',strtotime($data['TGLMASUK']. '+1 days')));                          
+							$diffrfr = date_diff($daterfr1 , $daterfr2);
+						    $harirfr = ($diffrfr->format("%a") * 24)/8;				
+
+
+
+						   if($t40->recooling){
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t40->lokasi_sandar;
+                                $invoice_gerakan->size = 40;
+                                $invoice_gerakan->qty = count($container40)* $harirfr; 
+                                $invoice_gerakan->jenis_gerakan = 'Recooling';
+                                $invoice_gerakan->tarif_dasar = $t40->recooling;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $t40->recooling;
+                                $invoice_gerakan->save();
+                            }
+							
+						
+                            
+                            if($t40->monitoring){
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t40->lokasi_sandar;
+                                $invoice_gerakan->size = 40;
+                                $invoice_gerakan->qty = count($container40)* $harirfr; 
+                                $invoice_gerakan->jenis_gerakan = 'Monitoring';
+                                $invoice_gerakan->tarif_dasar = $t40->monitoring;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $t40->monitoring;
+                                $invoice_gerakan->save();
+                            }
+						  }
+						  if($jenis_tpp=='Keluar TPS TPP') {
+							$invoice_penumpukan->invoice_nct_id = $invoice_nct->id;
+							$invoice_penumpukan->lokasi_sandar = $t40->lokasi_sandar;
+							$invoice_penumpukan->size = 40;
+							$invoice_penumpukan->qty = count($container40);
+
+
+                            // PENUMPUKAN
+                            $date1 = date_create($data['ETA']);
+                            $date2 = date_create(date('Y-m-d',strtotime($data['TGLMASUK']. '+1 days')));
+                            $diff = date_diff($date1, $date2);
+                            $hari = $diff->format("%a");
+                            
+                            $invoice_penumpukan->startdate = $data['ETA'];
+                            $invoice_penumpukan->enddate = $data['TGLMASUK'];
+                            $invoice_penumpukan->lama_timbun = $hari;
+                            $invoice_penumpukan->tarif_dasar = $t40->masa2;
+                            $invoice_penumpukan->hari_masa1 = ($hari > 0) ? 1 : 0;
+                            $invoice_penumpukan->hari_masa2 = ($hari > 1) ? 1 : 0;
+                            $invoice_penumpukan->hari_masa3 = ($hari > 2) ? 1 : 0;
+                            $invoice_penumpukan->hari_masa4 = ($hari > 3) ? $hari - 3 : 0;
+                            
+                            $invoice_penumpukan->masa1 = ($invoice_penumpukan->hari_masa1 * $t40->masa1) * count($container40);
+                            $invoice_penumpukan->masa2 = ($invoice_penumpukan->hari_masa2 * $t40->masa2 * 3) * count($container40);
+                            $invoice_penumpukan->masa3 = ($invoice_penumpukan->hari_masa3 * $t40->masa3 * 6) * count($container40);
+                            $invoice_penumpukan->masa4 = ($invoice_penumpukan->hari_masa4 * $t40->masa4 * $hr4) * count($container40);
+                          }  
+                        } elseif($t40->lokasi_sandar == 'AIRIN') {
+                            if($jenis_tpp=='Keluar TPS AIRIN') {
+							
+							// GERAKAN
+//                          // Check Behandle
+                            $count_behandle = 0;
+                            foreach ($container40 as $c_40):
+                                if($c_40->BEHANDLE == 'Y'){
+                                    $count_behandle++;
+                                }
+                            endforeach;
+//                            if($request->behandle) {
+                            if($count_behandle > 0){
+                                $jenis = array('Lift On/Off' => $t40->lift_off,'Paket PLP' => $t40->paket_plp,'Behandle' => $t40->behandle);
+                            }else{
+                                $jenis = array('Lift On/Off' => $t40->lift_off,'Paket PLP' => $t40->paket_plp);
+                            }
+                            
+                            foreach ($jenis as $key=>$value):
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                        
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t40->lokasi_sandar;
+                                $invoice_gerakan->size = 40;
+                                if($key == 'Lift On/Off'){
+                                    $invoice_gerakan->qty = count($container40)*2;
+                                }elseif($key == 'Behandle'){
+                                    $invoice_gerakan->qty = $count_behandle;
+                                }else{
+                                    $invoice_gerakan->qty = count($container40);
+                                }
+                                $invoice_gerakan->jenis_gerakan = $key;
+                                $invoice_gerakan->tarif_dasar = $value;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $value;
+                                
+                                $invoice_gerakan->save();
+                            endforeach;
+							
+							//kalkulasi Reefer AIRN Shif
+							$daterfr1 = date_create(date('Y-m-d',strtotime($data['TGLMASUK'])));
+                            $daterfr2 = date_create(date('Y-m-d',strtotime($tgl_release. '+1 days')));                          
+							$diffrfr = date_diff($daterfr1 , $daterfr2);
+						    $harirfr = (($diffrfr->format("%a") * 24)/8)-1;
+
+                            
+                            if($t40->recooling){
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t40->lokasi_sandar;
+                                $invoice_gerakan->size = 40;
+                                $invoice_gerakan->qty = count($container40)*$harirfr; 
+                                $invoice_gerakan->jenis_gerakan = 'Recooling';
+                                $invoice_gerakan->tarif_dasar = $t40->recooling;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $t40->recooling;
+                                $invoice_gerakan->save();
+                            }
+                            
+                            if($t40->monitoring){
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t40->lokasi_sandar;
+                                $invoice_gerakan->size = 40;
+                                $invoice_gerakan->qty = count($container40)*$harirfr; 
+                                $invoice_gerakan->jenis_gerakan = 'Monitoring';
+                                $invoice_gerakan->tarif_dasar = $t40->monitoring;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $t40->monitoring;
+                                $invoice_gerakan->save();
+                            }
+						   }
+						   
+						  if($jenis_tpp=='Keluar TPS TPP') {
+                                $invoice_penumpukan->invoice_nct_id = $invoice_nct->id;
+								$invoice_penumpukan->lokasi_sandar = $t40->lokasi_sandar;
+								$invoice_penumpukan->size = 40;
+								$invoice_penumpukan->qty = count($container40);
+
+
+						   // PENUMPUKAN
+                            $date1 = date_create($data['TGLMASUK']);
+//                            $date2 = date_create($data['TGLRELEASE']);
+                            $date2 = date_create(date('Y-m-d',strtotime($tgl_release. '+1 days')));
+                            $diff = date_diff($date1, $date2);
+                            $hari = $diff->format("%a");
+                            
+                            // HARI TERMINAL
+                            $date1t = date_create($data['ETA']);
+                            $date2t = date_create(date('Y-m-d',strtotime($data['TGLMASUK']. '+1 days')));
+                            $difft = date_diff($date1t, $date2t);
+                            $hari_terminal = $difft->format("%a");
+                            
+                            // Perhitungan Masa 1
+                            if($hari_terminal >= 10){
+                                $hari_masa1 = 0;
+                            }else{  
+                                $hari_masa1 = min(abs(10-$hari_terminal),$hari);
+                            }
+                            
+                            $hari_masa2 = abs($hari - $hari_masa1);
+                            
+                            $invoice_penumpukan->startdate = $data['TGLMASUK'];
+                            $invoice_penumpukan->enddate = $tgl_release;
+                            $invoice_penumpukan->lama_timbun = $hari;
+                            $invoice_penumpukan->tarif_dasar = $t40->masa1;
+                            $invoice_penumpukan->hari_masa1 = $hari_masa1;
+                            $invoice_penumpukan->hari_masa2 = $hari_masa2;
+                            $invoice_penumpukan->hari_masa3 = 0;
+                            $invoice_penumpukan->hari_masa4 = 0;
+                            
+                            $invoice_penumpukan->masa1 = ($invoice_penumpukan->hari_masa1 * $t40->masa1 * 2) * count($container40);
+                            $invoice_penumpukan->masa2 = ($invoice_penumpukan->hari_masa2 * $t40->masa2 * 3) * count($container40);
+                            $invoice_penumpukan->masa3 = ($invoice_penumpukan->hari_masa3 * $t40->masa3) * count($container40);
+                            $invoice_penumpukan->masa4 = ($invoice_penumpukan->hari_masa4 * $t40->masa4) * count($container40);
+                         }
+						} 
+
+                        $invoice_penumpukan->total = array_sum(array($invoice_penumpukan->masa1,$invoice_penumpukan->masa2,$invoice_penumpukan->masa3,$invoice_penumpukan->masa4)); 
+                        
+                        $invoice_penumpukan->save();
+                        
+                    endforeach;
+                    
+                }
+                
+                if(count($container45) > 0) {
+                    
+					//cek tarif 45
+					if($data['ETA']<'2021-04-15'){
+						$tarif45 = \App\Models\InvoiceTarifNct::where(array('type' => $type, 'size' => 45))->whereIn('lokasi_sandar', array($tps_asal,'AIRIN'))->get();
+					    $hr4=9;
+					}
+					else
+					{
+						$tarif45 = \App\Models\InvoiceTarifNctNew::where(array('type' => $type, 'size' => 45))->whereIn('lokasi_sandar', array($tps_asal,'AIRIN'))->get();
+					    $hr4=6;
+					}
+                    foreach ($tarif45 as $t45) :                 
+					  $invoice_penumpukan = new \App\Models\InvoiceNctPenumpukan;
+                        if($t45->lokasi_sandar == $tps_asal) {
+                          if($jenis_tpp=='Keluar TPS AIRIN') {
+
+						  // GERAKAN
+							
+						
+                            $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                        
+                            $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                            $invoice_gerakan->lokasi_sandar = $t45->lokasi_sandar;
+                            $invoice_gerakan->size = 45;
+                            $invoice_gerakan->qty = count($container45); 
+                            $invoice_gerakan->jenis_gerakan = 'Lift On Terminal';
+                            $invoice_gerakan->tarif_dasar = $t45->lift_on;
+                            $invoice_gerakan->total = $invoice_gerakan->qty * $t45->lift_on;
+                            $invoice_gerakan->save();
+
+							//kalkulasi Reefer Shif
+							$daterfr1 = date_create(date('Y-m-d',strtotime($data['ETA'])));
+                            $daterfr2 = date_create(date('Y-m-d',strtotime($data['TGLMASUK']. '+1 days')));                          
+							$diffrfr = date_diff($daterfr1 , $daterfr2);
+						    $harirfr = ($diffrfr->format("%a") * 24)/8;
+							
+                            if($t45->recooling){
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t45->lokasi_sandar;
+                                $invoice_gerakan->size = 45;
+                                $invoice_gerakan->qty = count($container45)*$harirfr; 
+                                $invoice_gerakan->jenis_gerakan = 'Recooling';
+                                $invoice_gerakan->tarif_dasar = $t45->recooling;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $t45->recooling;
+                                $invoice_gerakan->save();
+                            }
+                            
+                            if($t45->monitoring){
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t45->lokasi_sandar;
+                                $invoice_gerakan->size = 45;
+                                $invoice_gerakan->qty = count($container45)*$harirfr; 
+                                $invoice_gerakan->jenis_gerakan = 'Monitoring';
+                                $invoice_gerakan->tarif_dasar = $t45->monitoring;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $t45->monitoring;
+                                $invoice_gerakan->save();
+                            }
+
+						  }
+						   if($jenis_tpp=='Keluar TPS TPP') {
+							$invoice_penumpukan->invoice_nct_id = $invoice_nct->id;
+							$invoice_penumpukan->lokasi_sandar = $t45->lokasi_sandar;
+							$invoice_penumpukan->size = 45;
+							$invoice_penumpukan->qty = count($container45);
+
+                            // PENUMPUKAN
+                            $date1 = date_create($data['ETA']);
+                            $date2 = date_create(date('Y-m-d',strtotime($data['TGLMASUK']. '+1 days')));
+                            $diff = date_diff($date1, $date2);
+                            $hari = $diff->format("%a");
+                            
+                            $invoice_penumpukan->startdate = $data['ETA'];
+                            $invoice_penumpukan->enddate = $data['TGLMASUK'];
+                            $invoice_penumpukan->lama_timbun = $hari;
+                            $invoice_penumpukan->tarif_dasar = $t45->masa2;
+                            $invoice_penumpukan->hari_masa1 = ($hari > 0) ? 1 : 0;
+                            $invoice_penumpukan->hari_masa2 = ($hari > 1) ? 1 : 0;
+                            $invoice_penumpukan->hari_masa3 = ($hari > 2) ? 1 : 0;
+                            $invoice_penumpukan->hari_masa4 = ($hari > 3) ? $hari - 3 : 0;
+                            
+                            $invoice_penumpukan->masa1 = ($invoice_penumpukan->hari_masa1 * $t45->masa1) * count($container45);
+                            $invoice_penumpukan->masa2 = ($invoice_penumpukan->hari_masa2 * $t45->masa2 * 3) * count($container45);
+                            $invoice_penumpukan->masa3 = ($invoice_penumpukan->hari_masa3 * $t45->masa3 * 6) * count($container45);
+                            $invoice_penumpukan->masa4 = ($invoice_penumpukan->hari_masa4 * $t45->masa4 * $hr4) * count($container45);
+                          }  
+                        } elseif($t45->lokasi_sandar == 'AIRIN') {
+                           if($jenis_tpp=='Keluar TPS AIRIN') {
+							
+							// GERAKAN
+                            $count_behandle = 0;
+                            foreach ($container45 as $c_45):
+                                if($c_45->BEHANDLE == 'Y'){
+                                    $count_behandle++;
+                                }
+                            endforeach;
+//                            if($request->behandle) {
+                            if($count_behandle > 0){
+                                $jenis = array('Lift On/Off' => $t45->lift_off,'Paket PLP' => $t45->paket_plp,'Behandle' => $t45->behandle);
+                            }else{
+                                $jenis = array('Lift On/Off' => $t45->lift_off,'Paket PLP' => $t45->paket_plp);
+                            }
+                            
+                            foreach ($jenis as $key=>$value):
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                        
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t45->lokasi_sandar;
+                                $invoice_gerakan->size = 45;
+                                if($key == 'Lift On/Off'){
+                                    $invoice_gerakan->qty = count($container45)*2;
+                                }elseif($key == 'Behandle'){
+                                    $invoice_gerakan->qty = $count_behandle;
+                                }else{
+                                    $invoice_gerakan->qty = count($container45);
+                                }
+                                $invoice_gerakan->jenis_gerakan = $key;
+                                $invoice_gerakan->tarif_dasar = $value;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $value;
+                                
+                                $invoice_gerakan->save();
+                            endforeach;
+                         
+  						    //kalkulasi Reefer AIRN Shif
+							$daterfr1 = date_create(date('Y-m-d',strtotime($data['TGLMASUK'])));
+                            $daterfr2 = date_create(date('Y-m-d',strtotime($tgl_release. '+1 days')));                          
+							$diffrfr = date_diff($daterfr1 , $daterfr2);
+						    $harirfr = (($diffrfr->format("%a") * 24)/8)-1;
+
+                            if($t45->recooling){
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t45->lokasi_sandar;
+                                $invoice_gerakan->size = 45;
+                                $invoice_gerakan->qty = count($container45)* $harirfr; 
+                                $invoice_gerakan->jenis_gerakan = 'Recooling';
+                                $invoice_gerakan->tarif_dasar = $t45->recooling;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $t45->recooling;
+                                $invoice_gerakan->save();
+                            }
+                            
+                            if($t45->monitoring){
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t45->lokasi_sandar;
+                                $invoice_gerakan->size = 45;
+                                $invoice_gerakan->qty = count($container45)* $harirfr; 
+                                $invoice_gerakan->jenis_gerakan = 'Monitoring';
+                                $invoice_gerakan->tarif_dasar = $t45->monitoring;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $t45->monitoring;
+                                $invoice_gerakan->save();
+                            }
+						   }
+						   
+						   if($jenis_tpp=='Keluar TPS TPP') {
+							   
+							    $invoice_penumpukan->invoice_nct_id = $invoice_nct->id;
+								$invoice_penumpukan->lokasi_sandar = $t45->lokasi_sandar;
+								$invoice_penumpukan->size = 45;
+								$invoice_penumpukan->qty = count($container45);
+   
+							   
+                            // PENUMPUKAN
+                            $date1 = date_create($data['TGLMASUK']);
+//                            $date2 = date_create($data['TGLRELEASE']);
+                            $date2 = date_create(date('Y-m-d',strtotime($tgl_release. '+1 days')));
+                            $diff = date_diff($date1, $date2);
+                            $hari = $diff->format("%a");
+                            
+                            // HARI TERMINAL
+                            $date1t = date_create($data['ETA']);
+                            $date2t = date_create(date('Y-m-d',strtotime($data['TGLMASUK']. '+1 days')));
+                            $difft = date_diff($date1t, $date2t);
+                            $hari_terminal = $difft->format("%a");
+                            
+                            // Perhitungan Masa 1
+                            if($hari_terminal >= 10){
+                                $hari_masa1 = 0;
+                            }else{  
+                                $hari_masa1 = min(abs(10-$hari_terminal),$hari);
+                            }
+                            
+                            $hari_masa2 = abs($hari - $hari_masa1);
+                            
+                            $invoice_penumpukan->startdate = $data['TGLMASUK'];
+                            $invoice_penumpukan->enddate = $tgl_release;
+                            $invoice_penumpukan->lama_timbun = $hari;
+                            $invoice_penumpukan->tarif_dasar = $t45->masa1;
+                            $invoice_penumpukan->hari_masa1 = $hari_masa1;
+                            $invoice_penumpukan->hari_masa2 = $hari_masa2;
+                            $invoice_penumpukan->hari_masa3 = 0;
+                            $invoice_penumpukan->hari_masa4 = 0;
+                            
+                            $invoice_penumpukan->masa1 = ($invoice_penumpukan->hari_masa1 * $t45->masa1 * 2) * count($container45);
+                            $invoice_penumpukan->masa2 = ($invoice_penumpukan->hari_masa2 * $t45->masa2 * 3) * count($container45);
+                            $invoice_penumpukan->masa3 = ($invoice_penumpukan->hari_masa3 * $t45->masa3) * count($container45);
+                            $invoice_penumpukan->masa4 = ($invoice_penumpukan->hari_masa4 * $t45->masa4) * count($container45);
+                         }
+						}
+
+                        $invoice_penumpukan->total = array_sum(array($invoice_penumpukan->masa1,$invoice_penumpukan->masa2,$invoice_penumpukan->masa3,$invoice_penumpukan->masa4)); 
+                        
+                        $invoice_penumpukan->save();
+                        
+                    endforeach;
+                    
+                }
+                
+            }
+            //cek tarif 45
+		    if($data['ETA']<'2021-04-15'){
+              $nct_gerakan = array('Pas Truck' => 9091, 'Gate Pass Admin' => 20000, 'Cost Recovery' => 75000);
+            }
+			else
+			{
+				$nct_gerakan = array('Pas Truck' => 9091, 'Gate Pass Admin' => 20000, 'Cost Recovery' => 0);
+			}	
+		  if($jenis_tpp=='Keluar TPS AIRIN') {
+            foreach($nct_gerakan as $key=>$value):
+                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                        
+                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                $invoice_gerakan->lokasi_sandar = $tps_asal;
+                $invoice_gerakan->size = 0;
+                $invoice_gerakan->qty = count($container20)+count($container40)+count($container45); 
+                $invoice_gerakan->jenis_gerakan = $key;
+                $invoice_gerakan->tarif_dasar = $value;
+                $invoice_gerakan->total = (count($container20)+count($container40)+count($container45)) * $value;
+
+                $invoice_gerakan->save();
+            endforeach;
+		  }
+//            
+            $update_nct = \App\Models\InvoiceNct::find($invoice_nct->id);
+            
+            $total_penumpukan = \App\Models\InvoiceNctPenumpukan::where('invoice_nct_id', $invoice_nct->id)->sum('total');
+            $total_gerakan = \App\Models\InvoiceNctGerakan::where('invoice_nct_id', $invoice_nct->id)->sum('total');
+            
+            $no_container = array();
+            $party = array();
+            if(count($container20) > 0){
+                foreach ($container20 as $c20):
+                    $no_container[] = $c20->NOCONTAINER;
+                endforeach;
+                $party[] = count($container20).' X 20';
+            }
+            if(count($container40) > 0){
+                foreach ($container40 as $c40):
+                    $no_container[] = $c40->NOCONTAINER;
+                endforeach;
+                $party[] = count($container40).' X 40';
+            }
+            if(count($container45) > 0){
+                foreach ($container45 as $c45):
+                    $no_container[] = $c45->NOCONTAINER;
+                endforeach;
+                $party[] = count($container45).' X 45';
+            }
+            
+            $update_nct->container_id = $request->id;
+            $update_nct->no_container = implode(', ', $no_container);
+            $update_nct->party = @serialize($party);
+            
+            $total_penumpukan_tps = \App\Models\InvoiceNctPenumpukan::where(array('invoice_nct_id' => $invoice_nct->id, 'lokasi_sandar' => 'AIRIN'))->sum('total');
+            $total_gerakan_tps = \App\Models\InvoiceNctGerakan::where(array('invoice_nct_id' => $invoice_nct->id, 'lokasi_sandar' => 'AIRIN'))->sum('total');
+            if($type == 'Reffer'){
+                $update_nct->dg_surcharge = ($total_penumpukan_tps + $total_gerakan_tps)*15/100;
+                $update_nct->surcharge = 15;
+            }elseif($type == 'Low' || $type == 'High' || $type == 'RefferLow' || $type == 'RefferHigh'){
+                $update_nct->dg_surcharge = ($total_penumpukan_tps + $total_gerakan_tps)*25/100;
+                $update_nct->surcharge = 25;
+            }else{
+                $update_nct->dg_surcharge = 0;
+                $update_nct->surcharge = 0;
+            }
+            
+            $update_nct->administrasi = (count($container20)+count($container40)+count($container45)) * 100000;
+            $update_nct->total_non_ppn = $total_penumpukan + $total_gerakan + $update_nct->dg_surcharge + $update_nct->administrasi;	
+            $update_nct->ppn = $update_nct->total_non_ppn * 10/100;	
+            if(($update_nct->total_non_ppn+$update_nct->ppn) >= 5000000){
+                $materai = 10000;
+//            }elseif(($update_nct->total_non_ppn+$update_nct->ppn) < 300000) {
+//                $materai = 0;
+            }else{
+                $materai = 0;
+            }
+            $update_nct->materai = $materai;	
+            $update_nct->total = $update_nct->total_non_ppn+$update_nct->ppn+$update_nct->materai;	
+            
+            $update_nct->save();
+            
+            return back()->with('success', 'Invoice berhasih dibuat.');
+//            return json_encode(array('success' => true, 'message' => 'Invoice berhasih dibuat.'));
+            
+        }
+        
+//        return $container;
+        return back()->with('error', 'Something went wrong, please try again later.');
+//        return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
+    }
+
+  
+  
+  
+  
+  
+  
   
     public function reportRealisasiPlp($container_id)
     {
@@ -2701,10 +3588,32 @@ UNZ+1+1709131341'\n";
 			$sppbcont= \App\Models\TpsSppbPibCont::where('CAR',$sppb->CAR)
 			->where('NO_CONT', $container->NOCONTAINER)
 			->first();  	
-			
-			
+						
             $nopib= $sppb->NO_PIB;
 			$tglpib= date('Y-m-d', strtotime($sppb->TGL_PIB));
+			
+			//update BL party continercy with dok sppb 
+		    $sppbcontupd = \App\Models\TpsSppbPibCont::where('CAR',$sppb->CAR)->get();  
+	        foreach ($sppbcontupd  as $contupd) :
+     		//	
+                  $sppbcont=array();
+				  
+				  $sppbcont['NO_SPPB'] = $sppb->NO_SPPB;
+                  $sppbcont['TGL_SPPB'] = date('Y-m-d', strtotime($sppb->TGL_SPPB));
+				  $sppbcont['NO_DAFTAR_PABEAN'] = $nopib;
+				  $sppbcont['TGL_DAFTAR_PABEAN'] = $tglpib;
+				  $sppbcont['ID_CONSIGNEE'] = $sppb->NPWP_IMP;
+				  $sppbcont['KD_DOK_INOUT'] = $kd_dok ;
+				  $sppbcont['KODE_DOKUMEN'] = 'SPPB BC 2.0';
+      
+       	         $update= DBContainer::where('NO_BL_AWB',$sppb->NO_BL_AWB)
+				   ->where('NOCONTAINER',$contupd->NO_CONT) ->update($sppbcont);
+	
+			
+            endforeach ;
+			
+			
+			
 		    }
         }elseif($kd_dok == 2){
             $sppb = \App\Models\TpsSppbBc::where(array('NO_BL_AWB' => $container->NO_BL_AWB))
@@ -2718,6 +3627,34 @@ UNZ+1+1709131341'\n";
 			
             $nopib= $sppb->NO_PIB;
 			$tglpib= date('Y-m-d', strtotime($sppb->TGL_PIB));		
+			
+			
+			
+				//update BL party continercy with dok sppb 
+		    $sppbcontupd = \App\Models\TpsSppbBcCont::where('CAR',$sppb->CAR)->get();  
+	        foreach ($sppbcontupd  as $contupd) :
+     		//	
+                  $sppbcont=array();
+				  
+				  $sppbcont['NO_SPPB'] = $sppb->NO_SPPB;
+                  $sppbcont['TGL_SPPB'] = date('Y-m-d', strtotime($sppb->TGL_SPPB));
+				  $sppbcont['NO_DAFTAR_PABEAN'] = $nopib;
+				  $sppbcont['TGL_DAFTAR_PABEAN'] = $tglpib;
+				  $sppbcont['ID_CONSIGNEE'] = $sppb->NPWP_IMP;
+				  $sppbcont['KD_DOK_INOUT'] = $kd_dok ;
+				  $sppbcont['KODE_DOKUMEN'] = 'SPPB BC 2.3';
+      
+       	         $update= DBContainer::where('NO_BL_AWB',$sppb->NO_BL_AWB)
+				   ->where('NOCONTAINER',$contupd->NO_CONT) ->update($sppbcont);
+	
+			
+            endforeach ;
+
+			
+			
+			
+			
+			
 			}
         }elseif($kd_dok == 41){
             $sppb = \App\Models\TpsDokPabean::select('NO_DOK_INOUT as NO_SPPB','TGL_DOK_INOUT as TGL_SPPB','NPWP_IMP','CAR')

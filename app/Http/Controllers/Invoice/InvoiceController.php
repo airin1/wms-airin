@@ -495,24 +495,30 @@ class InvoiceController extends Controller
             "Class BB High Class 6,1",
             "Class BB High Class 5,2"
         );
-        $reffer = array(
+         $reffer = array(
             'REFFER RF',
             'REFFER RECOOLING',
-			'REEFER RECOOLING BB 2.1',
-            'REEFER RECOOLING BB 2.2',
-			'REEFER RECOOLING BB 2.3',
-			'REEFER RECOOLING BB 4.2',
-			'REEFER RECOOLING BB 4.3',
-			'REEFER RECOOLING BB 5.1',
-			'REEFER RECOOLING BB 5.2',
-			'REEFER RECOOLING BB 6',
-			'REEFER RECOOLING BB 6.1',
-			'REEFER RECOOLING BB 3',
-			'REEFER RECOOLING BB 8',
-			'REEFER RECOOLING BB 9',
             'REEFER RF',
             'REEFER RECOOLING'
         );
+        
+		$refferlow = array(
+            'REEFER RECOOLING BB 2.2',
+			'REEFER RECOOLING BB 4.1',
+			'REEFER RECOOLING BB 4.2',
+			'REEFER RECOOLING BB 4.3',
+			'REEFER RECOOLING BB 6',
+			'REEFER RECOOLING BB 3',
+			'REEFER RECOOLING BB 8',
+			'REEFER RECOOLING BB 9',
+        );
+	
+		$refferhigh = array(
+            'REEFER RECOOLING BB 2.1',
+			'REEFER RECOOLING BB 5.1',
+			'REEFER RECOOLING BB 5.2',
+			'REEFER RECOOLING BB 6.1',
+       );
         
         $ft = array(
             'OPEN TOP',
@@ -557,6 +563,10 @@ class InvoiceController extends Controller
                 $type = 'High';
             }else if(in_array($jenis_cont, $reffer)){
                 $type = 'Reffer';
+			}else if(in_array($jenis_cont, $refferlow)){
+                $type = 'RefferLow';
+			}else if(in_array($jenis_cont, $refferhigh)){
+                $type = 'RefferHigh';		
             }else if(in_array($jenis_cont, $ft)){
                 $type = 'Flatrack';
             }else{
@@ -637,30 +647,45 @@ class InvoiceController extends Controller
 //                                
 //                                $invoice_gerakan->save();
 //                            endforeach;
-//                            
-//                            if($t20->recooling){
-//                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
-//                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
-//                                $invoice_gerakan->lokasi_sandar = $t20->lokasi_sandar;
-//                                $invoice_gerakan->size = 20;
-//                                $invoice_gerakan->qty = count($container20); 
-//                                $invoice_gerakan->jenis_gerakan = 'Recooling';
-//                                $invoice_gerakan->tarif_dasar = $t20->recooling;
-//                                $invoice_gerakan->total = $invoice_gerakan->qty * $t20->recooling;
-//                                $invoice_gerakan->save();
-//                            }
-//                            
-//                            if($t20->monitoring){
-//                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
-//                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
-//                                $invoice_gerakan->lokasi_sandar = $t20->lokasi_sandar;
-//                                $invoice_gerakan->size = 20;
-//                                $invoice_gerakan->qty = count($container20); 
-//                                $invoice_gerakan->jenis_gerakan = 'Monitoring';
-//                                $invoice_gerakan->tarif_dasar = $t20->monitoring;
-//                                $invoice_gerakan->total = $invoice_gerakan->qty * $t20->monitoring;
-//                                $invoice_gerakan->save();
-//                            }
+
+							// PERPANJANGAN RFR SHIFT
+ 							if($invoice->renew=='Y'){
+								$daterfr1= date_create(date('Y-m-d',strtotime($invoice->renew_date. '+1 days')));
+							}else{
+								$daterfr1= date_create(date('Y-m-d',strtotime($invoice->gateout_tps. '+1 days')));
+							}		
+							
+							
+                            $daterfr2 = date_create(date('Y-m-d',strtotime($request->renew_date. '+1 days')));
+							$diffrfr = date_diff($daterfr1 , $daterfr2);
+						    $harirfr = (($diffrfr->format("%a") * 24)/8);
+
+				
+                            
+                            if($t20->recooling){
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t20->lokasi_sandar;
+                                $invoice_gerakan->size = 20;
+                                $invoice_gerakan->qty = count($container20) *$harirfr; 
+                                $invoice_gerakan->jenis_gerakan = 'Recooling';
+                                $invoice_gerakan->tarif_dasar = $t20->recooling;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $t20->recooling;
+                                $invoice_gerakan->save();
+                            }
+                            
+                            if($t20->monitoring){
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t20->lokasi_sandar;
+                                $invoice_gerakan->size = 20;
+                                $invoice_gerakan->qty = count($container20)*$harirfr; 
+                                $invoice_gerakan->jenis_gerakan = 'Monitoring';
+                                $invoice_gerakan->tarif_dasar = $t20->monitoring;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $t20->monitoring;
+                                $invoice_gerakan->save();
+                            }
+                            
                             
                             // PENUMPUKAN
                             $date1 = date_create($data['TGLMASUK']);
@@ -765,29 +790,43 @@ class InvoiceController extends Controller
 //                                $invoice_gerakan->save();
 //                            endforeach;
 //                            
-//                            if($t40->recooling){
-//                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
-//                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
-//                                $invoice_gerakan->lokasi_sandar = $t40->lokasi_sandar;
-//                                $invoice_gerakan->size = 40;
-//                                $invoice_gerakan->qty = count($container40); 
-//                                $invoice_gerakan->jenis_gerakan = 'Recooling';
-//                                $invoice_gerakan->tarif_dasar = $t40->recooling;
-//                                $invoice_gerakan->total = $invoice_gerakan->qty * $t40->recooling;
-//                                $invoice_gerakan->save();
-//                            }
-//                            
-//                            if($t40->monitoring){
-//                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
-//                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
-//                                $invoice_gerakan->lokasi_sandar = $t40->lokasi_sandar;
-//                                $invoice_gerakan->size = 40;
-//                                $invoice_gerakan->qty = count($container40); 
-//                                $invoice_gerakan->jenis_gerakan = 'Monitoring';
-//                                $invoice_gerakan->tarif_dasar = $t40->monitoring;
-//                                $invoice_gerakan->total = $invoice_gerakan->qty * $t40->monitoring;
-//                                $invoice_gerakan->save();
-//                            }
+							
+							// PERPANJANGAN RFR SHIF
+ 							if($invoice->renew=='Y'){
+								$daterfr1= date_create(date('Y-m-d',strtotime($invoice->renew_date. '+1 days')));
+							}else{
+								$daterfr1= date_create(date('Y-m-d',strtotime($invoice->gateout_tps. '+1 days')));
+							}		
+							
+							
+                            $daterfr2 = date_create(date('Y-m-d',strtotime($request->renew_date. '+1 days')));
+							$diffrfr = date_diff($daterfr1 , $daterfr2);
+						    $harirfr = (($diffrfr->format("%a") * 24)/8);
+
+							
+							if($t40->recooling){
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t40->lokasi_sandar;
+                                $invoice_gerakan->size = 40;
+                                $invoice_gerakan->qty = count($container40)*$harirfr; 
+                                $invoice_gerakan->jenis_gerakan = 'Recooling';
+                                $invoice_gerakan->tarif_dasar = $t40->recooling;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $t40->recooling;
+                                $invoice_gerakan->save();
+                            }
+                            
+                            if($t40->monitoring){
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t40->lokasi_sandar;
+                                $invoice_gerakan->size = 40;
+                                $invoice_gerakan->qty = count($container40)*$harirfr; 
+                                $invoice_gerakan->jenis_gerakan = 'Monitoring';
+                                $invoice_gerakan->tarif_dasar = $t40->monitoring;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $t40->monitoring;
+                                $invoice_gerakan->save();
+                            }
                             
                             // PENUMPUKAN
                             $date1 = date_create($data['TGLMASUK']);
@@ -891,30 +930,45 @@ class InvoiceController extends Controller
 //                                $invoice_gerakan->save();
 //                            endforeach;
 //                            
-//                            if($t45->recooling){
-//                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
-//                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
-//                                $invoice_gerakan->lokasi_sandar = $t45->lokasi_sandar;
-//                                $invoice_gerakan->size = 45;
-//                                $invoice_gerakan->qty = count($container45); 
-//                                $invoice_gerakan->jenis_gerakan = 'Recooling';
-//                                $invoice_gerakan->tarif_dasar = $t45->recooling;
-//                                $invoice_gerakan->total = $invoice_gerakan->qty * $t45->recooling;
-//                                $invoice_gerakan->save();
-//                            }
-//                            
-//                            if($t45->monitoring){
-//                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
-//                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
-//                                $invoice_gerakan->lokasi_sandar = $t45->lokasi_sandar;
-//                                $invoice_gerakan->size = 45;
-//                                $invoice_gerakan->qty = count($container45); 
-//                                $invoice_gerakan->jenis_gerakan = 'Monitoring';
-//                                $invoice_gerakan->tarif_dasar = $t45->monitoring;
-//                                $invoice_gerakan->total = $invoice_gerakan->qty * $t45->monitoring;
-//                                $invoice_gerakan->save();
-//                            }
+                           // PERPANJANGAN RFR SHIF
+ 							if($invoice->renew=='Y'){
+								$daterfr1= date_create(date('Y-m-d',strtotime($invoice->renew_date. '+1 days')));
+							}else{
+								$daterfr1= date_create(date('Y-m-d',strtotime($invoice->gateout_tps. '+1 days')));
+							}		
+							
+							
+                            $daterfr2 = date_create(date('Y-m-d',strtotime($request->renew_date. '+1 days')));
+							$diffrfr = date_diff($daterfr1 , $daterfr2);
+						    $harirfr = (($diffrfr->format("%a") * 24)/8);
+
+
+
+
+						  if($t45->recooling){
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t45->lokasi_sandar;
+                                $invoice_gerakan->size = 45;
+                                $invoice_gerakan->qty = count($container45)* $harirfr; 
+                                $invoice_gerakan->jenis_gerakan = 'Recooling';
+                                $invoice_gerakan->tarif_dasar = $t45->recooling;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $t45->recooling;
+                                $invoice_gerakan->save();
+                            }
                             
+                            if($t45->monitoring){
+                                $invoice_gerakan = new \App\Models\InvoiceNctGerakan;
+                                $invoice_gerakan->invoice_nct_id = $invoice_nct->id;
+                                $invoice_gerakan->lokasi_sandar = $t45->lokasi_sandar;
+                                $invoice_gerakan->size = 45;
+                                $invoice_gerakan->qty = count($container45)* $harirfr; 
+                                $invoice_gerakan->jenis_gerakan = 'Monitoring';
+                                $invoice_gerakan->tarif_dasar = $t45->monitoring;
+                                $invoice_gerakan->total = $invoice_gerakan->qty * $t45->monitoring;
+                                $invoice_gerakan->save();
+                            }
+                        
                             // PENUMPUKAN
                             $date1 = date_create($data['TGLMASUK']);
 //                            $date2 = date_create($data['TGLRELEASE']);
