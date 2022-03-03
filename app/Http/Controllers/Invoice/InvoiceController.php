@@ -389,11 +389,13 @@ class InvoiceController extends Controller
         ];
         
         $data['invoice'] = \App\Models\InvoiceNct::find($id);
-        $data['penumpukan'] = \App\Models\InvoiceNctPenumpukan::where('invoice_nct_id', $data['invoice']->id)->get();
+        $data['container'] = \App\Models\Containercy::where('NO_BL_AWB', $data['invoice']->no_bl)->where('NOSPK', $data['invoice']->no_spk)->first();
+		$data['penumpukan'] = \App\Models\InvoiceNctPenumpukan::where('invoice_nct_id', $data['invoice']->id)->get();
         $data['gerakan'] = \App\Models\InvoiceNctGerakan::where('invoice_nct_id', $data['invoice']->id)->orderBy('lokasi_sandar', 'ASC')->get();
         $data['tarif'] = \App\Models\InvoiceTarifNct::get();
         $data['terbilang'] = ucwords($this->terbilang($data['invoice']->total))." Rupiah";
-        
+ 		
+		
         return view('invoice.edit-invoice-nct')->with($data);
     }
     
@@ -409,6 +411,7 @@ class InvoiceController extends Controller
     public function invoiceNctPrint($id)
     {
         $data['invoice'] = \App\Models\InvoiceNct::find($id);
+		$data['container'] = \App\Models\Containercy::where('NO_BL_AWB', $data['invoice']->no_bl)->where('NOSPK', $data['invoice']->no_spk)->first();
         $data['penumpukan'] = \App\Models\InvoiceNctPenumpukan::where('invoice_nct_id', $data['invoice']->id)->get();
         $data['gerakan'] = \App\Models\InvoiceNctGerakan::where('invoice_nct_id', $data['invoice']->id)->orderBy('lokasi_sandar', 'ASC')->get();
         $data['tarif'] = \App\Models\InvoiceTarifNct::get();
@@ -573,7 +576,7 @@ class InvoiceController extends Controller
                 return back()->with('error', 'Container type '.$jenis_cont.' not detected.');
             }
             
-            $no_faktur = '___/FKT/IMS/TPS/'.$this->romawi(date('n')).'/'.date('Y');
+            $no_faktur = $request->no_faktur_renew.'/FKT/IMS/TPS/'.$this->romawi(date('n')).'/'.date('Y');
             
             // Create Invoice Header
             $invoice_nct = new \App\Models\InvoiceNct;

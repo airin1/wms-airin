@@ -56,6 +56,13 @@
                   <td>:&nbsp;&nbsp;</td>
                   <td>{{ $invoice->no_container }}</td>
               </tr>
+			   @if( $invoice->renew=='Y')
+			   <tr>
+                  <td><b>TPS Asal</b></td>
+                  <td>:&nbsp;&nbsp;</td>
+                  <td>{{ $container->KD_TPS_ASAL }}</td>
+               </tr>
+			   @endif
                 <tr>
                   <td>&nbsp;</td>
               </tr>  

@@ -298,6 +298,14 @@ table tfoot tr td:first-child {
                                 <td style="width: 20px;vertical-align: top;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
                                 <td style="vertical-align: top;width: 50px;">{{ $invoice->no_container }}</td>
                             </tr>
+							@if( $invoice->renew=='Y')
+							<tr>
+								<td><b>TPS Asal</b></td>
+								<td>:&nbsp;&nbsp;</td>
+								<td>{{ $container->KD_TPS_ASAL }}</td>
+							</tr>
+							@endif
+							
                             <tr>
                                 <td colspan="3">&nbsp;</td>
                             </tr>
