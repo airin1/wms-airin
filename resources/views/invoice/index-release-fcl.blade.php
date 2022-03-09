@@ -228,7 +228,7 @@
                     GridRender::setGridId("fclReleaseGrid")
                     ->enableFilterToolbar()
                     ->setGridOption('mtype', 'POST')
-                   ->setGridOption('url', URL::to('/container/grid-data-cy?&_token='.csrf_token()))
+                    ->setGridOption('url', URL::to('/container/grid-data-cy?module=release&_token='.csrf_token()))
                  //   ->setGridOption('url', URL::to('/container/grid-data-cy?module=release-invoice&_token='.csrf_token()))
 					->setGridOption('rowNum', 50)
                     ->setGridOption('shrinkToFit', true)
