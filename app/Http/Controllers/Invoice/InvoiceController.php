@@ -535,9 +535,9 @@ class InvoiceController extends Controller
         //$container40 = DBContainer::where('size', 40)->whereIn('NOCONTAINER', $no_cont)->get();
         //$container45 = DBContainer::where('size', 45)->whereIn('NOCONTAINER', $no_cont)->get();
         
-		$container20 = DBContainer::where('size', 20)->whereIn('NOCONTAINER', $no_cont)->orderBy('TGLMASUK','DESC')->get();
-        $container40 = DBContainer::where('size', 40)->whereIn('NOCONTAINER', $no_cont)->orderBy('TGLMASUK','DESC')->get();
-        $container45 = DBContainer::where('size', 45)->whereIn('NOCONTAINER', $no_cont)->orderBy('TGLMASUK','DESC')->get();
+		$container20 = DBContainer::where('size', 20)->where('NO_BL_AWB', $invoice->no_bl)->whereIn('NOCONTAINER', $no_cont)->orderBy('TGLMASUK','DESC')->get();
+        $container40 = DBContainer::where('size', 40)->where('NO_BL_AWB', $invoice->no_bl)->whereIn('NOCONTAINER', $no_cont)->orderBy('TGLMASUK','DESC')->get();
+        $container45 = DBContainer::where('size', 45)->where('NO_BL_AWB', $invoice->no_bl)->whereIn('NOCONTAINER', $no_cont)->orderBy('TGLMASUK','DESC')->get();
 
         
         if($container20 || $container40 || $container45) {
