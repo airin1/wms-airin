@@ -1097,7 +1097,15 @@ class InvoiceController extends Controller
             
             $update_nct->administrasi = (count($container20)+count($container40)+count($container45)) * 20000;
             $update_nct->total_non_ppn = $total_penumpukan + $total_gerakan + $update_nct->dg_surcharge + $update_nct->administrasi;	
-            $update_nct->ppn = $update_nct->total_non_ppn * 10/100;	
+            
+			//$update_nct->ppn = $update_nct->total_non_ppn * 10/100;	
+			if(date('Y-m-d')<'2022-04-01'){           
+		   		   $update_nct->ppn = $update_nct->total_non_ppn * 10/100;	
+			}else{
+				 $update_nct->ppn = $update_nct->total_non_ppn * 11/100;	
+			}
+			
+			
             if(($update_nct->total_non_ppn+$update_nct->ppn) >= 5000000){
                 $materai = 10000;
 //            }elseif(($update_nct->total_non_ppn+$update_nct->ppn) < 300000) {

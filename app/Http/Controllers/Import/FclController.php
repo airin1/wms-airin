@@ -1030,8 +1030,11 @@ class FclController extends Controller
     
     public function suratjalanCetak($id,$date)
     {
-        $container = DBContainer::find($id);
-        $data['container'] = $container;
+        //$container = DBContainer::find($id);
+		//$container = DBContainer::whereIn(TCONTAINER_FK,$id);
+	    $ids = explode(',', $id);
+	    $container = \App\Models\Containercy::whereIn('TCONTAINER_PK', $ids)->get();
+        $data['container1'] = $container;
         $data['pay_date'] = $date;
         return view('print.fcl-surat-jalan', $data);
         $pdf = \PDF::loadView('print.fcl-surat-jalan', $data); 
@@ -2595,8 +2598,12 @@ UNZ+1+1709131341'\n";
             
             $update_nct->administrasi = (count($container20)+count($container40)+count($container45)) * 100000;
             $update_nct->total_non_ppn = $total_penumpukan + $total_gerakan + $update_nct->dg_surcharge + $update_nct->administrasi;	
-            $update_nct->ppn = $update_nct->total_non_ppn * 10/100;	
-            if(($update_nct->total_non_ppn+$update_nct->ppn) >= 5000000){
+           if(date('Y-m-d')<'2022-04-01'){           
+		   		   $update_nct->ppn = $update_nct->total_non_ppn * 10/100;	
+			}else{
+				 $update_nct->ppn = $update_nct->total_non_ppn * 11/100;	
+			}
+		   if(($update_nct->total_non_ppn+$update_nct->ppn) >= 5000000){
                 $materai = 10000;
 //            }elseif(($update_nct->total_non_ppn+$update_nct->ppn) < 300000) {
 //                $materai = 0;
@@ -3464,8 +3471,12 @@ UNZ+1+1709131341'\n";
             
             $update_nct->administrasi = (count($container20)+count($container40)+count($container45)) * 100000;
             $update_nct->total_non_ppn = $total_penumpukan + $total_gerakan + $update_nct->dg_surcharge + $update_nct->administrasi;	
-            $update_nct->ppn = $update_nct->total_non_ppn * 10/100;	
-            if(($update_nct->total_non_ppn+$update_nct->ppn) >= 5000000){
+            if(date('Y-m-d')<'2022-04-01'){  
+				$update_nct->ppn = $update_nct->total_non_ppn * 10/100;	
+            }else{
+				$update_nct->ppn = $update_nct->total_non_ppn * 11/100;	
+			}
+			if(($update_nct->total_non_ppn+$update_nct->ppn) >= 5000000){
                 $materai = 10000;
 //            }elseif(($update_nct->total_non_ppn+$update_nct->ppn) < 300000) {
 //                $materai = 0;
@@ -3643,6 +3654,9 @@ UNZ+1+1709131341'\n";
 				  $sppbcont['ID_CONSIGNEE'] = $sppb->NPWP_IMP;
 				  $sppbcont['KD_DOK_INOUT'] = $kd_dok ;
 				  $sppbcont['KODE_DOKUMEN'] = 'SPPB BC 2.3';
+				  if($contupd->status_bc==''){
+				  $sppbcont['status_bc'] = 'HOLD';
+				  }
       
        	         $update= DBContainer::where('NO_BL_AWB',$sppb->NO_BL_AWB)
 				   ->where('NOCONTAINER',$contupd->NO_CONT) ->update($sppbcont);

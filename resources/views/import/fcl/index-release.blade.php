@@ -305,8 +305,28 @@
         });
         
         $('#btn-print-sj').click(function() {
-            var id = $('#fclReleaseGrid').jqGrid('getGridParam', 'selrow');
-            $('#datepick-contid').val(id);
+           
+         var $grid = $("#fclReleaseGrid"), selIds = $grid.jqGrid("getGridParam", "selarrrow"), i, n,
+                cellValues = [];
+            for (i = 0, n = selIds.length; i < n; i++) {
+                var check_sppb = $grid.jqGrid("getCell", selIds[i], "NO_SPPB");
+                
+                if(check_sppb == ''){
+                    alert('Silahkan masukan No. SPPB terlebih dahulu!!!');
+                    return false;
+                }
+                cellValues.push($grid.jqGrid("getCell", selIds[i], "TCONTAINER_PK"));
+            }
+            
+            var manifestId = cellValues.join(",");
+
+
+
+
+		   //var id = $('#fclReleaseGrid').jqGrid('getGridParam', 'selrow');
+            //$('#datepick-contid').val(id);
+			
+			$('#datepick-contid').val(manifestId);
             $('#datepick-modal').modal('show');
                         
 //            $.ajax({
@@ -403,8 +423,18 @@
         });
 
         $('#btn-save').click(function() {
-            
+        						
             if(!confirm('Apakah anda yakin?')){return false;}
+			
+			if($('#TGLRELEASE').val() != ''){
+                 if($('#NOPOL_OUT').val() == "")
+			   {
+				alert('Silahkan masukan No. Mobil terlebih dahulu!!!');
+                return false;
+			   }	
+            }
+			
+			
             
             rowid = $('#fclReleaseGrid').jqGrid('getGridParam', 'selrow');
             rowdata = $('#fclReleaseGrid').getRowData(rowid);

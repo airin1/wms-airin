@@ -250,11 +250,25 @@
                     <td>= Rp.</td>
                     <td align="right">{{ number_format($invoice->total_non_ppn) }}</td>
                 </tr>
-                <tr>
+              
+				<?php  $ppnberlaku='2022-04-01';
+				  $hari=$invoice->created_at;
+				   
+				?>								
+		        @if($hari>=$ppnberlaku)
+    			<tr>
+                    <td align="right">PPN 11%</td>
+                    <td>= Rp.</td>
+                    <td align="right">{{ number_format($invoice->ppn) }}</td>
+                </tr>
+				@else
+				<tr>
                     <td align="right">PPN 10%</td>
                     <td>= Rp.</td>
                     <td align="right">{{ number_format($invoice->ppn) }}</td>
                 </tr>
+				
+				@endif
                 <tr>
                     <td align="right">Materai</td>
                     <td>= Rp.</td>

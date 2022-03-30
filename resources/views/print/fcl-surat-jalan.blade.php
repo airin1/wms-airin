@@ -27,12 +27,14 @@
         }
     }
 </style>
-<a href="#" class="print-btn" type="button" onclick="window.print();">PRINT</a>    
+<a href="#" class="print-btn" type="button" onclick="window.print();">PRINT</a> 
+@foreach($container1 as $container)
+   
 <div style="width: 700px;height: 850px;border: 1px solid transparent;padding: 30px;">
     <div style="float:left;font-size: 10px;">PRINT TIME {{ date('d/m/Y H:i')}}</div>
     <!--<div style="width: 100%;height: 80px;border: 1px solid transparent;display: relative;">-->
         
-        <div style="float: right;margin-top: 80px;margin-bottom: 20px;">
+        <div style="float: right;margin-top: 90px;margin-bottom: 20px;">
             <table>
                 <tr>
                     <td align="right">{{$container->KODE_DOKUMEN}}</td>
@@ -149,6 +151,8 @@
     </div>
     
 </div>
-    
+ <div style="display:block; page-break-before:always;"></div>
+
+@endforeach   
         
 @stop

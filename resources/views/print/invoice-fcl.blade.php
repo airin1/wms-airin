@@ -429,11 +429,23 @@ table tfoot tr td:first-child {
                     <td style="text-align: right;">= Rp.</td>
                     <td  style="text-align: right;">{{ number_format($invoice->total_non_ppn) }}</td>
                 </tr>
+				<?php  $ppnberlaku='2022-04-01';
+				   $hari=$invoice->created_at;
+				?>								
+		        @if($hari>=$ppnberlaku)
                 <tr>
+                    <td style="text-align: right;">PPN 11%</td>
+                    <td style="text-align: right;">= Rp.</td>
+                    <td  style="text-align: right;">{{ number_format($invoice->ppn) }}</td>
+                </tr>
+				@else
+					<tr>
                     <td style="text-align: right;">PPN 10%</td>
                     <td style="text-align: right;">= Rp.</td>
                     <td  style="text-align: right;">{{ number_format($invoice->ppn) }}</td>
                 </tr>
+				
+				@endif	
                 <tr>
                     <td style="text-align: right;">Materai</td>
                     <td style="text-align: right;">= Rp.</td>
