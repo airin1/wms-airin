@@ -39,16 +39,16 @@
 			@if(Auth::getUser()->username == 'bcgaters') 
                 jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});            
 			@else
-				@if(Auth::getUser()->username == 'ardin') 
+				@if(Auth::getUser()->username == 'alvin') 
 				 jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			    @else
 					@if(Auth::getUser()->username == 'damang') 
 				         jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			        @else
-						@if(Auth::getUser()->username == 'septian') 
+						@if(Auth::getUser()->username == 'hamzah') 
 				           jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			            @else
-							 @if(Auth::getUser()->username == 'faizal') 
+							 @if(Auth::getUser()->username == 'harry') 
 				               jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			                 @else
 								 @if(Auth::getUser()->username == 'haidar') 

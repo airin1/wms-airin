@@ -49,16 +49,16 @@
 			@if(Auth::getUser()->username == 'bcgaters') 
                 jQuery("#lclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});            
 			@else
-				@if(Auth::getUser()->username == 'ardin') 
+				@if(Auth::getUser()->username == 'alvin') 
 				 jQuery("#lclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			    @else
 					@if(Auth::getUser()->username == 'damang') 
 				         jQuery("#lclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			        @else
-						@if(Auth::getUser()->username == 'septian') 
+						@if(Auth::getUser()->username == 'hamzah') 
 				           jQuery("#lclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			            @else
-							 @if(Auth::getUser()->username == 'faizal') 
+							 @if(Auth::getUser()->username == 'harry') 
 				               jQuery("#lclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			                 @else
 								 @if(Auth::getUser()->username == 'haidar') 
