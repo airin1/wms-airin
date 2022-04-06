@@ -1102,7 +1102,7 @@ class InvoiceController extends Controller
 			if(date('Y-m-d')<'2022-04-01'){           
 		   		   $update_nct->ppn = $update_nct->total_non_ppn * 10/100;	
 			}else{
-				 $update_nct->ppn = $update_nct->total_non_ppn * 11/100;	
+				 $update_nct->ppn = round($update_nct->total_non_ppn * 11/100);	
 			}
 			
 			
