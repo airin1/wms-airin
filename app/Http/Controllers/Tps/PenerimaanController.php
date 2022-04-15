@@ -842,7 +842,6 @@ class PenerimaanController extends Controller
                         $data['CONSIGNEE'] = $namaconsignee->NAMAPERUSAHAAN;
                         $data['ID_CONSIGNEE'] = str_replace(array('.','-'),array('',''),$namaconsignee->NPWP);
                     }
-                    
 //                    $data['TCONSIGNEE_FK'] = $joborder->TCONSIGNEE_FK;
 //                    $data['CONSIGNEE'] = $joborder->CONSIGNEE;
 //                    $data['ID_CONSIGNEE'] = $joborder->ID_CONSIGNEE;
@@ -948,8 +947,19 @@ class PenerimaanController extends Controller
                         $data['TCONSIGNEE_FK'] = $namaconsignee->TPERUSAHAAN_PK;
                         $data['CONSIGNEE'] = $namaconsignee->NAMAPERUSAHAAN;
                         $data['ID_CONSIGNEE'] = str_replace(array('.','-'),array('',''),$namaconsignee->NPWP);
-                    }
+                    }else{
+						 $consignee = array();
+						$consignee['NAMAPERUSAHAAN'] = $detail->CONSIGNEE;
+					    $consignee['UID'] = \Auth::getUser()->name;
+						
+						$idpersh = \App\Models\Perusahaan::insertGetId($consignee);
+                         
+						//if($consignee->save()){
+							$data['TCONSIGNEE_FK'] = $idpersh;
+							$data['CONSIGNEE'] = $detail->CONSIGNEE;
+					}
                     
+					
                     $insert_id = \App\Models\Jobordercy::insertGetId($data);
                     if($insert_id){
                         $plpDetailByPos = \App\Models\TpsResponPlpDetail::where(array('tps_responplptujuanxml_fk' => $plpId, 'NO_POS_BC11' => $detail->NO_POS_BC11))->get();
