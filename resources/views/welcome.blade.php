@@ -150,25 +150,78 @@
     
     <div class="row">
         <div class="col-md-12">
-            <h4>LAPORAN YOR TANGGAL {{strtoupper(date('d F Y'))}}</h4>
+            <h4>LAPORAN YOR TANGGAL {{strtoupper(date('d F Y H:i:s'))}}</h4>
             <table class="table table-bordered table-hover table-striped" style="background: #FFF;">
                 <tbody>
                     <tr>
                         <th>KODE GUDANG</th>
                         <th>TIPE</th>
                         <th>KAPASITAS</th>
+						<th>TERPAKAI</th>
                         <th>YOR</th>
                     </tr>
-                    @foreach($yornpct as $yn)
+                  
                     <tr>
-                        <th align="center">{{$yn->warehouse_code}}</th>
-                        <td align="center">{{$yn->warehouse_type}}</td>
-                        <td align="center">{{$yn->capacity}}</td>
-                        <td align="center">{{$yn->yor}}</td>
+                        <th align="center">ARN1</th>
+                        <td align="center">DRY</td>
+                        <td align="center">{{number_format($yarn1['drykaparn1'],'0',',','.') }}</td>
+						<td align="center">{{number_format($yarn1['dryarn1'],'0',',','.')}}</td>
+                        <td align="center">{{number_format($yarn1['dryyorarn1'],'2',',','.')}}</td>
                     </tr>
-                    @endforeach
+					<tr>
+                        <th align="center">ARN1</th>
+                        <td align="center">REEFER</td>
+						<td align="center">{{number_format($yarn1['rfrkaparn1'],'0',',','.') }}</td>
+						<td align="center">{{number_format($yarn1['rfrarn1'],'0',',','.')}}</td>
+                        <td align="center">{{number_format($yarn1['rfryorarn1'],'2',',','.')}}</td>
+                    </tr>
+					<tr>
+                        <th align="center">ARN1</th>
+                        <td align="center">DG</td>
+						<td align="center">{{number_format($yarn1['dgkaparn1'],'0',',','.') }}</td>
+						<td align="center">{{number_format($yarn1['dgarn1'],'0',',','.')}}</td>
+                        <td align="center">{{number_format($yarn1['dgyorarn1'],'2',',','.')}}</td>
+                    </tr>
+					
                 </tbody>
             </table>
+			
+			<table class="table table-bordered table-hover table-striped" style="background: #FFF;">
+                <tbody>
+                    <tr>
+                        <th>KODE GUDANG</th>
+                        <th>TIPE</th>
+                        <th>KAPASITAS</th>
+						<th>TERPAKAI</th>
+                        <th>YOR</th>
+                    </tr>
+               
+                    <tr>
+                        <th align="center">ARN3</th>
+                        <td align="center">DRY</td>
+                        <td align="center">{{number_format($yarn3['drykaparn3'],'0',',','.') }}</td>
+						<td align="center">{{number_format($yarn3['dryarn3'],'0',',','.')}}</td>
+                        <td align="center">{{number_format($yarn3['dryyorarn3'],'2',',','.')}}</td>
+                    </tr>
+					<tr>
+                        <th align="center">ARN3</th>
+                        <td align="center">REEFER</td>
+						<td align="center">{{number_format($yarn3['rfrkaparn3'],'0',',','.') }}</td>
+						<td align="center">{{number_format($yarn3['rfrarn3'],'0',',','.')}}</td>
+                        <td align="center">{{number_format($yarn3['rfryorarn3'],'2',',','.')}}</td>
+                    </tr>
+					<tr>
+                        <th align="center">ARN3</th>
+                        <td align="center">DG</td>
+						<td align="center">{{number_format($yarn3['dgkaparn3'],'0',',','.') }}</td>
+						<td align="center">{{number_format($yarn3['dgarn3'],'0',',','.')}}</td>
+                        <td align="center">{{number_format($yarn3['dgyorarn3'],'2',',','.')}}</td>
+                    </tr>
+                </tbody>
+            </table>
+			
+			
+			
         </div>
     </div>
 <!--    <div class="row">

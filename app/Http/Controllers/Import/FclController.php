@@ -2029,10 +2029,15 @@ UNZ+1+1709131341'\n";
                                 }
                             endforeach;
 //                            if($request->behandle) {
+							if($tps_asal == 'KOJA'){
+							  if($t20->type == 'Reffer' || $t20->type == 'RefferLow' || $t20->type == 'RefferHigh'){
+                                $paket_plp=1100000;  
+							  }else{$paket_plp=$t20->paket_plp;  }
+							}else{$paket_plp=$t20->paket_plp;}	
                             if($count_behandle > 0){
-                                $jenis = array('Lift On/Off' => $t20->lift_off,'Paket PLP' => $t20->paket_plp,'Behandle' => $t20->behandle);
+                                $jenis = array('Lift On/Off' => $t20->lift_off,'Paket PLP' =>$paket_plp,'Behandle' => $t20->behandle);
                             }else{
-                                $jenis = array('Lift On/Off' => $t20->lift_off,'Paket PLP' => $t20->paket_plp);
+                                $jenis = array('Lift On/Off' => $t20->lift_off,'Paket PLP' => $paket_plp);
                             }
                               
                             foreach ($jenis as $key=>$value):
@@ -2233,10 +2238,17 @@ UNZ+1+1709131341'\n";
                                 }
                             endforeach;
 //                            if($request->behandle) {
+	
+							if($tps_asal == 'KOJA'){
+							  if($t40->type == 'Reffer' || $t40->type == 'RefferLow' || $t40->type == 'RefferHigh'){
+                                $paket_plp=1600000;  
+							  }else{$paket_plp=$t40->paket_plp;  }
+							}else{$paket_plp=$t40->paket_plp;}	
+
                             if($count_behandle > 0){
-                                $jenis = array('Lift On/Off' => $t40->lift_off,'Paket PLP' => $t40->paket_plp,'Behandle' => $t40->behandle);
+                                $jenis = array('Lift On/Off' => $t40->lift_off,'Paket PLP' => $paket_plp,'Behandle' => $t40->behandle);
                             }else{
-                                $jenis = array('Lift On/Off' => $t40->lift_off,'Paket PLP' => $t40->paket_plp);
+                                $jenis = array('Lift On/Off' => $t40->lift_off,'Paket PLP' => $paket_plp);
                             }
                             
                             foreach ($jenis as $key=>$value):
@@ -3578,6 +3590,200 @@ UNZ+1+1709131341'\n";
         
         return $pdf->stream($data['invoice']->no_invoice.'-'.date('dmy').'.pdf');
     }
+	
+	  public function reportRekapRealisasiPlp(Request $request)
+    {
+ 
+		//$tglmulai = date_create(date('Y-m-d',strtotime($request->tgl_masuk_start)));
+		//$tglakhir = date_create(date('Y-m-d',strtotime($request->tgl_masuk_start)));
+		
+		$tglmulai = $request->tgl_masuk_start;
+		$tglakhir = $request->tgl_masuk_akhir;
+		
+		$lokasi_gudang=$request->lokasi_gudang;
+		$tps_asal=$request->tps_asal;
+		
+	    $dry = array(
+            'DRY',
+            'OPEN TOP',
+            'FLAT TRACK RF',
+            'FLAT TRACK OH',
+            'FLAT TRACK OW',
+            'FLAT TRACK OL'
+        );			
+			
+    
+        $bb = array(
+            'Class BB Standar 3',
+            'Class BB Standar 8',
+            'Class BB Standar 9',
+            'Class BB Standar 4,1',
+			'Class BB Standar 4,2',
+			'Class BB Standar 4,3',
+            'Class BB Standar 6',
+            'Class BB Standar 2,2',
+            "Class BB High Class 2,1",
+            "Class BB High Class 5,1",
+            "Class BB High Class 6,1",
+            "Class BB High Class 5,2"
+        );
+		
+        $reefer = array(
+            'REFFER RF',
+            'REFFER RECOOLING',
+            'REEFER RF',
+            'REEFER RECOOLING',
+            'REEFER RECOOLING BB 2.2',
+			'REEFER RECOOLING BB 4.1',
+			'REEFER RECOOLING BB 4.2',
+			'REEFER RECOOLING BB 4.3',
+			'REEFER RECOOLING BB 6',
+			'REEFER RECOOLING BB 3',
+			'REEFER RECOOLING BB 8',
+			'REEFER RECOOLING BB 9',
+            'REEFER RECOOLING BB 2.1',
+			'REEFER RECOOLING BB 5.1',
+			'REEFER RECOOLING BB 5.2',
+			'REEFER RECOOLING BB 6.1'
+        );
+	
+			
+	       $container = DBContainer::select(\DB::raw('MONTH(TGL_PLP) as bulan') ,'jenis_container','GUDANG_TUJUAN', 'size',   \DB::raw('count(*) as jumlah'))
+				 ->where('TGL_PLP','>=',$tglmulai)->where('TGL_PLP','<=',$tglakhir)
+                 ->groupBy(\DB::raw('MONTH(TGL_PLP)'),'jenis_container','GUDANG_TUJUAN', 'size')
+                 ->get();
+
+         
+
+     
+        
+        foreach ($container as $cont):
+           $bulan = $cont->bulan;
+		   for ($x = 0; $x <= 12; $x++) {
+            if(  $cont->bulan==$x){
+            	if(	 $cont->GUDANG_TUJUAN=='ARN1'){
+					if($cont->size==20){
+					  if(in_array($cont->jenis_container, $dry)){
+						$arn120dry[$x] = $arn120dry[$x]+$cont->jumlah;
+					  }
+					  if(in_array($cont->jenis_container, $bb)){
+						$arn120bb[$x] = $arn120bb[$x]+$cont->jumlah;
+					  }
+					   if(in_array($cont->jenis_container, $reefer)){
+						$arn120reefer[$x] = $arn120reefer[$x]+$cont->jumlah;
+					  }
+					}  
+					if($cont->size==40){
+					  if(in_array($cont->jenis_container, $dry)){
+						$arn140dry[$x] = $arn140dry[$x]+$cont->jumlah;
+					  }
+					  if(in_array($cont->jenis_container, $bb)){
+						$arn140bb[$x] = $arn140bb[$x]+$cont->jumlah;
+					  }
+					   if(in_array($cont->jenis_container, $reefer)){
+						$arn140reefer[$x] = $arn140reefer[$x]+$cont->jumlah;
+					  }
+					}
+					if($cont->size==45){
+					  if(in_array($cont->jenis_container, $dry)){
+						$arn140dry[$x] = $arn140dry[$x]+$cont->jumlah;
+					  }
+					  if(in_array($cont->jenis_container, $bb)){
+						$arn140bb[$x] = $arn140bb[$x]+$cont->jumlah;
+					  }
+					   if(in_array($cont->jenis_container, $reefer)){
+						$arn140reefer[$x] = $arn140reefer[$x]+$cont->jumlah;
+					  }
+					}  					
+				}
+            	if(	 $cont->GUDANG_TUJUAN=='ARN3'){
+					if($cont->size==20){
+					  if(in_array($cont->jenis_container, $dry)){
+						$arn320dry[$x] = $arn320dry[$x]+$cont->jumlah;
+					  }
+					  if(in_array($cont->jenis_container, $bb)){
+						$arn320bb[$x] = $arn320bb[$x]+$cont->jumlah;
+					  }
+					   if(in_array($cont->jenis_container, $reefer)){
+						$arn320reefer[$x] = $arn320reefer[$x]+$cont->jumlah;
+					  }
+					}  
+					if($cont->size==40){
+					  if(in_array($cont->jenis_container, $dry)){
+						$arn340dry[$x] = $arn340dry[$x]+$cont->jumlah;
+					  }
+					  if(in_array($cont->jenis_container, $bb)){
+						$arn340bb[$x] = $arn340bb[$x]+$cont->jumlah;
+					  }
+					   if(in_array($cont->jenis_container, $reefer)){
+						$arn340reefer[$x] = $arn340reefer[$x]+$cont->jumlah;
+					  }
+					}
+					if($cont->size==45){
+					  if(in_array($cont->jenis_container, $dry)){
+						$arn340dry[$x] = $arn340dry[$x]+$cont->jumlah;
+					  }
+					  if(in_array($cont->jenis_container, $bb)){
+						$arn340bb[$x] = $arn340bb[$x]+$cont->jumlah;
+					  }
+					   if(in_array($cont->jenis_container, $reefer)){
+						$arn340reefer[$x] = $arn340reefer[$x]+$cont->jumlah;
+					  }
+					}  					
+				}				
+				
+			$box20dry = $box20dry+$arn120dry[$x]+$arn320dry[$x];
+            $box40dry = $box40dry+$arn140dry[$x]+$arn340dry[$x];
+            $box20bb = $box20bb+$arn120bb[$x]+$arn320bb[$x];
+            $box40bb = $box40bb+$arn140bb[$x]+$arn340bb[$x];
+			$box20reefer = $box20reefer+$arn120reefer[$x]+$arn320reefer[$x];
+            $box40reefer = $box40reefer+$arn140reefer[$x]+$arn340reefer[$x];
+			}                		  
+           }
+
+
+		  
+           
+           
+            
+           // $no_surat = \App\Models\TpsResponPlp::where('NO_PLP', $cont->NO_PLP)->value('NO_SURAT');
+           // array_add($cont, 'NO_SURAT', $no_surat);
+            
+        endforeach;
+        
+        	
+		
+        
+        $header = array(
+            'tpk' 			=> $tps_asal,
+            'lokasi' 		=> $lokasi_gudang,           
+            'tanggalmulai' 	=> $tglmulai,
+            'tanggalakhir' 	=> $tglakhir
+   
+        );
+        
+        $footer = array(
+            'box20dry' => $box20dry,
+            'box40dry' => $box40dry,
+            'box20bb' => $box20bb,
+            'box40bb' => $box40bb,
+			'box20reefer' => $box20reefer,
+            'box40reefer' => $box40reefer
+        );
+        
+        $data['header'] = $header;
+        $data['footer'] = $footer;
+        $data['containers'] = $container;
+		//$data['containers'] = $byplps;
+        
+        return view('print.realisasi-rekap-plp')->with($data);
+        $pdf = \PDF::loadView('print.invoice', $data)->setPaper('a4');
+        
+        return $pdf->stream($data['invoice']->no_invoice.'-'.date('dmy').'.pdf');
+    }
+	
+	
+	
     
     public function releaseGetDataSppb(Request $request)
     {

@@ -236,6 +236,17 @@
 
             window.open("{{ route('fcl-report-realisasi-plp','') }}/"+containerId,"preview FCL Realisasi PLP","width=1024,height=600,menubar=no,status=no,scrollbars=yes");
         });
+		
+	    $('#btn-create-report-rekap').on("click", function(){
+                   
+            $('#create-realisasi-plp-rekap-modal').modal('show');     
+            
+ 
+        });
+		
+		
+		
+		
         
     });
     
@@ -398,7 +409,8 @@
     </div>
     <div class="box-footer with-border">
         <button type="button" class="btn btn-danger" id="btn-create-report"><i class="fa fa-wrench"></i> Realisasi PLP</button>
-        <button type="button" class="btn btn-info pull-right" id="btn-report"><i class="fa fa-paperclip"></i> Send Report</button>
+		<button type="button" class="btn btn-danger" id="btn-create-report-rekap"><i class="fa fa-wrench"></i> Rekap Realisasi PLP</button>       
+	    <button type="button" class="btn btn-info pull-right" id="btn-report"><i class="fa fa-paperclip"></i> Send Report</button>
         <button type="button" class="btn btn-warning pull-right" id="btn-report-npct" style="margin-right: 10px;"><i class="fa fa-envelope"></i> Send Report TXT</button>
     </div>
 </div>
@@ -669,6 +681,79 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+<div id="create-realisasi-plp-rekap-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Print Rekap Realisasi PLP</h4>
+            </div>
+            <form id="create-invoice-form" class="form-horizontal" action="{{ route("fcl-report-rekap-realisasi-plp") }}" method="POST" enctype="multipart/form-data">
+                <div class="modal-body"> 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input name="_token" type="hidden" value="{{ csrf_token() }}" />
+                            <input name="id" type="hidden" id="container_id_selected" />
+                            <input name="shippingline_id" type="hidden" id="shippingline_id" />
+                            
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Range Tgl. Masuk</label>                           
+								<div class="col-sm-4">                        							
+								<div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>                                     
+									   <input type="text" name="tgl_masuk_start" class="form-control pull-right datepicker" required> 				                                     
+								 </div>
+								 </div>
+						         <div class="col-sm-4">    							
+								  	<div class="input-group date">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>                                    
+									   <input type="text" name="tgl_masuk_akhir" class="form-control pull-right datepicker" required>
+								  </div>																 	
+                                </div>																							
+							</div>
+							<div class="form-group">
+									<label class="col-sm-3 control-label">Lokasi Gudang</label>
+									<div class="col-sm-8">
+										<select class="form-control select2" id="release_lokasi" name="lokasi_gudang" style="width: 100%;" tabindex="-1" aria-hidden="true" required >
+											<option value="ALL" selected>Semua Lapangan </option>
+											<option value="ARN1" >ARN1 (Utara)</option>
+											<option value="ARN3" >ARN3 (Barat)</option>
+										</select>
+									</div>
+							</div>
+							<div class="form-group">
+									<label class="col-sm-3 control-label">TPS ASAL</label>
+									<div class="col-sm-8">
+										<select class="form-control select2" id="tps_asal" name="tps_asal" style="width: 100%;" tabindex="-1" aria-hidden="true" required >
+											<option value="ALL" selected>Semua TPS </option>
+											<option value="NCT1" >NPCT1</option>
+											<option value="JICT" >JICT</option>
+											<option value="KOJA" >KOJA</option>
+											<option value="MAL0" >MAL</option>
+										</select>
+									</div>
+							</div>
+						
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Cretae Report</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
+
 <div id="view-photo-modal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">

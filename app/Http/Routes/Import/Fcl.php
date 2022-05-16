@@ -99,6 +99,11 @@ Route::group(['prefix' => 'fcl', 'namespace' => 'Import'], function(){
         'as' => 'fcl-report-realisasi-plp',
         'uses' => 'FclController@reportRealisasiPlp'
     ]);
+	
+	Route::post('/report/rekap/realisasi-rekap-plp', [
+        'as' =>'fcl-report-rekap-realisasi-plp',
+        'uses' => 'FclController@reportRekapRealisasiPlp'
+    ]);
     
     Route::post('/report/rekap/sendemail-npct', [
         'as' => 'fcl-report-sendemail-npct',
