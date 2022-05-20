@@ -3655,8 +3655,8 @@ UNZ+1+1709131341'\n";
 
          
 
-     
         
+        $arn120dry=array();
         foreach ($container as $cont):
            $bulan = $cont->bulan;
 		   for ($x = 0; $x <= 12; $x++) {
@@ -3732,12 +3732,18 @@ UNZ+1+1709131341'\n";
 					}  					
 				}				
 				
-			$box20dry = $box20dry+$arn120dry[$x]+$arn320dry[$x];
-            $box40dry = $box40dry+$arn140dry[$x]+$arn340dry[$x];
-            $box20bb = $box20bb+$arn120bb[$x]+$arn320bb[$x];
-            $box40bb = $box40bb+$arn140bb[$x]+$arn340bb[$x];
-			$box20reefer = $box20reefer+$arn120reefer[$x]+$arn320reefer[$x];
-            $box40reefer = $box40reefer+$arn140reefer[$x]+$arn340reefer[$x];
+			$box20arn1dry = $box20arn1dry+$arn120dry[$x];
+			$box20arn3dry = $box20arn3dry+$arn320dry[$x];
+            $box40arn1dry = $box40arn1dry+$arn140dry[$x];
+			$box40arn3dry = $box40arn3dry+$arn340dry[$x];
+            $box20arn1bb = $box20arn1bb+$arn120bb[$x];
+            $box40arn1bb = $box40arn1bb+$arn140bb[$x];
+			$box20arn3bb = $box20arn3bb+$arn320bb[$x];
+            $box40arn3bb = $box40arn3bb+$arn340bb[$x];
+			$box20arn1reefer = $box20arn1reefer+$arn120reefer[$x];
+            $box40arn1reefer = $box40arn1reefer+$arn140reefer[$x];
+			$box20arn3reefer = $box20arn3reefer+$arn320reefer[$x];
+            $box40arn3reefer = $box40arn3reefer+$arn340reefer[$x];
 			}                		  
            }
 
@@ -3750,9 +3756,15 @@ UNZ+1+1709131341'\n";
            // array_add($cont, 'NO_SURAT', $no_surat);
             
         endforeach;
-        
+         
         	
+	   $detils = array(
+            'arn120dry' => $arn120dry,
+            'arn320dry' => $arn320dry,
+            'arn140dry' => $arn140dry,
+            'arn340dry' => $arn340dry
 		
+        );
         
         $header = array(
             'tpk' 			=> $tps_asal,
@@ -3763,18 +3775,24 @@ UNZ+1+1709131341'\n";
         );
         
         $footer = array(
-            'box20dry' => $box20dry,
-            'box40dry' => $box40dry,
-            'box20bb' => $box20bb,
-            'box40bb' => $box40bb,
-			'box20reefer' => $box20reefer,
-            'box40reefer' => $box40reefer
+            'box20arn1dry' => $box20arn1dry,
+            'box20arn3dry' => $box20arn3dry,
+            'box40arn1dry' => $box40arn1dry,
+            'box40arn3dry' => $box40arn3dry,
+			'box20arn1bb' => $box20arn1bb,
+            'box40arn1bb' => $box40arn1bb,
+			'box20arn3bb' => $box20arn3bb,
+            'box40arn3bb' => $box40arn3bb,
+            'box20arn1reefer' => $box20arn1reefer,
+            'box40arn1reefer' => $box40arn1reefer,
+			'box20arn3reefer' => $box20arn3reefer,
+            'box40arn3reefer' => $box40arn3reefer
         );
         
         $data['header'] = $header;
         $data['footer'] = $footer;
-        $data['containers'] = $container;
-		//$data['containers'] = $byplps;
+        //$data['containers'] = $container;
+		$data['containers'] = $detils;
         
         return view('print.realisasi-rekap-plp')->with($data);
         $pdf = \PDF::loadView('print.invoice', $data)->setPaper('a4');
@@ -3809,6 +3827,11 @@ UNZ+1+1709131341'\n";
             $nopib= $sppb->NO_PIB;
 			$tglpib= date('Y-m-d', strtotime($sppb->TGL_PIB));
 			
+			if($sppb->NO_BL_AWB !=''){
+				$nobl=$sppb->NO_BL_AWB ;
+			}else{$nobl=$sppb->NO_MASTER_BL_AWB;} 	
+				
+			
 			//update BL party continercy with dok sppb 
 		    $sppbcontupd = \App\Models\TpsSppbPibCont::where('CAR',$sppb->CAR)->get();  
 	        foreach ($sppbcontupd  as $contupd) :
@@ -3823,7 +3846,7 @@ UNZ+1+1709131341'\n";
 				  $sppbcont['KD_DOK_INOUT'] = $kd_dok ;
 				  $sppbcont['KODE_DOKUMEN'] = 'SPPB BC 2.0';
       
-       	         $update= DBContainer::where('NO_BL_AWB',$sppb->NO_BL_AWB)
+       	         $update= DBContainer::where('NO_BL_AWB',$nobl)
 				   ->where('NOCONTAINER',$contupd->NO_CONT) ->update($sppbcont);
 	
 			
@@ -3845,6 +3868,9 @@ UNZ+1+1709131341'\n";
             $nopib= $sppb->NO_PIB;
 			$tglpib= date('Y-m-d', strtotime($sppb->TGL_PIB));		
 			
+			if($sppb->NO_BL_AWB !=''){
+				$nobl=$sppb->NO_BL_AWB ;
+			}else{$nobl=$sppb->NO_MASTER_BL_AWB;} 	
 			
 			
 				//update BL party continercy with dok sppb 
@@ -3864,7 +3890,7 @@ UNZ+1+1709131341'\n";
 				  $sppbcont['status_bc'] = 'HOLD';
 				  }
       
-       	         $update= DBContainer::where('NO_BL_AWB',$sppb->NO_BL_AWB)
+       	         $update= DBContainer::where('NO_BL_AWB',$nobl)
 				   ->where('NOCONTAINER',$contupd->NO_CONT) ->update($sppbcont);
 	
 			

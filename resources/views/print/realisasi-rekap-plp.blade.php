@@ -312,25 +312,35 @@ table tfoot tr td:first-child {
         </tr>
         <?php $i = 1;?>
         @foreach($containers as $container)
+		<?php $monthName = date("F", mktime(0, 0, 0,   $i, 10));?>
         <tr>
-            <td style="text-align: center;">{{$i}}</td>
-            <td style="text-align: center;">{{$container->NO_PLP}}</td>
-            <td style="text-align: center;">{{date('d-M-y',strtotime($container->TGL_PLP))}}</td>
-            <td>{{$container->NOCONTAINER}}</td>
-            <td style="text-align: center;">{{($container->SIZE == 20) ? 1:''}}</td>
-            <td style="text-align: center;">{{($container->SIZE == 40) ? 1:''}}</td>
-            <td style="text-align: center;">{{($container->SIZE == 45) ? 1:''}}</td>
-            <td>{{$container->NO_SURAT}}</td>
-            <td style="text-align: center;">{{$container->NOPOL}}</td>
-            <td style="text-align: center;">{{$container->KD_TPS_ASAL}}</td>
-            <td style="text-align: center;">{{$container->JAMMASUK}}</td>
-            <td style="text-align: center;">{{date('d-M-y',strtotime($container->TGLMASUK))}}</td>
+            <td rowspan="4"  style="text-align: center;border-top: 1px solid;">{{$i}}</td>
+			<td rowspan="4" style="text-align: center;border-top: 1px solid;"><b>{{ $monthName}}</b></td>
+ 			<td style="text-align: center;border-top: 1px solid;"><b>DRY</b></td>
+
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$container['arn120dry']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$container->box40arn1dry[$i]}}</b></td>
+			<td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20arn1dry']+$footer['box40arn1dry']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$container->box20arn3dry[$i]}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$container->box40arn3dry[$i]}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20arn3dry']+$footer['box40arn3dry']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20arn1dry']+$footer['box40arn1dry']+$footer['box20arn3dry']+$footer['box40arn3dry']}}</b></td>
+           
+		    <td style="text-align: center;border-top: 1px solid;"><b></b></td>
+			<td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20arn1dry']+($footer['box40arn1dry']*2)}}</b></td>
+			<td style="text-align: center;border-top: 1px solid;"><b></b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b></b></td>
+      		<td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20arn3dry']+($footer['box40arn3dry']*2)}}</b></td>
+           	<td style="text-align: center;border-top: 1px solid;"><b></b></td>
+			<td style="text-align: center;border-top: 1px solid;"><b></b></td>
+      		<td style="text-align: center;border-top: 1px solid;"><b>{{($footer['box20arn1dry']+($footer['box40arn1dry']*2))+ ($footer['box20arn3dry']+($footer['box40arn3dry']*2))}}</b></td>
+           	<td style="text-align: center;border-top: 1px solid;"><b></b></td>
+	        <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
+       	    <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
         </tr>
-        <?php $i++;?>
-        @endforeach
-        <tr>
-            <td colspan="2" style="text-align: center;border-top: 1px solid;"><b>JUMLAH TOTAL</b></td>
-			<td style="text-align: center;border-top: 1px solid;"><b>DRY</b></td>
+		 <tr>
+  			<td style="text-align: center;border-top: 1px solid;"><b>REFFER</b></td>
+
             <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20dry']}}</b></td>
             <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box40dry']}}</b></td>
 			<td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20dry']+$footer['box40dry']}}</b></td>
@@ -346,11 +356,127 @@ table tfoot tr td:first-child {
             <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box40']}}</b></td>
             <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
 	        <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
-			<td colspan="2" style="text -align: center;border-top: 1px solid;"><b>JUMLAH TOTAL</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box40']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
+	        <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
+       	    <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
+        </tr>
+		 <tr>
+  			<td style="text-align: center;border-top: 1px solid;"><b>BB</b></td>
 
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20dry']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box40dry']}}</b></td>
+			<td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20dry']+$footer['box40dry']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box40']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
+           
+		    <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box40']}}</b></td>
+			<td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box40']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
+	        <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box40']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
+	        <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
+       	    <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
+        </tr>
+		 <tr>
+  			<td style="text-align: center;border-top: 1px solid;"><b>JML</b></td>
 
-        </tr>    
-		
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20dry']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box40dry']}}</b></td>
+			<td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20dry']+$footer['box40dry']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box40']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
+           
+		    <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box40']}}</b></td>
+			<td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box40']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
+	        <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box40']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
+	        <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
+       	    <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
+        </tr>
+        <?php $i++;?>
+        @endforeach
+        <tr>
+            <td rowspan="3" colspan="2" style="text-align: center;border-top: 1px solid;"><b>JUMLAH TOTAL</b></td>
+			<td style="text-align: center;border-top: 1px solid;"><b>DRY</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20arn1dry']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box40arn1dry']}}</b></td>
+			<td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20arn1dry']+$footer['box40arn1dry']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20arn3dry']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box40arn3dry']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20arn3dry']+$footer['box40arn3dry']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20arn1dry']+$footer['box40arn1dry']+$footer['box20arn3dry']+$footer['box40arn3dry']}}</b></td>
+           
+		    <td style="text-align: center;border-top: 1px solid;"><b></b></td>
+			<td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20arn1dry']+($footer['box40arn1dry']*2)}}</b></td>
+			<td style="text-align: center;border-top: 1px solid;"><b></b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b></b></td>
+      		<td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20arn3dry']+($footer['box40arn3dry']*2)}}</b></td>
+           	<td style="text-align: center;border-top: 1px solid;"><b></b></td>
+			<td style="text-align: center;border-top: 1px solid;"><b></b></td>
+      		<td style="text-align: center;border-top: 1px solid;"><b>{{($footer['box20arn1dry']+($footer['box40arn1dry']*2))+ ($footer['box20arn3dry']+($footer['box40arn3dry']*2))}}</b></td>
+           	<td style="text-align: center;border-top: 1px solid;"><b></b></td>
+	        <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
+       	    <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
+     	  
+		  </tr>   
+       <tr>
+ 			<td style="text-align: center;border-top: 1px solid;"><b>REEFER</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20arn1reefer']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box40arn1reefer']}}</b></td>
+			<td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20arn1reefer']+$footer['box40arn1reefer']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20arn3reefer']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box40arn3reefer']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20arn3reefer']+$footer['box40arn3reefer']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20arn1reefer']+$footer['box40arn1reefer']+$footer['box20arn3reefer']+$footer['box40arn3reefer']}}</b></td>
+           
+		    <td style="text-align: center;border-top: 1px solid;"><b></b></td>
+			<td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20arn1reefer']+($footer['box40arn1reefer']*2)}}</b></td>
+			<td style="text-align: center;border-top: 1px solid;"><b></b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b></b></td>
+      		<td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20arn3reefer']+($footer['box40arn3reefer']*2)}}</b></td>
+           	<td style="text-align: center;border-top: 1px solid;"><b></b></td>
+			<td style="text-align: center;border-top: 1px solid;"><b></b></td>
+      		<td style="text-align: center;border-top: 1px solid;"><b>{{($footer['box20arn1reefer']+($footer['box40arn1reefer']*2))+ ($footer['box20arn3reefer']+($footer['box40arn3reefer']*2))}}</b></td>
+           	<td style="text-align: center;border-top: 1px solid;"><b></b></td>
+	        <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
+       	    <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
+	   </tr>   
+       <tr>
+ 			<td style="text-align: center;border-top: 1px solid;"><b>BB</b></td>
+			<td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20arn1bb']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box40arn1bb']}}</b></td>
+			<td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20arn1bb']+$footer['box40arn1bb']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20arn3bb']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box40arn3bb']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20arn3bb']+$footer['box40arn3bb']}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20arn1bb']+$footer['box40arn1bb']+$footer['box20arn3bb']+$footer['box40arn3bb']}}</b></td>
+           
+		    <td style="text-align: center;border-top: 1px solid;"><b></b></td>
+			<td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20arn1bb']+($footer['box40arn1bb']*2)}}</b></td>
+			<td style="text-align: center;border-top: 1px solid;"><b></b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b></b></td>
+      		<td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20arn3bb']+($footer['box40arn3bb']*2)}}</b></td>
+           	<td style="text-align: center;border-top: 1px solid;"><b></b></td>
+			<td style="text-align: center;border-top: 1px solid;"><b></b></td>
+      		<td style="text-align: center;border-top: 1px solid;"><b>{{($footer['box20arn1bb']+($footer['box40arn1bb']*2))+ ($footer['box20arn3bb']+($footer['box40arn3bb']*2))}}</b></td>
+           	<td style="text-align: center;border-top: 1px solid;"><b></b></td>
+	        <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
+       	    <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
+	   </tr>    		   
     </table>
     
     <table border="0" cellspacing="0" cellpadding="0" style="width: 100%;margin-bottom: 0;">
