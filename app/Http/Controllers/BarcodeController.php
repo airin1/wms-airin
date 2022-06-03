@@ -85,6 +85,19 @@ class BarcodeController extends Controller
     
     public function delete($id)
     {
+		$check = \App\Models\Barcode::where('id', $id)->first();               
+         if(count($check) > 0){ 		
+		                $logbarcode = new \App\Models\LogBarcode();
+                        $logbarcode->ref_id =  $check->ref_id ;
+                        $logbarcode->ref_type = $check->ref_type;
+                        $logbarcode->ref_action = $check->ref_action;
+                        $logbarcode->ref_number =  $check->ref_number ;
+                        $logbarcode->barcode = $check->barcode;
+                        $logbarcode->jenis_tran = 'Delete Barcode';
+                        $logbarcode->status = $check->status;
+                        $logbarcode->uid = \Auth::getUser()->name;
+                        $logbarcode->save();
+		 }
         \App\Models\Barcode::where('id', $id)->delete();
         return back()->with('success', 'Gate Pass has been deleted.'); 
     }
