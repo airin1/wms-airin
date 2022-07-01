@@ -42,13 +42,13 @@
 				@if(Auth::getUser()->username == 'alvin') 
 				 jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			    @else
-					@if(Auth::getUser()->username == 'damang') 
+					@if(Auth::getUser()->username == 'trishna') 
 				         jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			        @else
-						@if(Auth::getUser()->username == 'hamzah') 
+						@if(Auth::getUser()->username == 'fikri') 
 				           jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			            @else
-							 @if(Auth::getUser()->username == 'harry') 
+							 @if(Auth::getUser()->username == 'zaky') 
 				               jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			                 @else
 								 @if(Auth::getUser()->username == 'haidar') 
