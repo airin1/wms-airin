@@ -323,6 +323,18 @@
                                     </select>
                                 </div>
                             </div>
+							<div class="form-group">
+                                <label class="col-sm-3 control-label">Status Container</label>
+                                <div class="col-sm-8">
+                                    <select class="form-control select2" name="cont_status" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
+											<option value="">Choose Status Container</option>                                            
+											<option value="FCL">FCL</option>
+                                             <option value="LCL">LCL</option>
+                                       
+                                    </select>
+                                </div>
+                            </div>
+							
 <!--                            <div class="form-group">
                                 <label class="col-sm-3 control-label">Shipping Line</label>
                                 <div class="col-sm-8">

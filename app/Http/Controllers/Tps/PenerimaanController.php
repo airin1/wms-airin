@@ -881,7 +881,7 @@ class PenerimaanController extends Controller
 //        return $request->all();
         $plpId = $id; 
         $plp = \App\Models\TpsResponPlp::where('tps_responplptujuanxml_pk', $plpId)->first();
-        
+       if( $request->cont_status=='FCL'){
         if($plp){
             
             $plpDetail = \App\Models\TpsResponPlpDetail::where('tps_responplptujuanxml_fk', $plpId)->groupBy('NO_POS_BC11')->get();
@@ -1023,6 +1023,8 @@ class PenerimaanController extends Controller
         }
         
         return back()->with('error', 'Tidak dapat membuat SPK.');
+		}
+		return back()->with('error', 'Tidak dapat membuat SPK. Silakan Pilih FCL');
     }
     
     public function sppbBcPrint($id)
