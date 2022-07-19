@@ -3657,9 +3657,11 @@ UNZ+1+1709131341'\n";
 
         
         $arn120dry=array();
+	
         foreach ($container as $cont):
            $bulan = $cont->bulan;
-		   for ($x = 0; $x <= 12; $x++) {
+		   for ($x = 1; $x <= 12; $x++) {
+	//		 $jmlbulan=x$;  
             if(  $cont->bulan==$x){
             	if(	 $cont->GUDANG_TUJUAN=='ARN1'){
 					if($cont->size==20){
@@ -3756,14 +3758,13 @@ UNZ+1+1709131341'\n";
            // array_add($cont, 'NO_SURAT', $no_surat);
             
         endforeach;
-         
+       //$bulan= array('bulan'=>$bulan);	   
         	
-	   $detils = array(
+	   $detils =  array(
             'arn120dry' => $arn120dry,
             'arn320dry' => $arn320dry,
             'arn140dry' => $arn140dry,
-            'arn340dry' => $arn340dry
-		
+            'arn340dry' => $arn340dry		
         );
         
         $header = array(
@@ -3793,6 +3794,7 @@ UNZ+1+1709131341'\n";
         $data['footer'] = $footer;
         //$data['containers'] = $container;
 		$data['containers'] = $detils;
+		//$data['bulan'] = $jmlbulan;
         
         return view('print.realisasi-rekap-plp')->with($data);
         $pdf = \PDF::loadView('print.invoice', $data)->setPaper('a4');
@@ -3886,11 +3888,11 @@ UNZ+1+1709131341'\n";
 				  $sppbcont['ID_CONSIGNEE'] = $sppb->NPWP_IMP;
 				  $sppbcont['KD_DOK_INOUT'] = $kd_dok ;
 				  $sppbcont['KODE_DOKUMEN'] = 'SPPB BC 2.3';
-				  if($contupd->status_bc==''){
+				  //if($contupd->status_bc==''){
 				  $sppbcont['status_bc'] = 'HOLD';
-				  }
+				  //}
       
-       	         $update= DBContainer::where('NO_BL_AWB',$nobl)
+       	         $update= DBContainer::where('NO_BL_AWB',$nobl) ->where('release_bc','N')
 				   ->where('NOCONTAINER',$contupd->NO_CONT) ->update($sppbcont);
 	
 			
