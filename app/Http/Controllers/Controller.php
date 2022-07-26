@@ -82,6 +82,22 @@ class Controller extends BaseController
         
         return json_encode($data);
     }
+	
+	 public function getCekInvoice(Request $request) {
+        
+        $data = \App\Models\InvoiceNct::select('no_spk')
+                ->Where('no_spk',$request->nospk)
+				->Where('no_container','LIKE','%'.$request->no_cont.'%')
+                ->get();
+        
+		$no_cont=$request->no_cont;
+		if(count($data)>0)
+		  return json_encode(array("status" => TRUE, "data" => $data));
+	    else
+		  return json_encode(array("status" => FALSE, "data" => $no_cont));
+		
+       // return json_encode($data);
+    }
     
     public function insertRoleAccess($data = array())
     {

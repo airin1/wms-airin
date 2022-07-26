@@ -101,6 +101,11 @@ ini_set('default_socket_timeout', 60);
             'as' => 'getSingleDataPerusahaan',
             'uses' => 'Controller@getSingleDataPerusahaan'
         ]);
+		//get cek invoice 
+		Route::get('/getCekInvoice', [
+            'as' => 'getCekInvoice',
+            'uses' => 'Controller@getCekInvoice'
+        ]);
     });
     
     Route::get('/demo', ['as' => 'demo', 'uses' => 'Tps\SoapController@demo']);

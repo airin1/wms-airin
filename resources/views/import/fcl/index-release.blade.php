@@ -315,8 +315,59 @@
                     alert('Silahkan masukan No. SPPB terlebih dahulu!!!');
                     return false;
                 }
+				
+			var id = $grid.jqGrid("getCell", selIds[i], "TCONTAINER_PK");
+			var no_cont = $grid.jqGrid("getCell", selIds[i], "NOCONTAINER");
+			var nospk = $grid.jqGrid("getCell", selIds[i], "NOSPK");
+            var url = '{{route("getCekInvoice")}}';
+           // alert (no_cont);
+           
+            
+			
+			$.ajax({
+                type: 'GET',
+                data: 
+                {
+                    'no_cont' : no_cont,
+					'nospk' : nospk
+					
+                },
+                dataType : 'json',
+                url: url,
+                error: function (jqXHR, textStatus, errorThrown)
+                {
+                     alert('Something went wrong, please try again later.');
+					 return false;
+                },
+                success:function(json)
+                {    
+                         
+                     if(json.status){						 
+					 // $('#datepick-inv').val('0');
+					  // alert (json.data.no_spk);
+					 }
+					 else
+					 {
+
+					  //alert('Invoice Untuk Container '+no_cont +'  belum terbit.' );
+					  alert('Invoice Untuk Container '+ json.data  +'  belum terbit.' );
+					  //$('#datepick-modal').modal('hide');
+					 // return false;
+					
+					 }
+					
+                }
+            });
+				
+				
+			
+				
+				
                 cellValues.push($grid.jqGrid("getCell", selIds[i], "TCONTAINER_PK"));
             }
+			
+				
+		
             
             var manifestId = cellValues.join(",");
 
@@ -324,11 +375,10 @@
 
 
 		   //var id = $('#fclReleaseGrid').jqGrid('getGridParam', 'selrow');
-            //$('#datepick-contid').val(id);
-			
-			$('#datepick-contid').val(manifestId);
-            $('#datepick-modal').modal('show');
-                        
+      
+			   $('#datepick-contid').val(manifestId);
+               $('#datepick-modal').modal('show');
+                   
 //            $.ajax({
 //                type: 'GET',
 //                dataType : 'json',
@@ -1219,6 +1269,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <input type="hidden" id="datepick-contid" name="datepick_contid" required> 
+							<input type="hidden" id="datepick-inv" name="datepick_inv" required>
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">Pembayaran s/d Tanggal</label>
                                 <div class="col-sm-7">
