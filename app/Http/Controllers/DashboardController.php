@@ -22,9 +22,11 @@ class DashboardController extends Controller
         $data['page_title'] = "Welcome to Dashboard";
         $data['page_description'] = "This is Admin Page WIS PT.AIRIN!";
         
-        $day = 23;
-        $month = 05;
-        $year = date('Y');
+        //$day = 23;
+        //$month = 05;
+        $day = date('d');
+		$month = date('m');
+		$year = date('Y');
         
         // FCL DASHBOARD       
         $jict = \App\Models\Containercy::where('KD_TPS_ASAL', 'JICT')->whereRaw('MONTH(TGL_PLP) = '.date('m'))->whereRaw('YEAR(TGL_PLP) = '.date('Y'))->count();
