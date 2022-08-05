@@ -3905,7 +3905,7 @@ UNZ+1+1709131341'\n";
 			
 			}
         }elseif($kd_dok == 41){
-            $sppb = \App\Models\TpsDokPabean::select('NO_DOK_INOUT as NO_SPPB','TGL_DOK_INOUT as TGL_SPPB','NPWP_IMP','CAR')
+            $sppb = \App\Models\TpsDokPabean::select('NO_DOK_INOUT as NO_SPPB','TGL_DOK_INOUT as TGL_SPPB','NPWP_IMP','NO_BL_AWB as NO_BL_AWB','NO_MASTER_BL_AWB as NO_MASTER_BL_AWB','CAR')
                     ->where(array('KD_DOK_INOUT' => $kd_dok, 'NO_BL_AWB' => $container->NO_BL_AWB))
                     ->first();
 			
@@ -3918,8 +3918,39 @@ UNZ+1+1709131341'\n";
 			$nopib= $arraysppb[0];
 			$tglpib= date('Y-m-d', strtotime($sppb->TGL_SPPB));
 			}
+			
+			if($sppb->NO_BL_AWB !=''){
+				$nobl=$sppb->NO_BL_AWB ;
+			}else{$nobl=$sppb->NO_MASTER_BL_AWB;} 	
+			
+			$nama_kd_dok = \App\Models\KodeDok::find($kd_dok);
+            $nama_dok = $nama_kd_dok->name;
+			
+			//update BL party continercy with dok sppb 
+			$sppbcontupd = \App\Models\TpsDokPabeanCont::where('CAR',$sppb->CAR)->get();  
+	        foreach ($sppbcontupd  as $contupd) :
+     		//	
+                  $sppbcont=array();
+				  
+				  $sppbcont['NO_SPPB'] = $sppb->NO_SPPB;
+                  $sppbcont['TGL_SPPB'] = date('Y-m-d', strtotime($sppb->TGL_SPPB));
+				  $sppbcont['NO_DAFTAR_PABEAN'] = $nopib;
+				  $sppbcont['TGL_DAFTAR_PABEAN'] = $tglpib;
+				  $sppbcont['ID_CONSIGNEE'] = $sppb->NPWP_IMP;
+				  $sppbcont['KD_DOK_INOUT'] = $kd_dok ;
+				  $sppbcont['KODE_DOKUMEN'] = $nama_dok;
+				  //if($contupd->status_bc==''){
+				  $sppbcont['status_bc'] = 'HOLD';
+				  //}
+      
+       	         $update= DBContainer::where('NO_BL_AWB',$nobl) ->where('release_bc','N')
+				   ->where('NOCONTAINER',$contupd->NO_CONT) ->update($sppbcont);
+	
+			
+            endforeach ;
+			
         }else{
-            $sppb = \App\Models\TpsDokManual::select('NO_DOK_INOUT as NO_SPPB','TGL_DOK_INOUT as TGL_SPPB','ID_CONSIGNEE as NPWP_IMP','ID')
+            $sppb = \App\Models\TpsDokManual::select('NO_DOK_INOUT as NO_SPPB','TGL_DOK_INOUT as TGL_SPPB','ID_CONSIGNEE as NPWP_IMP','NO_BL_AWB as NO_BL_AWB', 'ID')
                     ->where(array('KD_DOK_INOUT' => $kd_dok, 'NO_BL_AWB' => $container->NO_BL_AWB))
                     ->first();
 					
@@ -3938,6 +3969,37 @@ UNZ+1+1709131341'\n";
 			$nopib= $arraysppb[0];
 			$tglpib= date('Y-m-d', strtotime($sppb->TGL_SPPB));
 			}
+			
+			if($sppb->NO_BL_AWB !=''){
+				$nobl=$sppb->NO_BL_AWB ;
+			}else{$nobl='';} 	
+			
+			$nama_kd_dok = \App\Models\KodeDok::find($kd_dok);
+            $nama_dok = $nama_kd_dok->name;
+			
+			//update BL party continercy with dok sppb 
+			$sppbcontupd = \App\Models\TpsDokManualCont::where('ID',$sppb->ID)->get();  
+	        foreach ($sppbcontupd  as $contupd) :
+     		//	
+                  $sppbcont=array();
+				  
+				  $sppbcont['NO_SPPB'] = $sppb->NO_SPPB;
+                  $sppbcont['TGL_SPPB'] = date('Y-m-d', strtotime($sppb->TGL_SPPB));
+				  $sppbcont['NO_DAFTAR_PABEAN'] = $nopib;
+				  $sppbcont['TGL_DAFTAR_PABEAN'] = $tglpib;
+				  $sppbcont['ID_CONSIGNEE'] = $sppb->NPWP_IMP;
+				  $sppbcont['KD_DOK_INOUT'] = $kd_dok ;
+				  $sppbcont['KODE_DOKUMEN'] = $nama_dok;
+				  //if($contupd->status_bc==''){
+				  $sppbcont['status_bc'] = 'HOLD';
+				  //}
+      
+       	         $update= DBContainer::where('NO_BL_AWB',$nobl) ->where('release_bc','N')
+				   ->where('NOCONTAINER',$contupd->NO_CONT) ->update($sppbcont);
+	
+			
+            endforeach ;
+		
         }
         
         if($sppb){
