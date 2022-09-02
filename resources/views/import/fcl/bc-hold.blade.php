@@ -51,7 +51,7 @@
 							 @if(Auth::getUser()->username == 'zaky') 
 				               jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			                 @else
-								 @if(Auth::getUser()->username == 'haidar') 
+								 @if(Auth::getUser()->username == 'roger.sibarani') 
 				                    jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			                     @else   
 									 @if(Auth::getUser()->username == 'agni') 
