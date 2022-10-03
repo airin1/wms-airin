@@ -39,19 +39,19 @@
 			@if(Auth::getUser()->username == 'bcgaters') 
                 jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});            
 			@else
-				@if(Auth::getUser()->username == 'alvin') 
+				@if(Auth::getUser()->username == 'naufal') 
 				 jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			    @else
-					@if(Auth::getUser()->username == 'trishna') 
+					@if(Auth::getUser()->username == 'nizar') 
 				         jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			        @else
-						@if(Auth::getUser()->username == 'fikri') 
+						@if(Auth::getUser()->username == 'fahmi') 
 				           jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			            @else
-							 @if(Auth::getUser()->username == 'zaky') 
+							 @if(Auth::getUser()->username == 'hafizh') 
 				               jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			                 @else
-								 @if(Auth::getUser()->username == 'roger.sibarani') 
+								 @if(Auth::getUser()->username == 'harry') 
 				                    jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			                     @else   
 									 @if(Auth::getUser()->username == 'agni') 
