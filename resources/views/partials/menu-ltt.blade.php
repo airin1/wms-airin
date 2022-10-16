@@ -295,7 +295,8 @@
                                     <li><a href="{{ route('fcl-bc-report-container') }}">Report Container</a></li>
                                     <li><a href="{{ route('fcl-bc-report-inventory') }}">Report Stock</a></li>
                                     <li><a href="{{ route('fcl-report-harian') }}">Daily Report</a></li>
-                                </ul>
+									<li><a href="{{ route('fcl-report-logReleaseDok') }}">Report Release Dok</a></li>                             
+							 </ul>
                             </li>
                         </ul>
                     </li>

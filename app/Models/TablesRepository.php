@@ -238,6 +238,12 @@ class TablesRepository extends EloquentRepositoryAbstract {
                             ->whereNotNull('NO_PLP')
                             ->whereNotNull('TGL_PLP');
                     break;
+					case 'release-log':
+                        $Model = \DB::table('tcontainercy')
+                            ->whereNotNull('release_bc_date')
+                            ->whereNotNull('release_bc_uid')
+                            ;
+                    break;
                 }
                 
             }elseif(isset($request['report'])){
