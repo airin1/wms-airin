@@ -39,7 +39,8 @@
                 $("#" + cl).find("td").css("background-color", "#ffe500");
             }
             if(rowdata.flag_bc == 'Y') {
-                $("#" + cl).find("td").css("color", "#FF0000");
+               // $("#" + cl).find("td").css("color", "#FF0000");
+				$("#" + cl).find("td").css("background-color", "#FF0000");
             }  
             
             jQuery("#lcllongstayGrid").jqGrid('setRowData',ids[i],{action:apv}); 

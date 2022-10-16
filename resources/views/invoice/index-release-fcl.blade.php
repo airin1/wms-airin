@@ -7,7 +7,31 @@
     }
 </style>
 <script>
-    
+   
+    function gridCompleteEvent()
+    {
+        var ids = jQuery("#fclReleaseGrid").jqGrid('getDataIDs');   
+            
+        for(var i=0;i < ids.length;i++){ 
+            var cl = ids[i];
+            //var vi = '';
+            
+            rowdata = $('#fclReleaseGrid').getRowData(cl);
+           
+            if(rowdata.flag_bc == 'Y') {
+				
+                $("#" + cl).find("td").css("background-color", "#FF0000");
+            }
+          
+          
+            
+            
+        //    QSjQuery("#fclReleaseGrid").jqGrid('setRowData',ids[i],{action:vi}); 
+        } 
+    }
+
+
+   
     function onSelectRowEvent()
     {
 //        $('#btn-group-4').enableButtonGroup();
@@ -35,6 +59,8 @@
             
             var containerId = cellValues.join(",");
             if(!containerId) {alert('Please Select Row');return false;}
+			var flag_bc = $grid.jqGrid("getCell", selIds[0], "flag_bc");
+			if(flag_bc=='Y'){alert('Container Segel BC');return false;}
             
 			//var jenis_container = $grid.jqGrid("getCell", selIds[0], "jenis_container");
             //alert (jenis_container.substring(0, 6) );
@@ -96,6 +122,9 @@
             
             var containerId = cellValues.join(",");
             if(!containerId) {alert('Please Select Row');return false;}
+			var flag_bc = $grid.jqGrid("getCell", selIds[0], "flag_bc");
+			if(flag_bc=='Y'){alert('Container Segel BC');return false;}
+
             
 			//var jenis_container = $grid.jqGrid("getCell", selIds[0], "jenis_container");
             //alert (jenis_container.substring(0, 6) );
@@ -228,8 +257,8 @@
                     GridRender::setGridId("fclReleaseGrid")
                     ->enableFilterToolbar()
                     ->setGridOption('mtype', 'POST')
-                    ->setGridOption('url', URL::to('/container/grid-data-cy?module=release&_token='.csrf_token()))
-                 //   ->setGridOption('url', URL::to('/container/grid-data-cy?module=release-invoice&_token='.csrf_token()))
+                  //  ->setGridOption('url', URL::to('/container/grid-data-cy?module=release&_token='.csrf_token()))
+                   ->setGridOption('url', URL::to('/container/grid-data-cy?module=release-invoice&_token='.csrf_token()))
 					->setGridOption('rowNum', 50)
                     ->setGridOption('shrinkToFit', true)
                     ->setGridOption('sortname','TCONTAINER_PK')
@@ -242,9 +271,12 @@
                     ->setNavigatorOptions('navigator', array('viewtext'=>'view'))
                     ->setNavigatorOptions('view',array('closeOnEscape'=>false))
                     ->setFilterToolbarOptions(array('autosearch'=>true))
-                    ->setGridEvent('onSelectRow', 'onSelectRowEvent')
+					 ->setGridEvent('gridComplete', 'gridCompleteEvent')
+   				    ->setGridEvent('onSelectRow', 'onSelectRowEvent')
+				   
                     ->addColumn(array('key'=>true,'index'=>'TCONTAINER_PK','hidden'=>true))
 					->addColumn(array('label'=>'Consignee','index'=>'CONSIGNEE','width'=>300))
+					 ->addColumn(array('label'=>'Segel Merah','index'=>'flag_bc', 'width'=>100,'align'=>'center','hidden'=>true))
 					->addColumn(array('label'=>'No. Container','index'=>'NOCONTAINER','width'=>120,'editable' => true, 'editrules' => array('required' => true)))
 					->addColumn(array('label'=>'No. BL AWB','index'=>'NO_BL_AWB', 'width'=>150,'align'=>'center'))
                     ->addColumn(array('label'=>'Tgl. BL AWB','index'=>'TGL_BL_AWB', 'width'=>150,'align'=>'center'))

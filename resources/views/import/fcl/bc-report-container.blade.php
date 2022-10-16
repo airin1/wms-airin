@@ -40,7 +40,10 @@
             }
             if(rowdata.no_flag_bc != ''){
                 info = '<button style="margin:5px;" class="btn btn-danger btn-xs info-segel-btn" data-id="'+cl+'" onclick="viewInfo('+cl+')"><i class="fa fa-info"></i> Info Segel</button>';
-            }else{
+                if(rowdata.no_flag_bc != 'Y'){
+		  	       $("#" + cl).find("td").css("background-color", "#FF0000");  
+				} 			   
+			}else{
                 info = '';
             }
             
