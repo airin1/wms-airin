@@ -1093,10 +1093,10 @@ class FclController extends Controller
                 ->where('TGLRELEASE', $data['date'])
                 ->groupBy('NO_SPPB')
                 ->get();
-        $bc12 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 4)->where('TGLRELEASE', $data['date'])->count();
+        $bc12 = DBContainer::where('KODE_GUDANG', 'like', $gd)->whereIn('KD_DOK_INOUT',[ 4,28,34])->where('TGLRELEASE', $data['date'])->count();
         $dok12 = DBContainer::select('NO_SPPB', 'KD_DOK_INOUT', \DB::raw('count(*) as total'))
                 ->where('KODE_GUDANG', 'like', $gd)
-                ->where('KD_DOK_INOUT', 4)
+                ->whereIn('KD_DOK_INOUT',[ 4,28,34])
                 ->where('TGLRELEASE', $data['date'])
                 ->groupBy('NO_SPPB')
                 ->get();
@@ -1128,6 +1128,23 @@ class FclController extends Controller
                 ->where('TGLRELEASE', $data['date'])
                 ->groupBy('NO_SPPB')
                 ->get();
+				
+		$bc20 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 1)->where('TGLRELEASE', $data['date'])->count();
+        $dok20 = DBContainer::select('NO_SPPB', 'KD_DOK_INOUT', \DB::raw('count(*) as total'))
+                ->where('KODE_GUDANG', 'like', $gd)
+                ->where('KD_DOK_INOUT', 1)
+                ->where('TGLRELEASE', $data['date'])
+                ->groupBy('NO_SPPB')
+                ->get();		
+				
+		$bc58 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 58)->where('TGLRELEASE', $data['date'])->count();
+        $dok58 = DBContainer::select('NO_SPPB', 'KD_DOK_INOUT', \DB::raw('count(*) as total'))
+                ->where('KODE_GUDANG', 'like', $gd)
+                ->where('KD_DOK_INOUT', 58)
+                ->where('TGLRELEASE', $data['date'])
+                ->groupBy('NO_SPPB')
+                ->get();				
+				
 
         $data['countbydoc'] = array(
             'BC 1.2' => array('dok' => count($dok12), 'box' => $bc12),
@@ -1135,6 +1152,7 @@ class FclController extends Controller
             'BC 1.6' => array('dok' => count($dok11), 'box' => $bc11), 
             'BC 2.0' => array('dok' => count($dok20), 'box' => $bc20),
             'BC 2.3' => array('dok' => count($dok23), 'box' => $bc23), 
+			'Kementrian' => array('dok' => count($dok58), 'box' => $bc58),
             'PPRP' => array('dok' => count($dokpprp), 'box' => $pprp)
         );
         
@@ -1221,10 +1239,10 @@ class FclController extends Controller
                 ->where('TGLRELEASE', $date)
                 ->groupBy('NO_SPPB')
                 ->get();
-        $bc12 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 4)->where('TGLRELEASE', $date)->count();
+        $bc12 = DBContainer::where('KODE_GUDANG', 'like', $gd)->whereIn('KD_DOK_INOUT',[ 4,28,34])->where('TGLRELEASE', $date)->count();
         $dok12 = DBContainer::select('NO_SPPB', 'KD_DOK_INOUT', \DB::raw('count(*) as total'))
                 ->where('KODE_GUDANG', 'like', $gd)
-                ->where('KD_DOK_INOUT', 4)
+                ->whereIn('KD_DOK_INOUT', [ 4,28,34])
                 ->where('TGLRELEASE', $date)
                 ->groupBy('NO_SPPB')
                 ->get();
@@ -1256,6 +1274,14 @@ class FclController extends Controller
                 ->where('TGLRELEASE', $date)
                 ->groupBy('NO_SPPB')
                 ->get();
+					
+	    $bc58 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 58)->where('TGLRELEASE', $date)->count();
+        $dok58 = DBContainer::select('NO_SPPB', 'KD_DOK_INOUT', \DB::raw('count(*) as total'))
+                ->where('KODE_GUDANG', 'like', $gd)
+                ->where('KD_DOK_INOUT', 58)
+                ->where('TGLRELEASE', $date)
+                ->groupBy('NO_SPPB')
+                ->get();
 
         $data['countbydoc'] = array(
             'BC 1.2' => array('dok' => count($dok12), 'box' => $bc12),
@@ -1263,6 +1289,7 @@ class FclController extends Controller
             'BC 1.6' => array('dok' => count($dok11), 'box' => $bc11), 
             'BC 2.0' => array('dok' => count($dok20), 'box' => $bc20),
             'BC 2.3' => array('dok' => count($dok23), 'box' => $bc23), 
+			'Kementrian' => array('dok' => count($dok58), 'box' => $bc58),
             'PPRP' => array('dok' => count($dokpprp), 'box' => $pprp)
         );
         
