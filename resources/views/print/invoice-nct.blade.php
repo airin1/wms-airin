@@ -271,38 +271,38 @@ table tfoot tr td:first-child {
                     <td style="width: 60%;vertical-align: top;">
                         <table border="0" cellspacing="0" cellpadding="0" style="margin: 0;">
                             <tr>
-                                <td style="vertical-align: top;width: 100px;"><b>Perusahaan</b></td>
-                                <td style="width: 20px;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                                <td style="vertical-align: top;width: 60px;"><b>Perusahaan</b></td>
+                                <td style="width: 20px;">&nbsp;:&nbsp;</td>
                                 <td style="vertical-align: top;"><b>{{ $invoice->consignee }}</b></td>
                             </tr>
                             <tr>
-                                <td style="vertical-align: top;width: 100px;"><b>Alamat</b></td>
-                                <td style="width: 20px;vertical-align: top;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                                <td style="vertical-align: top;width: 60px;"><b>Alamat</b></td>
+                                <td style="width: 20px;vertical-align: top;">&nbsp;:&nbsp;</td>
                                 <td style="vertical-align: top;">{{ $invoice->alamat }}</td>
                             </tr>
                             <tr>
                                 <td colspan="3">&nbsp;</td>
                             </tr>
                             <tr>
-                                <td style="vertical-align: top;width: 100px;"><b>Kapal / Voy</b></td>
-                                <td style="width: 20px;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                                <td style="vertical-align: top;width: 60px;"><b>Kapal / Voy</b></td>
+                                <td style="width: 20px;">&nbsp;:&nbsp;</td>
                                 <td style="vertical-align: top;">{{ $invoice->vessel.' / '.$invoice->voy }}</td>
                             </tr>
                             <tr>
-                                <td style="vertical-align: top;width: 100px;"><b>Jenis Container</b></td>
-                                <td style="width: 20px;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                                <td style="vertical-align: top;width: 60px;"><b>Jenis Container</b></td>
+                                <td style="width: 20px;">&nbsp;:&nbsp;</td>
                                 <td style="vertical-align: top;">{{ $invoice->jenis_container }}</td>
                             </tr>
                             <tr>
-                                <td style="vertical-align: top;width: 100px;"><b>No Container</b></td>
-                                <td style="width: 20px;vertical-align: top;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
-                                <td style="vertical-align: top;width: 50px;">{{ $invoice->no_container }}</td>
+                                <td style="vertical-align: top;width: 60px;"><b>No Container</b></td>
+                                <td style="width: 20px;vertical-align: top;">&nbsp;:&nbsp;</td>
+                                <td style="vertical-align: top;">{{ $invoice->no_container }}</td>
                             </tr>
 							@if( $invoice->renew=='Y')
 							<tr>
-								<td><b>TPS Asal</b></td>
-								<td>:&nbsp;&nbsp;</td>
-								<td>{{ $container->KD_TPS_ASAL }}</td>
+								<td style="vertical-align: top;width: 60px;"><b>TPS Asal</b></td>
+                                <td style="width: 20px;vertical-align: top;">&nbsp;:&nbsp;</td>
+                                <td style="vertical-align: top;">{{ $container->KD_TPS_ASAL }}</td>
 							</tr>
 							@endif
 							
@@ -310,8 +310,8 @@ table tfoot tr td:first-child {
                                 <td colspan="3">&nbsp;</td>
                             </tr>
                             <tr>
-                                <td style="vertical-align: top;width: 100px;"><b>Party</b></td>
-                                <td style="width: 20px;">&nbsp;&nbsp;:&nbsp;&nbsp;</td>
+                                <td style="vertical-align: top;width: 60px;"><b>Party</b></td>
+                                <td style="width: 20px;">&nbsp;:&nbsp;</td>
                                 <td style="vertical-align: top;">
                                     <?php $party = @unserialize($invoice->party);?>
                                     @if(is_array($party))
