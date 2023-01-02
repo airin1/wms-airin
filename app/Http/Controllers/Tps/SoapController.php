@@ -985,14 +985,17 @@ class SoapController extends DefaultController {
                 ]);                                                   
         });
         
+		
+			if($request->thn_sppb<='2022'){
+			$sppbkode = '/KPU.01/';
+            }else{
+			$sppbkode = '/KPU.1/';            
+			}
+		
         $data = [
             'UserName' => $this->user, 
             'Password' => $this->password,
-			if($request->thn_sppb<='2022'){
-			'No_Sppb' => $request->no_sppb.'/KPU.01/'.$request->thn_sppb, //063484/KPU.01/2017	
-            }else{
-			'No_Sppb' => $request->no_sppb.'/KPU.1/'.$request->thn_sppb, //063484/KPU.01/2017
-            }
+			'No_Sppb' => $request->no_sppb.$sppbkode.$request->thn_sppb, //063484/KPU.01/2017	
 			'Tgl_Sppb' => $request->tgl_sppb, //09022017
             'NPWP_Imp' => $request->npwp_imp //033153321035000
         ];
