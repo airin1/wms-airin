@@ -45,16 +45,16 @@
 					@if(Auth::getUser()->username == 'nizar') 
 				         jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			        @else
-						@if(Auth::getUser()->username == 'fahmi') 
+						@if(Auth::getUser()->username == 'bagus.s') 
 				           jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			            @else
 							 @if(Auth::getUser()->username == 'hafizh') 
 				               jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			                 @else
-								 @if(Auth::getUser()->username == 'harry') 
+								 @if(Auth::getUser()->username == 'ardin') 
 				                    jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			                     @else   
-									 @if(Auth::getUser()->username == 'agni') 
+									 @if(Auth::getUser()->username == 'hamzah') 
 				                       jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			                         @else   
                                         jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi});

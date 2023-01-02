@@ -55,13 +55,13 @@
 					@if(Auth::getUser()->username == 'nizar') 
 				         jQuery("#lclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			        @else
-						@if(Auth::getUser()->username == 'fahmi') 
+						@if(Auth::getUser()->username == 'bagus.s') 
 				           jQuery("#lclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			            @else
-							 @if(Auth::getUser()->username == 'hafizh') 
+							 @if(Auth::getUser()->username == 'ardin') 
 				               jQuery("#lclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			                 @else
-								 @if(Auth::getUser()->username == 'harry') 
+								 @if(Auth::getUser()->username == 'hamzah') 
 				                    jQuery("#lclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});  
 			                     @else   
 									 @if(Auth::getUser()->username == 'agni') 
