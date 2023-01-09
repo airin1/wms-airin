@@ -1137,13 +1137,23 @@ class FclController extends Controller
                 ->groupBy('NO_SPPB')
                 ->get();		
 				
-		$bc58 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 58)->where('TGLRELEASE', $data['date'])->count();
-        $dok58 = DBContainer::select('NO_SPPB', 'KD_DOK_INOUT', \DB::raw('count(*) as total'))
+		//$bc58 = DBContainer::where('KODE_GUDANG', 'like', $gd)->where('KD_DOK_INOUT', 58)->where('TGLRELEASE', $data['date'])->count();
+        //$dok58 = DBContainer::select('NO_SPPB', 'KD_DOK_INOUT', \DB::raw('count(*) as total'))
+        //        ->where('KODE_GUDANG', 'like', $gd)
+        //        ->where('KD_DOK_INOUT', 58)
+        //        ->where('TGLRELEASE', $data['date'])
+         //       ->groupBy('NO_SPPB')
+        //        ->get();	
+         
+		$lain = DBContainer::where('KODE_GUDANG', 'like', $gd)->whereNotIn('KD_DOK_INOUT',[ 2,14,9,41,1,58,4,28,34])->where('TGLRELEASE', $data['date'])->count();
+        $doklain = DBContainer::select('NO_SPPB', 'KD_DOK_INOUT', \DB::raw('count(*) as total'))
                 ->where('KODE_GUDANG', 'like', $gd)
-                ->where('KD_DOK_INOUT', 58)
+                ->whereNotIn('KD_DOK_INOUT',[ 2,14,9,41,1,4,28,34])
                 ->where('TGLRELEASE', $data['date'])
                 ->groupBy('NO_SPPB')
-                ->get();				
+                ->get();
+
+         				
 				
 
         $data['countbydoc'] = array(
@@ -1152,8 +1162,8 @@ class FclController extends Controller
             'BC 1.6' => array('dok' => count($dok11), 'box' => $bc11), 
             'BC 2.0' => array('dok' => count($dok20), 'box' => $bc20),
             'BC 2.3' => array('dok' => count($dok23), 'box' => $bc23), 
-			'Kementrian' => array('dok' => count($dok58), 'box' => $bc58),
-            'PPRP' => array('dok' => count($dokpprp), 'box' => $pprp)
+            'PPRP' => array('dok' => count($dokpprp), 'box' => $pprp),
+			'LAIN-LAIN' => array('dok' => count($doklain), 'box' => $lain)
         );
         
         // YOR
