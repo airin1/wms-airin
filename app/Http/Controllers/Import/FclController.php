@@ -3989,7 +3989,7 @@ UNZ+1+1709131341'\n";
             endforeach ;
 			
         }else{
-            $sppb = \App\Models\TpsDokManual::select('NO_DOK_INOUT as NO_SPPB','TGL_DOK_INOUT as TGL_SPPB','ID_CONSIGNEE as NPWP_IMP','NO_BL_AWB as NO_BL_AWB', 'ID')
+            $sppb = \App\Models\TpsDokManual::select('NO_DOK_INOUT as NO_SPPB','TGL_DOK_INOUT as TGL_SPPB','ID_CONSIGNEE as NPWP_IMP','CONSIGNEE as CONSIGNEE' , 'NO_BL_AWB as NO_BL_AWB', 'ID')
                     ->where(array('KD_DOK_INOUT' => $kd_dok, 'NO_BL_AWB' => $container->NO_BL_AWB))
                     ->first();
 					
@@ -4031,7 +4031,11 @@ UNZ+1+1709131341'\n";
 				  $sppbcont['KODE_DOKUMEN'] = $nama_dok;
 				  //if($contupd->status_bc==''){
 				  $sppbcont['status_bc'] = 'HOLD';
-				  //}
+				  //}				  
+				  if($kd_dok =='9'){
+				   $sppbcont['bcf_consignee'] = $sppb->CONSIGNEE;
+				  }
+				  
       
        	         $update= DBContainer::where('NO_BL_AWB',$nobl) ->where('release_bc','N')
 				   ->where('NOCONTAINER',$contupd->NO_CONT) ->update($sppbcont);
