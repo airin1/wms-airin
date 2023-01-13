@@ -4046,6 +4046,12 @@ UNZ+1+1709131341'\n";
         }
         
         if($sppb){
+			if($kd_dok =='9'){
+				   $bcf_consignee = $sppb->CONSIGNEE;
+		    }else{
+				 $bcf_consignee ='';
+			}
+			
 		   if($sppbcont){
             $arraysppb = explode('/', $sppb->NO_SPPB);
             $datasppb = array(
@@ -4054,7 +4060,8 @@ UNZ+1+1709131341'\n";
                 'TGL_SPPB' => date('Y-m-d', strtotime($sppb->TGL_SPPB)),
 				'NO_PIB' => $nopib,
                 'TGL_PIB' => $tglpib,
-                'NPWP' => $sppb->NPWP_IMP
+                'NPWP' => $sppb->NPWP_IMP,
+				'bcf_consignee' =>$bcf_consignee
             );
 			
             return json_encode(array('success' => true, 'message' => 'Get Data SPPB has been success.', 'data' => $datasppb));

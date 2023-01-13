@@ -174,6 +174,7 @@
 						$('#NO_DAFTAR_PABEAN').val(datasppb.NO_PIB);
                         $('#TGL_DAFTAR_PABEAN').val(datasppb.TGL_PIB);
                         $('#ID_CONSIGNEE').val(datasppb.NPWP);
+						$('#bcf_consignee').val(datasppb.bcf_consignee);
                     } else {
                       $('#btn-toolbar').showAlertAfterElement('alert-danger alert-custom', json.message, 5000);
                     }
