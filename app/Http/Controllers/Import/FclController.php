@@ -2177,6 +2177,28 @@ UNZ+1+1709131341'\n";
                 
                 if(count($container40) > 0) {
                     
+					$data = $container40['0'];
+					$jenis_cont = $data['jenis_container'];
+            
+					if(in_array($jenis_cont, $std)){
+						$type = 'Standar';
+					}else if(in_array($jenis_cont, $low)){
+						$type = 'Low';
+					}else if(in_array($jenis_cont, $high)){
+						$type = 'High';
+					}else if(in_array($jenis_cont, $reffer)){
+						$type = 'Reffer';
+					}else if(in_array($jenis_cont, $refferlow)){
+						$type = 'RefferLow';
+					}else if(in_array($jenis_cont, $refferhigh)){
+						$type = 'RefferHigh';	
+					}else if(in_array($jenis_cont, $ft)){
+						$type = 'Flatrack';
+					}else{
+						return back()->with('error', 'Container type '.$jenis_cont.' not detected.');
+					}
+					
+					
 					//cek tarif 40
 					if($data['ETA']<'2021-04-15'){
                      $tarif40 = \App\Models\InvoiceTarifNct::where(array('type' => $type, 'size' => 40))->whereIn('lokasi_sandar', array($tps_asal,'AIRIN'))->get();
