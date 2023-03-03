@@ -1853,7 +1853,8 @@ UNZ+1+1709131341'\n";
 			'Class BB Standar 4,2',
 			'Class BB Standar 4,3',
             'Class BB Standar 6',
-            'Class BB Standar 2,2'
+            'Class BB Standar 2,2',
+			 'Class BB Standar 2,3'
         );
         $high = array(
             "Class BB High Class 2,1",
