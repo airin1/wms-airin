@@ -118,6 +118,7 @@ class NpctController extends Controller
                 'uid' => \Auth::getUser()->name
             );
             // OUT2
+			if($container->TGLRELEASE!=null){
             $data[] = array(
                 'request_no' => $container->NO_PLP,
                 'request_date' => date('Ymd', strtotime($container->TGL_PLP)),
@@ -128,9 +129,9 @@ class NpctController extends Controller
                 'action_time' => date('YmdHis', strtotime($container->TGLRELEASE.' '.$container->JAMRELEASE)),
                 'uid' => \Auth::getUser()->name
             );
-            
+			} 
             \App\Models\NpctMovement::insert($data);   
-            
+           
             $data = array();
         endforeach;
         
@@ -399,6 +400,9 @@ class NpctController extends Controller
         var_dump($this->response);
 
     }
+	
+	
+	
     
 //    public function yorUpload1($id)
 //    {

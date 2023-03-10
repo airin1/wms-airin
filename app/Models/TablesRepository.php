@@ -201,11 +201,11 @@ class TablesRepository extends EloquentRepositoryAbstract {
                         $Model = \DB::table('tcontainercy')
                             ->where('KD_TPS_ASAL', 'NCT1')
                             ->whereNotNull('TGLMASUK')
-                            ->whereNotNull('JAMMASUK')
-                            ->whereNotNull('TGLKELUAR_TPK')
-                            ->whereNotNull('JAMKELUAR_TPK')
-                            ->whereNotNull('TGLRELEASE')
-                            ->whereNotNull('JAMRELEASE');
+                            ->whereNotNull('JAMMASUK');
+                            //->whereNotNull('TGLKELUAR_TPK')
+                            //->whereNotNull('JAMKELUAR_TPK')
+                            //->whereNotNull('TGLRELEASE')
+                            //->whereNotNull('JAMRELEASE');
                     break;
                     case 'longstay':
                         if(isset($request['startdate']) || isset($request['enddate'])){
