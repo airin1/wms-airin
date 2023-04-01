@@ -46,7 +46,7 @@
                 jQuery("#lclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi}); 
             @endif
 			
-			@if(Auth::getUser()->username == 'bcgaters') 
+			@if(Auth::getUser()->username == 'bcgaters'||Auth::getUser()->username == 'andiko'||Auth::getUser()->username == 'bayu.eka'||Auth::getUser()->username == 'fathul'||Auth::getUser()->username == 'waskita')  
                 jQuery("#lclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});            
 			@else
 				@if(Auth::getUser()->username == 'nizar.a') 
