@@ -54,6 +54,13 @@ ini_set('default_socket_timeout', 60);
             'as' => 'index',
             'uses' => 'DashboardController@index'
         ]);
+		
+		Route::get('/export', [
+            'as' => 'export_excel',
+            'uses' => 'DashboardController@export_excel'
+        ]);		
+		
+		
         // Logout Routes
         Route::get('/logout', [
             'as' => 'logout',
@@ -118,6 +125,8 @@ Route::get('/flat', [
     'as' => 'flat-file'
 ]);
 
+
+
 // Auto Gate
 //Route::get('/autogate/notification/{barcode}', [
 //    'uses' => 'BarcodeController@autogateNotification',
@@ -127,6 +136,21 @@ Route::post('/autogate/notification', [
     'uses' => 'BarcodeController@autogateNotification',
     'as' => 'autogate-notification'
 ]);
+
+Route::get('/autogate/npctmovementcreate', [
+    'uses' => 'BarcodeController@AutoMovementContainer',
+    'as' => 'autogate-npctmovementcreate'
+    ]);
+	
+Route::get('/autogate/npctmovementcreatemanual', [
+    'uses' => 'BarcodeController@ManualMovementContainer',
+    'as' => 'autogate-npctmovementcreatemanual'
+    ]);	
+
+Route::get('/autogate/npctmovementupload', [
+    'uses' => 'BarcodeController@AutomovementUpload',
+    'as' => 'autogate-npctmovementupload'
+    ]);	
 
 Route::group(['namespace' => 'Payment'], function(){
     // BNI Notification

@@ -149,6 +149,7 @@
     </div>
     
     <div class="row">
+
         <div class="col-md-12">
             <h4>LAPORAN YOR TANGGAL {{strtoupper(date('d F Y H:i:s'))}}</h4>
             <table class="table table-bordered table-hover table-striped" style="background: #FFF;">
@@ -221,7 +222,8 @@
             </table>
 			
 			
-			
+			   <a href="/export" class="btn btn-success my-3" target="_blank">EXPORT EXCEL</a>
+	
         </div>
     </div>
 <!--    <div class="row">
