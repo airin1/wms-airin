@@ -159,6 +159,7 @@
                         <th>TIPE</th>
                         <th>KAPASITAS</th>
 						<th>TERPAKAI</th>
+						<th>TERSEDIA</th>
                         <th>YOR</th>
                     </tr>
                   
@@ -167,6 +168,7 @@
                         <td align="center">DRY</td>
                         <td align="center">{{number_format($yarn1['drykaparn1'],'0',',','.') }}</td>
 						<td align="center">{{number_format($yarn1['dryarn1'],'0',',','.')}}</td>
+						<td align="center">{{number_format($yarn1['drykaparn1'] - $yarn1['dryarn1'],'0',',','.')}}</td>
                         <td align="center">{{number_format($yarn1['dryyorarn1'],'2',',','.')}}</td>
                     </tr>
 					<tr>
@@ -174,6 +176,7 @@
                         <td align="center">REEFER</td>
 						<td align="center">{{number_format($yarn1['rfrkaparn1'],'0',',','.') }}</td>
 						<td align="center">{{number_format($yarn1['rfrarn1'],'0',',','.')}}</td>
+						<td align="center">{{number_format($yarn1['rfrkaparn1']-$yarn1['rfrarn1'],'0',',','.')}}</td>
                         <td align="center">{{number_format($yarn1['rfryorarn1'],'2',',','.')}}</td>
                     </tr>
 					<tr>
@@ -181,7 +184,8 @@
                         <td align="center">DG</td>
 						<td align="center">{{number_format($yarn1['dgkaparn1'],'0',',','.') }}</td>
 						<td align="center">{{number_format($yarn1['dgarn1'],'0',',','.')}}</td>
-                        <td align="center">{{number_format($yarn1['dgyorarn1'],'2',',','.')}}</td>
+						<td align="center">{{number_format($yarn1['dgkaparn1']-$yarn1['dgarn1'],'0',',','.')}}</td>  
+						<td align="center">{{number_format($yarn1['dgyorarn1'],'2',',','.')}}</td>
                     </tr>
 					
                 </tbody>
@@ -194,6 +198,7 @@
                         <th>TIPE</th>
                         <th>KAPASITAS</th>
 						<th>TERPAKAI</th>
+						<th>TERSEDIA</th>
                         <th>YOR</th>
                     </tr>
                
@@ -202,13 +207,16 @@
                         <td align="center">DRY</td>
                         <td align="center">{{number_format($yarn3['drykaparn3'],'0',',','.') }}</td>
 						<td align="center">{{number_format($yarn3['dryarn3'],'0',',','.')}}</td>
-                        <td align="center">{{number_format($yarn3['dryyorarn3'],'2',',','.')}}</td>
+				        <td align="center">{{number_format($yarn3['drykaparn3']-$yarn3['dryarn3'],'0',',','.')}}</td>                        
+						<td align="center">{{number_format($yarn3['dryyorarn3'],'2',',','.')}}</td>
                     </tr>
 					<tr>
                         <th align="center">ARN3</th>
                         <td align="center">REEFER</td>
 						<td align="center">{{number_format($yarn3['rfrkaparn3'],'0',',','.') }}</td>
 						<td align="center">{{number_format($yarn3['rfrarn3'],'0',',','.')}}</td>
+						<td align="center">{{number_format($yarn3['rfrkaparn3']-$yarn3['rfrarn3'],'0',',','.')}}</td>
+
                         <td align="center">{{number_format($yarn3['rfryorarn3'],'2',',','.')}}</td>
                     </tr>
 					<tr>
@@ -216,7 +224,9 @@
                         <td align="center">DG</td>
 						<td align="center">{{number_format($yarn3['dgkaparn3'],'0',',','.') }}</td>
 						<td align="center">{{number_format($yarn3['dgarn3'],'0',',','.')}}</td>
-                        <td align="center">{{number_format($yarn3['dgyorarn3'],'2',',','.')}}</td>
+  						<td align="center">{{number_format($yarn3['dgkaparn3']-$yarn3['dgarn3'],'0',',','.')}}</td>
+
+						<td align="center">{{number_format($yarn3['dgyorarn3'],'2',',','.')}}</td>
                     </tr>
                 </tbody>
             </table>

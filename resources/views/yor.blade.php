@@ -47,8 +47,8 @@
                         <td align="center">REEFER</td>
 						<td></td>
 						<td align="center">{{number_format($yarn1['rfrkaparn1'],'0',',','.') }}</td>
-						<td align="center">{{number_format($yarn1['rfrkaparn1']-$yarn1['rfrarn1'],'0',',','.')}}</td>
 						<td align="center">{{number_format($yarn1['rfrarn1'],'0',',','.')}}</td>
+						<td align="center">{{number_format($yarn1['rfrkaparn1']-$yarn1['rfrarn1'],'0',',','.')}}</td>
                         <td align="center">{{number_format($yarn1['rfryorarn1'],'2',',','.')}}</td>
                         <td></td>
 					</tr>
