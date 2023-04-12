@@ -2188,7 +2188,7 @@ class LclController extends Controller
 			->first();
             }			
 		
-        }elseif($kd_dok == 41){
+        }elseif($kd_dok == 41||$kd_dok ==61){
             $sppb = \App\Models\TpsDokPabean::select('NO_DOK_INOUT as NO_SPPB','TGL_DOK_INOUT as TGL_SPPB','NPWP_IMP','CAR')
                     ->where(array('KD_DOK_INOUT' => $kd_dok, 'NO_BL_AWB' => $manifest->NOHBL,'JML_CONT'=> 0))
                     ->first();
