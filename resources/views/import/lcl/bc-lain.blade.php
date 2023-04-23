@@ -57,7 +57,7 @@
 				//$("#" + cl).find("td").css("background-color", "#d73925");
             } 
             
-            @if(Auth::getUser()->username == 'bcp2')  
+            @if(Auth::getUser()->username == 'frengky'||Auth::getUser()->username == 'bchanggar')  
                 jQuery("#lclSegelGrid").jqGrid('setRowData',ids[i],{action:sgl+' '+info});        
             @else
                 jQuery("#lclSegelGrid").jqGrid('setRowData',ids[i],{action:info}); 
@@ -305,22 +305,25 @@
                         <div class="col-md-12">
                             <input name="_token" type="hidden" value="{{ csrf_token() }}" />
                             <input name="id" type="hidden" id="manifest_id" />
-                            <div class="form-group">
+                            <div class="form-group" hidden>
                                 <label class="col-sm-3 control-label">No. Segel</label>
                                 <div class="col-sm-8">
-                                    <input type="text" id="no_flag_bc" name="no_flag_bc" class="form-control" required>
+                                    <input type="text" id="no_flag_bc" name="no_flag_bc" class="form-control" value="-" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Alasan Segel</label>
                                 <div class="col-sm-8">
                                     <select class="form-control select2" id="alasan_segel" name="alasan_segel" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
-                                        @foreach($segel as $flag)
+           
+										<option value="BCF 1.5">Dokumen BCF 1.5</option>
+
+		   <!--                           		   @foreach($segel as $flag)
                                             @if($flag->type == 'lock')
                                                 <option value="{{$flag->name}}">{{$flag->name}}</option>
                                             @endif
                                         @endforeach
-<!--                                        <option value="Nota Hasil Intelijen (NHI)" selected>Nota Hasil Intelijen (NHI)</option>
+                                         <option value="Nota Hasil Intelijen (NHI)" selected>Nota Hasil Intelijen (NHI)</option>
                                         <option value="Surveilance P2">Surveilance P2</option>
                                         <option value="P2 Pusat">P2 Pusat</option>
                                         <option value="SPBL">SPBL</option>
@@ -374,22 +377,25 @@
                         <div class="col-md-12">
                             <input name="_token" type="hidden" value="{{ csrf_token() }}" />
                             <input name="id" type="hidden" id="manifest_unlock_id" />
-                            <div class="form-group">
+                            <div class="form-group" hidden >
                                 <label class="col-sm-3 control-label">No. Segel</label>
                                 <div class="col-sm-8">
-                                    <input type="text" id="no_unflag_bc" name="no_unflag_bc" class="form-control" required>
+                                    <input type="text" id="no_unflag_bc" name="no_unflag_bc" class="form-control" value="-" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Alasan Lepas Segel</label>
                                 <div class="col-sm-8">
                                     <select class="form-control select2" id="alasan_lepas_segel" name="alasan_lepas_segel" style="width: 100%;" tabindex="-1" aria-hidden="true" required>  
-                                        @foreach($segel as $flag)
+                                        <option value="Lainnya">Lainnya</option>
+
+ <!--                                   
+                                           @foreach($segel as $flag)
                                             @if($flag->type == 'unlock')
                                                 <option value="{{$flag->name}}">{{$flag->name}}</option>
                                             @endif
                                         @endforeach
-<!--                                        <option value="SPBL">SPPB</option>
+                                        <option value="SPBL">SPPB</option>
                                         <option value="SPPBE">SPPBE</option>
                                         <option value="Re Ekspor">Re Ekspor</option>
                                         <option value="Pemusnahan">Pemusnahan</option>

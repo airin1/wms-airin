@@ -223,6 +223,7 @@
                             </li>
                             <li><a href="{{route('lcl-hold-index')}}">Dokumen HOLD</a></li>
 							<li><a href="{{route('lcl-mtyhold-index')}}">Dokumen MTY HOLD</a></li>
+							<li><a href="{{route('lcl-lain-index')}}">Dokumen HOLD LAINNYA</a></li>
                             <!--<li><a href="{{route('lcl-segel-index')}}">Segel Merah</a></li>-->
                             <li class="treeview">
                                 <a href="#">
@@ -271,13 +272,14 @@
                                 </ul>
                             </li>
                             <li><a href="{{route('fcl-hold-index')}}">Dokumen HOLD</a></li>
+							<li><a href="{{route('fcl-lain-index')}}">Dokumen HOLD LAINNYA</a></li>
                             <!--<li><a href="{{route('fcl-segel-index')}}">Segel Merah</a></li>-->
                             <li class="treeview">
                                 <a href="#">
                                     <span>Segel Merah</span>
                                     <span class="pull-right-container">
                                         <i class="fa fa-angle-left pull-right"></i>
-                                    </span>
+                                    </span>	
                                 </a>
                                 <ul class="treeview-menu">
                                     <li><a href="{{ route('fcl-segel-index') }}">List Container</a></li>

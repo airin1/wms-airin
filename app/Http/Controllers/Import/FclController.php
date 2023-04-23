@@ -4434,6 +4434,22 @@ UNZ+1+1709131341'\n";
         
         return view('import.fcl.bc-segel')->with($data);
     }
+	
+	  public function lainIndex()
+    {
+        $data['page_title'] = "FCL Hold Lainnya";
+        $data['page_description'] = "";
+        $data['breadcrumbs'] = [
+            [
+                'action' => '',
+                'title' => 'FCL Hold Lainnya'
+            ]
+        ];        
+        
+        $data['segel'] = \DB::table('alasan_segel')->get();
+        
+        return view('import.fcl.bc-lain')->with($data);
+    }
     
     public function segelReport()
     {

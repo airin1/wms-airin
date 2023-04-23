@@ -50,7 +50,7 @@
                // $("#" + cl).find("td").css("background-color", "#d73925");
 			} 
             
-            @if(Auth::getUser()->username == 'bcp2'||Auth::getUser()->username == 'bchanggar')  
+            @if(Auth::getUser()->username == 'bcp2')  
                 jQuery("#fclSegelGrid").jqGrid('setRowData',ids[i],{action:sgl+' '+info});
             @else
                 jQuery("#fclSegelGrid").jqGrid('setRowData',ids[i],{action:info});

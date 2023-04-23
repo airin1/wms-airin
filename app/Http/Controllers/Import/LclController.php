@@ -3018,6 +3018,22 @@ class LclController extends Controller
         return view('import.lcl.bc-hold')->with($data);
     }
 	
+	 public function lainIndex()
+    {
+        $data['page_title'] = "LCL Dokumen HOLD LAINNYA";
+        $data['page_description'] = "";
+        $data['breadcrumbs'] = [
+            [
+                'action' => '',
+                'title' => 'LCL Dokumen HOLD LAINNYA'
+            ]
+        ];        
+		
+        $data['segel'] = \DB::table('alasan_segel')->get();
+		
+        return view('import.lcl.bc-lain')->with($data);
+    }
+	
 	  public function mtyholdIndex()
     {
         $data['page_title'] = "LCL MTY Dokumen HOLD";

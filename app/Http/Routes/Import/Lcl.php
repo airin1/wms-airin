@@ -150,6 +150,11 @@ Route::group(['prefix' => 'lcl', 'namespace' => 'Import'], function(){
         'as' => 'lcl-segel-index',
         'uses' => 'LclController@segelIndex'
     ]);
+	Route::get('/bc/lain', [
+        'as' => 'lcl-lain-index',
+        'uses' => 'LclController@lainIndex'
+    ]);
+
     Route::get('/bc/segel/report', [
         'as' => 'lcl-segel-report',
         'uses' => 'LclController@segelReport'

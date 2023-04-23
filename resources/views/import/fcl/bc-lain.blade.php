@@ -1,25 +1,22 @@
 @extends('layout')
 
 @section('content')
+<style>
+    .datepicker.dropdown-menu {
+        z-index: 100 !important;
+    }
+</style>
 <script>
- 
+    
     function gridCompleteEvent()
     {
-        
-        var $grid = jQuery('#lclSegelGrid');
-        var colweightSum = $grid.jqGrid('getCol', 'WEIGHT', false, 'sum');
-        var colmeasSum = $grid.jqGrid('getCol', 'MEAS', false, 'sum');
-        
-//        $grid.jqGrid('footerData', 'set', { WEIGHT: precisionRound(colweightSum, 4) });
-//        $grid.jqGrid('footerData', 'set', { MEAS: precisionRound(colmeasSum, 4) });
-        
-        var ids = jQuery("#lclSegelGrid").jqGrid('getDataIDs'),
+        var ids = jQuery("#fclSegelGrid").jqGrid('getDataIDs'),
             apv = '', sgl = '', info = '';   
             
         for(var i=0;i < ids.length;i++){ 
             var cl = ids[i];
             
-            rowdata = $('#lclSegelGrid').getRowData(cl); 
+            rowdata = $('#fclSegelGrid').getRowData(cl);  
             
             if(rowdata.flag_bc == 'Y') {
                 sgl = '<button style="margin:5px;" class="btn btn-info btn-xs" data-id="'+cl+'" onclick="if (confirm(\'Apakah anda yakin ingin membuka Segel Merah ?\')){ changeStatusFlag('+cl+',\'unlock\'); }else{return false;};"><i class="fa fa-unlock"></i> UNLOCK</button>';
@@ -31,11 +28,7 @@
             if(rowdata.no_flag_bc != ''){
                 info = '<button style="margin:5px;" class="btn btn-default btn-xs info-segel-btn" data-id="'+cl+'" onclick="viewInfo('+cl+')"><i class="fa fa-info"></i> INFO</button>';
             }else{
-                info = '<button style="margin:5px;" class="btn btn-default btn-xs info-segel-btn" disabled><i class="fa fa-info"></i> INFO</button>';
-            }
-            
-            if(rowdata.perubahan_hbl == 'Y') {
-                $("#" + cl).find("td").css("background-color", "#3dc6f2");
+                info = '';
             }
             
             if(rowdata.status_behandle == 'Ready') {
@@ -53,38 +46,36 @@
             }
             
             if(rowdata.flag_bc == 'Y') {
-               $("#" + cl).find("td").css("background-color", "#d73925").css("color", "#FFF");
-				//$("#" + cl).find("td").css("background-color", "#d73925");
-            } 
+                $("#" + cl).find("td").css("background-color", "#d73925").css("color", "#FFF");
+               // $("#" + cl).find("td").css("background-color", "#d73925");
+			} 
             
-            @if(Auth::getUser()->username == 'bcp2')  
-                jQuery("#lclSegelGrid").jqGrid('setRowData',ids[i],{action:sgl+' '+info});        
+            @if(Auth::getUser()->username == 'frengky'||Auth::getUser()->username == 'bchanggar')  
+                jQuery("#fclSegelGrid").jqGrid('setRowData',ids[i],{action:sgl+' '+info});
             @else
-                jQuery("#lclSegelGrid").jqGrid('setRowData',ids[i],{action:info}); 
+                jQuery("#fclSegelGrid").jqGrid('setRowData',ids[i],{action:info});
             @endif
+            
         } 
-    
-    }
+    } 
     
     function changeStatusFlag($id,$action)
-    {        
+    {
         if($action == 'lock'){
-            $("#manifest_id").val($id);
+            $("#container_id").val($id);
             $('#lock-flag-modal').modal('show');
         }else{
-            
-            $("#manifest_unlock_id").val($id);
+            $("#container_unlock_id").val($id);
             $('#unlock-flag-modal').modal('show');
         }
-
     }
     
-    function viewInfo(manifestID)
+    function viewInfo($containerID)
     {       
         $.ajax({
             type: 'GET',
             dataType : 'json',
-            url: '{{route("lcl-view-info-flag","")}}/'+manifestID,
+            url: '{{route("fcl-view-info-flag","")}}/'+$containerID,
             error: function (jqXHR, textStatus, errorThrown)
             {
                 alert('Something went wrong, please try again later.');
@@ -101,7 +92,6 @@
                 var html_unlock = '';
                 
                 if(data_segel.length > 0){
-                
                     for(var i = 0; i < data_segel.length; i++) {
                         var segel = data_segel[i];
 
@@ -111,7 +101,7 @@
                                 var photos_container = $.parseJSON(segel.photo);
                                 $.each(photos_container, function(i, item) {
                                     /// do stuff
-                                    html_lock += '<img src="{{url("uploads/photos/flag/lcl")}}/'+item+'" style="width: 200px;padding:5px;" />';
+                                    html_lock += '<img src="{{url("uploads/photos/flag/fcl")}}/'+item+'" style="width: 200px;padding:5px;" />';
                                 });
                             }
                         }else{
@@ -120,28 +110,28 @@
                                 var photos_container = $.parseJSON(segel.photo);
                                 $.each(photos_container, function(i, item) {
                                     /// do stuff
-                                    html_unlock += '<img src="{{url("uploads/photos/unflag/lcl")}}/'+item+'" style="width: 200px;padding:5px;" />';
+                                    html_unlock += '<img src="{{url("uploads/photos/unflag/fcl")}}/'+item+'" style="width: 200px;padding:5px;" />';
                                 });
                             }
                         }
                     }
                 }else{
-                    var html_lock = '<p>Nomor Segel : <b>'+json.manifest.no_flag_bc+'</b><br />Alasan Segel : <b>'+json.manifest.alasan_segel+'</b><br />Keterangan : <b>'+json.manifest.description_flag_bc+'</b></p>';
-                    var html_unlock = '<p>Nomor Lepas Segel : <b>'+json.manifest.no_unflag_bc+'</b><br />Alasan Lepas Segel : <b>'+json.manifest.alasan_lepas_segel+'</b><br />Keterangan : <b>'+json.manifest.description_unflag_bc+'</b></p>';
+                    var html_lock = '<p>Nomor Segel : <b>'+json.container.no_flag_bc+'</b><br />Alasan Segel : <b>'+json.container.alasan_segel+'</b><br />Keterangan : <b>'+json.container.description_flag_bc+'</b></p>';
+                    var html_unlock = '<p>Nomor Lepas Segel : <b>'+json.container.no_unflag_bc+'</b><br />Alasan Lepas Segel : <b>'+json.container.alasan_lepas_segel+'</b><br />Keterangan : <b>'+json.container.description_unflag_bc+'</b></p>';
 
-                    if(json.manifest.photo_lock){
-                        var photos_container = $.parseJSON(json.manifest.photo_lock);
+                    if(json.container.photo_lock){
+                        var photos_container = $.parseJSON(json.container.photo_lock);
                         $.each(photos_container, function(i, item) {
                             /// do stuff
-                            html_lock += '<img src="{{url("uploads/photos/flag/lcl")}}/'+item+'" style="width: 200px;padding:5px;" />';
+                            html_lock += '<img src="{{url("uploads/photos/flag/fcl")}}/'+item+'" style="width: 200px;padding:5px;" />';
 
                         });
                     }
-                    if(json.manifest.photo_unlock){
-                        var photos_container = $.parseJSON(json.manifest.photo_unlock);
+                    if(json.container.photo_unlock){
+                        var photos_container = $.parseJSON(json.container.photo_unlock);
                         $.each(photos_container, function(i, item) {
                             /// do stuff
-                            html_unlock += '<img src="{{url("uploads/photos/unflag/lcl")}}/'+item+'" style="width: 200px;padding:5px;" />';
+                            html_unlock += '<img src="{{url("uploads/photos/unflag/fcl")}}/'+item+'" style="width: 200px;padding:5px;" />';
 
                         });
                     }
@@ -149,42 +139,17 @@
                 
                 $('#lock-info').html(html_lock);
                 $('#unlock-info').html(html_unlock);
-                $('#nobl_info').html(json.NOHBL);
+                $('#nobl_info').html(json.NOCONTAINER);
             }
         });
         
         $('#view-info-modal').modal('show');
     }
     
-    function precisionRound(number, precision) {
-        var factor = Math.pow(10, precision);
-        return Math.round(number * factor) / factor;
-    }
-    
 </script>
-<style>
-    .datepicker.dropdown-menu {
-        z-index: 100 !important;
-    }
-    .ui-jqgrid tr.jqgrow td {
-        word-wrap: break-word; /* IE 5.5+ and CSS3 */
-        white-space: pre-wrap; /* CSS3 */
-        white-space: -moz-pre-wrap; /* Mozilla, since 1999 */
-        white-space: -pre-wrap; /* Opera 4-6 */
-        white-space: -o-pre-wrap; /* Opera 7 */
-        overflow: hidden;
-        height: auto;
-        vertical-align: middle;
-        padding-top: 3px;
-        padding-bottom: 3px
-    }
-</style>
 <div class="box">
     <div class="box-header with-border">
-        <h3 class="box-title">LCL Lists Manifest</h3>
-<!--        <div class="box-tools">
-            <a href="{{ route('lcl-register-create') }}" type="button" class="btn btn-block btn-info btn-sm"><i class="fa fa-plus"></i> Add New</a>
-        </div>-->
+        <h3 class="box-title">FCL Lists Container</h3>
     </div>
     <div class="box-body table-responsive">
         <div class="row" style="margin-bottom: 30px;margin-right: 0;">
@@ -193,10 +158,9 @@
                 <div class="col-xs-12">&nbsp;</div>
                 <div class="col-xs-3">
                     <select class="form-control select2" id="by" name="by" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                        <option value="ETA">ETA</option>
-                        <option value="TGL_BC11">Tgl. BC11</option>
-                        <option value="tglmasuk">Tgl. GateIn</option>
-                        
+                        <option value="ETA">Tgl. ETA</option>
+                        <option value="TGLMASUK">Tgl. GateIn</option>
+                        <option value="TGL_BC11">Tgl. BC1.1</option> 
                     </select>
                 </div>
                 <div class="col-xs-3">
@@ -225,66 +189,53 @@
         </div>
         <div id="btn-toolbar" class="section-header btn-toolbar" role="toolbar" style="margin: 10px 0;"></div>
         {{
-            GridRender::setGridId("lclSegelGrid")
+            GridRender::setGridId("fclSegelGrid")
             ->enableFilterToolbar()
             ->setGridOption('mtype', 'POST')
-            ->setGridOption('url', URL::to('/lcl/manifest/grid-data?module=segel&_token='.csrf_token()))
-            ->setGridOption('rowNum', 50)
+            ->setGridOption('url', URL::to('/container/grid-data-cy?module=segel&_token='.csrf_token()))
+            ->setGridOption('rowNum', 20)
             ->setGridOption('shrinkToFit', true)
             ->setGridOption('sortname','timeSinceUpdate')
             ->setGridOption('sortorder','DESC')
             ->setGridOption('rownumbers', true)
             ->setGridOption('rownumWidth', 50)
             ->setGridOption('height', '395')
-            ->setGridOption('rowList',array(50,100,200,500))
+            ->setGridOption('rowList',array(20,50,100))
             ->setGridOption('useColSpanStyle', true)
-//            ->setGridOption('footerrow', true)
             ->setNavigatorOptions('navigator', array('viewtext'=>'view'))
             ->setNavigatorOptions('view',array('closeOnEscape'=>false))
             ->setFilterToolbarOptions(array('autosearch'=>true))
-            ->setGridEvent('gridComplete', 'gridCompleteEvent')
 //            ->setGridEvent('onSelectRow', 'onSelectRowEvent')
-            ->addColumn(array('key'=>true,'index'=>'TMANIFEST_PK','hidden'=>true))
-             ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>155, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
-            ->addColumn(array('label'=>'Segel Merah','index'=>'flag_bc', 'width'=>100,'align'=>'center'))
-            ->addColumn(array('label'=>'Status BC','index'=>'status_bc', 'width'=>80,'align'=>'center'))            
+            ->setGridEvent('gridComplete', 'gridCompleteEvent')
+            ->addColumn(array('key'=>true,'index'=>'TCONTAINER_PK','hidden'=>true))
+            ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>155, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
+            
+            ->addColumn(array('label'=>'Segel Merah','index'=>'flag_bc','width'=>100, 'align'=>'center'))
+            ->addColumn(array('label'=>'Status BC','index'=>'status_bc','width'=>100, 'align'=>'center'))
             ->addColumn(array('label'=>'Nama Dokumen','index'=>'KODE_DOKUMEN', 'width'=>130))
             ->addColumn(array('label'=>'No. SPPB','index'=>'NO_SPPB', 'width'=>120,'align'=>'center'))
-//            ->addColumn(array('label'=>'No. SPK','index'=>'NOJOBORDER', 'width'=>150))
-            ->addColumn(array('label'=>'No. HBL','index'=>'NOHBL','width'=>160))
-            ->addColumn(array('label'=>'Tgl. HBL','index'=>'TGL_HBL', 'width'=>150,'align'=>'center'))
+//            ->addColumn(array('label'=>'No. SPK','index'=>'NoJob', 'width'=>150))
             ->addColumn(array('label'=>'No. Container','index'=>'NOCONTAINER', 'width'=>150,'align'=>'center'))
             ->addColumn(array('label'=>'Size','index'=>'SIZE', 'width'=>100,'align'=>'center'))
-            ->addColumn(array('label'=>'Nama Angkut','index'=>'VESSEL','width'=>160))
-            ->addColumn(array('label'=>'Call Sign','index'=>'CALL_SIGN','width'=>100,'align'=>'center','hidden'=>true))
-            ->addColumn(array('label'=>'VOY','index'=>'VOY','width'=>100,'align'=>'center'))
-            ->addColumn(array('label'=>'ETA','index'=>'ETA', 'width'=>120,'align'=>'center'))
-            ->addColumn(array('label'=>'Consolidator','index'=>'NAMACONSOLIDATOR','width'=>300))
-            ->addColumn(array('label'=>'No. MBL','index'=>'NOMBL','width'=>160))
-            ->addColumn(array('label'=>'Tgl. MBL','index'=>'TGL_MASTER_BL', 'width'=>150,'hidden'=>false, 'align'=>'center'))
-            ->addColumn(array('label'=>'Shipper','index'=>'SHIPPER','width'=>160,'hidden'=>true))
-            ->addColumn(array('label'=>'Consignee','index'=>'CONSIGNEE', 'width'=>300))
-            ->addColumn(array('label'=>'Desc of Goods','index'=>'DESCOFGOODS', 'width'=>300,'hidden'=>true))
-            ->addColumn(array('label'=>'Qty','index'=>'QUANTITY', 'width'=>80,'align'=>'center'))
-            ->addColumn(array('label'=>'Packing','index'=>'NAMAPACKING', 'width'=>120))
-            ->addColumn(array('label'=>'Kode Kemas','index'=>'KODE_KEMAS', 'width'=>100,'align'=>'center'))
-            ->addColumn(array('label'=>'Weight','index'=>'WEIGHT', 'width'=>100,'align'=>'center'))
-            ->addColumn(array('label'=>'Meas','index'=>'MEAS', 'width'=>100,'align'=>'center'))
+            ->addColumn(array('label'=>'Nama Angkut','index'=>'VESSEL','width'=>160))  
+            ->addColumn(array('label'=>'VOY','index'=>'VOY','width'=>100,'align'=>'center','hidden'=>false))
+            ->addColumn(array('label'=>'Call Sign','index'=>'CALLSIGN','width'=>100,'align'=>'center','hidden'=>false))
+            ->addColumn(array('label'=>'ETA','index'=>'ETA', 'width'=>120,'align'=>'center','hidden'=>false))
+            ->addColumn(array('label'=>'TPS Asal','index'=>'KD_TPS_ASAL', 'width'=>100,'align'=>'center'))
+            ->addColumn(array('label'=>'Consolidator','index'=>'NAMACONSOLIDATOR','width'=>250,'hidden'=>true))
+            ->addColumn(array('label'=>'Consignee','index'=>'CONSIGNEE', 'width'=>250))
+            ->addColumn(array('label'=>'No.PLP','index'=>'NO_PLP', 'width'=>120,'align'=>'center'))                
+            ->addColumn(array('label'=>'Tgl.PLP','index'=>'TGL_PLP', 'width'=>120,'align'=>'center'))
             ->addColumn(array('label'=>'No.BC 1.1','index'=>'NO_BC11', 'width'=>150,'align'=>'center'))
             ->addColumn(array('label'=>'Tgl.BC 1.1','index'=>'TGL_BC11', 'width'=>150,'align'=>'center'))
             ->addColumn(array('label'=>'No.POS BC11','index'=>'NO_POS_BC11', 'width'=>150,'align'=>'center'))
-            ->addColumn(array('label'=>'Tgl. Gate In','index'=>'tglmasuk', 'width'=>120,'align'=>'center'))
-            ->addColumn(array('label'=>'Jam. Gate In','index'=>'jammasuk', 'width'=>100,'align'=>'center'))
-            ->addColumn(array('label'=>'Tgl. Stripping','index'=>'tglstripping', 'width'=>120,'align'=>'center'))
-            ->addColumn(array('label'=>'Jam. Stripping','index'=>'jamstripping', 'width'=>100,'align'=>'center'))
-            ->addColumn(array('index'=>'location_id', 'width'=>150,'hidden'=>true))
-            ->addColumn(array('label'=>'Lokasi','index'=>'location_name','width'=>200, 'align'=>'center'))
+            ->addColumn(array('label'=>'Tgl. Gate In','index'=>'TGLMASUK', 'width'=>120,'align'=>'center'))
+            ->addColumn(array('label'=>'Jam. Gate In','index'=>'JAMMASUK', 'width'=>100,'align'=>'center'))
+            ->addColumn(array('label'=>'No.POL IN','index'=>'NOPOL', 'width'=>100,'align'=>'center'))
             ->addColumn(array('label'=>'No. Segel','index'=>'no_flag_bc','width'=>100,'align'=>'center'))
             ->addColumn(array('label'=>'Alasan Segel','index'=>'alasan_segel','width'=>150,'align'=>'center'))
             ->addColumn(array('label'=>'No. Lepas Segel','index'=>'no_unflag_bc','width'=>100,'align'=>'center'))
             ->addColumn(array('label'=>'Alasan Lepas Segel','index'=>'alasan_lepas_segel','width'=>150,'align'=>'center'))
-            ->addColumn(array('label'=>'Perubahan HBL','index'=>'perubahan_hbl','width'=>100, 'align'=>'center'))
-            ->addColumn(array('label'=>'Alasan Perubahan','index'=>'alasan_perubahan','width'=>150,'align'=>'center'))
             ->addColumn(array('label'=>'Status Behandle','index'=>'status_behandle','width'=>120, 'align'=>'center'))
             ->addColumn(array('label'=>'Lama Timbun (Hari)','index'=>'timeSinceUpdate', 'width'=>150, 'search'=>false, 'align'=>'center'))
             ->renderGrid()
@@ -299,27 +250,34 @@
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
               <h4 class="modal-title">Silahkan pilih alasan segel</h4>
             </div>
-            <form id="create-invoice-form" class="form-horizontal" action="{{ route('lcl-lock-flag') }}" method="POST" enctype="multipart/form-data">
+            <form id="create-invoice-form" class="form-horizontal" action="{{ route('fcl-lock-flag') }}" method="POST" enctype="multipart/form-data">
                 <div class="modal-body"> 
                     <div class="row">
                         <div class="col-md-12">
                             <input name="_token" type="hidden" value="{{ csrf_token() }}" />
-                            <input name="id" type="hidden" id="manifest_id" />
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">No. Segel</label>
+                            <input name="id" type="hidden" id="container_id" />
+                            <div class="form-group" hidden>
+                             <label class="col-sm-3 control-label hidden=true" >No. Segel</label>
                                 <div class="col-sm-8">
-                                    <input type="text" id="no_flag_bc" name="no_flag_bc" class="form-control" required>
+                                    <input type="text" id="no_flag_bc" name="no_flag_bc" class="form-control" value="-" required hidden=true >
                                 </div>
                             </div>
+                    
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Alasan Segel</label>
                                 <div class="col-sm-8">
                                     <select class="form-control select2" id="alasan_segel" name="alasan_segel" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
-                                        @foreach($segel as $flag)
+                                   <option value="BCF 1.5">Dokumen BCF 1.5</option>
+ 			
+
+									  <!-- @foreach($segel as $flag)
                                             @if($flag->type == 'lock')
-                                                <option value="{{$flag->name}}">{{$flag->name}}</option>
-                                            @endif
+   
+   									<option value="{{$flag->name}}">{{$flag->name}}</option>
+                                    
+									@endif
                                         @endforeach
+-->
 <!--                                        <option value="Nota Hasil Intelijen (NHI)" selected>Nota Hasil Intelijen (NHI)</option>
                                         <option value="Surveilance P2">Surveilance P2</option>
                                         <option value="P2 Pusat">P2 Pusat</option>
@@ -361,6 +319,7 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
 <div id="unlock-flag-modal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -368,28 +327,30 @@
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
               <h4 class="modal-title">Silahkan pilih alasan lepas segel</h4>
             </div>
-            <form id="create-invoice-form" class="form-horizontal" action="{{ route('lcl-unlock-flag') }}" method="POST" enctype="multipart/form-data">
+            <form id="create-invoice-form" class="form-horizontal" action="{{ route('fcl-unlock-flag') }}" method="POST" enctype="multipart/form-data">
                 <div class="modal-body"> 
                     <div class="row">
                         <div class="col-md-12">
                             <input name="_token" type="hidden" value="{{ csrf_token() }}" />
-                            <input name="id" type="hidden" id="manifest_unlock_id" />
-                            <div class="form-group">
+                            <input name="id" type="hidden" id="container_unlock_id" />
+                            <div class="form-group" hidden>
                                 <label class="col-sm-3 control-label">No. Segel</label>
                                 <div class="col-sm-8">
-                                    <input type="text" id="no_unflag_bc" name="no_unflag_bc" class="form-control" required>
+                                    <input type="text" id="no_unflag_bc" name="no_unflag_bc" class="form-control" value="-" required>
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">Alasan Lepas Segel</label>
                                 <div class="col-sm-8">
                                     <select class="form-control select2" id="alasan_lepas_segel" name="alasan_lepas_segel" style="width: 100%;" tabindex="-1" aria-hidden="true" required>  
-                                        @foreach($segel as $flag)
+                                              <option value="Lainnya">Lainnya</option>
+                                         
+<!--                                         @foreach($segel as $flag)
                                             @if($flag->type == 'unlock')
                                                 <option value="{{$flag->name}}">{{$flag->name}}</option>
                                             @endif
                                         @endforeach
-<!--                                        <option value="SPBL">SPPB</option>
+                                        <option value="SPBL">SPPB</option>
                                         <option value="SPPBE">SPPBE</option>
                                         <option value="Re Ekspor">Re Ekspor</option>
                                         <option value="Pemusnahan">Pemusnahan</option>
@@ -473,7 +434,7 @@
         var string_filters = '';
         var filters = '{"groupOp":"AND","rules":[{"field":"'+by+'","op":"ge","data":"'+startdate+'"},{"field":"'+by+'","op":"le","data":"'+enddate+'"}]}';
 
-        var current_filters = jQuery("#lclSegelGrid").getGridParam("postData").filters;
+        var current_filters = jQuery("#fclSegelGrid").getGridParam("postData").filters;
         
         if (current_filters) {
             var get_filters = $.parseJSON(current_filters);
@@ -489,9 +450,8 @@
                 filters = '{"groupOp":"AND","rules":'+string_filters+'}';
             }
         }
-        
-//        jQuery("#lclSegelGrid").jqGrid('setGridParam',{url:"{{URL::to('/lcl/manifest/grid-data')}}?startdate="+startdate+"&enddate="+enddate+"&by="+by}).trigger("reloadGrid");
-        jQuery("#lclSegelGrid").jqGrid("setGridParam", { postData: {filters} }).trigger("reloadGrid");
+
+        jQuery("#fclSegelGrid").jqGrid("setGridParam", { postData: {filters} }).trigger("reloadGrid");
         
         return false;
     });
