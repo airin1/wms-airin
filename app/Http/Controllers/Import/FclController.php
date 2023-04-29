@@ -3966,7 +3966,7 @@ UNZ+1+1709131341'\n";
 			
 			
 			}
-        }elseif($kd_dok == 41){
+        }elseif($kd_dok == 41||$kd_dok == 44||$kd_dok == 56){
             $sppb = \App\Models\TpsDokPabean::select('NO_DOK_INOUT as NO_SPPB','TGL_DOK_INOUT as TGL_SPPB','NPWP_IMP','NO_BL_AWB as NO_BL_AWB','NO_MASTER_BL_AWB as NO_MASTER_BL_AWB','CAR')
                     ->where(array('KD_DOK_INOUT' => $kd_dok, 'NO_BL_AWB' => $container->NO_BL_AWB))
                     ->first();
