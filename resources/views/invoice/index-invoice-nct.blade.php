@@ -156,6 +156,7 @@
             ->addColumn(array('label'=>'No. Faktur','index'=>'no_invoice','width'=>200,'align'=>'center'))           
             ->addColumn(array('label'=>'No. SPK','index'=>'no_spk','width'=>120,'align'=>'center'))
 			->addColumn(array('label'=>'Container','index'=>'no_container','width'=>120,'align'=>'center'))
+			->addColumn(array('label'=>'Jenis container','index'=>'jenis_container','width'=>190,'align'=>'center'))
             ->addColumn(array('label'=>'Consignee','index'=>'consignee','width'=>350,'align'=>'left'))
             ->addColumn(array('label'=>'NPWP','index'=>'npwp','width'=>160,'align'=>'center','hidden'=>true))
             ->addColumn(array('label'=>'Alamat','index'=>'alamat','width'=>120, 'align'=>'center','hidden'=>true))
