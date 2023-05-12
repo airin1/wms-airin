@@ -17,7 +17,7 @@
             var cl = ids[i];
             
             edt = '<a href="{{ route("fcl-register-edit",'') }}/'+cl+'"><i class="fa fa-pencil"></i></a> ';
-           @if(Auth::getUser()->username == 'Yanuar' || Auth::getUser()->username == 'wibi' )            
+           @if(Auth::getUser()->username == 'Yanuar' || Auth::getUser()->username == 'wibi'|| Auth::getUser()->username == 'rinielvira' )            
 		    del = '<a href="{{ route("fcl-register-delete",'') }}/'+cl+'" onclick="if (confirm(\'Apakah anda yakin akan menghapus data register ? Semua Container di dalamnya akan ikut terhapus.\')){return true; }else{return false; };"><i class="fa fa-close"></i></a>';
 		   @endif	
 		   jQuery("#fclRegisterGrid").jqGrid('setRowData',ids[i],{action:edt+' '+del}); 
