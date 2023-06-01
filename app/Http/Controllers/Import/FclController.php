@@ -486,9 +486,54 @@ class FclController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+             
     }
     
+	  public function registercosolidatorlist()
+    {
+     
+      $consolidators = DBConsolidator::select('TCONSOLIDATOR_PK as id','NAMACONSOLIDATOR as name')->get();
+       return response()->json($consolidators);       
+	 
+    }
+    
+
+	
+	
+	public function registerEditcontainerPLP(Request $request)
+    {
+      $container_id= explode(',',$request->containerId);
+	  
+	  $nospk= $request->NOSPK;
+	  $consolidatorNM= $request->TCONSOLIDATOR_FK;
+	  	  
+	  $consolidator = DBConsolidator::where('NAMACONSOLIDATOR', $consolidatorNM)->first();
+ 	  $consolidatorname=$consolidator->NAMACONSOLIDATOR;
+      $consolidatorId=$consolidator->TCONSOLIDATOR_PK; 	 
+	 $container =  DBContainer::whereIn('TCONTAINER_PK', $container_id)->get();
+
+	  
+	  foreach ($container as $t40) :
+            //$data['TJOBORDER_FK'] = $joborder->TJOBORDER_PK;
+           // $data['NoJob'] = $joborder->NOJOBORDER;
+            $data['NOSPK'] = $nospk;           
+            $data['ID_CONSOLIDATOR'] =  $consolidatorId;
+            $data['NAMACONSOLIDATOR'] = $consolidatorname;
+	         
+			$updateContainer = DBContainer::where('TCONTAINER_PK', $t40->TCONTAINER_PK)
+                    ->update($data);
+	        if($updateContainer){
+               $updatejob = DBJoborder::where('TJOBORDER_PK', $t40->TJOBORDER_FK)
+              ->update($data);    
+            }
+		 
+	 
+	  endforeach;
+	            
+                return back()->with('success', 'FCL Register has been updated.');                   
+            
+	  
+    }
     public function registerUpdate(Request $request, $id)
     {
         if ( !$this->access->can('update.fcl.register.edit') ) {

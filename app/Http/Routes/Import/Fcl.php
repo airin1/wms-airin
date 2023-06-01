@@ -25,6 +25,17 @@ Route::group(['prefix' => 'fcl', 'namespace' => 'Import'], function(){
         'as' => 'fcl-register-edit',
         'uses' => 'FclController@registerEdit'
     ]);
+	
+	Route::post('/register/editcontainerPLP', [
+        'as' => 'fcl-register-edit-containerPLP',
+        'uses' => 'FclController@registerEditcontainerPLP'
+    ]);
+	
+	Route::get('/register/cosolidatorlist', [
+        'as' => 'fcl-register-cosolidatorlist',
+        'uses' => 'FclController@registercosolidatorlist'
+    ]);
+	
     Route::post('/register/edit/{id}', [
         'as' => 'fcl-register-update',
         'uses' => 'FclController@registerUpdate'

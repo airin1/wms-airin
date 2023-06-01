@@ -10,12 +10,17 @@
  
     function gridCompleteEvent()
     {
-        var ids = jQuery("#fclRegisterGrid").jqGrid('getDataIDs'),
+        
+		
+		
+		var ids = jQuery("#fclRegisterGrid").jqGrid('getDataIDs'),
             edt = '',
             del = ''; 
         for(var i=0;i < ids.length;i++){ 
             var cl = ids[i];
             
+			
+		   		
             edt = '<a href="{{ route("fcl-register-edit",'') }}/'+cl+'"><i class="fa fa-pencil"></i></a> ';
            @if(Auth::getUser()->username == 'Yanuar' || Auth::getUser()->username == 'wibi'|| Auth::getUser()->username == 'rinielvira' )            
 		    del = '<a href="{{ route("fcl-register-delete",'') }}/'+cl+'" onclick="if (confirm(\'Apakah anda yakin akan menghapus data register ? Semua Container di dalamnya akan ikut terhapus.\')){return true; }else{return false; };"><i class="fa fa-close"></i></a>';
@@ -51,6 +56,55 @@
 //            console.log(containerId);
             window.open("{{ route('cetak-barcode', array('','','')) }}/"+containerId+"/fcl/get","preview barcode","width=305,height=600,menubar=no,status=no,scrollbars=yes");    
         });
+		
+	    $('#edit-btn-job').on("click", function(){
+
+            var $grid = $("#fclRegisterGrid"), selIds = $grid.jqGrid("getGridParam", "selarrrow"), i, n,
+                cellValues = [];
+            for (i = 0, n = selIds.length; i < n; i++) {
+                cellValues.push($grid.jqGrid("getCell", selIds[i], "TCONTAINER_PK"));
+            }
+            
+            var containerId = cellValues.join(",");
+			
+			
+			//alert(containerId);
+            
+            if(!containerId) {alert('Silahkan pilih kontainer terlebih dahulu!');return false;}               
+            if(!confirm('Apakah anda yakin akan melakukan edit  container? Anda telah memilih '+cellValues.length+' kontainer!')){return false;}    
+				  $('#edit-register-modal').modal('show');
+				  $('#edit-register-modal #containerId').val(containerId);
+				  rowid = $('#fclRegisterGrid').jqGrid('getGridParam', 'selrow');
+                  rowdata = $('#fclRegisterGrid').getRowData(rowid);
+
+                  $('#edit-register-modal #NOSPK').val(rowdata.NOSPK);
+                //  $('#edit-register-modal #TCONSOLIDATOR_FK').html(rowdata.TCONSOLIDATOR_FK);   
+				   $.ajax({
+                      url: "{{ route("fcl-register-cosolidatorlist") }}", // Rute yang telah Anda buat sebelumnya
+                      method: 'GET',
+                      success: function(response) {
+						 // alert(response);
+                        var consoldiators = response; // Data yang diterima dari server
+                        var html='';
+                          // Mengiterasi setiap pengguna dan menampilkan informasinya
+                        $.each(response, function(index, consoldiator) {
+							//alert(consoldiator.name);
+                            html += '<option value' +consoldiator.id + '>'+consoldiator.name+'</option>';
+							//alert(html);
+			           });
+						 $('#edit-register-modal #TCONSOLIDATOR_FK').html(html);
+                				                  
+				  },
+                      error: function(xhr, status, error) {
+                       console.log(xhr.responseText); // Menampilkan pesan kesalahan jika terjadi masalah
+                      }
+                    });
+			//	edit-register-modal            
+//            console.log(containerId);
+           // window.open("{{ route('cetak-barcode', array('','','')) }}/"+containerId+"/fcl/get","preview barcode","width=305,height=600,menubar=no,status=no,scrollbars=yes");    
+         });	
+		
+		
         
         $("#rfid-btn").on("click", function(){
             if($("#refid").val() != ''){
@@ -80,9 +134,14 @@
 <div class="box">
     <div class="box-header with-border">
         <h3 class="box-title">FCL Register Lists</h3>
-        <div class="box-tools">
-            <a href="{{ route('fcl-register-create') }}" type="button" class="btn btn-block btn-info btn-sm"><i class="fa fa-plus"></i> Add New</a>
-        </div>
+		
+         <div class="box-tools" id="btn-toolbar">
+		    <div id="btn-group-4">
+               <a href="{{ route('fcl-register-create') }}" type="button" class="btn btn-block btn-info btn-sm"><i class="fa fa-plus"></i> Add New</a>
+               <button type="button" id="edit-btn-job" class="btn btn-block btn-info btn-sm"><i class="fa fa-plus"></i> Edit Register</button>     
+        
+  	      </div>
+		 </div>
     </div>
     <div class="box-body table-responsive">
         <div class="row" style="margin-bottom: 30px;margin-right: 0;">
@@ -138,14 +197,16 @@
 //            ->addColumn(array('index'=>'TCONSIGNEE_FK','hidden'=>true))  
             ->addColumn(array('label'=>'No. Job Order','index'=>'NOJOBORDER','width'=>160,'hidden'=>true))
             ->addColumn(array('label'=>'No. SPK','index'=>'NOSPK','width'=>160,'hidden'=>false))
-            ->addColumn(array('label'=>'No. MBL','index'=>'NOMBL','width'=>160,'hidden'=>true))
+	    	->addColumn(array('label'=>'No. BL','index'=>'NO_BL_AWB','width'=>160,'align'=>'center'))                  
+        	->addColumn(array('label'=>'No. MBL','index'=>'NOMBL','width'=>160,'hidden'=>true))
             ->addColumn(array('label'=>'Tgl. MBL','index'=>'TGLMBL','width'=>150,'align'=>'center','hidden'=>true))
             ->addColumn(array('label'=>'Consolidator','index'=>'NAMACONSOLIDATOR','width'=>250,'hidden'=>true))
             ->addColumn(array('label'=>'No. Container','index'=>'NOCONTAINER','width'=>160,'hidden'=>false))           
             ->addColumn(array('label'=>'Consignee','index'=>'CONSIGNEE','width'=>250,'hidden'=>false))
             ->addColumn(array('label'=>'No. PLP','index'=>'NO_PLP','width'=>150,'align'=>'center'))
             ->addColumn(array('label'=>'Tgl. PLP','index'=>'TGL_PLP','width'=>150,'align'=>'center'))
-            ->addColumn(array('label'=>'Vessel','index'=>'VESSEL', 'width'=>150))
+			->addColumn(array('label'=>'No. BL','index'=>'NO_BL_AWB','width'=>160,'align'=>'center'))                  
+			->addColumn(array('label'=>'Vessel','index'=>'VESSEL', 'width'=>150))
             ->addColumn(array('label'=>'Callsign','index'=>'CALLSIGN', 'width'=>150,'align'=>'center'))
             ->addColumn(array('label'=>'Voy','index'=>'VOY','width'=>80,'align'=>'center'))
             ->addColumn(array('label'=>'No. BC11','index'=>'NO_BC11','width'=>150,'align'=>'center'))
@@ -208,6 +269,51 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+<div id="edit-register-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title">Edit Register</h4>
+            </div>
+            <form id="create-invoice-form" class="form-horizontal" action="{{ route("fcl-register-edit-containerPLP") }}" method="POST" enctype="multipart/form-data">
+                <div class="modal-body"> 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input name="_token" type="hidden" value="{{ csrf_token() }}" />
+                            <input name="containerId" type="hidden" id="containerId" />
+                                       <div class="form-group">
+                        <label class="col-sm-3 control-label">No. SPK</label>
+                        <div class="col-sm-8">
+                            <input type="text" name="NOSPK" id="NOSPK" class="form-control"  required>
+                        </div>
+                    </div>
+                   
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Consolidator</label>
+                        <div class="col-sm-8">
+                            <select class="form-control select2" name="TCONSOLIDATOR_FK" id="TCONSOLIDATOR_FK" style="width: 100%;" tabindex="-1" aria-hidden="true" required>
+                              
+                            </select>
+                        </div>
+                    </div>     
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Keluar</button>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
 @endsection
 
 @section('custom_css')
