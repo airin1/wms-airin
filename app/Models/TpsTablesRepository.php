@@ -267,7 +267,7 @@ class TpsTablesRepository extends EloquentRepositoryAbstract {
                         ->leftjoin('tpscoarikmsdetailxml', 'tpscoarikmsxml.TPSCOARIKMSXML_PK', '=', 'tpscoarikmsdetailxml.TPSCOARIKMSXML_FK')
                         ->where('tpscoarikmsxml.'.$request['by'], '>=', $start_date)
                         ->where('tpscoarikmsxml.'.$request['by'], '<=', $end_date)
-                        ->whereYear('tpscoarikmsxml.TGL_ENTRY', '=', date('Y'))
+ //                       ->whereYear('tpscoarikmsxml.TGL_ENTRY', '=', date('Y'))
 //                        ->groupBy('tpscoarikmsdetailxml.TPSCOARIKMSXML_FK')
                         ;
             }elseif(isset($request['coarikms_id'])){
@@ -275,7 +275,8 @@ class TpsTablesRepository extends EloquentRepositoryAbstract {
             }else{
                 $Model = TpsCoariKms::select('tpscoarikmsxml.*','tpscoarikmsdetailxml.RESPONSE','tpscoarikmsdetailxml.STATUS_TPS')
                         ->leftJoin('tpscoarikmsdetailxml', 'tpscoarikmsxml.TPSCOARIKMSXML_PK', '=', 'tpscoarikmsdetailxml.TPSCOARIKMSXML_FK')
-                        ->whereYear('tpscoarikmsxml.TGL_ENTRY', '=', date('Y'))
+                        ->where('tpscoarikmsxml.TGL_ENTRY', '=', date('Y-m-d'))
+						//->whereMonth('tpscoarikmsxml.TGL_ENTRY', '=', date('m'))
 //                        ->groupBy('tpscoarikmsdetailxml.TPSCOARIKMSXML_FK')
                         ;
             }
@@ -333,14 +334,17 @@ class TpsTablesRepository extends EloquentRepositoryAbstract {
                         ->leftjoin('tpscodecokmsdetailxml', 'tpscodecokmsxml.TPSCODECOKMSXML_PK', '=', 'tpscodecokmsdetailxml.TPSCODECOKMSXML_FK')
                         ->where('tpscodecokmsxml.'.$request['by'], '>=', $start_date)
                         ->where('tpscodecokmsxml.'.$request['by'], '<=', $end_date)
-                        ->whereYear('tpscodecokmsxml.TGL_ENTRY', '=', date('Y'))
+                        //->whereYear('tpscodecokmsxml.TGL_ENTRY', '=', date('Y'))
                         ;
             }elseif(isset($request['codecokms_id'])){
                 $Model = TpsCodecoKmsDetail::where('TPSCODECOKMSXML_FK', $request['codecokms_id']);
             }else{
+				 //$newDateTime = Carbon::now()->subDays(3);
+				 
                 $Model = TpsCodecoKms::select('*')
                         ->leftjoin('tpscodecokmsdetailxml', 'tpscodecokmsxml.TPSCODECOKMSXML_PK', '=', 'tpscodecokmsdetailxml.TPSCODECOKMSXML_FK')
-                        ->whereYear('tpscodecokmsxml.TGL_ENTRY', '=', date('Y'))
+                        ->where('tpscodecokmsxml.TGL_ENTRY', '=', date('Y-m-d'))
+						//->whereMonth('tpscodecokmsxml.TGL_ENTRY', '=', date('m'))
                         ;
             }
             
