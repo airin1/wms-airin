@@ -681,7 +681,7 @@ class LclController extends Controller
         $dataupdate['ENDSTRIPPING'] = $data['ENDSTRIPPING'].' '.$data['JAMENDSTRIPPING'];
         $dataupdate['TGLSTRIPPING'] = $data['ENDSTRIPPING'];
         $dataupdate['JAMSTRIPPING'] = $data['JAMENDSTRIPPING'];
-        $dataupdate['UIDSTRIPPING'] = $data['UIDSTRIPPING'];
+        //$dataupdate['UIDSTRIPPING'] = $data['UIDSTRIPPING'];
         $dataupdate['coordinator_stripping'] = $data['coordinator_stripping'];
         $dataupdate['keterangan'] = $data['keterangan'];
         $dataupdate['mulai_tunda'] = $data['mulai_tunda'];
