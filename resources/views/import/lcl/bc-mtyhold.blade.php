@@ -26,7 +26,15 @@
             }else{
                 apv = '';
             }   
-            
+             if(rowdata.photo_empty != ''){
+			//alert(rowdata.photo_empty);	
+ 
+               vi = '<button style="margin:5px;" class="btn btn-default btn-xs approve-manifest-btn" data-id="'+cl+'" onclick="viewPhoto('+cl+')"><i class="fa fa-photo"></i> View Photo</button>';
+            }else{
+             //alert('asadaadda');
+   		 	   vi = '<button style="margin:5px;" class="btn btn-default btn-xs approve-manifest-btn" disabled><i class="fa fa-photo"></i> Not Found</button>';
+            }
+			
 //            if(rowdata.perubahan_hbl == 'Y') {
 //                $("#" + cl).find("td").css("background-color", "#3dc6f2");
 //            }
@@ -34,12 +42,7 @@
                 $("#" + cl).find("td").css("background-color", "#ffe500");
             }
             
-            if(rowdata.photo_release != ''){
-                vi = '<button style="margin:5px;" class="btn btn-default btn-xs" data-id="'+cl+'" onclick="viewPhoto('+cl+')"><i class="fa fa-photo"></i> View Photo</button>';
-            }else{
-                vi = '<button style="margin:5px;" class="btn btn-default btn-xs" disabled><i class="fa fa-photo"></i> Not Found</button>';
-            }
-            
+       
             @if(Auth::getUser()->username == 'bcgaters') 
                 jQuery("#lclMtyHoldGrid").jqGrid('setRowData',ids[i],{photo: vi,hold: apv}); 
             @else
@@ -82,34 +85,35 @@
     
     }
     
-    function viewPhoto(manifestID)
-    {
-
+   function viewPhoto(containerID)
+    {       
         $.ajax({
             type: 'GET',
             dataType : 'json',
-            url: '{{route("lcl-report-inout-view-photo","")}}/'+manifestID,
+            url: '{{route("lcl-report-inout-view-photo-empty","")}}/'+containerID,
             error: function (jqXHR, textStatus, errorThrown)
             {
                 alert('Something went wrong, please try again later.');
             },
             beforeSend:function()
             {
-                $('#release-photo').html('');
+                $('#container-photo').html('');
             },
             success:function(json)
             {
-                if(json.data.photo_release){
-                    var photos_release = $.parseJSON(json.data.photo_release);
-                    var html_release = '';
-                    $.each(photos_release, function(i, item) {
+                var html_container = '';
+                //alert(containerID);
+				//alert(json.data.photo_empty);	
+                if(json.data.photo_empty){
+                    var photos_container = $.parseJSON(json.data.photo_empty);
+                    var html_container = '';
+                    $.each(photos_container, function(i, item) {
                         /// do stuff
-                        html_release += '<img src="{{url("uploads/photos/manifest")}}/'+item+'" style="width: 200px;padding:5px;" />';
+                        html_container += '<img src="{{url("uploads/photos/container/lcl")}}/'+json.data.NOCONTAINER+'/'+item+'" style="width: 200px;padding:5px;" />';
+                      // alert(html_container); 
                     });
-                    $('#release-photo').html(html_release);
+                    $('#container-photo').html(html_container);
                 }
- 
-                $("#title-photo").html('PHOTO HBL NO. '+json.data.NOHBL);
             }
         });
         
@@ -235,7 +239,7 @@
             ->setGridEvent('gridComplete', 'gridCompleteEvent')
 //            ->setGridEvent('onSelectRow', 'onSelectRowEvent')
             ->addColumn(array('key'=>true,'index'=>'TCONTAINER_PK','hidden'=>true))
-//           ->addColumn(array('label'=>'Photo','index'=>'photo', 'width'=>120, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
+             ->addColumn(array('label'=>'Photo','index'=>'photo', 'width'=>120, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
             ->addColumn(array('label'=>'Action','index'=>'hold', 'width'=>120, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
 //            ->addColumn(array('label'=>'Segel Merah','index'=>'flag_bc', 'width'=>100,'align'=>'center'))
             ->addColumn(array('label'=>'Status BC','index'=>'status_bc','hidden'=>true, 'width'=>80,'align'=>'center'))            
@@ -272,6 +276,8 @@
             ->addColumn(array('label'=>'Tgl. Buang MTY','index'=>'TGLBUANGMTY','align'=>'center','width'=>120,'hidden'=>false))
             ->addColumn(array('label'=>'Jam Buang MTY','index'=>'JAMBUANGMTY','align'=>'center','width'=>120,'hidden'=>false))
             ->addColumn(array('label'=>'No. POL MTY','index'=>'NOPOL_MTY','hidden'=>false))
+			->addColumn(array('label'=>'Photo MTY','index'=>'photo_empty', 'width'=>70,'hidden'=>true))                 
+
  //           ->addColumn(array('index'=>'location_id', 'width'=>150,'hidden'=>true))
  //           ->addColumn(array('label'=>'Lokasi','index'=>'location_name','width'=>200, 'align'=>'center'))
  //           ->addColumn(array('label'=>'No. Segel','index'=>'no_flag_bc','width'=>100,'align'=>'center'))
@@ -294,14 +300,14 @@
             <div class="modal-body"> 
                 <div class="row">
                     <div class="col-md-12">
-                        <h4>RELEASE</h4>
-                        <div id="release-photo"></div>
+                        <h4>BUANG MTY</h4>
+                        <div id="container-photo"></div>
                     </div>
                 </div>
             </div>    
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->  
+</div><!-- /.modal -->   
 @endsection
 
 @section('custom_css')

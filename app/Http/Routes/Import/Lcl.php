@@ -80,6 +80,10 @@ Route::group(['prefix' => 'lcl', 'namespace' => 'Import'], function(){
     Route::get('/report/inout/view-photo/{id}', [
         'as' => 'lcl-report-inout-view-photo',
         'uses' => 'LclController@reportInoutViewPhoto'
+    ]);	
+	Route::get('/report/inout/view-photo-empty/{id}', [
+        'as' => 'lcl-report-inout-view-photo-empty',
+        'uses' => 'LclController@reportInoutViewPhotoEmpty'
     ]);
     Route::get('/report/container', [
         'as' => 'lcl-report-container',

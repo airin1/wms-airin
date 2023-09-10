@@ -15,19 +15,62 @@
             del = ''; 
         for(var i=0;i < ids.length;i++){ 
             var cl = ids[i];
+			 var vi = '';
             rowdata = $('#lclMtyHoldGrid').getRowData(cl);
 			 
             edt = '<a href="{{ route("lcl-manifest-edit",'') }}/'+cl+'"><i class="fa fa-pencil"></i></a> ';
             del = '<a href="{{ route("lcl-manifest-delete",'') }}/'+cl+'" onclick="if (confirm(\'Are You Sure ?\')){return true; }else{return false; };"><i class="fa fa-close"></i></a>';
-            jQuery("#lclBuangmtyGrid").jqGrid('setRowData',ids[i],{action:edt+' '+del}); 
            rowdata = $('#lclBuangmtyGrid').getRowData(cl);
 		   if(rowdata.status_bc == '') {
-                $("#" + cl).find("td").css("background-color", "#ffe500");
+               $("#" + cl).find("td").css("background-color", "#ffe500");
             }
-		
+		    if(rowdata.photo_empty != ''){
+			//alert(rowdata.photo_empty);	
+ 
+               vi = '<button style="margin:5px;" class="btn btn-default btn-xs approve-manifest-btn" data-id="'+cl+'" onclick="viewPhoto('+cl+')"><i class="fa fa-photo"></i> View Photo</button>';
+            }else{
+             //alert('asadaadda');
+   		 	   vi = '<button style="margin:5px;" class="btn btn-default btn-xs approve-manifest-btn" disabled><i class="fa fa-photo"></i> Not Found</button>';
+            } 
+             
+		 jQuery("#lclBuangmtyGrid").jqGrid('setRowData',ids[i],{action:edt+' '+del, photo:vi}); 
+          
 		} 
     }
-    
+    function viewPhoto(containerID)
+    {       
+        $.ajax({
+            type: 'GET',
+            dataType : 'json',
+            url: '{{route("lcl-report-inout-view-photo-empty","")}}/'+containerID,
+            error: function (jqXHR, textStatus, errorThrown)
+            {
+                alert('Something went wrong, please try again later.');
+            },
+            beforeSend:function()
+            {
+                $('#container-photo').html('');
+            },
+            success:function(json)
+            {
+                var html_container = '';
+                //alert(containerID);
+				//alert(json.data.photo_empty);	
+                if(json.data.photo_empty){
+                    var photos_container = $.parseJSON(json.data.photo_empty);
+                    var html_container = '';
+                    $.each(photos_container, function(i, item) {
+                        /// do stuff
+                        html_container += '<img src="{{url("uploads/photos/container/lcl")}}/'+json.data.NOCONTAINER+'/'+item+'" style="width: 200px;padding:5px;" />';
+                      // alert(html_container); 
+                    });
+                    $('#container-photo').html(html_container);
+                }
+            }
+        });
+        
+        $('#view-photo-modal').modal('show');
+    }
     function onSelectRowEvent()
     {
         $('#btn-group-1, #btn-group-4, #btn-group-6').enableButtonGroup();
@@ -218,8 +261,10 @@
                     ->setFilterToolbarOptions(array('autosearch'=>true))
                     ->setGridEvent('gridComplete', 'gridCompleteEvent')
                     ->setGridEvent('onSelectRow', 'onSelectRowEvent')
-        //            ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>80, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
-                    ->addColumn(array('key'=>true,'index'=>'TCONTAINER_PK','hidden'=>true))
+           //         ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>80, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
+                    ->addColumn(array('label'=>'Photo','index'=>'photo', 'width'=>120, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
+
+              		->addColumn(array('key'=>true,'index'=>'TCONTAINER_PK','hidden'=>true))
                     ->addColumn(array('label'=>'No. Container','index'=>'NOCONTAINER','width'=>150))
 					->addColumn(array('label'=>'Status BC','index'=>'status_bc', 'width'=>80,'align'=>'center'))   
                     ->addColumn(array('label'=>'No. Joborder','index'=>'NoJob','width'=>150))
@@ -242,7 +287,8 @@
                     ->addColumn(array('label'=>'Tujuan MTY','index'=>'NAMADEPOMTY','hidden'=>false))
         //            ->addColumn(array('label'=>'Layout','index'=>'layout','width'=>80,'align'=>'center','hidden'=>true))
         //            ->addColumn(array('label'=>'UID','index'=>'UID', 'width'=>150))
-                    ->addColumn(array('label'=>'Tgl. Entry','index'=>'TGLENTRY','align'=>'center', 'width'=>150))
+					->addColumn(array('label'=>'Photo MTY','index'=>'photo_empty', 'width'=>70,'hidden'=>true))                 
+					->addColumn(array('label'=>'Tgl. Entry','index'=>'TGLENTRY','align'=>'center', 'width'=>150))
                     ->addColumn(array('label'=>'Updated','index'=>'last_update','align'=>'center', 'width'=>150, 'search'=>false))
         //            ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>80, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
                     ->renderGrid()
@@ -363,12 +409,61 @@
                             </select>
                         </div>
                     </div>
+					
                 </div>
             </div>
         </form>  
     </div>
 </div>
-
+<div id="photo-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="upload-title"></h4>
+            </div>
+            <form class="form-horizontal" id="upload-photo-form" action="{{ route('lcl-manifest-upload-photo','photo_release') }}" method="POST" enctype="multipart/form-data">
+                <div class="modal-body"> 
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input name="_token" type="hidden" value="{{ csrf_token() }}">
+                            <input type="hidden" id="id_hbl" name="id_hbl" required>   
+                            <input type="hidden" id="no_hbl" name="no_hbl" required>    
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Photo</label>
+                                <div class="col-sm-8">
+                                    <input type="file" name="photos[]" class="form-control" multiple="true" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                  <button type="submit" class="btn btn-primary">Upload</button>
+                </div>
+            </form>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+<div id="view-photo-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="title-photo">Photo</h4>
+            </div>
+            <div class="modal-body"> 
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>BUANG MTY</h4>
+                        <div id="container-photo"></div>
+                    </div>
+                </div>
+            </div>    
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->   
 @endsection
 
 @section('custom_css')
@@ -386,6 +481,10 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
 <script type="text/javascript">
     $('.select2').select2();
+	
+	
+	
+	
     $('.datepicker').datepicker({
         autoclose: true,
         todayHighlight: true,

@@ -1227,6 +1227,14 @@ class LclController extends Controller
         
         return json_encode(array('success' => true, 'data' => $manifest));
     }
+	 public function reportInoutViewPhotoEmpty($containerID)
+    {
+   
+        $container = DBContainer::find($containerID);
+       
+        
+        return json_encode(array('success' => true, 'data' => $container));
+    }
     
     public function reportContainer(Request $request)
     {
