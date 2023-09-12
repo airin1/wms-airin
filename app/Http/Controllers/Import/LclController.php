@@ -2823,10 +2823,10 @@ class LclController extends Controller
         $container->release_bc_date = date('Y-m-d H:i:s');
         $container->release_bc_uid = \Auth::getUser()->name;    
 	
-        $host = gethostbyaddr($_SERVER[‘REMOTE_ADDR’]);
-		$ip =  GetHostByName($REMOTE_ADDR);
-		$container->release_host =$host;
-		$container->release_ip_host=$ip;
+        //$host = gethostbyaddr($_SERVER[‘REMOTE_ADDR’]);
+		//$ip =  GetHostByName($REMOTE_ADDR);
+		//$container->release_host =$host;
+		//$container->release_ip_host=$ip;
 		
         if($container->save()){
             $this->changeBarcodeStatus($container->TCONTAINER_PK, $container->NOCONTAINER, 'Lcl', 'active');
