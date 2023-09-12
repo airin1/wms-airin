@@ -43,8 +43,7 @@
             }
             
        	    @if(Auth::getUser()->username == 'bcgaters'||Auth::getUser()->username == 'andiko'||Auth::getUser()->username == 'bayu.eka'||Auth::getUser()->username == 'fathul'||Auth::getUser()->username == 'waskita'||Auth::getUser()->username == 'harry'||Auth::getUser()->username == 'amran'||Auth::getUser()->username == 'handoyo'||Auth::getUser()->username == 'ridwan') 
-            //@if(Auth::getUser()->username == 'bcgaters') 
-                jQuery("#lclMtyHoldGrid").jqGrid('setRowData',ids[i],{photo: vi,hold: apv}); 
+                 jQuery("#lclMtyHoldGrid").jqGrid('setRowData',ids[i],{photo: vi,hold: apv}); 
             @else
                 jQuery("#lclMtyHoldGrid").jqGrid('setRowData',ids[i],{photo: vi}); 
             @endif
