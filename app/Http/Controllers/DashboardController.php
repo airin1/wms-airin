@@ -231,8 +231,8 @@ class DashboardController extends Controller
 	{
 	  
 	// FCL YOR ARN1    AIRIN UTARA
-        
-		$drykaparn1=1036;	
+         $drykaparn1=676;	
+		//$drykaparn1=1036;	
 		$rfrkaparn1=150;		
 		$dgkaparn1=75;	
         $dry20arn1 = \App\Models\Containercy::whereNull('TGLRELEASE')->whereNotNull('TGLMASUK')->where('GUDANG_TUJUAN','=','ARN1')->where('SIZE', '=','20')->where('jenis_container', '=','DRY')->count();
