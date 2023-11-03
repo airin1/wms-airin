@@ -35,7 +35,7 @@
                     <tr>
                         <th align="center">1</th>
                         <td align="center">DRY</td>
-						<td>17,738</td>
+						<td>14,738</td>
                         <td align="center">{{number_format($yarn1['drykaparn1'],'0',',','.') }}</td>
 						<td align="center">{{number_format($yarn1['dryarn1'],'0',',','.')}}</td>
 						<td align="center">{{number_format($yarn1['drykaparn1'] - $yarn1['dryarn1'],'0',',','.')}}</td>
