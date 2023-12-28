@@ -607,6 +607,7 @@
                                 <option value="FLAT TRACK OL">FLAT TRACK OL</option>
                                 <option value="DRY">DRY</option>
                                 <option value="OPEN TOP">OPEN TOP</option>
+                                <option value="OH">OH</option>
                             </select>
                         </div>
                     </div>
