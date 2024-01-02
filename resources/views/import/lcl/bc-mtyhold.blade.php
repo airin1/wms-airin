@@ -42,7 +42,7 @@
                 $("#" + cl).find("td").css("background-color", "#ffe500");
             }
             
-       	   @if(Auth::getUser()->username == 'bcgaters'||Auth::getUser()->username == 'andiko'||Auth::getUser()->username == 'bayu.eka'||Auth::getUser()->username == 'fathul'||Auth::getUser()->username == 'waskita'||Auth::getUser()->username == 'harry'||Auth::getUser()->username == 'amran'||Auth::getUser()->username == 'handoyo'||Auth::getUser()->username == 'ridwan'||Auth::getUser()->username == 'bayu'||Auth::getUser()->username == 'faizal'||Auth::getUser()->username == 'yanualdo'||Auth::getUser()->username == 'abrar') 
+       	   @if(Auth::getUser()->username == 'bcgaters'||Auth::getUser()->username == 'andiko'||Auth::getUser()->username == 'bayu.eka'||Auth::getUser()->username == 'fathul'||Auth::getUser()->username == 'waskita'||Auth::getUser()->username == 'harry'||Auth::getUser()->username == 'amran'||Auth::getUser()->username == 'handoyo'||Auth::getUser()->username == 'ridwan'||Auth::getUser()->username == 'bayu'||Auth::getUser()->username == 'faizal'||Auth::getUser()->username == 'yanualdo'||Auth::getUser()->username == 'abrar'||Auth::getUser()->username == 'dhandy'||Auth::getUser()->username == 'firman'||Auth::getUser()->username == 'ilham'||Auth::getUser()->username == 'romi') 
            	  jQuery("#lclMtyHoldGrid").jqGrid('setRowData',ids[i],{photo: vi,hold: apv}); 
             @else
                 jQuery("#lclMtyHoldGrid").jqGrid('setRowData',ids[i],{photo: vi}); 

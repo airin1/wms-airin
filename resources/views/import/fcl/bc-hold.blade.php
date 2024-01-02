@@ -36,7 +36,7 @@
             
 			//  bcuser = ['bcgaters','ardin','damang','septian','faizal','haidar','agni'];
 			
-			@if(Auth::getUser()->username == 'bcgaters'||Auth::getUser()->username == 'andiko'||Auth::getUser()->username == 'bayu.eka'||Auth::getUser()->username == 'fathul'||Auth::getUser()->username == 'waskita'||Auth::getUser()->username == 'harry'||Auth::getUser()->username == 'amran'||Auth::getUser()->username == 'handoyo'||Auth::getUser()->username == 'ridwan'||Auth::getUser()->username == 'bayu'||Auth::getUser()->username == 'faizal'||Auth::getUser()->username == 'yanualdo'||Auth::getUser()->username == 'abrar') 
+			@if(Auth::getUser()->username == 'bcgaters'||Auth::getUser()->username == 'andiko'||Auth::getUser()->username == 'bayu.eka'||Auth::getUser()->username == 'fathul'||Auth::getUser()->username == 'waskita'||Auth::getUser()->username == 'harry'||Auth::getUser()->username == 'amran'||Auth::getUser()->username == 'handoyo'||Auth::getUser()->username == 'ridwan'||Auth::getUser()->username == 'bayu'||Auth::getUser()->username == 'faizal'||Auth::getUser()->username == 'yanualdo'||Auth::getUser()->username == 'abrar'||Auth::getUser()->username == 'dhandy'||Auth::getUser()->username == 'firman'||Auth::getUser()->username == 'ilham'||Auth::getUser()->username == 'romi') 
                 jQuery("#fclHoldGrid").jqGrid('setRowData',ids[i],{photo: vi, hold: apv});            
 			@else
 				@if(Auth::getUser()->username == 'naufal') 
