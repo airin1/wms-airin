@@ -518,6 +518,7 @@ class FclController extends Controller
            // $data['NoJob'] = $joborder->NOJOBORDER;
             $data['NOSPK'] = $nospk;           
             $data['ID_CONSOLIDATOR'] =  $consolidatorId;
+			$data['TCONSOLIDATOR_FK'] =  $consolidatorId;			
             $data['NAMACONSOLIDATOR'] = $consolidatorname;
 	         
 			$updateContainer = DBContainer::where('TCONTAINER_PK', $t40->TCONTAINER_PK)
