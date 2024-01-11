@@ -6,10 +6,18 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\View;
+use Artisaninweb\SoapWrapper\Facades\SoapWrapper;
+use App\Models\Barcode as DBGate;
 
 class BarcodeController extends Controller
 {
     
+    protected $wsdl;
+    protected $user;
+    protected $password;
+    protected $kode;
+    protected $response;
+	
     public function __construct() {
         // CHECK STATUS BEHANDLE
         $lcl_sb = \App\Models\Manifest::whereIn('status_behandle',array('Ready','Siap Periksa'))->count();
@@ -60,9 +68,16 @@ class BarcodeController extends Controller
             case 'Manifest':
                 $model = 'tmanifest';
                 break;
+			 case 'LCLEKS':
+			    $model = 'tcontainereks';   
+                break;
+			case 'Manifesteks':
+			    $model = 'tmanifesteks';
+               
+                break;		
         }
         
-        if($barcode->ref_type == 'Manifest'){
+        if($barcode->ref_type == 'Manifest'||$barcode->ref_type == 'Manifesteks'){
             $data_barcode = \App\Models\Barcode::select('*')
                 ->join($model, 'barcode_autogate.ref_id', '=', $model.'.TMANIFEST_PK')
                 ->where(array('barcode_autogate.ref_type' => ucwords($barcode->ref_type), 'barcode_autogate.ref_action'=>$barcode->ref_action))
@@ -156,6 +171,12 @@ class BarcodeController extends Controller
             case 'manifest':
                 $model = 'tmanifest';
                 break;
+			 case 'lcleks':
+			    $model = 'tcontainereks';   
+                break;
+			case 'Manifesteks':
+			    $model = 'tmanifesteks';               
+                break;			
         }
         
         // Check data
@@ -219,6 +240,12 @@ class BarcodeController extends Controller
             case 'manifest':
                 $model = 'tmanifest';
                 break;
+			case 'lcleks':
+			    $model = 'tcontainereks';   
+                break;
+			case 'manifesteks':
+			    $model = 'tmanifesteks';               
+                break;			
         }
         //Create Barcode If not exist
         if(is_array($ids)){
@@ -243,6 +270,20 @@ class BarcodeController extends Controller
                 }elseif($type == 'fcl'){
                     $refdata = \App\Models\Containercy::find($ref_id);
                     $ref_number = $refdata->NOCONTAINER;
+                    $ref_status = ($refdata->status_bc == 'HOLD') ? 'hold' : 'active';
+                    if($action == 'get'){
+                        $expired = date('Y-m-d', strtotime('+3 day'));
+                    }
+                }elseif($type == 'lcleks'){
+                    $refdata = \App\Models\ContainerExp::find($ref_id);
+                    $ref_number = $refdata->NOCONTAINER;
+                    $ref_status = ($refdata->status_bc == 'HOLD') ? 'hold' : 'active';
+                    if($action == 'get'){
+                        $expired = date('Y-m-d', strtotime('+3 day'));
+                    }
+                }elseif($type == 'manifesteks'){
+                    $refdata = \App\Models\ManifestExp::find($ref_id);
+                    $ref_number = $refdata->NO_PACK;
                     $ref_status = ($refdata->status_bc == 'HOLD') ? 'hold' : 'active';
                     if($action == 'get'){
                         $expired = date('Y-m-d', strtotime('+3 day'));
@@ -290,7 +331,7 @@ class BarcodeController extends Controller
             return $ids;
         }
         
-        if($type == 'manifest'){
+        if($type == 'manifest'||$type == 'manifesteks'){
             $data_barcode = \App\Models\Barcode::select('*')
                 ->join($model, 'barcode_autogate.ref_id', '=', $model.'.TMANIFEST_PK')
                 ->where(array('ref_type' => ucwords($type), 'ref_action'=>$action))
@@ -369,6 +410,12 @@ class BarcodeController extends Controller
                 case 'Manifest':
                     $model = \App\Models\Manifest::find($data_barcode->ref_id);
                     break;
+				 case 'LCLEKS':
+                    $model = \App\Models\ContainerExp::find($data_barcode->ref_id);
+                    break;
+				 case 'Manifesteks':
+                    $model = \App\Models\ManifestExp::find($data_barcode->ref_id);
+                    break;	
             }
             
             if($model){
@@ -908,7 +955,364 @@ class BarcodeController extends Controller
     {
         
     }
-    
+     
+	 public function AutoMovementContainer()
+    {
+        //$cont_id = explode(',', $request->container_id);
+        //$tgl1='2023-01-01 18:00:00'; 
+
+        //$tgl1='2023-03-10 16:23:00'; 
+	    //$tgl2='2023-03-11 16:00:00'; 
+	   //$jam1=  substr($tgl1,0,10);
+	   //$jam2=  substr($tgl2,0,10);
+	
+	   $tgl2=date("Y-m-d H:i:s");
+	   $tgl=strtotime($tgl2 . "-1 hours");
+	   $tgl1= date('Y-m-d H:i:s',$tgl);	
+		
+	      
+		 
+		$containers = \App\Models\Containercy::select('tcontainercy.*','barcode_autogate.*')
+               ->join('barcode_autogate','tcontainercy.TCONTAINER_PK','=','barcode_autogate.ref_id')
+               ->where('barcode_autogate.ref_action', 'get')                
+			   ->where('tcontainercy.KD_TPS_ASAL', 'NCT1')
+               ->where('barcode_autogate.time_in','>=',$tgl1)
+               ->where('barcode_autogate.time_in','<',$tgl2)
+			 //   ->wherein('tcontainercy.NOCONTAINER',['DRYU9208045',	'FCIU4746929',	'FTAU1321875',	'GCXU2269584',	'KKTU8212713',	'MRSU6363720',	'MSKU0287072',	'NYKU3533888',	'NYKU3812671',	'NYKU9893217',	'TCLU2223871',	'TCLU5567438',	'TCLU6482037',	'TCLU6517529',	'TCLU6636913',	'TEMU5774520',	'TRHU2990283',	'TRHU4190340',	'TRHU7237673',	'TRLU9269277',	'XINU8041429'])     
+ 	 	       ->get();
+
+        
+	
+        foreach ($containers as $container):
+            // IN2
+            $data[] = array(
+                'request_no' => $container->NO_PLP,
+                'request_date' => date('Ymd', strtotime($container->TGL_PLP)),
+                'warehouse_code' => $container->GUDANG_TUJUAN,
+                'container_id' => $container->TCONTAINER_PK,
+                'container_no' => $container->NOCONTAINER,
+                'message_type' => 'IN2',
+                'action_time' => date('YmdHis', strtotime($container->TGLMASUK.' '.$container->JAMMASUK)),
+                'uid' => 'System'
+            );        
+            
+            \App\Models\NpctMovement::insert($data);   
+            
+            $data = array();
+        endforeach;
+        
+		
+		$containers = \App\Models\Containercy::select('*')
+                ->join('barcode_autogate','tcontainercy.TCONTAINER_PK','=','barcode_autogate.ref_id')
+                ->where('barcode_autogate.ref_action', 'release')  
+				->where('tcontainercy.KD_TPS_ASAL', 'NCT1')
+                ->where('barcode_autogate.time_out','>=',$tgl1)
+               ->where('barcode_autogate.time_out','<',$tgl2)
+		//		->wherein('tcontainercy.NOCONTAINER',['DRYU9208045',	'FCIU4746929',	'FTAU1321875',	'GCXU2269584',	'KKTU8212713',	'MRSU6363720',	'MSKU0287072',	'NYKU3533888',	'NYKU3812671',	'NYKU9893217',	'TCLU2223871',	'TCLU5567438',	'TCLU6482037',	'TCLU6517529',	'TCLU6636913',	'TEMU5774520',	'TRHU2990283',	'TRHU4190340',	'TRHU7237673',	'TRLU9269277',	'XINU8041429'])     
+                ->get();
+		
+        
+		foreach ($containers as $container):
+          
+            // OUT2
+           $data[] = array(
+               'request_no' => $container->NO_PLP,
+                'request_date' => date('Ymd', strtotime($container->TGL_PLP)),
+                'warehouse_code' => $container->GUDANG_TUJUAN,
+                'container_id' => $container->TCONTAINER_PK,
+                'container_no' => $container->NOCONTAINER,
+                'message_type' => 'OUT2',
+                'action_time' => date('YmdHis', strtotime($container->TGLRELEASE.' '.$container->JAMRELEASE)),
+                'uid' => 'System'
+            );
+            
+            \App\Models\NpctMovement::insert($data);   
+            
+            $data = array();
+        endforeach;
+        
+		
+		
+//        return $data;
+        
+       return json_encode(array('success' => true, 'message' => 'Movement has been created.'));
+        
+       return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
+        
+    }
+	
+	
+	 public function ManualMovementContainer()
+    {
+        //$cont_id = explode(',', $request->container_id);
+     //   $tgl1='2023-01-01'; 
+      //  $tgl2='2023-09-22';
+        
+		
+	  $tgl1='2024-01-02 08:00:00'; 
+	    $tgl2='2024-01-07 08:00:00'; 
+	
+	   
+	   //$jam1=  substr($tgl1,0,10);
+	   //$jam2=  substr($tgl2,0,10);
+	
+	   //$tgl2=date("Y-m-d H:i:s");
+	   //$tgl=strtotime($tgl2 . "-1 hours");
+	   //$tgl1= date('Y-m-d H:i:s',$tgl);	
+		
+	      
+		 
+		$containers = \App\Models\Containercy::select('tcontainercy.*','barcode_autogate.*')
+               ->join('barcode_autogate','tcontainercy.TCONTAINER_PK','=','barcode_autogate.ref_id')
+               ->where('barcode_autogate.ref_action', 'get')                
+			   ->where('tcontainercy.KD_TPS_ASAL', 'NCT1')
+               ->where('tcontainercy.TGLMASUK','>=',$tgl1)
+               ->where('tcontainercy.TGLMASUK','<',$tgl2)
+			  // ->where('barcode_autogate.time_in','>=',$tgl1)
+              // ->where('barcode_autogate.time_in','<',$tgl2)
+			 //->wherein('tcontainercy.NOCONTAINER',['BSIU3263179',	'CAIU2387890',	'CAIU6643182',	'CXDU1632986',	'CXDU2268945',	'CXTU1152931',	'DRYU2711660',	'DRYU2858075',	'EGHU3321650',	'EGHU3415071',	'EGHU3828218',	'EGHU9219190',	'EGSU3120006',	'EISU2271629',	'EITU3039669',	'EOLU8232226',	'EOLU8243513',	'EOLU8247268',	'EOLU8604982',	'EURU1173628',	'FCIU4467652',	'FCIU6294279',	'GATU1155161',	'GCXU2289615',	'GESU8092604',	'HAMU1053930',	'KKFU7836346',	'KKTU6060210',	'KKTU7731416',	'KKTU7784972',	'MRKU7342436',	'MRKU8938100',	'MSKU0908842',	'MSKU1952243',	'NYKU3783085',	'PONU0072259',	'SEGU1345454',	'SEGU4350650',	'SEGU5853999',	'SEGU8048479',	'STJU2021866',	'SZLU9230394',	'TCLU2886600',	'TCLU3289092',	'TCLU7557110',	'TEMU7712635',	'TGBU5205457',	'TGBU9981335',	'TGHU3326045',	'TLLU5424667',	'TRHU1197927',	'TRHU2442398',	'TRHU2481202',	'TRHU6131558',	'TRLU9063136',	'UACU4105373',	'UACU8490410',	'UETU4132964'])     
+ 	 	       ->get();
+
+        
+	
+        foreach ($containers as $container):
+            // IN2
+            $data[] = array(
+                'request_no' => $container->NO_PLP,
+                'request_date' => date('Ymd', strtotime($container->TGL_PLP)),
+                'warehouse_code' => $container->GUDANG_TUJUAN,
+                'container_id' => $container->TCONTAINER_PK,
+                'container_no' => $container->NOCONTAINER,
+                'message_type' => 'IN2',
+                'action_time' => date('YmdHis', strtotime($container->TGLMASUK.' '.$container->JAMMASUK)),
+                'uid' => 'System'
+            );        
+            
+            \App\Models\NpctMovement::insert($data);   
+            
+            $data = array();
+        endforeach;
+        
+		
+		$containers = \App\Models\Containercy::select('*')
+                ->join('barcode_autogate','tcontainercy.TCONTAINER_PK','=','barcode_autogate.ref_id')
+                ->where('barcode_autogate.ref_action', 'release')  
+				->where('tcontainercy.KD_TPS_ASAL', 'NCT1')
+                ->where('barcode_autogate.time_out','>=',$tgl1)
+               ->where('barcode_autogate.time_out','<',$tgl2)
+			  //  ->wherein('tcontainercy.NOCONTAINER',['BEAU5752498',	'BSIU3263179',	'CAIU2387890',	'CAIU2462397',	'CAIU6643182',	'CXDU1632986',	'DRYU2573703',	'DRYU2711660',	'DRYU2858075',	'DRYU2984108',	'EGHU3357972',	'EGHU3732420',	'EITU0309837',	'EITU0553550',	'EMCU5806758',	'EMCU5808112',	'EMCU6214537',	'EOLU8270308',	'EOLU8604982',	'EURU1173628',	'FCIU6294279',	'GATU1155161',	'GCXU2289615',	'GLDU9409562',	'HAMU1053930',	'HASU1186030',	'HASU1240620',	'HASU1315570',	'HMCU3090707',	'ISLU2203129',	'ISLU2204059',	'ISLU2206350',	'ISLU2206771',	'KKFU8021749',	'KKTU6060210',	'KKTU7731416',	'KKTU8102608',	'MAGU2467133',	'MNBU4007814',	'MNBU9068854',	'MRKU7966474',	'MRKU7991862',	'MRKU8410704',	'MRKU9167332',	'MRKU9311326',	'MRKU9650124',	'MRSU0113641',	'MRSU3737180',	'MSKU2660800',	'MSKU3574899',	'MSKU3907650',	'MSKU4219409',	'MSKU5173323',	'MSKU5636069',	'MSKU5915680',	'MSKU7255293',	'MSKU7269430',	'MSKU7596068',	'MSKU7686201',	'SEGU5853999',	'STJU2021866',	'SUDU7453219',	'SUDU7787983',	'SUDU8980739',	'SZLU9230394',	'TAHU9080450',	'TAHU9081775',	'TAHU9084497',	'TAHU9085750',	'TCLU2374815',	'TCLU2886600',	'TCLU3289092',	'TCLU3507609',	'TCLU3622958',	'TCLU7388982',	'TCLU7557110',	'TCLU8048082',	'TCNU1723360',	'TCNU2624275',	'TCNU3863253',	'TEMU5391515',	'TEMU7132283',	'TGBU5205457',	'TGBU9981335',	'TGHU1752210',	'TGHU3326045',	'TRHU1197927',	'TRHU1197927',	'TRHU2442398',	'TRLU9258605',	'TTNU1284105',	'TTNU4259240',	'UACU4105373',	'UACU8490410',	'UETU4132964'])     
+                ->get();
+		
+        
+		foreach ($containers as $container):
+          
+            // OUT2
+           $data[] = array(
+               'request_no' => $container->NO_PLP,
+                'request_date' => date('Ymd', strtotime($container->TGL_PLP)),
+                'warehouse_code' => $container->GUDANG_TUJUAN,
+                'container_id' => $container->TCONTAINER_PK,
+                'container_no' => $container->NOCONTAINER,
+                'message_type' => 'OUT2',
+                'action_time' => date('YmdHis', strtotime($container->TGLRELEASE.' '.$container->JAMRELEASE)),
+                'uid' => 'System'
+            );
+            
+            \App\Models\NpctMovement::insert($data);   
+            
+            $data = array();
+        endforeach;
+        
+		
+		
+//        return $data;
+        
+       return json_encode(array('success' => true, 'message' => 'Movement has been created.'));
+        
+       return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
+        
+    }
+	
+	 public function ManualMovementContainerLCL()
+    {
+        //$cont_id = explode(',', $request->container_id);
+       //$tgl1='2023-01-01 00:00:00'; 
+       //$tgl2='2023-09-22 11:15:00';
+        
+		
+	    $tgl1='2024-01-02 08:00:00'; 
+	    $tgl2='2024-01-07 08:00:00'; 
+		
+	   //$jam1=  substr($tgl1,0,10);
+	   //$jam2=  substr($tgl2,0,10);
+	
+	   //$tgl2=date("Y-m-d H:i:s");
+	   //$tgl=strtotime($tgl2 . "-1 hours");
+	   //$tgl1= date('Y-m-d H:i:s',$tgl);	
+		
+	      
+		 
+		$containers = \App\Models\Container::select('tcontainer.*','barcode_autogate.*')
+               ->join('barcode_autogate','tcontainer.TCONTAINER_PK','=','barcode_autogate.ref_id')
+               ->where('barcode_autogate.ref_action', 'get')                
+			   ->where('tcontainer.KD_TPS_ASAL', 'NCT1')
+			   // ->where('tcontainer.TGLMASUK','>=',$tgl1)
+               //->where('tcontainer.TGLMASUK','<',$tgl2)
+               ->where('barcode_autogate.time_in','>=',$tgl1)
+               ->where('barcode_autogate.time_in','<',$tgl2)
+			// ->wherein('tcontainer.NOCONTAINER',['TRHU6131558',	'MRKU7342436'])     
+ 	 	       ->get();
+
+        
+	
+        foreach ($containers as $container):
+            // IN2
+            $data[] = array(
+                'request_no' => $container->NO_PLP,
+                'request_date' => date('Ymd', strtotime($container->TGL_PLP)),
+                'warehouse_code' => $container->LOKASI_GUDANG,
+                'container_id' => $container->TCONTAINER_PK,
+                'container_no' => $container->NOCONTAINER,
+                'message_type' => 'IN2',
+                'action_time' => date('YmdHis', strtotime($container->TGLMASUK.' '.$container->JAMMASUK)),
+                'uid' => 'System'
+            );        
+            
+            \App\Models\NpctMovement::insert($data);   
+            
+            $data = array();
+        endforeach;
+        
+		
+		$containers = \App\Models\Container::select('*')
+                ->join('barcode_autogate','tcontainer.TCONTAINER_PK','=','barcode_autogate.ref_id')
+                ->where('barcode_autogate.ref_action', 'empty')  
+				->where('tcontainer.KD_TPS_ASAL', 'NCT1')
+                ->where('barcode_autogate.time_out','>=',$tgl1)
+               ->where('barcode_autogate.time_out','<',$tgl2)
+			//->wherein('tcontainercy.NOCONTAINER',['AXIU1644920',	'BEAU2176336',	'BMOU1436921',	'CAIU4091530',	'CAIU8880990',	'CXDU1584574',	'EGSU9086676',	'EISU1840736',	'EISU2292600',	'EITU0344036',	'EMCU6232910',	'EOLU8272450',	'FCGU2247950',	'FCLU9407769',	'FDCU0444854',	'FDCU0590519',	'FFAU1199820',	'FFAU3633704',	'FSCU8616408',	'FTAU1596189',	'GLDU9546760',	'GLDU9763391',	'HLBU2351159',	'HLBU9660566',	'HLXU1344640',	'HLXU8108272',	'KKFU7850489',	'KKTU8050989',	'LTIU6040735',	'MCRU2037189',	'MCRU2054421',	'MCRU9009975',	'MNBU0540091',	'MNBU3195126',	'MNBU3407586',	'MNBU9021570',	'MNBU9131999',	'MNBU9138566',	'MOFU0608449',	'MOFU1423460',	'MRKU0185171',	'MRKU0581439',	'MRKU4817456',	'MRKU4876870',	'MRKU6525411',	'MRKU7154850',	'MRKU7495456',	'MRKU8586186',	'MRKU8652420',	'MRKU9422166',	'MRSU3894830',	'MRSU4163635',	'MSKU3725526',	'MSKU5701462',	'MSKU6956370',	'MWCU5305760',	'MWCU5305760',	'NIDU2197918',	'NYKU3697562',	'NYKU4262306',	'NYKU4701986',	'NYKU4893404',	'NYKU5206610',	'SEGU1042972',	'SEGU5072511',	'SUDU9204529',	'SZLU2065338',	'TCLU1815351',	'TCLU1830588',	'TCLU1914077',	'TCLU2420715',	'TCLU3360586',	'TCLU3427972',	'TCLU3798572',	'TCLU7205530',	'TCNU6861167',	'TEMU0176187',	'TEMU0176187',	'TEMU9840677',	'TGCU0026621',	'TRHU7896639',	'UACU8277220'])     
+                ->get();
+		
+        
+		foreach ($containers as $container):
+          
+            // OUT2
+           $data[] = array(
+               'request_no' => $container->NO_PLP,
+                'request_date' => date('Ymd', strtotime($container->TGL_PLP)),
+                'warehouse_code' => $container->LOKASI_GUDANG,
+                'container_id' => $container->TCONTAINER_PK,
+                'container_no' => $container->NOCONTAINER,
+                'message_type' => 'OUT2',
+                'action_time' => date('YmdHis', strtotime($container->TGLRELEASE.' '.$container->JAMRELEASE)),
+                'uid' => 'System'
+            );
+            
+            \App\Models\NpctMovement::insert($data);   
+            
+            $data = array();
+        endforeach;
+        
+		
+		
+//        return $data;
+        
+       return json_encode(array('success' => true, 'message' => 'Movement has been created.'));
+        
+       return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
+        
+    }
+	
+	
+		
+	
+	
+	
+    public function AutomovementUpload()
+    {
+        $this->wsdl = 'https://api.npct1.co.id/services/index.php/Line2?wsdl';
+        $this->user = 'lini2';
+        $this->password = 'lini2@2018';
+        $this->kode = 'AIRN';
+		
+		$tgl2=date("Y-m-d H:i:s");
+		$tgl=strtotime($tgl2 . "-2 hours");
+	    $tgl1= date('Y-m-d H:i:s',$tgl);	
+		
+		$movements = \App\Models\NpctMovement::where('response',null)->where('created_at','>=', $tgl1)->get();
+        //$movements = \App\Models\NpctMovement::where('container_no','KKFU8046536')->get();
+		$xml = new \SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><movement></movement>');       
+        $move_id = array();
+        foreach ($movements as $move):
+            $move_id[]= $move->id;
+            $data = $xml->addchild('loop');
+            $data->addchild('action', 'CREATE');
+            $data->addchild('request_no', $move->request_no);
+            $data->addchild('request_date', $move->request_date);
+            $data->addchild('warehouse_code', $move->warehouse_code);
+            $data->addchild('container_no', $move->container_no);
+            $data->addchild('message_type', $move->message_type);
+            $data->addchild('action_time', $move->action_time);
+            
+        endforeach;
+        
+//        $response = \Response::make($xml->asXML(), 200);
+        
+//        return $response;
+        
+        \SoapWrapper::add(function ($service) {
+            $service
+                ->name('movementRequest')
+                ->wsdl($this->wsdl)
+                ->trace(true)                                                                                                                                                 
+                ->cache(WSDL_CACHE_NONE)                                        
+                ->options([
+                    'stream_context' => stream_context_create([
+                        'ssl' => array(
+                            'verify_peer' => false,
+                            'verify_peer_name' => false,
+                            'allow_self_signed' => true
+                        )
+                    ]),
+                    'soap_version' => SOAP_1_1
+                ]);                                                    
+        });
+        
+        $reqData = [
+            'username' => $this->user, 
+            'Password' => $this->password,
+            'data' => $xml->asXML()
+        ];
+        
+        // Using the added service
+        try {      
+            \SoapWrapper::service('movementRequest', function ($service) use ($reqData) {    
+    //            var_dump($service->getFunctions());
+//                var_dump($service->call('movement', $reqData));
+                $this->response = $service->call('movement', $reqData);      
+            });
+        } catch (SoapFault $exception) {
+            echo $exception;      
+        }
+        
+        $update = \App\Models\NpctMovement::whereIn('id', $move_id)->update(['action' => 'CREATE','response' => $this->response]);       
+        
+        if ($update){
+//            return back()->with('success', 'Laporan Movement berhasil dikirim.');
+            return json_encode(array('success' => true, 'message' => 'Laporan Movement berhasil dikirim.'));
+        }
+        return json_encode(array('success' => false, 'message' => 'Something went wrong, please try again later.'));
+        var_dump($this->response);
+    }
+
+	public function print_export($id)
+    {
+        $barcodes = DBGate::where('id', $id)->get();
+
+        // dd($barcode);
+        return view('print.barcode', compact('barcodes'));
+    }
+	
 }
 
 
