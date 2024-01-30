@@ -68,5 +68,10 @@ Route::group(['prefix' => 'export', 'namespace' => 'Export'], function(){
         'as' => 'exp-manifest-edit',
         'uses' => 'ManifestController@edit'
     ]);
+
+    Route::post('/manifest/gateIn/TPS', [
+                'as' => 'exp-manifest-UploadTPS-cont',
+                'uses' => 'ManifestController@TPS'
+            ]);
     
 });
