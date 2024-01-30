@@ -18,7 +18,7 @@
 @section('content')
 <div class="box">
     <div class="box-header with-border">
-        <h3 class="box-title">Export Realisasi Masuk / Gate In (Container)</h3>
+        <h3 class="box-title">Export Realisasi Masuk / Gate In (Cargo)</h3>
 
     </div>
     <div class="box-body">
