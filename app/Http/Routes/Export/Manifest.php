@@ -63,57 +63,10 @@ Route::group(['prefix' => 'export', 'namespace' => 'Export'], function(){
         'uses' => 'ManifestController@gateInApprovePost'
     ]);
 
-    Route::post('/manifest/create', [
-        'as' => 'lcl-manifest-store',
-        'uses' => 'ManifestController@Store'
-    ]);
+    
     Route::get('/manifest/edit/{id}', [
         'as' => 'exp-manifest-edit',
         'uses' => 'ManifestController@edit'
     ]);
-    Route::post('/manifest/edit/{id}', [
-        'as' => 'lcl-manifest-update',
-        'uses' => 'ManifestController@Update'
-    ]);
-    Route::get('/manifest/delete/{id}', [
-        'as' => 'lcl-manifest-delete',
-        'uses' => 'ManifestController@destroy'
-    ]);
-    Route::get('/manifest/approve/{id}', [
-        'as' => 'lcl-manifest-approve',
-        'uses' => 'ManifestController@approve'
-    ]);
-    Route::get('/manifest/approve-all/{id}', [
-        'as' => 'lcl-manifest-approve-all',
-        'uses' => 'ManifestController@approveAll'
-    ]);
     
-    // PRINT
-    Route::get('/manifest/cetak/{id}/{type}', [
-        'as' => 'lcl-manifest-cetak',
-        'uses' => 'ManifestController@cetak'
-    ]);
-    
-    // TPS ONLINE COARI KEMASAN
-    Route::post('/manifest/upload', [
-        'as' => 'lcl-manifest-upload',
-        'uses' => 'ManifestController@upload'
-    ]);
-    
-    // UPLOAD PHOTO
-    Route::post('/manifest/upload/photo/{ref}', [
-        'as' => 'lcl-manifest-upload-photo',
-        'uses' => 'ManifestController@uploadPhoto'
-    ]);
-    
-    // GET NO.POS
-    Route::get('/manifest/get-nopos/{id}', [
-        'as' => 'lcl-manifest-get-nopos',
-        'uses' => 'ManifestController@getNopos'
-    ]);
-
-    Route::post('/manifest/gateIn/TPS', [
-        'as' => 'exp-manifest-UploadTPS-cont',
-        'uses' => 'ManifestController@TPS'
-    ]);
 });
