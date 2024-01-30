@@ -26,6 +26,11 @@ Route::group(['prefix' => 'barcode'], function(){
         'as' => 'cetak-barcode',
         'uses' => 'BarcodeController@printBarcodePreview'
     ]);
+
+    Route::get('/export/print/{id}', [
+        'as' => 'cetak-barcode-export',
+        'uses' => 'BarcodeController@print_export'
+    ]);
     
     Route::post('/set-rfid', [
         'as' => 'set-rfid',

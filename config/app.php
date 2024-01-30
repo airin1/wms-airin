@@ -166,7 +166,8 @@ return [
         Artisaninweb\SoapWrapper\ServiceProvider::class,
         Artesaos\SEOTools\Providers\SEOToolsServiceProvider::class,
         SimpleSoftwareIO\QrCode\QrCodeServiceProvider::class,
-        Intervention\Image\ImageServiceProvider::class
+        Intervention\Image\ImageServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class
 
     ],
 
@@ -224,7 +225,8 @@ return [
         'OpenGraph' => Artesaos\SEOTools\Facades\OpenGraph::class,
         'Twitter'   => Artesaos\SEOTools\Facades\TwitterCard::class,
         'QrCode' => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
-        'Image' => Intervention\Image\Facades\Image::class
+        'Image' => Intervention\Image\Facades\Image::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class
     ],
 
 ];

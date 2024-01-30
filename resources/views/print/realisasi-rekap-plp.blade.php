@@ -310,16 +310,19 @@ table tfoot tr td:first-child {
 			<th style="text-align: center;">%</th>
             
         </tr>
-        <?php $i = 1;?>
-        @foreach($containers as $container)
+        <?php $i = 1;
+		for ($x = 1; $x <= 12; $x++) {
+		
+		?>
+      
 		<?php $monthName = date("F", mktime(0, 0, 0,   $i, 10));?>
         <tr>
             <td rowspan="4"  style="text-align: center;border-top: 1px solid;">{{$i}}</td>
 			<td rowspan="4" style="text-align: center;border-top: 1px solid;"><b>{{ $monthName}}</b></td>
  			<td style="text-align: center;border-top: 1px solid;"><b>DRY</b></td>
 
-            <td style="text-align: center;border-top: 1px solid;"><b>{{$container['arn120dry']}}</b></td>
-            <td style="text-align: center;border-top: 1px solid;"><b>{{$container->box40arn1dry[$i]}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$containers->$arn120dry[5]}}</b></td>
+            <td style="text-align: center;border-top: 1px solid;"><b>{{$containers->arn140dry[$x]}}</b></td>
 			<td style="text-align: center;border-top: 1px solid;"><b>{{$footer['box20arn1dry']+$footer['box40arn1dry']}}</b></td>
             <td style="text-align: center;border-top: 1px solid;"><b>{{$container->box20arn3dry[$i]}}</b></td>
             <td style="text-align: center;border-top: 1px solid;"><b>{{$container->box40arn3dry[$i]}}</b></td>
@@ -407,8 +410,10 @@ table tfoot tr td:first-child {
 	        <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
        	    <td style="text-align: center;border-top: 1px solid;"><b>{{$footer['jumlah']}}</b></td>
         </tr>
-        <?php $i++;?>
-        @endforeach
+        <?php $i++;
+		}
+		?>
+    
         <tr>
             <td rowspan="3" colspan="2" style="text-align: center;border-top: 1px solid;"><b>JUMLAH TOTAL</b></td>
 			<td style="text-align: center;border-top: 1px solid;"><b>DRY</b></td>

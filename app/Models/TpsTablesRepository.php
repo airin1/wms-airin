@@ -408,7 +408,72 @@ class TpsTablesRepository extends EloquentRepositoryAbstract {
                 }
             }
             
-        }else{
+        }elseif($Model->getMorphClass() == 'App\Models\TpsDokNPE'){   
+            if(isset($request['startdate']) && isset($request['enddate'])){
+                if($request['by'] == 'TGL_UPLOAD') {
+                    $start_date = date('Y-m-d 00:00:00', strtotime($request['startdate']));
+                    $end_date = date('Y-m-d 23:59:59', strtotime($request['enddate']));
+                }else{
+                    $start_date = date('Ymd',strtotime($request['startdate']));
+                    $end_date = date('Ymd',strtotime($request['enddate']));      
+                }
+                $Model = \DB::table('tps_doknpexml')
+                        ->where($request['by'], '>=', $start_date)
+                        ->where($request['by'], '<=', $end_date);
+            }else{
+                
+                if(isset($request['type']) && isset($request['TPS_DOKNPE_PK'])){
+                    
+                    $type = $request['type'];
+                    $dok = \DB::table('tps_doknpexml')->where('TPS_DOKNPE_PK',$request['TPS_DOKNPE_PK'])->pluck('NONPE');
+           
+                    
+                    if($type == 'cont') {
+                        $Model = \DB::table('tps_doknpexml')
+                            ->whereIn('NONPE', $dok);
+                    }else{
+                        $Model = \DB::table('tps_doknpexml')
+                            ->where('NONPE', $dok);
+                    }
+                    
+                }else{
+
+                }
+                
+            }
+        }elseif($Model->getMorphClass() == 'App\Models\TpsDokPKBE'){   
+            if(isset($request['startdate']) && isset($request['enddate'])){
+                if($request['by'] == 'TGL_UPLOAD') {
+                    $start_date = date('Y-m-d 00:00:00', strtotime($request['startdate']));
+                    $end_date = date('Y-m-d 23:59:59', strtotime($request['enddate']));
+                }else{
+                    $start_date = date('Ymd',strtotime($request['startdate']));
+                    $end_date = date('Ymd',strtotime($request['enddate']));      
+                }
+                $Model = \DB::table('tps_dokpkbe')
+                        ->where($request['by'], '>=', $start_date)
+                        ->where($request['by'], '<=', $end_date);
+            }else{
+                
+                if(isset($request['type']) && isset($request['TPS_PKBE_PK'])){
+                    
+                    $type = $request['type'];
+                    $dok = \DB::table('tps_dokpkbe')->where('TPS_PKBE_PK',$request['TPS_PKBE_PK'])->pluck('NOPKBE');
+                    if($type == 'cont') {
+                        $Model = \DB::table('tps_doknpexml')
+                            ->where('NOPKBE', $dok);
+                    }else{
+                        $Model = \DB::table('tps_dokpkbe')
+                            ->where('TPS_DOKPKBE_PK', $request['dokPKBEid']);
+                    }
+                    
+                }else{
+
+                }
+                
+            }
+        }
+        else{
                         
         }
         

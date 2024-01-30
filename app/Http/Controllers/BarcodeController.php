@@ -1049,9 +1049,8 @@ class BarcodeController extends Controller
       //  $tgl2='2023-09-22';
         
 		
-	  $tgl1='2024-01-02 08:00:00'; 
-	    $tgl2='2024-01-07 08:00:00'; 
-	
+	   $tgl1='2024-01-07 08:00:00'; 
+	    $tgl2='2024-01-26 08:00:00'; 
 	   
 	   //$jam1=  substr($tgl1,0,10);
 	   //$jam2=  substr($tgl2,0,10);
@@ -1140,8 +1139,8 @@ class BarcodeController extends Controller
        //$tgl2='2023-09-22 11:15:00';
         
 		
-	    $tgl1='2024-01-02 08:00:00'; 
-	    $tgl2='2024-01-07 08:00:00'; 
+	    $tgl1='2024-01-07 08:00:00'; 
+	    $tgl2='2024-01-26 08:00:00'; 
 		
 	   //$jam1=  substr($tgl1,0,10);
 	   //$jam2=  substr($tgl2,0,10);

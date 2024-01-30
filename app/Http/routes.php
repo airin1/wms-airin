@@ -91,6 +91,9 @@ ini_set('default_socket_timeout', 60);
         // NPCT1 Routes
         require_once 'Routes/RoutesNpct.php';
         
+        // Export
+        require_once 'Routes/RoutesExport.php';
+
         // GLOBAL Routes
         Route::get('/getDataPelabuhan', [
             'as' => 'getDataPelabuhan',
@@ -146,6 +149,11 @@ Route::get('/autogate/npctmovementcreatemanual', [
     'uses' => 'BarcodeController@ManualMovementContainer',
     'as' => 'autogate-npctmovementcreatemanual'
     ]);	
+	
+Route::get('/autogate/npctmovementcreatemanualLCL', [
+    'uses' => 'BarcodeController@ManualMovementContainerLCL',
+    'as' => 'autogate-npctmovementcreatemanualLCL'
+    ]);		
 
 Route::get('/autogate/npctmovementupload', [
     'uses' => 'BarcodeController@AutomovementUpload',

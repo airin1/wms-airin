@@ -126,6 +126,46 @@
                   </li>
                 </ul>
               </li>
+
+              <li class="treeview">
+                    <a href="#">
+                      <i class="fa fa-th"></i> <span>Export (Stuffing)</span>
+                      <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                      </span>
+                    </a>
+                    <ul class="treeview-menu">
+                      <li><a tabindex="-1" href="{{ route('exp-register-index') }}">Register</a></li>
+                      <li><a tabindex="-1" href="{{ route('exp-manifest-index') }}">Manifest</a></li>
+                      <!-- <li><a tabindex="-1" href="{{ route('lcl-dispatche-index') }}">Dispatche E-Seal</a></li> -->
+                      <li class="treeview">
+                        <a href="#"><i class="fa fa-circle-o"></i> Realisasi
+                          <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                          </span>
+                        </a>
+                        <ul class="treeview-menu">
+                          <li><a href="{{ route('exp-register-gateIn') }}">Masuk / Gate In (Container)</a></li>
+                          <li><a href="{{ route('exp-manifest-gateIn') }}">Masuk / Gate In (Barang)</a></li>
+                          <li><a href="{{ route('exp-stuffing-index')}}">Stuffing</a></li>
+           
+                        </ul>
+                      </li>
+
+                      <li class="treeview">
+                        <a href="#"><i class="fa fa-circle-o"></i> Delivery
+                          <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                          </span>
+                        </a>
+                        <ul class="treeview-menu">
+                    
+                          <li><a href="{{ route('exp-release-gateOut') }}">Release / Gate Out</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+
               <li class="treeview">
                 <a href="#">
                   <i class="fa fa-pie-chart"></i>
@@ -202,7 +242,7 @@
                 <a href="#">
                     <i class="fa fa-legal"></i> <span>Bea Cukai @if($notif_behandle['total'] > 0)<small class="label pull-right bg-red">{{$notif_behandle['total']}}</small>@endif</span>
                 </a>
-                <ul class="treeview-menu">
+                <ul class="treeview-menu"> 
                     <li class="treeview">
                         <a href="#">
                             <span>LCL @if($notif_behandle['lcl'] > 0)<small class="label pull-right bg-red">{{$notif_behandle['lcl']}}</small>@endif</span>
@@ -302,6 +342,59 @@
                             </li>
                         </ul>
                     </li>
+
+                    <!-- Export -->
+                    <li class="treeview">
+                        <a href="#">
+                            <span>Export</span>
+                        </a>
+                        <ul class="treeview-menu">
+<!--                            <li><a tabindex="-1" href="{{ route('lcl-behandle-index') }}">Status Behandle @if($notif_behandle['lcl'] > 0)<small class="label pull-right bg-red">{{$notif_behandle['lcl']}}</small>@endif</a></li>-->
+                            <!-- <li class="treeview">
+                                <a href="#">
+                                    <span>Behandle</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="{{ route('lcl-behandle-index') }}">Ready @if($notif_behandle['lcl'] > 0)<small class="label pull-right bg-red">{{$notif_behandle['lcl']}}</small>@endif</a></li>
+                                    <li><a href="{{ route('lcl-behandle-finish') }}">Finish</a></li>
+                                </ul>
+                            </li> -->
+                            <li><a href="{{route('exp-release-HoldBC')}}">Dokumen HOLD</a></li>
+							              <!-- <li><a href="{{route('lcl-mtyhold-index')}}">Dokumen MTY HOLD</a></li>
+							              <li><a href="{{route('lcl-lain-index')}}">Dokumen HOLD LAINNYA</a></li> -->
+                            <!--<li><a href="{{route('lcl-segel-index')}}">Segel Merah</a></li>-->
+                            <!-- <li class="treeview">
+                                <a href="#">
+                                    <span>Segel Merah</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="{{ route('lcl-segel-index') }}">List Container</a></li>
+                                    <li><a href="{{ route('lcl-segel-report') }}">Report Lepas Segel</a></li>
+                                </ul>
+                            </li>
+                            <li class="treeview">
+                                <a href="#">
+                                    <span>Report</span>
+                                    <span class="pull-right-container">
+                                        <i class="fa fa-angle-left pull-right"></i>
+                                    </span>
+                                </a>
+                                <ul class="treeview-menu">
+                                    <li><a href="{{ route('lcl-bc-report-container') }}">Report Container</a></li>
+                                    <li><a href="{{ route('lcl-bc-report-stock') }}">Report Cargo</a></li>
+                                    <li><a href="{{ route('lcl-bc-report-inventory') }}">Report Stock</a></li>
+                                    <li><a href="{{ route('lcl-report-harian') }}">Daily Report</a></li>
+                                </ul>
+                            </li> -->
+                        </ul>
+                    </li>
+
                 </ul>
             </li>
         @else
@@ -468,6 +561,9 @@
                       </li>
                     </ul>
                   </li>
+
+                
+
                   <li class="treeview">
                     <a href="#">
                       <i class="fa fa-th"></i> <span>Import FCL</span>
@@ -525,6 +621,71 @@
                       </li>
                     </ul>
                   </li>
+
+                    <!-- EXPORT -->
+                    <li class="treeview">
+                    <a href="#">
+                      <i class="fa fa-th"></i> <span>Export (Stuffing)</span>
+                      <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                      </span>
+                    </a>
+                    <ul class="treeview-menu">
+                      <li><a tabindex="-1" href="{{ route('exp-register-index') }}">Register</a></li>
+                      <li><a tabindex="-1" href="{{ route('exp-manifest-index') }}">Manifest</a></li>
+                      <!-- <li><a tabindex="-1" href="{{ route('lcl-dispatche-index') }}">Dispatche E-Seal</a></li> -->
+                      <li class="treeview">
+                        <a href="#"><i class="fa fa-circle-o"></i> Photo
+                          <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                          </span>
+                        </a>
+                        <ul class="treeview-menu">
+                          <li><a href="{{ route('exp-container-photo') }}">Container</a></li>
+                          <li><a href="{{ route('exp-manifest-photo') }}">Cargo</a></li>
+                        </ul>
+                      </li>
+                      <li class="treeview">
+                        <a href="#"><i class="fa fa-circle-o"></i> Realisasi
+                          <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                          </span>
+                        </a>
+                        <ul class="treeview-menu">
+                          <li><a href="{{ route('exp-register-gateIn') }}">Masuk / Gate In (Container)</a></li>
+                          <li><a href="{{ route('exp-manifest-gateIn') }}">Masuk / Gate In (Barang)</a></li>
+                          <li><a href="{{ route('exp-stuffing-index')}}">Stuffing</a></li>
+           
+                        </ul>
+                      </li>
+
+                      <li class="treeview">
+                        <a href="#"><i class="fa fa-circle-o"></i> Delivery
+                          <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                          </span>
+                        </a>
+                        <ul class="treeview-menu">
+                    
+                          <li><a href="{{ route('exp-release-gateOut') }}">Release / Gate Out</a></li>
+                        </ul>
+                      </li>
+
+                      <li class="treeview">
+                        <a href="#"><i class="fa fa-circle-o"></i> Report
+                          <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                          </span>
+                        </a>
+                        <ul class="treeview-menu">
+                          <li><a href="{{ route('exp-report-cont') }}">Report Container</a></li>
+                          <!-- <li><a href="{{ route('lcl-report-inout') }}">Report Cargo</a></li>     -->
+                          <li><a href="{{ route('exp-report-mani') }}">Report Stock</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </li>
+
                   <li class="treeview">
                     <a href="#">
                       <i class="fa fa-pie-chart"></i>
@@ -563,7 +724,8 @@
                           <li><a href="{{ route('tps-sppbPib-index') }}">Data SPPB</a></li>
                           <li><a href="{{ route('tps-sppbBc-index') }}">Data SPPB BC23</a></li>
                           <li><a href="{{ route('tps-infoNomorBc-index') }}">Info Nomor BC11</a></li>
-						  <li><a href="{{ route('tps-dokNPE-index') }}">Data Dok NPE</a></li>
+						              <li><a href="{{ route('tps-dokNPE-index') }}">Data Dok NPE</a></li>
+						              <li><a href="{{ route('tps-dokPKBE-index') }}">Data Dok PKBE</a></li>
 						
                         </ul>
                       </li>

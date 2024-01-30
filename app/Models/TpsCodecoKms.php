@@ -15,4 +15,13 @@ class TpsCodecoKms extends Model
     protected $primaryKey = 'TPSCODECOKMSXML_PK';
     public $timestamps = false;
 
+    public $fillable = [
+        'NOJOBORDER',
+        'TGL_ENTRY',
+        'JAM_ENTRY',
+        'REF_NUMBER',
+        'UID',
+        'NOMOR',
+    ];
+
 }

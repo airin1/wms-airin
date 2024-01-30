@@ -21,6 +21,7 @@
             color: #000;
             background: #fff;
             font-weight: 800;
+			
         }
         .print-btn {
             display: none;
@@ -31,8 +32,8 @@
 @foreach($container1 as $container)
    
 <div style="width: 700px;height: 850px;border: 1px solid transparent;padding: 30px;">
-    <div style="float:left;font-size: 10px;">PRINT TIME {{ date('d/m/Y H:i')}}</div>
-    <!--<div style="width: 100%;height: 80px;border: 1px solid transparent;display: relative;">-->
+    <div style="float:left;font-size: 10px;">PRINT TIME {{ date('d/m/Y H:i')}}</div> 
+     <!--<div style="width: 100%;height: 80px;border: 1px solid transparent;display: relative;">-->
         
         <div style="float: right;margin-top: 90px;margin-bottom: 20px;">
             <table>
@@ -55,8 +56,9 @@
         </div>
     <!--</div>-->
     <br />
-    <div style="width: 100%;height: 200px;border: 1px solid transparent;">
-        <table width="100%">
+    <div style="margin-left: -5px;width: 100%;height: 200px;border: 1px solid transparent;">
+      <div style="margin-left:1; width: 100%;height: 100px;border: 1px solid transparent;">       
+	   <table width="100%">
             <tr>
                 <td style="width: 65%;">
                     <table>
@@ -131,6 +133,7 @@
                 <td></td>
             </tr>
         </table>
+		</div>
         <div style="width: 100%;height: 100px;border: 1px solid transparent;">
             <table width="100%">
                 <tr>

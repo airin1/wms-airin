@@ -15,4 +15,16 @@ class TpsCoariCont extends Model
     protected $primaryKey = 'TPSCOARICONTXML_PK';
     public $timestamps = false;
 
+    public $fillable = [
+        'REF_NUMBER',
+        'TGL_ENTRY',
+        'JAM_ENTRY',
+        'UID',
+        'NOMOR',
+        'STATUS_REF',
+        'REF_NUMBER_REVISI',
+        'FLAG_REVISI',
+        'TGL_REVISI',
+    ];
+
 }

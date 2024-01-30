@@ -15,4 +15,12 @@ class TpsCoariKms extends Model
     protected $primaryKey = 'TPSCOARIKMSXML_PK';
     public $timestamps = false;
 
+    public $fillable = [
+        'TGL_ENTRY',
+        'JAM_ENTRY',
+        'REF_NUMBER',
+        'UID',
+        'NOMOR',
+    ];
+
 }

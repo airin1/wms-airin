@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Models\TpsDokNPE;
+use App\Models\TpsDokPKBE;
 
 class PenerimaanController extends Controller
 {
@@ -251,11 +253,86 @@ class PenerimaanController extends Controller
                 'title' => 'TPS NPE'
             ]
         ];        
+        $npe = TpsDokNPE::get();
         
-        return view('tpsonline.index-dok-npe')->with($data);
+        return view('tpsonline.index-dok-npe', compact('npe'))->with($data);
     }
 	
-	
+    public function dokNPEEdit($id)
+    {
+        if ( !$this->access->can('show.tps.sppbBc.edit') ) {
+            return view('errors.no-access');
+        }
+        
+        // Create Roles Access
+        $this->insertRoleAccess(array('name' => 'Edit TPS NPE', 'slug' => 'show.tps.npe.edit', 'description' => ''));
+        
+        $data['page_title'] = "Edit Dok Npe";
+        $data['page_description'] = "";
+        $data['breadcrumbs'] = [
+            [
+                'action' => route('tps-sppbBc-index'),
+                'title' => 'TPS SPPB BC23'
+            ],
+            [
+                'action' => '',
+                'title' => 'Edit'
+            ]
+        ];
+        
+        $data['npe'] = \App\Models\TpsDokNPE::find($id);
+        
+        return view('tpsonline.edit-dok-npe')->with($data);
+    }
+
+    public function dokPKBEindex()
+    {
+        if ( !$this->access->can('show.tps.pkbe.index') ) {
+            return view('errors.no-access');
+        }
+        
+        // Create Roles Access
+        //$this->insertRoleAccess(array('name' => 'Index TPS OB LCL', 'slug' => 'show.tps.obLcl.index', 'description' => ''));
+        
+        $data['page_title'] = "TPS PKBE";
+        $data['page_description'] = "";
+        $data['breadcrumbs'] = [
+            [
+                'action' => '',
+                'title' => 'TPS PKBE'
+            ]
+        ];        
+        $pkbe = TpsDokPKBE::get();
+        
+        return view('tpsonline.index-dok-pkbe', compact('pkbe'))->with($data);
+    }
+
+    public function dokPKBEedit($id)
+    {
+        if ( !$this->access->can('show.tps.pkbe.edit') ) {
+            return view('errors.no-access');
+        }
+        
+        // Create Roles Access
+        $this->insertRoleAccess(array('name' => 'Edit TPS PKBE', 'slug' => 'show.tps.pkbe.edit', 'description' => ''));
+        
+        $data['page_title'] = "Edit Dok PKBE";
+        $data['page_description'] = "";
+        $data['breadcrumbs'] = [
+            [
+                'action' => route('tps-dokPKBE-index'),
+                'title' => 'TPS PKBE'
+            ],
+            [
+                'action' => '',
+                'title' => 'Edit'
+            ]
+        ];
+        
+        $data['pkbe'] = \App\Models\TpsDokPKBE::find($id);
+        
+        return view('tpsonline.edit-dok-pkbe')->with($data);
+    }
 	
 	
     /**
@@ -494,6 +571,8 @@ class PenerimaanController extends Controller
         return view('tpsonline.edit-dok-pabean')->with($data);
     }
     
+
+   
     /**
      * Update the specified resource in storage.
      *
@@ -517,6 +596,14 @@ class PenerimaanController extends Controller
     }
     
     public function sppbPibUpdate(Request $request, $id)
+    {
+        
+    }
+    public function dokNpeUpdate(Request $request, $id)
+    {
+        
+    }
+    public function dokPKBEUpdate(Request $request, $id)
     {
         
     }
@@ -1035,6 +1122,15 @@ class PenerimaanController extends Controller
 
         return view('print.sppb-bc')->with($data);
     }
+
+    public function npePrint($id)
+    {
+        $data['npe'] = \App\Models\TpsDokNPE::find($id);
+        $data['con'] = \App\Models\TpsDokNPE::where('TPS_DOKNPE_PK', $id)->get();
+
+
+        return view('print.npe')->with($data);
+    }
     
     public function sppbPibPrint($id)
     {
@@ -1044,5 +1140,14 @@ class PenerimaanController extends Controller
       
 
 		return view('print.sppb-pib')->with($data);
+    }
+
+    public function pkbePrint($id)
+    {
+        $data['pkbe'] = \App\Models\TpsDokPKBE::find($id);
+        $data['con'] = \App\Models\TpsDokPKBE::where('TPS_DOKPKBE_PK', $id)->get();
+
+
+        return view('print.pkbe')->with($data);
     }
 }

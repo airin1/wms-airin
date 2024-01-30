@@ -15,4 +15,11 @@ class Packing extends Model
     protected $primaryKey = 'TPACKING_PK';
     public $timestamps = false;
 
+    public $fillable = [
+        'NAMAPACKING',
+        'KODEPACKING',
+        'UID'
+    ];
+    
+
 }

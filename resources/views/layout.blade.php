@@ -17,6 +17,7 @@
         <!-- Ionicons -->
         <link href="http://code.ionicframework.com/ionicons/2.0.0/css/ionicons.min.css" rel="stylesheet" type="text/css" />
         
+        
         @yield('custom_css')
         
         <!-- Theme style -->
@@ -26,6 +27,9 @@
               apply the skin class to the body tag so the changes take effect.
         -->
         <link href="{{ asset("/bower_components/AdminLTE/dist/css/skins/skin-red-light.min.css")}}" rel="stylesheet" type="text/css" />
+        <link href="{{ asset("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.css")}}" rel="stylesheet"/>
+        <link href="{{ asset("/bower_components/AdminLTE/plugins/sweetalert2/sweetalert2.min.css")}}" rel="stylesheet"/>
+        <link href="{{ asset("/bower_components/AdminLTE/plugins/select2/select2.min.css")}}" rel="stylesheet"/>
 
         <!-- jQuery 2.2.3 -->
         <script src="{{ asset ("/bower_components/AdminLTE/plugins/jQuery/jquery-2.2.3.min.js") }}"></script>
@@ -126,6 +130,10 @@
         <script src="{{ asset ("/bower_components/AdminLTE/bootstrap/js/bootstrap.min.js") }}" type="text/javascript"></script>
         <!-- FastClick -->
         <script src="{{ asset ("/bower_components/AdminLTE/plugins/fastclick/fastclick.js") }}" type="text/javascript"></script>
+        <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/jquery.dataTables.min.js") }}" type="text/javascript"></script>
+        <script src="{{ asset ("/bower_components/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js") }}" type="text/javascript"></script>
+        <script src="{{ asset ("/bower_components/AdminLTE/plugins/sweetalert2/sweetalert2.min.js") }}" type="text/javascript"></script>
+        <script src="{{ asset ("/bower_components/AdminLTE/plugins/select2/select2.full.min.js") }}" type="text/javascript"></script>
         <!-- AdminLTE App -->
         <script src="{{ asset ("/bower_components/AdminLTE/dist/js/app.min.js") }}" type="text/javascript"></script>
         
@@ -134,6 +142,20 @@
         <!-- Optionally, you can add Slimscroll and FastClick plugins.
               Both of these plugins are recommended to enhance the
               user experience -->
+              <script>
+  $(function () {
+    $("#example1").DataTable();
+    $("#example3").DataTable();
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false
+    });
+  });
+</script>
 
     </body>
 </html>

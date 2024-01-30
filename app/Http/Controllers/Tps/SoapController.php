@@ -1231,6 +1231,7 @@ class SoapController extends DefaultController {
             'NPWP_Imp' => $request->npwp_imp //033153321035000
         ];
         
+        
         // Using the added service
         \SoapWrapper::service('TpsOnline_GetSppb_Bc23', function ($service) use ($data) {        
             $this->response = $service->call('GetSppb_Bc23', [$data])->GetSppb_Bc23Result;      
@@ -1948,16 +1949,153 @@ class SoapController extends DefaultController {
     							
     						  $docmanual->save();
 						      }
-		              }
+		              }elseif ($key1 == 'KMS' || $key1 == 'kms') {
+                        $JNS_KMS = '';
+                        $JML_KMS = '';
+                      
+                        
+                        foreach ($value1 as $keyk=>$valuek):
+                           if($keyk == 'JNS_KMS' || $keyk == 'jns_kms'){ $JNS_KMS=$valuek; }
+                           if($keyk == 'JML_KMS' || $keyk == 'jml_kms'){ $JML_KMS=$valuek; }
+                        endforeach;
+                           
+                           //$docmanual->$keyk = $valuek;
+                         /*
+                          * SELECT `TPS_DOKNPE_PK`, `KD_KANTOR`, `NO_DAFTAR`, `NONPE`, `TGL_DAFTAR`, 
+                          * `TGLNPE`, `NPWP_EKS`, `NAMA_EKS`, `FL_SEGEL`, `SERI_CONT`, `NO_CONT`, `SIZE`, 
+                          * `TGL_UPLOAD`, `JAM_UPLOAD` FROM `tps_doknpexml` WHERE 1
+                          */
+                           if ( !empty($JML_KMS)
+                               && !empty($JNS_KMS) ) {
+                           $docmanual->KD_KANTOR= $KD_KANTOR;
+                           $docmanual->NO_DAFTAR= $NO_DAFTAR;
+                           $docmanual->NONPE= $NONPE;
+                           $docmanual->TGL_DAFTAR= $TGL_DAFTAR;
+                           $docmanual->TGLNPE= $TGLNPE;
+                           $docmanual->NPWP_EKS= $NPWP_EKS;
+                           $docmanual->NAMA_EKS= $NAMA_EKS;
+                           $docmanual->FL_SEGEL= $FL_SEGEL;
+                           //container
+                           $docmanual->JNS_KMS= $JNS_KMS;
+                           $docmanual->JML_KMS= $JML_KMS;
+                           //-_-
+                           $docmanual->TGL_UPLOAD = date('Y-m-d');
+                           $docmanual->JAM_UPLOAD = date('H:i:s');
+                            
+                       
+                           $docmanual->save();
+                           }
+                      }
 					endforeach;  
                 }
             endforeach;
         endforeach;
+        // dd($data, $xml, $docmanual);
     
         return back()->with('success', 'Get Dokumen NPE has been success.');
         
     }
 	
+    public function GetEkspor_PKBE(Request $request)
+    {
+        \SoapWrapper::add(function ($service) {
+            $service
+                ->name('GetEkspor_PKBE')
+                ->wsdl($this->wsdl)
+                ->trace(true)                                                                                                  
+//                ->certificate()                                                 
+//                ->cache(WSDL_CACHE_NONE)                                        
+                ->options([
+                    'stream_context' => stream_context_create([
+                        'ssl' => array(
+                            'verify_peer' => false,
+                            'verify_peer_name' => false,
+                            'allow_self_signed' => true
+                        )
+                    ])
+                ]);                                                     
+        });
+        $tgl_pkbe = $request->tgl_pkbe;
+        $tgl_obj = \DateTime::createFromFormat('Y-m-d', $tgl_pkbe);
+        $tgl_hasil = $tgl_obj->format('dmY');
+        
+        $data = [
+            'UserName' 	=> $this->user, 
+            'Password' 	=> $this->password,
+			'No_PKBE' 	=> $request->no_pkbe,
+            'TGL_PKBE' 	    => $tgl_hasil,           
+            'kdKantor' 	=>$request->kd_kantor
+        ];
+
+        // dd($data);
+        
+        // Using the added service
+        \SoapWrapper::service('GetEkspor_PKBE', function ($service) use ($data) {        
+            $this->response = $service->call('GetEkspor_PKBE', [$data])->GetEkspor_PKBEResult;      
+        });
+        
+        libxml_use_internal_errors(true);
+        $xml = simplexml_load_string($this->response);
+        if(!$xml || !$xml->children()){
+            return back()->with('error', $this->response);
+        }
+        
+        \DB::listen(function ($query) {
+            \Log::debug("Executed SQL: " . $query->sql);
+            \Log::debug("Bindings: " . json_encode($query->bindings));
+            \Log::debug("Time: " . $query->time . "ms");
+        });
+    
+        $pkbe = new \App\Models\TpsDokPKBE;
+        foreach ($xml->children() as $data):
+            foreach ($data as $key => $value):
+                if ($key == 'CAR' || $key == 'car') {
+                        if($key == 'CAR' || $key == 'CAR')
+                        { $CAR=$value; }
+                              $pkbe->CAR= $CAR;
+                    }
+                if ($key == 'KD_KANTOR' || $key == 'KD_KANTOR') {
+                    if($key == 'KD_KANTOR' || $key == 'KD_KANTOR')
+                    { $KD_KANTOR=$value; }
+                          $pkbe->KD_KANTOR= $KD_KANTOR;
+                }
+                if ($key == 'NOPKBE' || $key == 'NOPKBE') {
+                    if($key == 'NOPKBE' || $key == 'NOPKBE')
+                    { $NOPKBE=$value; }
+                          $pkbe->NOPKBE= $NOPKBE;
+                }
+                if ($key == 'TGLPKBE' || $key == 'TGLPKBE') {
+                    if($key == 'TGLPKBE' || $key == 'TGLPKBE')
+                    { $TGLPKBE=$value; }
+                          $pkbe->TGLPKBE= $TGLPKBE;
+                }
+                if ($key == 'NPWP_EKS' || $key == 'NPWP_EKS') {
+                    if($key == 'NPWP_EKS' || $key == 'NPWP_EKS')
+                    { $NPWP_EKS=$value; }
+                          $pkbe->NPWP_EKS= $NPWP_EKS;
+                }
+                if ($key == 'NAMA_EKS' || $key == 'NAMA_EKS') {
+                    if($key == 'NAMA_EKS' || $key == 'NAMA_EKS')
+                    { $NAMA_EKS=$value; }
+                          $pkbe->NAMA_EKS= $NAMA_EKS;
+                }
+                if ($key == 'NO_CONT' || $key == 'NO_CONT') {
+                    if($key == 'NO_CONT' || $key == 'NO_CONT')
+                    { $NO_CONT=$value; }
+                          $pkbe->NO_CONT= $NO_CONT;
+                }
+                if ($key == 'SIZE' || $key == 'SIZE') {
+                    if($key == 'SIZE' || $key == 'SIZE')
+                    { $SIZE=$value; }
+                          $pkbe->SIZE= $SIZE;
+                }
+            endforeach;
+        endforeach;
+        $pkbe->save();
+    
+        return back()->with('success', 'Get Dokumen NPE has been success.');
+        
+    }
 	
     public function postCoarriCodeco_Container()
     {

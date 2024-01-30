@@ -22,15 +22,15 @@
  
     function gridCompleteEvent()
     {
-        var ids = jQuery("#tpsDokManualGrid").jqGrid('getDataIDs'),
+        var ids = jQuery("#tpsDokNPEGrid").jqGrid('getDataIDs'),
             edt = '',
             del = ''; 
         for(var i=0;i < ids.length;i++){ 
             var cl = ids[i];
             
-            edt = '<a href="{{ route("tps-dokmanual-edit",'') }}/'+cl+'"><i class="fa fa-pencil"></i></a> ';
+            edt = '<a href="{{ route("tps-doknpe-edit",'') }}/'+cl+'"><i class="fa fa-pencil"></i></a> ';
 //            del = '<a href="{{ route("lcl-register-delete",'') }}/'+cl+'" onclick="if (confirm(\'Are You Sure ?\')){return true; }else{return false; };"><i class="fa fa-close"></i></a>';
-            jQuery("#tpsDokManualGrid").jqGrid('setRowData',ids[i],{action:edt}); 
+            jQuery("#tpsDokNPEGrid").jqGrid('setRowData',ids[i],{action:edt}); 
         } 
     }
     
@@ -91,8 +91,8 @@
             ->setNavigatorOptions('navigator', array('viewtext'=>'view'))
             ->setNavigatorOptions('view',array('closeOnEscape'=>false))
             ->setFilterToolbarOptions(array('autosearch'=>true))
-      //      ->setGridEvent('gridComplete', 'gridCompleteEvent')
-      //      ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>80, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
+            ->setGridEvent('gridComplete', 'gridCompleteEvent')
+            ->addColumn(array('label'=>'Action','index'=>'action', 'width'=>80, 'search'=>false, 'sortable'=>false, 'align'=>'center'))
             ->addColumn(array('key'=>true,'index'=>'TPS_DOKNPE_PK','hidden'=>true))
 
             ->addColumn(array('label'=>'Kode Kantor','index'=>'KD_KANTOR','width'=>120,'align'=>'center'))
@@ -190,7 +190,7 @@
         var by = $("#by").val();
         var startdate = $("#startdate").val();
         var enddate = $("#enddate").val();
-        jQuery("#tpsDokManualGrid").jqGrid('setGridParam',{url:"{{URL::to('/tpsonline/penerimaan/dok-manual/grid-data')}}?startdate="+startdate+"&enddate="+enddate+"&by="+by}).trigger("reloadGrid");
+        jQuery("#tpsDokNPEGrid").jqGrid('setGridParam',{url:"{{URL::to('/tpsonline/penerimaan/dok-NPE/grid-data')}}?startdate="+startdate+"&enddate="+enddate+"&by="+by}).trigger("reloadGrid");
         return false;
     });
     

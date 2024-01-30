@@ -277,15 +277,59 @@ Route::group(['prefix' => 'tpsonline/penerimaan', 'namespace' => 'Tps'], functio
     {
         GridEncoder::encodeRequestedData(new \App\Models\TpsTablesRepository(new App\Models\TpsDokNPE(),Illuminate\Support\Facades\Request::all()) ,Illuminate\Support\Facades\Request::all());
     });
+
+    Route::post('/dok-npe/grid-data-detail', function()
+    {
+        GridEncoder::encodeRequestedData(new \App\Models\TpsTablesRepository(new App\Models\TpsDokNPE(),Illuminate\Support\Facades\Request::all()) ,Illuminate\Support\Facades\Request::all());
+    });
+    Route::post('/dok-npe/update/{id}', [
+        'as' => 'tps-npe-update',
+        'uses' => 'PenerimaanController@dokNpeUpdate'
+    ]);
   
     Route::post('/dok-npe/get-xml/ondemand', [
         'as' => 'tps-dokNPEOnDemand-get',
         'uses' => 'SoapController@GetEkspor_NPE'
     ]);
+    Route::get('/dok-npe/print/{id}', [
+        'as' => 'tps-npe-print',
+        'uses' => 'PenerimaanController@npePrint'
+    ]);
 	
 	
-	
-	
+    // PKBE
+	Route::get('/dok-pkbe',[
+        'as'=> 'tps-dokPKBE-index',
+        'uses' => 'PenerimaanController@dokPKBEindex',
+    ]);
+
+    Route::post('/dok-pkbe/get-xml/ondemand', [
+        'as' => 'tps-dokPKBEOnDemand-get',
+        'uses' => 'SoapController@GetEkspor_PKBE'
+    ]);
+    Route::get('/dok-pkbe/grid-data', function()
+    {
+        GridEncoder::encodeRequestedData(new \App\Models\TpsTablesRepository(new App\Models\TpsDokPKBE(),Illuminate\Support\Facades\Request::all()) ,Illuminate\Support\Facades\Request::all());
+    });
+
+    Route::get('/dok-pkbe/edit/{id}', [
+        'as' => 'tps-dokpkbe-edit',
+        'uses' => 'PenerimaanController@dokPKBEedit'
+    ]);
+    Route::post('/dok-pkbe/grid-data-detail', function()
+    {
+        GridEncoder::encodeRequestedData(new \App\Models\TpsTablesRepository(new App\Models\TpsDokPKBE(),Illuminate\Support\Facades\Request::all()) ,Illuminate\Support\Facades\Request::all());
+    });
+
+    Route::post('/dok-pkbe/update/{id}', [
+        'as' => 'tps-pkbe-update',
+        'uses' => 'PenerimaanController@dokPKBEUpdate'
+    ]);
+
+    Route::get('/dok-pkbe/print/{id}', [
+        'as' => 'tps-pkbe-print',
+        'uses' => 'PenerimaanController@pkbePrint'
+    ]);
 	
 	
 	
