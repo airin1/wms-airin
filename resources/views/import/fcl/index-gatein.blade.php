@@ -5,6 +5,10 @@
     .bootstrap-timepicker-widget {
         left: 27%;
     }
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+                background-color: #007bff; /* Warna biru */
+                color: #ffffff; /* Warna teks putih */
+     }
 </style>
 <script>
     

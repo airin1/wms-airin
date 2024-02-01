@@ -5,6 +5,10 @@
     .datepicker.dropdown-menu {
         z-index: 110 !important;
     }
+    .select2-container--default .select2-selection--multiple .select2-selection__choice {
+                background-color: #007bff; /* Warna biru */
+                color: #ffffff; /* Warna teks putih */
+     }
 </style>
 
 @include('partials.form-alert')
