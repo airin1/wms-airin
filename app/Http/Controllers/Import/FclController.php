@@ -2146,8 +2146,9 @@ UNZ+1+1709131341'\n";
 							
 							
 							//kalkulasi Reefer AIRN Shif
-						  
-						    $daterfr1 = date_create(date('Y-m-d',strtotime($data['TGLMASUK'])));
+						     
+							 //$daterfr1 = date_create(date('Y-m-d',strtotime($data['TGLMASUK'])));                            
+						    $daterfr1 = date_create(date('Y-m-d',strtotime($data['TGLMASUK']. '+1 days')));
                             $daterfr2 = date_create(date('Y-m-d',strtotime($tgl_release. '+1 days')));                          
 							$diffrfr = date_diff($daterfr1 , $daterfr2);
 						    $harirfr = (($diffrfr->format("%a") * 24)/8)-1;
@@ -2178,7 +2179,8 @@ UNZ+1+1709131341'\n";
                             }
                             
                             // PENUMPUKAN
-                            $date1 = date_create($data['TGLMASUK']);
+                            $date1 = date_create(date('Y-m-d',strtotime($data['TGLMASUK']. '+1 days')));
+							//$date1 = date_create($data['TGLMASUK']);
 //                            $date2 = date_create($data['TGLRELEASE']);
                             $date2 = date_create(date('Y-m-d',strtotime($tgl_release. '+1 days')));
                             $diff = date_diff($date1, $date2);
@@ -2199,7 +2201,8 @@ UNZ+1+1709131341'\n";
                             
                             $hari_masa2 = abs($hari - $hari_masa1);
                             
-                            $invoice_penumpukan->startdate = $data['TGLMASUK'];
+                            //$invoice_penumpukan->startdate = $data['TGLMASUK'];
+							$invoice_penumpukan->startdate = $date1;
                             $invoice_penumpukan->enddate = $tgl_release;
                             $invoice_penumpukan->lama_timbun = $hari;        
                             $invoice_penumpukan->tarif_dasar = $t20->masa1;
@@ -2378,8 +2381,9 @@ UNZ+1+1709131341'\n";
                             endforeach;
 							
 							//kalkulasi Reefer AIRN Shif
-							$daterfr1 = date_create(date('Y-m-d',strtotime($data['TGLMASUK'])));
-                            $daterfr2 = date_create(date('Y-m-d',strtotime($tgl_release. '+1 days')));                          
+							//$daterfr1 = date_create(date('Y-m-d',strtotime($data['TGLMASUK'])));
+                            $daterfr1 = date_create(date('Y-m-d',strtotime($data['TGLMASUK']. '+1 days')));
+							$daterfr2 = date_create(date('Y-m-d',strtotime($tgl_release. '+1 days')));                          
 							$diffrfr = date_diff($daterfr1 , $daterfr2);
 						    $harirfr = (($diffrfr->format("%a") * 24)/8)-1;
 
@@ -2409,7 +2413,9 @@ UNZ+1+1709131341'\n";
                             }
                             
                             // PENUMPUKAN
-                            $date1 = date_create($data['TGLMASUK']);
+                            $date1 = date_create(date('Y-m-d',strtotime($data['TGLMASUK']. '+1 days')));
+                        
+							//$date1 = date_create($data['TGLMASUK']);
 //                            $date2 = date_create($data['TGLRELEASE']);
                             $date2 = date_create(date('Y-m-d',strtotime($tgl_release. '+1 days')));
                             $diff = date_diff($date1, $date2);
@@ -2430,8 +2436,9 @@ UNZ+1+1709131341'\n";
                             
                             $hari_masa2 = abs($hari - $hari_masa1);
                             
-                            $invoice_penumpukan->startdate = $data['TGLMASUK'];
-                            $invoice_penumpukan->enddate = $tgl_release;
+                            //$invoice_penumpukan->startdate = $data['TGLMASUK'];
+                            $invoice_penumpukan->startdate = $date1;
+							$invoice_penumpukan->enddate = $tgl_release;
                             $invoice_penumpukan->lama_timbun = $hari;
                             $invoice_penumpukan->tarif_dasar = $t40->masa1;
                             $invoice_penumpukan->hari_masa1 = $hari_masa1;
@@ -2573,8 +2580,9 @@ UNZ+1+1709131341'\n";
                             endforeach;
                          
   						    //kalkulasi Reefer AIRN Shif
-							$daterfr1 = date_create(date('Y-m-d',strtotime($data['TGLMASUK'])));
-                            $daterfr2 = date_create(date('Y-m-d',strtotime($tgl_release. '+1 days')));                          
+							//$daterfr1 = date_create(date('Y-m-d',strtotime($data['TGLMASUK'])));
+                            $daterfr1 = date_create(date('Y-m-d',strtotime($data['TGLMASUK']. '+1 days')));
+							$daterfr2 = date_create(date('Y-m-d',strtotime($tgl_release. '+1 days')));                          
 							$diffrfr = date_diff($daterfr1 , $daterfr2);
 						    $harirfr = (($diffrfr->format("%a") * 24)/8)-1;
 
@@ -2603,7 +2611,8 @@ UNZ+1+1709131341'\n";
                             }
                             
                             // PENUMPUKAN
-                            $date1 = date_create($data['TGLMASUK']);
+                            $date1 = date_create(date('Y-m-d',strtotime($data['TGLMASUK']. '+1 days')));
+							//$date1 = date_create($data['TGLMASUK']);
 //                            $date2 = date_create($data['TGLRELEASE']);
                             $date2 = date_create(date('Y-m-d',strtotime($tgl_release. '+1 days')));
                             $diff = date_diff($date1, $date2);
@@ -2624,8 +2633,9 @@ UNZ+1+1709131341'\n";
                             
                             $hari_masa2 = abs($hari - $hari_masa1);
                             
-                            $invoice_penumpukan->startdate = $data['TGLMASUK'];
-                            $invoice_penumpukan->enddate = $tgl_release;
+                           // $invoice_penumpukan->startdate = $data['TGLMASUK'];
+		                   $invoice_penumpukan->startdate = $date1;
+		                    $invoice_penumpukan->enddate = $tgl_release;
                             $invoice_penumpukan->lama_timbun = $hari;
                             $invoice_penumpukan->tarif_dasar = $t45->masa1;
                             $invoice_penumpukan->hari_masa1 = $hari_masa1;
