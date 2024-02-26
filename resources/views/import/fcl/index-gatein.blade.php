@@ -5,10 +5,6 @@
     .bootstrap-timepicker-widget {
         left: 27%;
     }
-    .select2-container--default .select2-selection--multiple .select2-selection__choice {
-                background-color: #007bff; /* Warna biru */
-                color: #ffffff; /* Warna teks putih */
-     }
 </style>
 <script>
     
@@ -318,7 +314,8 @@
                     ->addColumn(array('label'=>'No. PLP','index'=>'NO_PLP','width'=>120,'hidden'=>false))
                     ->addColumn(array('label'=>'Tgl. PLP','index'=>'TGL_PLP','width'=>120,'hidden'=>false))                                    
 				   ->addColumn(array('label'=>'No. SPK','index'=>'NOSPK','width'=>150))
-                    ->addColumn(array('label'=>'No. BC11','index'=>'NO_BC11','width'=>120,'hidden'=>false))
+				   ->addColumn(array('label'=>'Consolidator','index'=>'NAMACONSOLIDATOR','width'=>250,'hidden'=>false))
+				   ->addColumn(array('label'=>'No. BC11','index'=>'NO_BC11','width'=>120,'hidden'=>false))
                     ->addColumn(array('label'=>'Tgl. BC11','index'=>'TGL_BC11','width'=>120,'hidden'=>false))
  
 				   ->addColumn(array('label'=>'TPS Asal','index'=>'KD_TPS_ASAL', 'width'=>80,'align'=>'center'))    
@@ -329,7 +326,6 @@
 					->addColumn(array('label'=>'Tujuan','index'=>'GUDANG_TUJUAN', 'width'=>80,'align'=>'center'))             
                     ->addColumn(array('label'=>'Tgl. ETA','index'=>'ETA','width'=>120,'align'=>'center'))                    
                     ->addColumn(array('index'=>'TCONSOLIDATOR_FK','hidden'=>true))
-                    ->addColumn(array('label'=>'Consolidator','index'=>'NAMACONSOLIDATOR','width'=>250,'hidden'=>true))
                     ->addColumn(array('index'=>'location_id', 'width'=>150,'hidden'=>true))
                     ->addColumn(array('label'=>'Location','index'=>'location_name','width'=>200, 'align'=>'center'))
                     ->addColumn(array('label'=>'No. Seal','index'=>'NO_SEAL', 'width'=>120,'align'=>'right','hidden'=>true))                    
