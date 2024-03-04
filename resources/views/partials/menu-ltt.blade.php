@@ -825,7 +825,7 @@
                       </a>
                   </li>
 				   <li class="treeview">
-                      <a href="http://203.173.92.178:8989/nle/">
+                      <a href="http://36.95.97.167:8989/nle/">
                           <i class="fa fa-barcode"></i> NLE
                       </a>
                   </li>
