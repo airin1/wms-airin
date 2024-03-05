@@ -94,16 +94,7 @@
                 </thead>
                 <tbody>
                    
-                    <!-- @foreach($tpsbckms as $kms)
-                    <tr>
-                        
-                        <td style="text-align: center;">{{ $kms->JNS_KMS }}</td>
-                        <td style="text-align: center;">{{ $kms->MERK_KMS }}</td>
-                        <td style="text-align: center;">{{ $kms->JML_KMS }}</td>
-                    
-                      
-                    </tr>
-                    @endforeach -->
+         
                     
                 </tbody>
             </table>

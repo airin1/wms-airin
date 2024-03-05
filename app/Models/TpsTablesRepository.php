@@ -455,16 +455,17 @@ class TpsTablesRepository extends EloquentRepositoryAbstract {
                         ->where($request['by'], '<=', $end_date);
             }else{
                 
-                if(isset($request['type']) && isset($request['TPS_PKBE_PK'])){
+                if(isset($request['type']) && isset($request['TPS_DOKPKBE_PK'])){
                     
                     $type = $request['type'];
-                    $dok = \DB::table('tps_dokpkbe')->where('TPS_PKBE_PK',$request['TPS_PKBE_PK'])->pluck('NOPKBE');
+                    $dok = \DB::table('tps_dokpkbe')->where('TPS_DOKPKBE_PK',$request['TPS_DOKPKBE_PK'])->pluck('NOPKBE');
                     if($type == 'cont') {
-                        $Model = \DB::table('tps_doknpexml')
-                            ->where('NOPKBE', $dok);
+                        $Model = \DB::table('tps_dokpkbe')
+						 ->where('TPS_DOKPKBE_PK', $request['TPS_DOKPKBE_PK']);
+                           //->where('NOPKBE', $request['NOPKBE']);
                     }else{
                         $Model = \DB::table('tps_dokpkbe')
-                            ->where('TPS_DOKPKBE_PK', $request['dokPKBEid']);
+                        ->where('TPS_DOKPKBE_PK', $request['TPS_DOKPKBE_PK']);
                     }
                     
                 }else{

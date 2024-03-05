@@ -6,13 +6,13 @@
 
 <div class="box box-default">
     <div class="box-header with-border">
-      <h3 class="box-title">Edit TPS NPE</h3>
+      <h3 class="box-title">Edit TPS PKBE</h3>
       <div class="box-tools pull-right">
         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
       </div>
     </div>
     <!-- /.box-header -->
-    <form class="form-horizontal" action="{{ route('tps-pkbe-update', $npe->TPS_DOKNPE_PK) }}" method="POST">
+    <form class="form-horizontal" action="{{ route('tps-pkbe-update', $pkbe->TPS_DOKNPE_PK) }}" method="POST">
         <div class="box-body">            
             <div class="row">
                 <div class="col-md-6">
@@ -90,7 +90,7 @@
                         GridRender::setGridId("tpstpsPKBEGrid")
                         ->enableFilterToolbar()
                         ->setGridOption('mtype', 'POST')
-                        ->setGridOption('url', URL::to('/tpsonline/penerimaan/dok-pkbe/grid-data-detail?type=cont&TPS_DOKPKBE_PK='.$npe->TPS_DOKPKBE_PK.'&_token='.csrf_token()))
+                        ->setGridOption('url', URL::to('/tpsonline/penerimaan/dok-pkbe/grid-data-detail?type=cont&TPS_DOKPKBE_PK='.$pkbe->TPS_DOKPKBE_PK.'&_token='.csrf_token()))
                         ->setGridOption('rowNum', 10)
                         ->setGridOption('shrinkToFit', true)
                         ->setGridOption('sortname','TPS_DOKPKBE_PK')
@@ -134,7 +134,7 @@
                         GridRender::setGridId("tpsNPEGrid")
                         ->enableFilterToolbar()
                         ->setGridOption('mtype', 'POST')
-                        ->setGridOption('url', URL::to('/tpsonline/penerimaan/dok-npe/grid-data'.$npe->TPS_DOKNPE_PK.'&_token='.csrf_token()))
+                        ->setGridOption('url', URL::to('/tpsonline/penerimaan/dok-npe/grid-data'.$pkbe->TPS_DOKPKBE_PK.'&_token='.csrf_token()))
                         ->setGridOption('rowNum', 10)
                         ->setGridOption('shrinkToFit', true)
                         ->setGridOption('sortname','TPS_DOKNPE_PK')
