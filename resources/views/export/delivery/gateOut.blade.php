@@ -226,7 +226,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-3 control-label">E-Seal</label>
+                        <label class="col-sm-3 control-label">Segel Pelayaran</label>
                         <div class="col-sm-8">
                             <input type="text" id="NO_SEAL" name="NO_SEAL" class="form-control" required>
                         </div>

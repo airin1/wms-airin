@@ -18,7 +18,7 @@
 @section('content')
 <div class="box">
     <div class="box-header with-border">
-        <h3 class="box-title">Export Realisasi Masuk / Gate In (Cargo)</h3>
+        <h3 class="box-title">Export Realisasi Masuk / Gate In (Container)</h3>
 
     </div>
     <div class="box-body">
@@ -32,6 +32,11 @@
                     <th>No Pack</th>
                     <th>Tgl. Pack</th>
                     <th>Weight</th>
+					<th>Qty</th>
+                    <th>Kode Dokumen</th>
+                    <th>Nomor Dokumen</th>
+                    <th>Tanggal Dokumen</th>
+					<th>Consignee</th>
                     <th>No. Truck</th>
                     <th>Tanggal Masuk</th>
                     <th>Jam Masuk</th>
@@ -47,7 +52,20 @@
                 <td>{{$masuk->manifest->NO_PACK}}</td>
                 <td>{{$masuk->manifest->TGL_PACK}}</td>
                 <td>{{$masuk->manifest->WEIGHT}}</td>
-          
+                 <td>{{$masuk->manifest->QUANTITY}}</td>
+
+                      @if($masuk->manifest->KODE_DOKUMEN == '6')
+                <td>NPE</td>
+                      @elseif($masuk->manifest->KODE_DOKUMEN == '37')
+                <td>ATA CARNET Ekspor</td>
+                      @elseif($masuk->manifest->KODE_DOKUMEN == '38')
+                <td>CPD CARNET Ekspor</td>
+                      @else
+                <td>Dokumen Belum Tersedia</td>
+                      @endif
+                <td>{{$masuk->manifest->NO_NPE}}</td>
+                <td>{{$masuk->manifest->TGL_NPE}}</>
+				<td>{{$masuk->manifest->CONSIGNEE}}</td>
                 <td>{{$masuk->manifest->NOPOL_MASUK}}</td>
                 <td>{{$masuk->manifest->tglmasuk}}</td>
                 <td>{{$masuk->manifest->jammasuk}}</td>
