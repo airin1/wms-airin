@@ -261,6 +261,11 @@
                                     <option value="6" >NPE</option>
                                     <option value="37" >ATA CERNET Expor</option>
                                     <option value="38" >CPD CERNET Expor</option>
+									<option value="8" >PPB</option>
+									<option value="5" >SPPF</option>
+									<option value="45" >NPP3BET(Nota Persetujuan Pengeluaran P3BET)</option>
+									
+									
                                    
                                     </select>
                                 </div>

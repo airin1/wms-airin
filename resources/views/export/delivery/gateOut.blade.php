@@ -34,7 +34,7 @@
                 <table id="example1" class="table table-bordered table-striped">
                     <thead>
                       <tr>
-                          <th>Action</th>
+                          <th width="300px">Action</th>
                           <th>Status BC</th>
                           <th>No Booking</th>
                           <th>No Container</th>
@@ -58,6 +58,7 @@
                         <button type="button" data-id="{{$cont->TCONTAINER_PK}}" class="btn btn-success btn-xs Pilih" style="margin: 10px;">Pilih</button>
                       <button type="button"  data-id="{{$cont->TCONTAINER_PK}}" class="btn btn-danger btn-sm Barcode" style="margin: 10px;"><i class="fa fa-print"></i></button>
                       <button type="button"  data-id="{{$cont->TCONTAINER_PK}}" class="btn btn-warning btn-sm Photo" style="margin: 10px;"><i class="fa fa-photo"></i></button>
+					  <button type="button"  data-id="{{$cont->TCONTAINER_PK}}" class="btn btn-warning btn-sm Detil" style="margin: 10px;" ><i class="fa fa-book" ></i></button>
 
                         </div>
                       </td>
@@ -289,6 +290,26 @@
         </div>
     </div>
 </div>
+
+<div id="detil-modal" class="modal fade" tabindex="-1" role="dialog" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="detilModalLabel">Manifest</h4>
+            </div>
+            
+                   <div class="modal-body"></div>
+              
+			
+			  <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              </div>
+        </div>
+    </div>
+</div>
+
+
 @endsection
 @section('custom_js')
 <script>
@@ -541,6 +562,84 @@ $(document).on('click', '.DokPKBE', function(e) {
 
 });
 </script>
+
+<script>
+$(document).on('click', '.Detil', function(e) {
+    e.preventDefault();
+  var id = $(this).data('id');
+    // var KD_DOKUMEN = $('#KD_DOKUMEN').val();
+    var data = {
+         'id' : id
+        // 'KD_DOKUMEN' :$('#KD_DOKUMEN').val(),
+    }
+    //alert (id);
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+    $.ajax({
+        url: "{{ route('exp-getData-detil') }}", // Sesuaikan dengan alias rute yang benar
+        method: "GET",
+        data: data,
+        success: function(response) {
+        if (response.success) {
+            //alert("Data ditemukan: " + response.data[0].NOCONTAINER);
+		
+	    	 
+		        
+
+			$('#detil-modal #detilModalLabel').html('Container No:' + response.data[0].NOCONTAINER);
+			//$('#detilModalLabel').val(response.data.manifest[0].NOCONTAINER);
+			 var content ='<table id="example1" class="table table-bordered table-striped"><thead><tr>';
+			// var content =content+ '<th>No Pack</th><th>Tgl Packing</th><th>Qty</th><th>Kode Dokumen</th><th>Nomor Dokumen</th><th>Tanggal Dokumen</th><th>Consignee</th></tr>';
+            var content =content+ '<th>No Pack</th><th>Qty</th><th>Kode Dokumen</th><th>Nomor Dokumen</th><th>Tanggal Dokumen</th><th>Consignee</th></tr>';
+						
+			for (i = 0, n = response.data.length; i < n; i++) {
+             	 var kode = response.data[i].KODE_DOKUMEN;
+		        if (kode == '6'){
+                  var jenis ='NPE';
+			   }
+		     if (kode == '37'){
+                  var jenis ='ATA CARNET Ekspor';
+			 }
+			 	 if (kode == '38'){
+                  var jenis ='CPD CARNET Ekspor';
+			 }
+			 	 if (kode == '8'){
+                  var jenis ='CPD CARNET Ekspor';
+			 }
+			 	 if (kode == '5'){
+                  var jenis ='SPPF';
+			 }
+			  	 if (kode == '45'){
+                  var jenis ='NPP3BET';
+			 }               
+							
+			 //var content = content + '<tr><th>'+ response.data[i].NO_PACK + '</th><th>' + response.data[i].TGL_PACK+'</th><th>'+response.data[i].QUANTITY+'</th><th>'+jenis+'</th><th>'+response.data[i].NO_NPE+'</th><th>'+response.data[i].TGL_NPE+'</th><th>'+response.data[i].CONSIGNEE+'</th></tr>';
+             var content = content + '<tr><th>'+ response.data[i].NO_PACK + '</th></th><th>'+response.data[i].QUANTITY+'</th><th>'+jenis+'</th><th>'+response.data[i].NO_NPE+'</th><th>'+response.data[i].TGL_NPE+'</th><th>'+response.data[i].CONSIGNEE+'</th></tr>';
+             
+			 }
+			 var content = content + '</table>';
+			 $('#detil-modal .modal-body').html(content);
+			//document.getElementById('#detil-modal').style.width = '500px';
+            $('#detil-modal').modal('show');
+         } else {
+             alert("Error: " + response.message);
+          }
+        },
+        error: function(xhr, response, error) {
+            console.error("Request failed: " + response + ", " + error);
+        }
+    });
+
+});
+</script>
+
+
+
+
+
 
 <script>
     $(document).ready(function () {

@@ -146,6 +146,41 @@ class DeliveryController extends Controller
         }    
     }
 
+public function detil(Request $request)
+    {
+        $id = $request->id;
+          // var_dump($size, $cont);
+        // die();
+         //$id = $request->id;
+        //$cont =  DBContainer::where('TCONTAINER_PK', $id)->first();
+      
+		 //if ($cont) {
+            
+           
+		   //$data['manifest'] = DBManifest::where('NOCONTAINER', $cont->NOCONTAINER)->where('NOJOBORDER', $cont->NoJob)->get();
+           $manifest = DBManifest::where('TCONTAINER_FK', $id)->get();
+        if ($manifest) {
+                 
+		   return response()->json(['success' => true, 'message' => 'Data Ditemukan', 'data'=>$manifest]);      
+           //$manifest = DBManifest::where('NOCONTAINER', $cont->NOCONTAINER)->where('NOJOBORDER', $cont->NoJob)->first();
+              
+		//	  return response()->json(['success' => true, 'message' => 'Data Ditemukan', 'data'=>$manifest]);      
+
+	  
+	  
+	  
+	  }else {
+            return response()->json(['success' => false, 'message' => 'Data Tidak ditemukan']);
+        }
+
+    
+    }
+
+
+
+
+
+
     public function update(Request $request)
     {
         $id = $request->idCont;

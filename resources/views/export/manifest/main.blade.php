@@ -23,7 +23,7 @@
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                     <tr>
-                        <th>Action</th>
+                        <th width="150px">Action</th>
                         <th>No Pack</th>
                         <th>Tgl Packing</th>
                         <th>Qty</th>

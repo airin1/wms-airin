@@ -21,6 +21,11 @@ Route::group(['prefix' => 'export', 'namespace' => 'Export'], function(){
         'uses' => 'DeliveryController@pkbe'
     ]);
 
+     Route::get('/search/detil', [
+        'as' => 'exp-getData-detil',
+        'uses' => 'DeliveryController@detil'
+    ]);
+
     Route::post('/release/updateGateOut', [
         'as' => 'exp-realisasi-gateOut-update',
         'uses' => 'DeliveryController@update'
