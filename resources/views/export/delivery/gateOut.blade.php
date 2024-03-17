@@ -606,10 +606,8 @@ $(document).on('click', '.Detil', function(e) {
 			 	 if (kode == '38'){
                   var jenis ='CPD CARNET Ekspor';
 			 }
-			 	 if (kode == '8'){
-                  var jenis ='CPD CARNET Ekspor';
-			 }
-			 	 if (kode == '5'){
+			 
+			 if (kode == '5'){
                   var jenis ='SPPF';
 			 }
 			  	 if (kode == '45'){

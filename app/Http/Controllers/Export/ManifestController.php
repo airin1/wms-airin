@@ -488,6 +488,22 @@ class ManifestController extends Controller
         return view('export.manifest.gate-in')->with($data);
     }
 
+   public function deleteManifest(Request $request)
+    {
+        $id = $request->id;
+        $cont = DBManifest::where('TMANIFEST_PK', $id)->first();
+        if ($cont) {
+            $cont->delete();
+			//$gate = DBGate::where('ref_id', $id)->where('ref_type', 'Manifesteks')->first();
+            //$gate->delete();
+            return response()->json(['success' => true, 'message' => 'Sukses Menghapus']);
+        }else {
+            return response()->json(['success' => false, 'message' => 'Data Tidak Ditemukan']);
+            
+        }
+    }
+ 
+
 
     public function gateInApprove($id, Request $request)
     {

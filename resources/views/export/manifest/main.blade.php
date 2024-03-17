@@ -23,7 +23,7 @@
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                     <tr>
-                        <th width="150px">Action</th>
+                        <th width="185px">Action</th>
                         <th>No Pack</th>
                         <th>Tgl Packing</th>
                         <th>Qty</th>
@@ -43,8 +43,10 @@
                       <td>
                       @if($man->sor_update == '0')
                       <a class="btn btn-outline-warning btn-xs" href="{{ route('exp-manifest-edit', $man->TMANIFEST_PK) }}"><i class="fa fa-pencil"></i></a>
-                      <button type="button" data-id="{{$man->TMANIFEST_PK}}" class="btn btn-success btn-xs Approve" style="margin: 10px;">Approve</button>
-                      @else
+                     <button type="button" data-id="{{$man->TMANIFEST_PK}}" class="btn btn-outline-warning btn-xs Delete" style="margin: 10px;"><i class="fa fa-cut"></i></button>
+     		         <button type="button" data-id="{{$man->TMANIFEST_PK}}" class="btn btn-success btn-xs Approve" style="margin: 10px;">Approve</button>
+                      
+					  @else
                       <a class="btn btn-outline-warning btn-xs" href="{{ route('exp-manifest-edit', $man->TMANIFEST_PK) }}"><i class="fa fa-eye"></i></a>
                       <button type="button" data-id="{{$man->TMANIFEST_PK}}" class="btn btn-success btn-xs Approve" style="margin: 10px;" disabled>Approve</button>
                       @endif
@@ -60,7 +62,11 @@
                       <td>ATA CARNET Ekspor</td>
                       @elseif($man->KODE_DOKUMEN == '38')
                       <td>CPD CARNET Ekspor</td>
-                      @else
+					   @elseif($man->KODE_DOKUMEN == '5')
+                      <td>SPPF</td>
+					   @elseif($man->KODE_DOKUMEN == '45')
+                      <td>NPP3BET</td>
+					  @else
                       <td>Dokumen Belum Tersedia</td>
                       @endif
                       <td>{{$man->NO_NPE}}</td>
@@ -293,5 +299,69 @@ $('#addBarang').on("click", function(){
         })
 
       });
+	  
+	  
+	  
+	  
+	  
 </script>
+
+<script>
+
+   $(document).on('click', '.Delete', function(e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        $.ajaxSetup({
+          headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+        });
+		//alert(id);
+        Swal.fire({
+          title: 'Are you Sure?',
+          text: "Yakin anda akan hapus data manifest?",
+          icon: 'warning',
+          showDenyButton: false,
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          confirmButtonText: 'Confirm',
+        }).then((result) => {
+          /* Read more about isConfirmed, isDenied below */
+          if (result.isConfirmed) {
+
+            $.ajax({
+              type: 'POST',
+              url: "{{ route('exp-manifest-delete') }}",
+              data: { id: id },
+              cache: false,
+              dataType: 'json',
+              success: function(response) {
+                console.log(response);
+                if (response.success) {
+                  Swal.fire('Saved!', response.message, 'success')
+                  .then(() => {
+                    // window.location.href = '/barcode/export/print/' + response.barcode.id;
+                      window.location.reload();
+                        });
+                } else {
+                  Swal.fire('Error', response.message, 'error');
+                }
+              },
+              error: function(response) {
+               
+              },
+            });
+
+          } else if (result.isDenied) {
+            Swal.fire('Changes are not saved', '', 'info')
+          }
+
+
+        })
+
+      });
+	  
+
+</script>
+
 @endsection

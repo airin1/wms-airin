@@ -69,6 +69,12 @@ Route::group(['prefix' => 'export', 'namespace' => 'Export'], function(){
         'uses' => 'ManifestController@edit'
     ]);
 
+    Route::post('/manifest/manifest-delete', [
+        'as' => 'exp-manifest-delete',
+        'uses' => 'ManifestController@deleteManifest'
+    ]);
+
+
     Route::post('/manifest/gateIn/TPS', [
                 'as' => 'exp-manifest-UploadTPS-cont',
                 'uses' => 'ManifestController@TPS'
