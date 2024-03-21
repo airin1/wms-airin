@@ -84,8 +84,8 @@
                       <td>{{$cont->NO_PKBE}}</td>
                       <td>{{$cont->TGL_PKBE}}</td>
                       <td>{{$cont->NOPOL_KELUAR}}</td>
-                      <td>{{$cont->TGLKELUAR}}</td>
-                      <td>{{$cont->JAMKELUAR}}</td>
+                      <td>{{$cont->TGLRELEASE}}</td>
+                      <td>{{$cont->JAMRELEASE}}</td>
                       <td>{{$cont->UID_KELUAR}}</td>
                     </tr>
                      @endforeach
