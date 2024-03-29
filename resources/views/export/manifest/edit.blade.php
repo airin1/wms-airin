@@ -66,6 +66,7 @@
                                     <option value="38" >CPD CERNET Expor</option>
                                     <option value="8" >PPB</option>
 									<option value="5" >SPPF</option>
+									<option value="28" >BC 1.2</option>
                                     </select>
                                 </div>
                             </div>
@@ -264,8 +265,6 @@
 									<option value="8" >PPB</option>
 									<option value="5" >SPPF</option>
 									<option value="45" >NPP3BET(Nota Persetujuan Pengeluaran P3BET)</option>
-									
-									
                                    
                                     </select>
                                 </div>

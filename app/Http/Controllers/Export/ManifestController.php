@@ -345,7 +345,7 @@ class ManifestController extends Controller
             }else {
                 return response()->json(['success' => false, 'message' => 'Somethig Wrong']);
             }
-        }elseif ($KODE_DOKUMEN == '37' || $KODE_DOKUMEN =='38' || $KODE_DOKUMEN =='8' || $KODE_DOKUMEN =='5' || $KODE_DOKUMEN =='45') {
+        }elseif ($KODE_DOKUMEN == '37' || $KODE_DOKUMEN =='38' || $KODE_DOKUMEN =='8' || $KODE_DOKUMEN =='5' || $KODE_DOKUMEN =='45' || $KODE_DOKUMEN =='28') {
             $id = $request->id;
             $mani = DBManifest::where('TMANIFEST_PK', $id)->first();
             if ($mani) {
