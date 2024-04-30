@@ -2175,8 +2175,8 @@ class LclController extends Controller
 		$sppbkms = '';
         
         if($kd_dok == 1){
-            $sppb = \App\Models\TpsSppbPib::where(array('NO_BL_AWB' => $manifest->NOHBL,'JML_CONT'=> 0))
-                    ->orWhere('NO_MASTER_BL_AWB', $manifest->NOHBL,'JML_CONT', 0)					
+            $sppb = \App\Models\TpsSppbPib::where(array(TRIM('NO_BL_AWB') => $manifest->NOHBL,'JML_CONT'=> 0))
+                    ->orWhere(TRIM('NO_MASTER_BL_AWB'), $manifest->NOHBL,'JML_CONT', 0)					
                     ->first();
 					
 			if($sppb){
@@ -2186,8 +2186,8 @@ class LclController extends Controller
             }			
 		
         }elseif($kd_dok == 2){
-            $sppb = \App\Models\TpsSppbBc::where(array('NO_BL_AWB' => $manifest->NOHBL,'JML_CONT'=> 0))
-                    ->orWhere('NO_MASTER_BL_AWB', $manifest->NOHBL,'JML_CONT', 0)
+            $sppb = \App\Models\TpsSppbBc::where(array(TRIM('NO_BL_AWB') => $manifest->NOHBL,'JML_CONT'=> 0))
+                    ->orWhere(TRIM('NO_MASTER_BL_AWB'), $manifest->NOHBL,'JML_CONT', 0)
                     ->first();
 			
 			if($sppb){		
