@@ -52,9 +52,18 @@
                       <td>ATA CARNET Ekspor</td>
                       @elseif($man->KODE_DOKUMEN == '38')
                       <td>CPD CARNET Ekspor</td>
+					   @elseif($man->KODE_DOKUMEN == '8')
+                      <td>PBB</td>
+					   @elseif($man->KODE_DOKUMEN == '5')
+                      <td>SPPF</td>
+					    @elseif($man->KODE_DOKUMEN == '28')
+                      <td>BC 1.2</td>
+					   @elseif($man->KODE_DOKUMEN == '45')
+                      <td>NPP3BET</td>
                       @else
                       <td>Dokumen Belum Tersedia</td>
                   @endif
+				  
                   <td>{{$man->NO_NPE}}</td>
                   <td>{{$man->TGL_NPE}}</td>
                   <td>{{$man->PEL_BONGKAR}}</td>
