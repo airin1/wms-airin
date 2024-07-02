@@ -613,6 +613,12 @@ $(document).on('click', '.Detil', function(e) {
 			  	 if (kode == '45'){
                   var jenis ='NPP3BET';
 			 }               
+			  if (kode == '28'){
+                  var jenis ='BC 1.2';
+			 }         
+             if (kode == '8'){
+                  var jenis ='PBB';
+			 }        			 
 							
 			 //var content = content + '<tr><th>'+ response.data[i].NO_PACK + '</th><th>' + response.data[i].TGL_PACK+'</th><th>'+response.data[i].QUANTITY+'</th><th>'+jenis+'</th><th>'+response.data[i].NO_NPE+'</th><th>'+response.data[i].TGL_NPE+'</th><th>'+response.data[i].CONSIGNEE+'</th></tr>';
              var content = content + '<tr><th>'+ response.data[i].NO_PACK + '</th></th><th>'+response.data[i].QUANTITY+'</th><th>'+jenis+'</th><th>'+response.data[i].NO_NPE+'</th><th>'+response.data[i].TGL_NPE+'</th><th>'+response.data[i].CONSIGNEE+'</th></tr>';
