@@ -68,6 +68,9 @@
                       <td>NPP3BET</td>
 					   @elseif($man->KODE_DOKUMEN == '28')
                       <td>BC 1.2</td>
+					    @elseif($man->KODE_DOKUMEN == '65')
+                      <td>KEK LDP</td>
+					  	
 					  @else
                       <td>Dokumen Belum Tersedia</td>
                       @endif
