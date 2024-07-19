@@ -68,6 +68,7 @@
 									<option value="5" >SPPF</option>
 									<option value="28" >BC 1.2</option>
 									<option value="45" >NPP3BET</option>
+									<option value="65" >KEK LDP</option>
                                     </select>
                                 </div>
                             </div>
@@ -266,7 +267,7 @@
 									<option value="8" >PPB</option>
 									<option value="5" >SPPF</option>
 									<option value="45" >NPP3BET(Nota Persetujuan Pengeluaran P3BET)</option>
-                                   
+                                   	<option value="65" >KEK LDP</option>
                                     </select>
                                 </div>
                             </div>
