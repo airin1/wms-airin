@@ -43,6 +43,27 @@ class PenerimaanController extends Controller
         return view('tpsonline.index-respon-plp')->with($data);
     }
     
+	  public function responPlpLCLIndex()
+    {
+        if ( !$this->access->can('show.tps.responPlpLCL.index') ) {
+            return view('errors.no-access');
+        }
+        
+        // Create Roles Access
+        $this->insertRoleAccess(array('name' => 'Index TPS Respon PLP', 'slug' => 'show.tps.responPlpLCL.index', 'description' => ''));
+        
+        $data['page_title'] = "TPS Respon PLP LCL";
+        $data['page_description'] = "";
+        $data['breadcrumbs'] = [
+            [
+                'action' => '',
+                'title' => 'TPS Respon PLP LCL'
+            ]
+        ];        
+        
+        return view('tpsonline.index-respon-plpLCL')->with($data);
+    }
+	
     public function responBatalPlpIndex()
     {
         if ( !$this->access->can('show.tps.responBatalPlp.index') ) {

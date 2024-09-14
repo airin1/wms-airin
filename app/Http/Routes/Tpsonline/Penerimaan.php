@@ -7,6 +7,12 @@ Route::group(['prefix' => 'tpsonline/penerimaan', 'namespace' => 'Tps'], functio
         'as' => 'tps-responPlp-index',
         'uses' => 'PenerimaanController@responPlpIndex'
     ]);
+	// RESPON PLP
+    Route::get('/respon-plpLCL', [
+        'as' => 'tps-responPlpLCL-index',
+        'uses' => 'PenerimaanController@responPlpLCLIndex'
+    ]);
+    
     Route::get('/respon-plp/get-xml', [
         'as' => 'tps-responPlp-get',
 //        'uses' => 'PenerimaanController@responPlpGetXml'
