@@ -33,6 +33,9 @@ class TpsTablesRepository extends EloquentRepositoryAbstract {
                         ->where($request['by'], '>=', $start_date)
                         ->where($request['by'], '<=', $end_date);
             }else{
+
+                $Model = \DB::table('tps_responplptujuanxml')                       
+                        ->where('NO_SURAT', 'not like', '%OBC%');
                 
             }
         }elseif($Model->getMorphClass() == 'App\Models\TpsOb'){   
