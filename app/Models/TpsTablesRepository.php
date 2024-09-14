@@ -47,12 +47,12 @@ class TpsTablesRepository extends EloquentRepositoryAbstract {
             }else{
                  if(isset($request['module'])){
                      if($request['module']=='plp-lcl'){       
-           				 $Model = \DB::table('tps_responplptujuanxml')
-                      ->where(NO_SURAT, 'like', $jenis_plp);
+           				 $Model = \DB::table('tps_responplptujuanxml');
+                    //  ->where(NO_SURAT, 'like', $jenis_plp);
 					 }else
 		  	        {
-				 	  $Model = \DB::table('tps_responplptujuanxml')
-                      ->where(NO_SURAT, 'not like', $jenis_plp);
+				 	  $Model = \DB::table('tps_responplptujuanxml');
+                      //->where(NO_SURAT, 'not like', $jenis_plp);
 					 }	
 				}		
             }
