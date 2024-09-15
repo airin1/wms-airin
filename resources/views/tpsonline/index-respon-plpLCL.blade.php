@@ -85,7 +85,7 @@
             GridRender::setGridId("tpsResponPlpGrid")
             ->enableFilterToolbar()
             ->setGridOption('mtype', 'POST')
-            ->setGridOption('url', URL::to('/tpsonline/penerimaan/respon-plp/grid-data?module=plp-lcl&_token='.csrf_token()))
+            ->setGridOption('url', URL::to('/tpsonline/penerimaan/respon-plp/grid-data?jenis=lcl&_token='.csrf_token()))
             ->setGridOption('rowNum', 20)
             ->setGridOption('shrinkToFit', true)
             ->setGridOption('sortname','tps_responplptujuanxml_pk')
@@ -220,7 +220,7 @@
         var startdate = $("#startdate").val();
         var enddate = $("#enddate").val();
         console.log(by);
-        jQuery("#tpsResponPlpGrid").jqGrid('setGridParam',{url:"{{URL::to('/tpsonline/penerimaan/respon-plp/grid-data')}}?module=plp-lcl&startdate="+startdate+"&enddate="+enddate+"&by="+by}).trigger("reloadGrid");
+        jQuery("#tpsResponPlpGrid").jqGrid('setGridParam',{url:"{{URL::to('/tpsonline/penerimaan/respon-plp/grid-data')}}?jenis=fcl&jenis=lcl&startdate="+startdate+"&enddate="+enddate+"&by="+by}).trigger("reloadGrid");
         return false;
     });
     

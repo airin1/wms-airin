@@ -20,8 +20,7 @@ class TpsTablesRepository extends EloquentRepositoryAbstract {
             }else{
                 
             }
-        }elseif($Model->getMorphClass() == 'App\Models\TpsResponPlp'){  
-            $jenis_plp= '%OBC%'; 		
+        }elseif($Model->getMorphClass() == 'App\Models\TpsResponPlp'){   
             if(isset($request['startdate']) && isset($request['enddate'])){
                 if($request['by'] == 'TGL_UPLOAD') {
                     $start_date = date('Y-m-d 00:00:00',strtotime($request['startdate']));
@@ -30,31 +29,26 @@ class TpsTablesRepository extends EloquentRepositoryAbstract {
                     $start_date = date('Ymd',strtotime($request['startdate']));
                     $end_date = date('Ymd',strtotime($request['enddate']));      
                 }
-				if(isset($request['module'])){
-                     if($request['module']=='plp-lcl'){       
-           				 $Model = \DB::table('tps_responplptujuanxml')
+				  if( $request['jenis']=='lcl'){
+                $Model = \DB::table('tps_responplptujuanxml')
                         ->where($request['by'], '>=', $start_date)
                         ->where($request['by'], '<=', $end_date)
-						->where(NO_SURAT, 'like', $jenis_plp);
-					 }else
-					 {
-					  $Model = \DB::table('tps_responplptujuanxml')
+						->where('NO_SURAT', 'like', '%OBC%');   
+				  }else{
+					   $Model = \DB::table('tps_responplptujuanxml')
                         ->where($request['by'], '>=', $start_date)
                         ->where($request['by'], '<=', $end_date)
-					   ->where(NO_SURAT, 'not LIKE', $jenis_plp);
-					 }	
-				}		
+						->where('NO_SURAT', 'not like', '%OBC%');
+					  
+				  }		
             }else{
-                 if(isset($request['module'])){
-                     if($request['module']=='plp-lcl'){       
-           				 $Model = \DB::table('tps_responplptujuanxml');
-                    //  ->where(NO_SURAT, 'like', $jenis_plp);
-					 }else
-		  	        {
-				 	  $Model = \DB::table('tps_responplptujuanxml');
-                      //->where(NO_SURAT, 'not like', $jenis_plp);
-					 }	
-				}		
+               if( $request['jenis']=='lcl'){
+				$Model = \DB::table('tps_responplptujuanxml')
+                ->where('NO_SURAT', 'like', '%OBC%');   
+			   }else{               
+			   $Model = \DB::table('tps_responplptujuanxml')
+                        ->where('NO_SURAT', 'not like', '%OBC%');
+               }         
             }
         }elseif($Model->getMorphClass() == 'App\Models\TpsOb'){   
             if(isset($request['startdate']) && isset($request['enddate'])){
