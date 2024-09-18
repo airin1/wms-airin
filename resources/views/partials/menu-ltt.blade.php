@@ -726,7 +726,6 @@
                           </span>
                         </a>
                         <ul class="treeview-menu">
-                          <li><a href="{{ route('tps-responPlpLCL-index') }}">Data Respon PLP LCL</a></li>
                             @if(\Auth::getUser()->username == 'ltf'|\Auth::getUser()->username == 'IPUY'|\Auth::getUser()->username == 'rinielvira'|
 							\Auth::getUser()->username == 'masdel'|\Auth::getUser()->username == 'indra'|\Auth::getUser()->username == 'adith'|
 							\Auth::getUser()->username == 'Yanuar'|\Auth::getUser()->username == 'Fadoli'|\Auth::getUser()->username == 'wawa24'|
@@ -738,7 +737,9 @@
 							\Auth::getUser()->username == 'tonii'|\Auth::getUser()->username == 'anton'
 							)                        
 						  <li><a href="{{ route('tps-responPlp-index') }}">Data Respon PLP FCL</a></li>
-                          @endif        
+                          @endif
+						  <li><a href="{{ route('tps-responPlpLCL-index') }}">Data Respon PLP LCL</a></li>
+                       						  
 						  <li><a href="{{ route('tps-responBatalPlp-index') }}">Data Respon Batal PLP</a></li>
                           <li><a href="{{ route('tps-obLcl-index') }}">Data OB LCL</a></li>
                           <li><a href="{{ route('tps-obFcl-index') }}">Data OB FCL</a></li>
@@ -791,7 +792,17 @@
 
                     </ul>
                   </li>
-                  <li class="treeview">
+                   @if(\Auth::getUser()->username == 'ltf'|\Auth::getUser()->username == 'IPUY'|\Auth::getUser()->username == 'rinielvira'|
+							\Auth::getUser()->username == 'masdel'|\Auth::getUser()->username == 'indra'|\Auth::getUser()->username == 'adith'|
+							\Auth::getUser()->username == 'Yanuar'|\Auth::getUser()->username == 'Fadoli'|\Auth::getUser()->username == 'wawa24'|
+							\Auth::getUser()->username == 'susanbae'|\Auth::getUser()->username == 'sukri'|\Auth::getUser()->username == 'efriandi'|
+							\Auth::getUser()->username == 'riof'|\Auth::getUser()->username == 'sujaya'|\Auth::getUser()->username == 'timanoce'|
+							\Auth::getUser()->username == 'mustari'|\Auth::getUser()->username == 'wibi'|\Auth::getUser()->username == 'senthot'|
+							\Auth::getUser()->username == 'erik'|\Auth::getUser()->username == 'wibi2'|\Auth::getUser()->username == 'Tony'|
+							\Auth::getUser()->username == 'nugroho'|\Auth::getUser()->username == 'reza'|\Auth::getUser()->username == 'ariief'|
+							\Auth::getUser()->username == 'tonii'|\Auth::getUser()->username == 'anton'
+							)
+				  <li class="treeview">
                     <a href="#">
                       <i class="fa fa-upload"></i>
                       <span>NPCT1</span>
@@ -806,6 +817,7 @@
                       <li><a href="{{ route('tracking-index') }}">Tracking</a></li>
                     </ul>
                   </li>
+				  @endif
                   <li class="treeview">
                       <a href="#">
                         <i class="fa fa-money"></i>
@@ -815,7 +827,17 @@
                         </span>
                       </a>
                       <ul class="treeview-menu">
-                          <li class="treeview">
+                           @if(\Auth::getUser()->username == 'ltf'|\Auth::getUser()->username == 'IPUY'|\Auth::getUser()->username == 'rinielvira'|
+							\Auth::getUser()->username == 'masdel'|\Auth::getUser()->username == 'indra'|\Auth::getUser()->username == 'adith'|
+							\Auth::getUser()->username == 'Yanuar'|\Auth::getUser()->username == 'Fadoli'|\Auth::getUser()->username == 'wawa24'|
+							\Auth::getUser()->username == 'susanbae'|\Auth::getUser()->username == 'sukri'|\Auth::getUser()->username == 'efriandi'|
+							\Auth::getUser()->username == 'riof'|\Auth::getUser()->username == 'sujaya'|\Auth::getUser()->username == 'timanoce'|
+							\Auth::getUser()->username == 'mustari'|\Auth::getUser()->username == 'wibi'|\Auth::getUser()->username == 'senthot'|
+							\Auth::getUser()->username == 'erik'|\Auth::getUser()->username == 'wibi2'|\Auth::getUser()->username == 'Tony'|
+							\Auth::getUser()->username == 'nugroho'|\Auth::getUser()->username == 'reza'|\Auth::getUser()->username == 'ariief'|
+							\Auth::getUser()->username == 'tonii'|\Auth::getUser()->username == 'anton'
+							)
+						  <li class="treeview">
                               <a href="#"><i class="fa fa-circle-o"></i> FCL
                                 <span class="pull-right-container">
                                   <i class="fa fa-angle-left pull-right"></i>
@@ -827,6 +849,7 @@
                                   <li><a href="{{route('invoice-nct-index')}}">Data Invoice</a></li>
                               </ul>
                           </li>
+						  @endif
                           <li class="treeview">
                               <a href="#"><i class="fa fa-circle-o"></i> LCL
                                 <span class="pull-right-container">

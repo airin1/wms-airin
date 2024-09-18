@@ -89,6 +89,7 @@
             ->setGridOption('rowNum', 20)
             ->setGridOption('shrinkToFit', true)
             ->setGridOption('sortname','tps_responplptujuanxml_pk')
+			->setGridOption('sortorder','DESC')
             ->setGridOption('rownumbers', true)
             ->setGridOption('height', '295')
             ->setGridOption('rowList',array(20,50,100))
