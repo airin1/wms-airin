@@ -34,24 +34,24 @@ class TpsTablesRepository extends EloquentRepositoryAbstract {
                         ->where($request['by'], '>=', $start_date)
                         ->where($request['by'], '<=', $end_date)
 					//	->where('NO_SURAT', 'like', '%OBC%');
-                   		->where( function ( $query ) { $query ->where( 'NO_SURAT', 'like', '%OBC%' ) ->orWhere('NO_SURAT', 'like', '%C/%' ) ->orWhere('NO_SURAT', 'like', '%/PTP-%' ); }); 
+                   		->where( function ( $query ) { $query ->where( 'NO_SURAT', 'like', '%OBC%' ) ->orWhere('NO_SURAT', 'like', '%C/%' ) ->orWhere('NO_SURAT', 'like', '%/PTP-%' )->Where('NO_SURAT', 'not like', '%/TPK-%' ); }); 
 							
 				  }else{
 					   $Model = \DB::table('tps_responplptujuanxml')
                         ->where($request['by'], '>=', $start_date)
                         ->where($request['by'], '<=', $end_date)
 						//->where('NO_SURAT', 'not like', '%OBC%');
-					  	->where( function ( $query ) { $query ->where( 'NO_SURAT', 'not like', '%OBC%' ) ->Where('NO_SURAT', 'not like', '%C/%' )->Where('NO_SURAT', 'not like', '%/PTP-%' ); }); 
+					  	->where( function ( $query ) { $query ->where( 'NO_SURAT', 'not like', '%OBC%' ) ->Where('NO_SURAT', 'not like', '%C/%' ); }); 
 
 				  }		
             }else{
                if( $request['jenis']=='lcl'){
 				$Model = \DB::table('tps_responplptujuanxml')
-				->where( function ( $query ) { $query ->where( 'NO_SURAT', 'like', '%OBC%' ) ->orWhere('NO_SURAT', 'like', '%C/%' )  ->orWhere('NO_SURAT', 'like', '%/PTP-%' ); }); 
+				->where( function ( $query ) { $query ->where( 'NO_SURAT', 'like', '%OBC%' ) ->orWhere('NO_SURAT', 'like', '%C/%' )  ->orWhere('NO_SURAT', 'like', '%/PTP-%' )->Where('NO_SURAT', 'not like', '%/TPK-%' ); }); 
 					
 			   }else{               
 			  	$Model = \DB::table('tps_responplptujuanxml')
-				->where( function ( $query ) { $query ->where( 'NO_SURAT', 'not like', '%OBC%' ) ->Where('NO_SURAT', 'not like', '%C/%' )->Where('NO_SURAT', 'not like', '%/PTP-%' ); }); 
+				->where( function ( $query ) { $query ->where( 'NO_SURAT', 'not like', '%OBC%' ) ->Where('NO_SURAT', 'not like', '%C/%' ); }); 
                }         
             }
         }elseif($Model->getMorphClass() == 'App\Models\TpsOb'){   
