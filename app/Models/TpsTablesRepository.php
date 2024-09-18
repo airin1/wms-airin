@@ -34,7 +34,7 @@ class TpsTablesRepository extends EloquentRepositoryAbstract {
                         ->where($request['by'], '>=', $start_date)
                         ->where($request['by'], '<=', $end_date)
 					//	->where('NO_SURAT', 'like', '%OBC%');
-                   		->where( function ( $query ) { $query ->where( 'NO_SURAT', 'like', '%OBC%' ) ->orWhere('NO_SURAT', 'like', '%C/%' ) ->orWhere('NO_SURAT', 'like', '%/PTP-%' )->Where('NO_SURAT', 'not like', '%/TPK-%' ); }); 
+                   		->where( function ( $query ) { $query ->where( 'NO_SURAT', 'like', '%OBC%' ) ->orWhere('NO_SURAT', 'like', '%C/%' ) ->orWhere('NO_SURAT', 'like', '%/PTP-%' )->orWhere('NO_SURAT', 'like', '%/TPK-%' ); }); 
 							
 				  }else{
 					   $Model = \DB::table('tps_responplptujuanxml')
@@ -47,7 +47,7 @@ class TpsTablesRepository extends EloquentRepositoryAbstract {
             }else{
                if( $request['jenis']=='lcl'){
 				$Model = \DB::table('tps_responplptujuanxml')
-				->where( function ( $query ) { $query ->where( 'NO_SURAT', 'like', '%OBC%' ) ->orWhere('NO_SURAT', 'like', '%C/%' )  ->orWhere('NO_SURAT', 'like', '%/PTP-%' )->Where('NO_SURAT', 'not like', '%/TPK-%' ); }); 
+				->where( function ( $query ) { $query ->where( 'NO_SURAT', 'like', '%OBC%' ) ->orWhere('NO_SURAT', 'like', '%C/%' )  ->orWhere('NO_SURAT', 'like', '%/PTP-%' )->orWhere('NO_SURAT', 'like', '%/TPK-%' ); }); 
 					
 			   }else{               
 			  	$Model = \DB::table('tps_responplptujuanxml')
