@@ -571,7 +571,7 @@
 				\Auth::getUser()->username == 'mustari'|\Auth::getUser()->username == 'wibi'|\Auth::getUser()->username == 'senthot'|
 				\Auth::getUser()->username == 'erik'|\Auth::getUser()->username == 'wibi2'|\Auth::getUser()->username == 'Tony'|
 				\Auth::getUser()->username == 'nugroho'|\Auth::getUser()->username == 'reza'|\Auth::getUser()->username == 'ariief'|
-				\Auth::getUser()->username == 'tonii'|\Auth::getUser()->username == 'anton'
+				\Auth::getUser()->username == 'tonii'|\Auth::getUser()->username == 'anton'|\Auth::getUser()->username == 'KELIK'
 
 				)
            
@@ -734,7 +734,7 @@
 							\Auth::getUser()->username == 'mustari'|\Auth::getUser()->username == 'wibi'|\Auth::getUser()->username == 'senthot'|
 							\Auth::getUser()->username == 'erik'|\Auth::getUser()->username == 'wibi2'|\Auth::getUser()->username == 'Tony'|
 							\Auth::getUser()->username == 'nugroho'|\Auth::getUser()->username == 'reza'|\Auth::getUser()->username == 'ariief'|
-							\Auth::getUser()->username == 'tonii'|\Auth::getUser()->username == 'anton'
+							\Auth::getUser()->username == 'tonii'|\Auth::getUser()->username == 'anton'|\Auth::getUser()->username == 'tonii'|\Auth::getUser()->username == 'KELIK'
 							)                        
 						  <li><a href="{{ route('tps-responPlp-index') }}">Data Respon PLP FCL</a></li>
                           @endif
@@ -800,7 +800,7 @@
 							\Auth::getUser()->username == 'mustari'|\Auth::getUser()->username == 'wibi'|\Auth::getUser()->username == 'senthot'|
 							\Auth::getUser()->username == 'erik'|\Auth::getUser()->username == 'wibi2'|\Auth::getUser()->username == 'Tony'|
 							\Auth::getUser()->username == 'nugroho'|\Auth::getUser()->username == 'reza'|\Auth::getUser()->username == 'ariief'|
-							\Auth::getUser()->username == 'tonii'|\Auth::getUser()->username == 'anton'
+							\Auth::getUser()->username == 'tonii'|\Auth::getUser()->username == 'anton'|\Auth::getUser()->username == 'KELIK'
 							)
 				  <li class="treeview">
                     <a href="#">
@@ -835,7 +835,7 @@
 							\Auth::getUser()->username == 'mustari'|\Auth::getUser()->username == 'wibi'|\Auth::getUser()->username == 'senthot'|
 							\Auth::getUser()->username == 'erik'|\Auth::getUser()->username == 'wibi2'|\Auth::getUser()->username == 'Tony'|
 							\Auth::getUser()->username == 'nugroho'|\Auth::getUser()->username == 'reza'|\Auth::getUser()->username == 'ariief'|
-							\Auth::getUser()->username == 'tonii'|\Auth::getUser()->username == 'anton'
+							\Auth::getUser()->username == 'tonii'|\Auth::getUser()->username == 'anton'|\Auth::getUser()->username == 'KELIK'
 							)
 						  <li class="treeview">
                               <a href="#"><i class="fa fa-circle-o"></i> FCL
