@@ -2663,10 +2663,9 @@ UNZ+1+1709131341'\n";
 		    if($data['ETA']<'2021-04-15'){
               $nct_gerakan = array('Pas Truck' => 9091, 'Gate Pass Admin' => 20000, 'Cost Recovery' => 75000);
             }
-			else
-			{
-				//$nct_gerakan = array('Pas Truck' => 9091, 'Gate Pass Admin' => 20000, 'Cost Recovery' => 0);
-				$nct_gerakan = array('Pas Truck' => 9091, 'Gate Pass Admin' => 20000);
+		    else{
+			  //today  > '2024-10-15'	
+              	$nct_gerakan = array('Pas Truck' => 12162, 'Gate Pass Admin' => 20000);	
 			}	
 			
             foreach($nct_gerakan as $key=>$value):
@@ -3538,8 +3537,9 @@ UNZ+1+1709131341'\n";
             }
 			else
 			{
+				//today >=' 2024-10-15' 
 				//$nct_gerakan = array('Pas Truck' => 9091, 'Gate Pass Admin' => 20000, 'Cost Recovery' => 0);
-				$nct_gerakan = array('Pas Truck' => 9091, 'Gate Pass Admin' => 20000);
+				$nct_gerakan = array('Pas Truck' => 12162, 'Gate Pass Admin' => 20000);
 			}	
 		  if($jenis_tpp=='Keluar TPS AIRIN') {
             foreach($nct_gerakan as $key=>$value):
