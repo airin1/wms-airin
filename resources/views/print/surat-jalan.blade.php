@@ -123,7 +123,7 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td>{{date('d-M-y', strtotime($pay_date))}}&nbsp;</td>
+                            <td>&nbsp;</td>
                         </tr>
                     </table>
                 </td>
