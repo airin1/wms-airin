@@ -37,9 +37,9 @@
         <div style="float: right;margin-top: 90px;margin-bottom: 20px;">
             <table>
                 <tr>
-                    <td align="right">{{$container->KODE_DOKUMEN}}</td>
-                    <td align="left" style="width: 80px;">{{$container->NO_SPPB}}</td>
-                    <td align="right">{{date('d-M-Y', strtotime($container->TGL_SPPB))}}</td>
+                    <td align="right"></td>
+                    <td align="left" style="width: 80px;">{</td>
+                    <td align="right"></td>
                 </tr>
                 <tr>
                     <td align="right"></td>
@@ -48,8 +48,8 @@
                 </tr>
                 <tr>
                     <td></td>
-                    <td align="right">POS</td>
-                    <td align="center">{{$container->NO_POS_BC11}}</td>
+                    <td align="right"></td>
+                    <td align="center"></td>
                 </tr>
             </table>
         </div>
@@ -141,7 +141,7 @@
                     <td style="width: 30%;" align="center"></td>
                 </tr>
                 <tr>
-                    <td colspan="3" style="height: 70px;">&nbsp;</td>
+                    <td colspan="3" style="height: 90px;">&nbsp;</td>
                 </tr>
                 <tr>
                     <td align="left" style="display: block;">REZA FACHREVY</td>
