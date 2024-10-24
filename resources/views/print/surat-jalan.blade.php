@@ -42,9 +42,9 @@
                     <td align="right">{{date('d-M-Y', strtotime($container->TGL_SPPB))}}</td>
                 </tr>
                 <tr>
-                    <td align="right">PIB</td>
-                    <td align="left">{{$container->NO_DAFTAR_PABEAN}}</td>
-                    <td align="right">{{($container->TGL_DAFTAR_PABEAN != '0000-00-00') ? date('d-M-Y', strtotime($container->TGL_DAFTAR_PABEAN)) : ''}}</td>
+                    <td align="right"></td>
+                    <td align="left"></td>
+                    <td align="right"></td>
                 </tr>
                 <tr>
                     <td></td>
@@ -67,7 +67,7 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td>{{$container->SIZE.' FULL / "'.$container->jenis_container}}&nbsp;</td>
+                            <td>{{$container->SIZE.' DRY / MTY"'}}&nbsp;</td>
                         </tr>
                         <tr>
                             <td></td>
@@ -83,7 +83,7 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td>{{$container->CONSIGNEE}}&nbsp;</td>
+                            <td>{{$container->NAMACONSOLIDATOR}}&nbsp;</td>
                         </tr>
                         <tr>
                             <td></td>
@@ -91,7 +91,7 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td>{{$container->bcf_consignee}}</td>
+                            <td>{{$container->TUJUAN_MTY}}</td>
                         </tr>
                         <tr>
                             <td></td>
@@ -111,19 +111,19 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td>{{$container->NO_BL_AWB}}&nbsp;</td>
+                            <td>{{$container->NOMBL}}&nbsp;</td>
                         </tr>
                         <tr>
                             <td></td>
-                            <td>{{$container->NO_BL_AWB}}&nbsp;</td>
+                            <td>{{$container->NOMBL}}&nbsp;</td>
                         </tr>
                         <tr>
-                            <td></td>
-                            <td>{{date('d-M-y', strtotime($container->ETA))}}&nbsp;</td>
+                            <td>TANGGAL MASUK</td>
+                            <td>{{date('d-M-y', strtotime($container->TGLMASUL))}}&nbsp;</td>
                         </tr>
                         <tr>
-                            <td></td>
-                            <td>&nbsp;</td>
+                            <td>PUKUL</td>
+                            <td>{{date('H:i', strtotime($container->JAMMASUK))}}</td>
                         </tr>
                     </table>
                 </td>
@@ -144,9 +144,9 @@
                     <td colspan="3" style="height: 70px;">&nbsp;</td>
                 </tr>
                 <tr>
-                    <td align="left" style="display: block;">{{($container->KODE_GUDANG == 'ARN3') ? 'INDRA' : 'WATMASDEL'}}</td>
+                    <td align="left" style="display: block;">REZA FACHREVY</td>
                     <td></td>
-                    <td align="center">TONY NOVRIADI BUDIHARJO</td>
+                    <td align="center">KELIK PRAWOTO</td>
                 </tr>
             </table>
         </div>
