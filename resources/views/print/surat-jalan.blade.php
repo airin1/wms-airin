@@ -67,7 +67,7 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td>{{$container->SIZE.' DRY / MTY"'}}&nbsp;</td>
+                            <td>{{$container->SIZE.' DRY / MTY'}}&nbsp;</td>
                         </tr>
                         <tr>
                             <td></td>
