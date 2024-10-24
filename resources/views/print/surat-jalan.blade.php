@@ -54,7 +54,7 @@
                         </tr>
                         <tr>
                             <td></td>
-                            <td>{{$container->SHIPPINGLINE}}&nbsp;</td>
+                            <td>{{$joborder->SHIPPINGLINE}}&nbsp;</td>
                         </tr>
                         <tr>
                             <td></td>
