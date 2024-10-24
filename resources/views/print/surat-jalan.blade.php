@@ -38,7 +38,7 @@
       <div style="margin-left:1; width: 100%;height: 100px;border: 1px solid transparent;">       
 	   <table width="100%">
             <tr>
-                <td style="width: 65%;">
+                <td style="width: 75%;">
                     <table>
                         <tr>
                             <td style="width: 100px;"></td>
@@ -98,7 +98,7 @@
                         </tr>
                         <tr>
                             <td>TANGGAL MASUK</td>
-                            <td>{{date('d-M-y', strtotime($container->TGLMASUL))}}&nbsp;</td>
+                            <td>{{date('d-M-y', strtotime($container->TGLMASUK))}}&nbsp;</td>
                         </tr>
                         <tr>
                             <td>PUKUL</td>
@@ -120,7 +120,7 @@
                     <td style="width: 30%;" align="center"></td>
                 </tr>
                 <tr>
-                    <td colspan="3" style="height: 120px;">&nbsp;</td>
+                    <td colspan="3" style="height: 150px;">&nbsp;</td>
                 </tr>
                 <tr>
                     <td align="left" style="display: block;">REZA FACHREVY</td>
