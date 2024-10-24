@@ -29,8 +29,7 @@
     }
 </style>
 <a href="#" class="print-btn" type="button" onclick="window.print();">PRINT</a> 
-//@foreach($container as $container)
-   
+
 <div style="width: 700px;height: 850px;border: 1px solid transparent;padding: 30px;">
     <div style="float:left;font-size: 10px;">PRINT TIME {{ date('d/m/Y H:i')}}</div> 
      <!--<div style="width: 100%;height: 80px;border: 1px solid transparent;display: relative;">-->
@@ -156,6 +155,6 @@
 </div>
  <div style="display:block; page-break-before:always;"></div>
 
-//@endforeach   
+   
         
 @stop
