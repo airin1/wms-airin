@@ -38,7 +38,7 @@
             <table>
                 <tr>
                     <td align="right"></td>
-                    <td align="left" style="width: 80px;">{</td>
+                    <td align="left" style="width: 80px;"></td>
                     <td align="right"></td>
                 </tr>
                 <tr>
@@ -141,7 +141,7 @@
                     <td style="width: 30%;" align="center"></td>
                 </tr>
                 <tr>
-                    <td colspan="3" style="height: 90px;">&nbsp;</td>
+                    <td colspan="3" style="height: 100px;">&nbsp;</td>
                 </tr>
                 <tr>
                     <td align="left" style="display: block;">REZA FACHREVY</td>
