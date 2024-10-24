@@ -1078,7 +1078,7 @@ class LclController extends Controller
     {
         $container = DBContainer::find($id);
         $data['container'] = $container;
-	    $joborder = Joborder::find($container->TJOBORDER_FK);
+	    $joborder = DBJoborder::find($container->TJOBORDER_FK);
         $data['joborder'] = $joborder;
 		
 //        return view('print.bon-muat', $container);
