@@ -1085,6 +1085,7 @@ class LclController extends Controller
                 $pdf = \PDF::loadView('print.bon-muat', $data);        
                 break;
             case 'surat-jalan':
+			    return view('print.surat-jalan', $data);
                 $pdf = \PDF::loadView('print.surat-jalan', $data);
                 break;
         }
